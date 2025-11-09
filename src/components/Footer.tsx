@@ -1,4 +1,4 @@
-import { Container, Typography, Stack } from "@mui/material";
+import { Container, Typography, Stack, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -60,24 +60,39 @@ const FooterContainer = styled("footer")({
   backgroundColor: "#00a77f",
 });
 
-const FooterHeading = styled(Typography)({
-  fontSize: "2rem",
-  fontWeight: 400,
+const SocialSection = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(4, 0),
+  borderBottom: "1px solid rgba(43, 43, 43, 0.1)",
+}));
+
+const SocialHeading = styled(Typography)({
+  fontSize: "1.125rem",
+  fontWeight: 600,
   color: "#2b2b2b",
   marginBottom: "1rem",
 });
 
-const FooterText = styled(Typography)({
-  fontSize: "1rem",
+const FooterHeading = styled(Typography)({
+  fontSize: "1.25rem",
+  fontWeight: 600,
   color: "#2b2b2b",
-  lineHeight: 1.5,
+  marginBottom: "1.5rem",
+});
+
+const FooterText = styled(Typography)({
+  fontSize: "0.875rem",
+  color: "#2b2b2b",
+  lineHeight: 1.6,
 });
 
 const FooterLink = styled(Link)({
-  fontSize: "1rem",
+  fontSize: "0.875rem",
   color: "#2b2b2b",
   textDecoration: "none",
+  display: "block",
+  marginBottom: "0.5rem",
   "&:hover": {
+    color: "#004c91",
     textDecoration: "underline",
   },
   "&:focus": {
@@ -87,12 +102,19 @@ const FooterLink = styled(Link)({
 });
 
 const SocialIcon = styled("a")({
-  width: "28px",
-  height: "28px",
+  width: "40px",
+  height: "40px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  borderRadius: "50%",
   cursor: "pointer",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: "#004c91",
+    color: "white",
+  },
   "&:focus": {
     outline: "2px solid #004c91",
     outlineOffset: "2px",
@@ -102,12 +124,34 @@ const SocialIcon = styled("a")({
 const CopyrightBar = styled("div")({
   backgroundColor: "#004c91",
   padding: "1.5rem 0",
-  textAlign: "center",
+});
+
+const BottomLinks = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "2rem",
+  marginBottom: "1rem",
+  flexWrap: "wrap",
+});
+
+const BottomLink = styled(Link)({
+  color: "white",
+  fontSize: "0.875rem",
+  textDecoration: "none",
+  "&:hover": {
+    textDecoration: "underline",
+  },
+  "&:focus": {
+    outline: "2px solid white",
+    outlineOffset: "2px",
+  },
 });
 
 const CopyrightText = styled(Typography)({
   color: "white",
-  fontSize: "1rem",
+  fontSize: "0.875rem",
+  textAlign: "center",
 });
 
 export default function Footer() {
@@ -138,39 +182,57 @@ export default function Footer() {
       </CTASection>
 
       {/* Footer */}
-      <FooterContainer
-        role='contentinfo'
-        style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
-      >
+      <FooterContainer role='contentinfo'>
         <Container maxWidth='lg'>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "2rem",
-            }}
-          >
-            {/* About DESN */}
-            <div>
-              <FooterHeading>{t("footer_about_heading")}</FooterHeading>
-              <FooterText sx={{ mb: 2 }}>{t("footer_about_text")}</FooterText>
-              <Stack direction='row' spacing={1.5}>
-                <SocialIcon href='#' aria-label='Facebook' tabIndex={0}>
-                  <FacebookIcon />
-                </SocialIcon>
-                <SocialIcon href='#' aria-label='Twitter' tabIndex={0}>
-                  <TwitterIcon />
-                </SocialIcon>
-                <SocialIcon href='#' aria-label='LinkedIn' tabIndex={0}>
-                  <LinkedInIcon />
-                </SocialIcon>
-              </Stack>
-            </div>
+          {/* Social Media Section - Top of Footer */}
+          <SocialSection>
+            <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
+            <Stack direction='row' spacing={2}>
+              <SocialIcon
+                href='https://facebook.com'
+                aria-label='Facebook'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <FacebookIcon />
+              </SocialIcon>
+              <SocialIcon
+                href='https://twitter.com'
+                aria-label='Twitter'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <TwitterIcon />
+              </SocialIcon>
+              <SocialIcon
+                href='https://linkedin.com'
+                aria-label='LinkedIn'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <LinkedInIcon />
+              </SocialIcon>
+            </Stack>
+          </SocialSection>
 
-            {/* Quick Links */}
-            <div>
-              <FooterHeading>{t("footer_quick_links")}</FooterHeading>
-              <Stack spacing={1}>
+          {/* Footer Links Grid */}
+          <Box sx={{ py: 6 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "3rem",
+              }}
+            >
+              {/* About DESN */}
+              <div>
+                <FooterHeading>{t("footer_about_heading")}</FooterHeading>
+                <FooterText sx={{ mb: 2 }}>{t("footer_about_text")}</FooterText>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <FooterHeading>{t("footer_quick_links")}</FooterHeading>
                 <FooterLink to='/about'>{t("footer_link_about")}</FooterLink>
                 <FooterLink to='/programs'>
                   {t("footer_link_programs")}
@@ -182,50 +244,68 @@ export default function Footer() {
                 <FooterLink to='/get-involved'>
                   {t("footer_link_get_involved")}
                 </FooterLink>
-              </Stack>
-            </div>
+              </div>
 
-            {/* Contact Us */}
-            <div>
-              <FooterHeading>{t("footer_contact_heading")}</FooterHeading>
-              <Stack spacing={1}>
-                <Stack direction='row' spacing={1} alignItems='flex-start'>
-                  <LocationOnIcon sx={{ fontSize: "1rem", mt: 0.5 }} />
-                  <FooterText>Lalitpur, Nepal</FooterText>
+              {/* Contact Us */}
+              <div>
+                <FooterHeading>{t("footer_contact_heading")}</FooterHeading>
+                <Stack spacing={1.5}>
+                  <Stack direction='row' spacing={1} alignItems='flex-start'>
+                    <LocationOnIcon
+                      sx={{ fontSize: "1.125rem", mt: 0.25, color: "#2b2b2b" }}
+                    />
+                    <FooterText>Lalitpur, Nepal</FooterText>
+                  </Stack>
+                  <Stack direction='row' spacing={1} alignItems='center'>
+                    <PhoneIcon
+                      sx={{ fontSize: "1.125rem", color: "#2b2b2b" }}
+                    />
+                    <FooterLink
+                      to='tel:+97715709205'
+                      sx={{ display: "inline" }}
+                    >
+                      +977-15709205
+                    </FooterLink>
+                  </Stack>
+                  <Stack direction='row' spacing={1} alignItems='center'>
+                    <EmailIcon
+                      sx={{ fontSize: "1.125rem", color: "#2b2b2b" }}
+                    />
+                    <FooterLink
+                      to='mailto:disabilityemp@gmail.com'
+                      sx={{ display: "inline" }}
+                    >
+                      disabilityemp@gmail.com
+                    </FooterLink>
+                  </Stack>
                 </Stack>
-                <Stack direction='row' spacing={1} alignItems='center'>
-                  <PhoneIcon sx={{ fontSize: "1rem" }} />
-                  <FooterLink to='tel:+97715709205'>+977-15709205</FooterLink>
-                </Stack>
-                <Stack direction='row' spacing={1} alignItems='center'>
-                  <EmailIcon sx={{ fontSize: "1rem" }} />
-                  <FooterLink to='mailto:disabilityemp@gmail.com'>
-                    disabilityemp@gmail.com
-                  </FooterLink>
-                </Stack>
-              </Stack>
-            </div>
+              </div>
 
-            {/* Legal */}
-            <div>
-              <FooterHeading>{t("footer_legal_heading")}</FooterHeading>
-              <Stack spacing={1}>
+              {/* Legal */}
+              <div>
+                <FooterHeading>{t("footer_legal_heading")}</FooterHeading>
                 <FooterLink to='/privacy'>
                   {t("footer_link_privacy")}
                 </FooterLink>
                 <FooterLink to='/terms'>{t("footer_link_terms")}</FooterLink>
-                <FooterLink to='/accessibility'>
-                  {t("footer_link_accessibility")}
-                </FooterLink>
-              </Stack>
+              </div>
             </div>
-          </div>
+          </Box>
         </Container>
       </FooterContainer>
 
-      {/* Copyright Bar */}
+      {/* Copyright Bar with Legal Links */}
       <CopyrightBar>
         <Container>
+          <BottomLinks>
+            <BottomLink to='/accessibility'>
+              {t("footer_link_accessibility")}
+            </BottomLink>
+            <span style={{ color: "white" }}>|</span>
+            <BottomLink to='/privacy'>
+              {t("footer_link_account_privacy")}
+            </BottomLink>
+          </BottomLinks>
           <CopyrightText>{t("footer_copyright")}</CopyrightText>
         </Container>
       </CopyrightBar>

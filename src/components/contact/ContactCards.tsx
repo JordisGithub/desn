@@ -203,34 +203,6 @@ export default function ContactCards() {
               </CardContent>
             </ContactCard>
           </Box>
-
-          {/* Website Card */}
-          <Box>
-            <ContactCard>
-              <CardContent sx={{ padding: 0 }}>
-                <IconContainer bgColor='rgba(246, 212, 105, 0.1)'>
-                  <LanguageIcon sx={{ fontSize: 40, color: "#f6d469" }} />
-                </IconContainer>
-                <CardTitle>{t("contact.cards.website.title")}</CardTitle>
-                <CardDescription>
-                  {t("contact.cards.website.description")}
-                </CardDescription>
-                <ContactInfo>
-                  <a
-                    href='http://www.desnepal.com'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    style={{
-                      color: "#101828",
-                      textDecoration: "none",
-                    }}
-                  >
-                    www.desnepal.com
-                  </a>
-                </ContactInfo>
-              </CardContent>
-            </ContactCard>
-          </Box>
         </CardsContainer>
       </Container>
     </CardsSection>

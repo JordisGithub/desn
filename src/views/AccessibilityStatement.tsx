@@ -320,13 +320,6 @@ export default function AccessibilityStatement() {
           <LastUpdated>
             <strong>Last Updated:</strong> November 3, 2024
           </LastUpdated>
-          <CTAContainer>
-            <PrimaryButton to='#features'>
-              Explore Features
-              <ArrowForwardIcon sx={{ fontSize: "1.25rem" }} />
-            </PrimaryButton>
-            <SecondaryButton to='#contact'>Report an Issue</SecondaryButton>
-          </CTAContainer>
         </HeroContent>
       </HeroSection>
 
@@ -640,7 +633,7 @@ export default function AccessibilityStatement() {
             </FeatureCard>
 
             {/* Text Customization */}
-            <FeatureCard>
+            {/* <FeatureCard>
               <CardIconContainer
                 sx={{ backgroundColor: "rgba(150, 85, 149, 0.1)" }}
               >
@@ -704,7 +697,7 @@ export default function AccessibilityStatement() {
                   </Typography>
                 </ListItem>
               </FeatureList>
-            </FeatureCard>
+            </FeatureCard> */}
 
             {/* Contrast & Colors */}
             <FeatureCard>
