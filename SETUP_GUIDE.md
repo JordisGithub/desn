@@ -39,13 +39,32 @@ The backend runs on Java 21 (Long Term Support version).
    - Select **x64** as Architecture
    - Download the **.msi** installer
 2. Run the installer
-3. Important: Check the box that says **"Set JAVA_HOME variable"** during installation
+3. **CRITICAL:** During installation, make sure to check these options:
+   - ✅ **"Set JAVA_HOME variable"** - This is REQUIRED!
+   - ✅ **"Add to PATH"** - This should be checked by default
 4. Complete the installation
-5. Open a **new** Command Prompt and verify:
+5. **Close any open Command Prompt/PowerShell windows** and open a **NEW** one
+6. Verify Java is installed:
    ```
    java -version
    ```
    You should see `openjdk version "21.x.x"`
+   
+7. **IMPORTANT:** Verify JAVA_HOME is set:
+   
+   **In PowerShell:**
+   ```powershell
+   echo $env:JAVA_HOME
+   ```
+   
+   **In Command Prompt:**
+   ```cmd
+   echo %JAVA_HOME%
+   ```
+   
+   Should show something like: `C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot`
+   
+   **If it's blank or not set, see the troubleshooting section below!**
 
 ### 3. Install Node.js
 
@@ -298,6 +317,47 @@ Both servers will stop.
 **How to tell which one you're using:**
 - PowerShell prompt looks like: `PS C:\Users\YourName\Projects\desn\backend>`
 - Command Prompt looks like: `C:\Users\YourName\Projects\desn\backend>`
+
+### "mvn not found in PATH — using Dockerized Maven" or "'docker' is not recognized"
+
+**This error means:** The Maven wrapper can't find Java or Maven, so it's trying to use Docker (which you also don't have).
+
+**Root Cause:** Your `JAVA_HOME` environment variable is not set correctly.
+
+**Solution:**
+
+1. First, verify Java is installed:
+   ```powershell
+   java -version
+   ```
+   If this works, Java is installed but `JAVA_HOME` isn't set.
+
+2. Find your Java installation path:
+   - It's usually: `C:\Program Files\Eclipse Adoptium\jdk-21.0.x-hotspot`
+   - Or check in: `C:\Program Files\Java\`
+
+3. Set the `JAVA_HOME` environment variable:
+   - Press **Windows Key** and search for "Environment Variables"
+   - Click **"Edit the system environment variables"**
+   - Click **"Environment Variables"** button
+   - Under **"System variables"**, click **"New"**
+   - Variable name: `JAVA_HOME`
+   - Variable value: `C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot` (use your actual path)
+   - Click **OK** on all windows
+
+4. **IMPORTANT:** Close ALL PowerShell/Command Prompt windows and open a NEW one
+
+5. Verify it's set:
+   ```powershell
+   echo $env:JAVA_HOME
+   ```
+   Should show your Java path.
+
+6. Now try the Maven command again:
+   ```powershell
+   cd C:\Users\YourName\Projects\desn\backend
+   .\mvnw.cmd clean package -DskipTests
+   ```
 
 ### "Command not found" or "'git' is not recognized"
 
