@@ -1,0 +1,405 @@
+# DESN Application Setup Guide for Windows
+
+This guide will help you set up and run the DESN application on your Windows PC. No prior experience with React, Node.js, or GitHub required!
+
+## Table of Contents
+
+1. [Prerequisites - Installing Required Software](#prerequisites)
+2. [Cloning the Project](#cloning-the-project)
+3. [Setting Up the Backend (Java)](#backend-setup)
+4. [Setting Up the Frontend (React)](#frontend-setup)
+5. [Running the Application](#running-the-application)
+6. [Troubleshooting](#troubleshooting)
+
+---
+
+## Prerequisites
+
+Before you start, you'll need to install the following software on your Windows PC:
+
+### 1. Install Git
+
+Git is a version control system that lets you download and manage code from GitHub.
+
+1. Download Git from: https://git-scm.com/download/win
+2. Run the installer
+3. Use all default settings (just keep clicking "Next")
+4. When complete, open **Command Prompt** or **PowerShell** and verify installation:
+   ```
+   git --version
+   ```
+   You should see something like `git version 2.x.x`
+
+### 2. Install Java 21
+
+The backend runs on Java 21 (Long Term Support version).
+
+1. Download Java 21 from: https://adoptium.net/temurin/releases/?version=21
+   - Select **Windows** as Operating System
+   - Select **x64** as Architecture
+   - Download the **.msi** installer
+2. Run the installer
+3. Important: Check the box that says **"Set JAVA_HOME variable"** during installation
+4. Complete the installation
+5. Open a **new** Command Prompt and verify:
+   ```
+   java -version
+   ```
+   You should see `openjdk version "21.x.x"`
+
+### 3. Install Node.js
+
+Node.js runs the frontend React application.
+
+1. Download Node.js from: https://nodejs.org/
+   - Download the **LTS (Long Term Support)** version
+   - Choose the Windows Installer (.msi) for 64-bit
+2. Run the installer
+3. Use all default settings
+4. After installation, open a **new** Command Prompt and verify:
+   ```
+   node --version
+   npm --version
+   ```
+   You should see version numbers for both commands
+
+### 4. Install a Code Editor (Optional but Recommended)
+
+Visual Studio Code is a free, beginner-friendly code editor.
+
+1. Download from: https://code.visualstudio.com/
+2. Install with default settings
+3. You can open the project in VS Code later for editing files
+
+---
+
+## Cloning the Project
+
+Now let's download the project code from GitHub.
+
+### Step 1: Create a Workspace Folder
+
+1. Open **File Explorer**
+2. Navigate to a location where you want to store the project (e.g., `C:\Users\YourName\Projects`)
+3. Create a new folder called `Projects` if it doesn't exist
+
+### Step 2: Open Command Prompt
+
+1. Hold **Shift** and **Right-click** inside the `Projects` folder
+2. Select **"Open PowerShell window here"** or **"Open Command window here"**
+
+### Step 3: Clone the Repository
+
+In the command window, type:
+
+```
+git clone https://github.com/JordisGithub/desn.git
+```
+
+This will download all the project files into a new folder called `desn`.
+
+### Step 4: Navigate into the Project
+
+```
+cd desn
+```
+
+You're now inside the project folder!
+
+---
+
+## Backend Setup
+
+The backend is a Java Spring Boot application that provides APIs for the frontend.
+
+### Step 1: Navigate to Backend Folder
+
+```
+cd backend
+```
+
+### Step 2: Build the Backend
+
+This compiles the Java code and downloads necessary dependencies (this may take a few minutes the first time):
+
+**On Windows Command Prompt:**
+
+```
+mvnw.cmd clean package -DskipTests
+```
+
+**On Windows PowerShell:**
+
+```
+.\mvnw.cmd clean package -DskipTests
+```
+
+Wait for it to complete. You should see `BUILD SUCCESS` at the end.
+
+### Step 3: Go Back to Project Root
+
+```
+cd ..
+```
+
+---
+
+## Frontend Setup
+
+The frontend is a React application built with Vite.
+
+### Step 1: Install Dependencies
+
+From the project root (the `desn` folder), run:
+
+```
+npm install
+```
+
+This downloads all the JavaScript libraries needed for the frontend. It may take 2-5 minutes.
+
+Wait for it to complete without errors.
+
+---
+
+## Running the Application
+
+You'll need **TWO** separate command windows - one for backend, one for frontend.
+
+### Step 1: Start the Backend
+
+1. Open a **new** Command Prompt or PowerShell window
+2. Navigate to the backend folder:
+
+   ```
+   cd C:\Users\YourName\Projects\desn\backend
+   ```
+
+   (Replace `YourName` with your actual username)
+
+3. Start the backend server:
+
+   **On Command Prompt:**
+
+   ```
+   mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+
+   **On PowerShell:**
+
+   ```
+   .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+
+4. Wait for the backend to start. You'll see messages in the console. When you see:
+
+   ```
+   Started ProxyApplication in X.XXX seconds
+   ```
+
+   The backend is ready! **Keep this window open.**
+
+5. The backend runs on: **http://localhost:8080**
+
+### Step 2: Start the Frontend
+
+1. Open a **second** Command Prompt or PowerShell window (keep the first one running!)
+2. Navigate to the project root:
+
+   ```
+   cd C:\Users\YourName\Projects\desn
+   ```
+
+3. Start the frontend development server:
+
+   ```
+   npm run dev
+   ```
+
+4. Wait for it to start. You'll see:
+
+   ```
+   ➜  Local:   http://localhost:5173/
+   ```
+
+5. The frontend runs on: **http://localhost:5173**
+
+### Step 3: Open the Application
+
+1. Open your web browser (Chrome, Edge, or Firefox)
+2. Go to: **http://localhost:5173**
+3. You should see the DESN website!
+
+**🎉 Congratulations! The application is now running!**
+
+---
+
+## Using the Application
+
+### Default Test Accounts
+
+The application comes with pre-configured test accounts:
+
+**Admin Account:**
+
+- Username: `admin`
+- Password: `admin123`
+- Can access: Admin Dashboard with all data
+
+**Member Account:**
+
+- Username: `member`
+- Password: `member123`
+- Can access: Member Dashboard with favorites and event registrations
+
+### Sample Data Included
+
+The application includes sample data:
+
+- 6 Resources/Publications
+- 3 Events
+- 2 Membership Applications
+- 2 Volunteer Applications
+- 3 Donation Transactions
+
+---
+
+## Stopping the Application
+
+When you're done working:
+
+1. In the **frontend** command window: Press `Ctrl + C`, then type `Y` and press Enter
+2. In the **backend** command window: Press `Ctrl + C`, then type `Y` and press Enter
+
+Both servers will stop.
+
+---
+
+## Troubleshooting
+
+### "Command not found" or "'git' is not recognized"
+
+- You need to close and reopen your Command Prompt after installing software
+- Or restart your computer to refresh environment variables
+
+### "Port 8080 is already in use"
+
+Another program is using port 8080. To find and stop it:
+
+1. Open Command Prompt as Administrator
+2. Run: `netstat -ano | findstr :8080`
+3. Note the PID (Process ID) number at the end
+4. Run: `taskkill /PID <number> /F` (replace `<number>` with the actual PID)
+
+### "Port 5173 is already in use"
+
+Similar to above, but use port 5173 instead of 8080.
+
+### Backend won't start - "JAVA_HOME not set"
+
+1. Open **System Properties** → **Advanced** → **Environment Variables**
+2. Under **System Variables**, click **New**
+3. Variable name: `JAVA_HOME`
+4. Variable value: `C:\Program Files\Eclipse Adoptium\jdk-21.x.x-hotspot` (check your actual path)
+5. Click OK and restart Command Prompt
+
+### Frontend shows blank page or errors
+
+1. Make sure the backend is running first
+2. Try clearing browser cache (Ctrl + Shift + Delete)
+3. Check browser console for errors (Press F12)
+
+### "npm install" fails
+
+1. Make sure you have internet connection
+2. Try running as Administrator
+3. Delete the `node_modules` folder and try again
+
+### General Tips
+
+- Always keep both command windows open while using the app
+- If something goes wrong, stop both servers (Ctrl + C) and restart them
+- The backend must start successfully before the frontend will work properly
+
+---
+
+## Next Steps
+
+Once you have the application running:
+
+1. **Explore the code**: Open the project in Visual Studio Code to see the files
+2. **Learn the structure**:
+   - `backend/src/main/java/` - Java backend code
+   - `src/` - React frontend code
+   - `src/components/` - Reusable UI components
+   - `src/views/` - Main pages
+3. **Make changes**: Try editing files and see the changes refresh automatically in the browser!
+4. **Read the docs**: Check the `docs/` folder for detailed documentation about features
+
+---
+
+## Getting Help
+
+If you run into issues:
+
+1. Check the console output in both command windows for error messages
+2. Check the `README.md` file for additional information
+3. Review documentation in the `docs/` folder
+4. Ask your team for help!
+
+---
+
+## Quick Reference
+
+### Daily Development Workflow
+
+1. Open TWO Command Prompt/PowerShell windows
+2. Window 1 - Backend:
+   ```
+   cd C:\Users\YourName\Projects\desn\backend
+   mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+3. Window 2 - Frontend:
+   ```
+   cd C:\Users\YourName\Projects\desn
+   npm run dev
+   ```
+4. Open browser to: http://localhost:5173
+5. When done: Press `Ctrl + C` in both windows
+
+### Useful Commands
+
+**Check if Git is installed:**
+
+```
+git --version
+```
+
+**Check if Java is installed:**
+
+```
+java -version
+```
+
+**Check if Node is installed:**
+
+```
+node --version
+npm --version
+```
+
+**Update project with latest changes from GitHub:**
+
+```
+git pull
+```
+
+**See what files you've changed:**
+
+```
+git status
+```
+
+---
+
+**Welcome to the DESN project! Happy coding! 🚀**
