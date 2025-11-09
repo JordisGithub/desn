@@ -8,6 +8,7 @@ import About from "./views/About";
 import GetInvolved from "./views/GetInvolved";
 import Events from "./views/Events";
 import Resources from "./views/Resources";
+import Contact from "./views/Contact";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import AdminDashboard from "./views/AdminDashboard";
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path='/get-involved' element={<GetInvolved />} />
                 <Route path='/events' element={<Events />} />
                 <Route path='/resources' element={<Resources />} />
+                <Route path='/contact' element={<Contact />} />
                 <Route
                   path='/accessibility'
                   element={<AccessibilityStatement />}

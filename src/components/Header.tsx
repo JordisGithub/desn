@@ -232,9 +232,9 @@ const Header: React.FC = () => {
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.get_involved"), path: "/get-involved" },
     { label: t("nav.events"), path: "/events" },
-    { label: t("nav.programs"), path: "/programs" },
     { label: t("nav.resources"), path: "/resources" },
-    { label: t("nav.projects"), path: "/projects" },
+    { label: t("nav.programs"), path: "/programs" },
+    // { label: t("nav.projects"), path: "/projects" },
     { label: t("nav.contact"), path: "/contact" },
   ];
 
