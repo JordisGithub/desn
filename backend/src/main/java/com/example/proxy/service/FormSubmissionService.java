@@ -15,7 +15,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,8 @@ public class FormSubmissionService {
 
     private void ensureDirectoriesExist() {
         try {
-            Files.createDirectories(Paths.get(SUBMISSIONS_DIR, "membership"));
-            Files.createDirectories(Paths.get(SUBMISSIONS_DIR, "volunteer"));
+            Files.createDirectories(Path.of(SUBMISSIONS_DIR, "membership"));
+            Files.createDirectories(Path.of(SUBMISSIONS_DIR, "volunteer"));
             log.info("Form submission directories created/verified");
         } catch (IOException e) {
             log.error("Failed to create submission directories", e);
@@ -59,9 +58,9 @@ public class FormSubmissionService {
         
         String timestamp = application.getSubmittedAt().format(FILENAME_FORMATTER);
         String sanitizedName = sanitizeFilename(application.getFullName());
-        String filename = String.format("membership_%s_%s.json", timestamp, sanitizedName);
+        String filename = "membership_%s_%s.json".formatted(timestamp, sanitizedName);
         
-        Path filePath = Paths.get(SUBMISSIONS_DIR, "membership", filename);
+        Path filePath = Path.of(SUBMISSIONS_DIR, "membership", filename);
         objectMapper.writeValue(filePath.toFile(), application);
         
         log.info("Saved membership application: {}", filename);
@@ -80,9 +79,9 @@ public class FormSubmissionService {
         
         String timestamp = application.getSubmittedAt().format(FILENAME_FORMATTER);
         String sanitizedName = sanitizeFilename(application.getFullName());
-        String filename = String.format("volunteer_%s_%s.json", timestamp, sanitizedName);
+        String filename = "volunteer_%s_%s.json".formatted(timestamp, sanitizedName);
         
-        Path filePath = Paths.get(SUBMISSIONS_DIR, "volunteer", filename);
+        Path filePath = Path.of(SUBMISSIONS_DIR, "volunteer", filename);
         objectMapper.writeValue(filePath.toFile(), application);
         
         log.info("Saved volunteer application: {}", filename);
@@ -93,7 +92,7 @@ public class FormSubmissionService {
 
     public List<MembershipApplicationDto> getAllMembershipApplications() throws IOException {
         List<MembershipApplicationDto> applications = new ArrayList<>();
-        Path dir = Paths.get(SUBMISSIONS_DIR, "membership");
+        Path dir = Path.of(SUBMISSIONS_DIR, "membership");
         
         if (Files.exists(dir)) {
             Files.list(dir)
@@ -113,7 +112,7 @@ public class FormSubmissionService {
 
     public List<VolunteerApplicationDto> getAllVolunteerApplications() throws IOException {
         List<VolunteerApplicationDto> applications = new ArrayList<>();
-        Path dir = Paths.get(SUBMISSIONS_DIR, "volunteer");
+        Path dir = Path.of(SUBMISSIONS_DIR, "volunteer");
         
         if (Files.exists(dir)) {
             Files.list(dir)
@@ -138,7 +137,7 @@ public class FormSubmissionService {
 
     private void appendToCsvLog(String type, Object application) {
         try {
-            Path csvPath = Paths.get(SUBMISSIONS_DIR, type + "_log.csv");
+            Path csvPath = Path.of(SUBMISSIONS_DIR, type + "_log.csv");
             boolean isNewFile = !Files.exists(csvPath);
             
             try (FileWriter writer = new FileWriter(csvPath.toFile(), true)) {
@@ -153,23 +152,23 @@ public class FormSubmissionService {
                 
                 // Write data
                 if (application instanceof MembershipApplicationDto app) {
-                    writer.write(String.format("%s,%s,%s,%s,%s,%s,%s\n",
-                        app.getSubmittedAt(),
-                        escapeCsv(app.getFullName()),
-                        escapeCsv(app.getEmail()),
-                        escapeCsv(app.getPhone()),
-                        escapeCsv(app.getAddress()),
-                        escapeCsv(app.getMessage()),
-                        escapeCsv(app.getLanguage())
+                    writer.write("%s,%s,%s,%s,%s,%s,%s\n".formatted(
+                            app.getSubmittedAt(),
+                            escapeCsv(app.getFullName()),
+                            escapeCsv(app.getEmail()),
+                            escapeCsv(app.getPhone()),
+                            escapeCsv(app.getAddress()),
+                            escapeCsv(app.getMessage()),
+                            escapeCsv(app.getLanguage())
                     ));
                 } else if (application instanceof VolunteerApplicationDto app) {
-                    writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                        app.getSubmittedAt(),
-                        escapeCsv(app.getFullName()),
-                        escapeCsv(app.getEmail()),
-                        escapeCsv(app.getPhone()),
-                        escapeCsv(app.getMessage()),
-                        escapeCsv(app.getLanguage())
+                    writer.write("%s,%s,%s,%s,%s,%s\n".formatted(
+                            app.getSubmittedAt(),
+                            escapeCsv(app.getFullName()),
+                            escapeCsv(app.getEmail()),
+                            escapeCsv(app.getPhone()),
+                            escapeCsv(app.getMessage()),
+                            escapeCsv(app.getLanguage())
                     ));
                 }
             }

@@ -46,9 +46,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             response.addHeader("X-Rate-Limit-Retry-After-Seconds", String.valueOf(waitForRefill));
             response.setContentType("application/json");
-            response.getWriter().write(String.format(
-                "{\"success\": false, \"message\": \"Too many requests. Please try again in %d seconds.\"}",
-                waitForRefill
+            response.getWriter().write("{\"success\": false, \"message\": \"Too many requests. Please try again in %d seconds.\"}".formatted(
+                    waitForRefill
             ));
             
             log.warn("Rate limit exceeded for IP: {}", clientIp);
