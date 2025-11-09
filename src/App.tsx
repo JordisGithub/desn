@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import AriaAnnouncer from "./components/AriaAnnouncer";
 import Home from "./views/Home";
+import About from "./views/About";
 import Box from "@mui/material/Box";
 
 export default function App() {
@@ -20,11 +21,8 @@ export default function App() {
             <Header />
             <Routes>
               <Route path='/' element={<Home />} />
+              <Route path='/about' element={<About />} />
               {/* Add more routes here as pages are created */}
-              <Route
-                path='/about'
-                element={<div>About page coming soon</div>}
-              />
               <Route
                 path='/programs'
                 element={<div>Programs page coming soon</div>}
