@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,6 +11,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import EmailIcon from "@mui/icons-material/Email";
@@ -20,6 +21,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import PublicIcon from "@mui/icons-material/Public";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#004c91",
@@ -134,8 +139,13 @@ const DonateButton = styled(Button)(({ theme }) => ({
 
 const Header: React.FC = () => {
   const { lang, setLang } = useLanguage();
+  const { user, isAdmin, logout } = useAuth();
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
 
   const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
     setLangAnchorEl(event.currentTarget);
@@ -147,6 +157,24 @@ const Header: React.FC = () => {
       i18n.changeLanguage(newLang);
     }
     setLangAnchorEl(null);
+  };
+
+  const handleUserMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setUserMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleUserMenuClose();
+    navigate("/");
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
   };
 
   const navItems = [
@@ -245,6 +273,57 @@ const Header: React.FC = () => {
                 नेपाली
               </MenuItem>
             </Menu>
+
+            {user ? (
+              <>
+                <Button
+                  onClick={handleUserMenuClick}
+                  startIcon={<AccountCircleIcon />}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  sx={{
+                    color: "#004c91",
+                    textTransform: "none",
+                    fontSize: "16px",
+                  }}
+                >
+                  {user.fullName || user.username}
+                </Button>
+                <Menu
+                  anchorEl={userMenuAnchorEl}
+                  open={Boolean(userMenuAnchorEl)}
+                  onClose={handleUserMenuClose}
+                >
+                  {isAdmin && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/admin/dashboard");
+                        handleUserMenuClose();
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                      Admin Dashboard
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={handleLogout}>
+                    <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <Button
+                onClick={handleLogin}
+                startIcon={<LoginIcon />}
+                sx={{
+                  color: "#004c91",
+                  textTransform: "none",
+                  fontSize: "16px",
+                }}
+              >
+                Login
+              </Button>
+            )}
+
             <DonateButton>{t("header.donate")}</DonateButton>
           </RightSection>
         </NavBar>
