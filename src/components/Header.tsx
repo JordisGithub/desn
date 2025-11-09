@@ -10,6 +10,12 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -25,6 +31,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import DonationPaymentModal from "./payment/DonationPaymentModal";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#004c91",
@@ -32,6 +41,9 @@ const TopBar = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  [theme.breakpoints.down("md")]: {
+    display: "none", // Hide top bar on mobile/tablet
+  },
 }));
 
 const SearchField = styled(TextField)({
@@ -97,6 +109,9 @@ const NavLinks = styled(Box)(({ theme }) => ({
   alignItems: "center",
   flex: 1,
   justifyContent: "center",
+  [theme.breakpoints.down("lg")]: {
+    display: "none", // Hide desktop nav on tablet and mobile
+  },
 }));
 
 const NavLink = styled(RouterLink)(({ theme }) => ({
@@ -135,7 +150,31 @@ const DonateButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: "#f5ca4a",
   },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1, 2),
+    fontSize: "14px",
+  },
 }));
+
+const MobileMenuButton = styled(IconButton)(({ theme }) => ({
+  display: "none",
+  color: "#333",
+  [theme.breakpoints.down("lg")]: {
+    display: "flex",
+  },
+}));
+
+const DrawerHeader = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: theme.spacing(2, 2),
+  backgroundColor: "#004c91",
+}));
+
+const DrawerContent = styled(Box)({
+  width: 280,
+});
 
 const Header: React.FC = () => {
   const { lang, setLang } = useLanguage();
@@ -146,6 +185,8 @@ const Header: React.FC = () => {
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
     null
   );
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
     setLangAnchorEl(event.currentTarget);
@@ -177,14 +218,23 @@ const Header: React.FC = () => {
     navigate("/login");
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleMobileNavClick = (path: string) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+  };
+
   const navItems = [
     { label: t("nav.home"), path: "/" },
     { label: t("nav.about"), path: "/about" },
+    { label: t("nav.get_involved"), path: "/get-involved" },
     { label: t("nav.programs"), path: "/programs" },
     { label: t("nav.resources"), path: "/resources" },
     { label: t("nav.events"), path: "/events" },
     { label: t("nav.projects"), path: "/projects" },
-    { label: t("nav.get_involved"), path: "/get-involved" },
     { label: t("nav.contact"), path: "/contact" },
   ];
 
@@ -246,6 +296,13 @@ const Header: React.FC = () => {
               alt='DESN Logo'
             />
           </LogoLink>
+          <MobileMenuButton
+            edge='start'
+            aria-label='menu'
+            onClick={toggleMobileMenu}
+          >
+            <MenuIcon />
+          </MobileMenuButton>
           <NavLinks>
             {navItems.map((item) => (
               <NavLink key={item.path} to={item.path}>
@@ -324,10 +381,113 @@ const Header: React.FC = () => {
               </Button>
             )}
 
-            <DonateButton>{t("header.donate")}</DonateButton>
+            <DonateButton onClick={() => setDonationModalOpen(true)}>
+              {t("header.donate")}
+            </DonateButton>
           </RightSection>
         </NavBar>
       </AppBar>
+
+      {/* Mobile Menu Drawer */}
+      <Drawer
+        anchor='left'
+        open={mobileMenuOpen}
+        onClose={toggleMobileMenu}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 280,
+          },
+        }}
+      >
+        <DrawerContent>
+          <DrawerHeader>
+            <Logo
+              src='https://www.figma.com/api/mcp/asset/ccc1b5e8-ef62-4fef-ae8f-f8e654b30036'
+              alt='DESN Logo'
+              style={{ height: "40px" }}
+            />
+            <IconButton onClick={toggleMobileMenu} sx={{ color: "white" }}>
+              <CloseIcon />
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {navItems.map((item) => (
+              <ListItem key={item.path} disablePadding>
+                <ListItemButton onClick={() => handleMobileNavClick(item.path)}>
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleLanguageClick}>
+                <PublicIcon sx={{ mr: 2 }} />
+                <ListItemText primary={lang.toUpperCase()} />
+                <KeyboardArrowDownIcon />
+              </ListItemButton>
+            </ListItem>
+            {user ? (
+              <>
+                {isAdmin && (
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate("/admin/dashboard");
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 2 }} />
+                      <ListItemText primary='Admin Dashboard' />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <LogoutIcon sx={{ mr: 2 }} />
+                    <ListItemText primary='Logout' />
+                  </ListItemButton>
+                </ListItem>
+              </>
+            ) : (
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    handleLogin();
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <LoginIcon sx={{ mr: 2 }} />
+                  <ListItemText primary='Login' />
+                </ListItemButton>
+              </ListItem>
+            )}
+          </List>
+          <Box sx={{ p: 2 }}>
+            <DonateButton
+              fullWidth
+              onClick={() => {
+                setDonationModalOpen(true);
+                setMobileMenuOpen(false);
+              }}
+            >
+              {t("header.donate")}
+            </DonateButton>
+          </Box>
+        </DrawerContent>
+      </Drawer>
+
+      <DonationPaymentModal
+        open={donationModalOpen}
+        onClose={() => setDonationModalOpen(false)}
+      />
     </>
   );
 };

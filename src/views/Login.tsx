@@ -11,6 +11,7 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 
 const PageContainer = styled(Box)({
@@ -85,6 +86,7 @@ const LinkText = styled(Typography)({
 });
 
 const Login: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -122,11 +124,11 @@ const Login: React.FC = () => {
         login(data.user);
         navigate("/");
       } else {
-        setError(data.message || "Login failed. Please try again.");
+        setError(data.message || t("auth_error_login_failed"));
       }
     } catch (err) {
       console.error("Login error:", err);
-      setError("An error occurred. Please try again.");
+      setError(t("auth_error_generic"));
     } finally {
       setLoading(false);
     }
@@ -136,8 +138,8 @@ const Login: React.FC = () => {
     <PageContainer>
       <Container maxWidth='sm'>
         <FormPaper elevation={3}>
-          <Title>Welcome Back</Title>
-          <Subtitle>Sign in to your account</Subtitle>
+          <Title>{t("login_title")}</Title>
+          <Subtitle>{t("login_subtitle")}</Subtitle>
 
           {error && (
             <Alert severity='error' sx={{ mb: 3 }}>
@@ -148,7 +150,7 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <StyledTextField
               fullWidth
-              label='Username'
+              label={t("login_username")}
               name='username'
               value={formData.username}
               onChange={handleChange}
@@ -157,7 +159,7 @@ const Login: React.FC = () => {
             />
             <StyledTextField
               fullWidth
-              label='Password'
+              label={t("login_password")}
               name='password'
               type='password'
               value={formData.password}
@@ -174,12 +176,13 @@ const Login: React.FC = () => {
                 loading ? <CircularProgress size={20} color='inherit' /> : null
               }
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? t("login_submitting") : t("login_submit")}
             </SubmitButton>
           </form>
 
           <LinkText>
-            Don't have an account? <Link to='/register'>Sign up</Link>
+            {t("login_no_account")}{" "}
+            <Link to='/register'>{t("login_signup_link")}</Link>
           </LinkText>
         </FormPaper>
       </Container>

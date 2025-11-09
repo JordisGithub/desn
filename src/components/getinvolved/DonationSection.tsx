@@ -16,17 +16,31 @@ import DonationPaymentModal from "../payment/DonationPaymentModal";
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 12),
   backgroundColor: "white",
+  [theme.breakpoints.down("lg")]: {
+    padding: theme.spacing(8, 4),
+  },
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(6, 3),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4, 2),
+  },
 }));
 
 const IntroContainer = styled(Box)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "608px 608px",
+  gridTemplateColumns: "1fr 1fr",
   gap: theme.spacing(8),
   marginBottom: theme.spacing(8),
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gap: theme.spacing(4),
+  },
 }));
 
-const ImageContainer = styled(Box)({
-  width: "608px",
+const ImageContainer = styled(Box)(({ theme }) => ({
+  width: "100%",
+  maxWidth: "608px",
   height: "384px",
   borderRadius: "14px",
   overflow: "hidden",
@@ -37,7 +51,13 @@ const ImageContainer = styled(Box)({
     height: "100%",
     objectFit: "cover",
   },
-});
+  [theme.breakpoints.down("md")]: {
+    height: "300px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "250px",
+  },
+}));
 
 const TextContent = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -85,12 +105,16 @@ const BenefitText = styled(Typography)({
   color: "#364153",
 });
 
-const PaymentGrid = styled(Box)({
+const PaymentGrid = styled(Box)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "558px 551px 577px",
+  gridTemplateColumns: "repeat(3, 1fr)",
   gap: "32px",
   marginBottom: "64px",
-});
+  [theme.breakpoints.down("lg")]: {
+    gridTemplateColumns: "1fr",
+    gap: "24px",
+  },
+}));
 
 const PaymentCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -215,12 +239,18 @@ const ImpactTitle = styled(Typography)({
   fontFamily: "'Poppins', sans-serif",
 });
 
-const ImpactGrid = styled(Box)({
+const ImpactGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "24px",
   width: "100%",
-});
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gap: "16px",
+  },
+}));
 
 const ImpactItem = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -266,11 +296,15 @@ const ImpactDescription = styled(Typography)({
   lineHeight: 1.5,
 });
 
-const QRImage = styled("img")({
+const QRImage = styled("img")(({ theme }) => ({
   maxWidth: "336px",
+  width: "100%",
   height: "auto",
   margin: "0 auto",
-});
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "250px",
+  },
+}));
 
 const DonationSection: React.FC = () => {
   const { t } = useTranslation();

@@ -17,6 +17,12 @@ const FormContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 0),
   maxWidth: "768px",
   margin: "0 auto",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(4, 0),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(3, 0),
+  },
 }));
 
 const FormTitle = styled(Typography)({
@@ -38,6 +44,9 @@ const InputRow = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
   gap: theme.spacing(2),
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+  },
 }));
 
 const StyledTextField = styled(TextField)({

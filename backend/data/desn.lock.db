@@ -1,6 +1,6 @@
 #FileLock
-#Sat Nov 08 21:06:56 PST 2025
-server=192.168.1.66\:59538
+#Sat Nov 08 21:40:27 PST 2025
+server=192.168.1.66\:50569
 hostName=jordanias-mbp-2.lan
 method=file
-id=19a66d647ddfe737d919672fe48687a7466dc469a56
+id=19a67214dd2afbb7f64a54a9b7bc68b35ea3cd2645f

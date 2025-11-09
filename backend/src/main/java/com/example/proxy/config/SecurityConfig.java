@@ -28,16 +28,24 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
+                // Public endpoints - authentication/registration
                 .requestMatchers("/api/auth/**").permitAll()
+                // Public endpoints - form submission
                 .requestMatchers(HttpMethod.POST, "/api/forms/membership", "/api/forms/volunteer").permitAll()
                 .requestMatchers("/api/forms/health").permitAll()
+                // Public endpoints - payment
+                .requestMatchers("/api/payment/initiate").permitAll()
+                .requestMatchers("/api/payment/verify").permitAll()
+                .requestMatchers("/api/payment/webhook").permitAll()
+                .requestMatchers("/api/payment/status/**").permitAll()
+                // Public endpoints - monitoring
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 // Admin only endpoints
                 .requestMatchers(HttpMethod.GET, "/api/forms/membership", "/api/forms/volunteer").hasRole("ADMIN")
-                // All other requests require authentication
-                .anyRequest().authenticated()
+                .requestMatchers("/api/payment/transactions").hasRole("ADMIN")
+                // All other requests are public (home page, about page, etc.)
+                .anyRequest().permitAll()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

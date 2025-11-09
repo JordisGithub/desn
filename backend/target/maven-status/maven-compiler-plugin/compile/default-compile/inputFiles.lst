@@ -1,3 +1,4 @@
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/controller/PaymentController.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/controller/AuthController.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/repository/VolunteerApplicationRepository.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/config/CorsConfig.java
@@ -8,16 +9,21 @@
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/config/RateLimitConfig.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/filter/JwtAuthFilter.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/entity/MembershipApplication.java
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/repository/PaymentTransactionRepository.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/dto/AuthResponse.java
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/service/KhaltiPaymentService.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/service/AuthService.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/dto/RegisterRequest.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/repository/UserRepository.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/ProxyApplication.java
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/dto/PaymentResponse.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/entity/VolunteerApplication.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/service/FormSubmissionService.java
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/entity/PaymentTransaction.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/util/InputSanitizer.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/config/SecurityConfig.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/service/EmailNotificationService.java
+/Users/jordi/git/desn/backend/src/main/java/com/example/proxy/dto/InitiatePaymentRequest.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/util/JwtUtil.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/repository/MembershipApplicationRepository.java
 /Users/jordi/git/desn/backend/src/main/java/com/example/proxy/dto/VolunteerApplicationDto.java

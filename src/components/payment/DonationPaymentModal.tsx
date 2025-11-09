@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
@@ -82,6 +83,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
   open,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState<string>("");
   const [customAmount, setCustomAmount] = useState<string>("");
   const [donorName, setDonorName] = useState<string>("");
@@ -126,17 +128,17 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
 
     // Validation
     if (!selectedAmount || selectedAmount < 1) {
-      setError("Please enter a valid donation amount");
+      setError(t("payment_error_invalid_amount"));
       return;
     }
 
     if (!donorName.trim()) {
-      setError("Please enter your name");
+      setError(t("payment_error_name_required"));
       return;
     }
 
     if (!donorEmail.trim() || !/\S+@\S+\.\S+/.test(donorEmail)) {
-      setError("Please enter a valid email address");
+      setError(t("payment_error_email_invalid"));
       return;
     }
 
@@ -165,11 +167,11 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
         // Redirect to Khalti payment page
         window.location.href = data.paymentUrl;
       } else {
-        setError(data.message || "Failed to initiate payment");
+        setError(data.message || t("payment_error_failed_initiate"));
       }
     } catch (err) {
       console.error("Payment error:", err);
-      setError("An error occurred. Please try again.");
+      setError(t("payment_error_generic"));
     } finally {
       setLoading(false);
     }
@@ -195,7 +197,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
         <Box display='flex' alignItems='center' gap={1}>
           <PaymentIcon sx={{ color: "#00a77f" }} />
           <Typography variant='h6' fontWeight={600} color='#004c91'>
-            Make a Donation
+            {t("donation_modal_title")}
           </Typography>
         </Box>
       </DialogTitle>
@@ -209,7 +211,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
 
           <Box>
             <Typography variant='subtitle1' fontWeight={600} mb={1}>
-              Select Amount (NPR)
+              {t("donation_select_amount")}
             </Typography>
             <AmountGrid>
               {predefinedAmounts.map((amt) => (
@@ -226,10 +228,10 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           </Box>
 
           <StyledTextField
-            label='Custom Amount (NPR)'
+            label={t("donation_custom_amount")}
             value={customAmount}
             onChange={handleCustomAmountChange}
-            placeholder='Enter custom amount'
+            placeholder={t("donation_custom_placeholder")}
             fullWidth
             InputProps={{
               startAdornment: <Typography sx={{ mr: 1 }}>₨</Typography>,
@@ -237,7 +239,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           />
 
           <StyledTextField
-            label='Full Name *'
+            label={t("donation_fullname")}
             value={donorName}
             onChange={(e) => setDonorName(e.target.value)}
             required
@@ -246,7 +248,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           />
 
           <StyledTextField
-            label='Email Address *'
+            label={t("donation_email")}
             type='email'
             value={donorEmail}
             onChange={(e) => setDonorEmail(e.target.value)}
@@ -256,7 +258,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           />
 
           <StyledTextField
-            label='Phone Number'
+            label={t("donation_phone")}
             value={donorPhone}
             onChange={(e) => setDonorPhone(e.target.value)}
             fullWidth
@@ -264,7 +266,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           />
 
           <StyledTextField
-            label='Message (Optional)'
+            label={t("donation_message")}
             value={donorMessage}
             onChange={(e) => setDonorMessage(e.target.value)}
             multiline
@@ -285,8 +287,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           >
             <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 20 }} />
             <Typography fontSize='13px' color='#374151'>
-              Secure payment powered by Khalti. Your transaction data is
-              encrypted and protected.
+              {t("donation_security_note")}
             </Typography>
           </Box>
         </FormContainer>
@@ -297,7 +298,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           disabled={loading}
           sx={{ color: "#6b7280" }}
         >
-          Cancel
+          {t("donation_cancel")}
         </Button>
         <SubmitButton
           onClick={handleSubmit}
@@ -305,8 +306,10 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
           startIcon={loading ? <CircularProgress size={20} /> : <PaymentIcon />}
         >
           {loading
-            ? "Processing..."
-            : `Donate ₨${getSelectedAmount().toLocaleString()}`}
+            ? t("donation_processing")
+            : `${t(
+                "donation_submit"
+              )} ₨${getSelectedAmount().toLocaleString()}`}
         </SubmitButton>
       </DialogActions>
     </DialogContainer>

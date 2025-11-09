@@ -10,6 +10,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import AdminDashboard from "./views/AdminDashboard";
 import PaymentVerify from "./views/PaymentVerify";
+import AccessibilityStatement from "./views/AccessibilityStatement";
 import Box from "@mui/material/Box";
 
 export default function App() {
@@ -30,6 +31,10 @@ export default function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/get-involved' element={<GetInvolved />} />
+                <Route
+                  path='/accessibility'
+                  element={<AccessibilityStatement />}
+                />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/admin/dashboard' element={<AdminDashboard />} />

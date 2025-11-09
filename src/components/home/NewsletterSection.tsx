@@ -86,31 +86,37 @@ export default function NewsletterSection() {
               {t("newsletter_heading")}
             </NewsletterHeading>
           </div>
-          <form
+          <Box
+            component='form'
             onSubmit={handleSubmit}
-            style={{
+            sx={{
               flex: "1 1 50%",
-              display: "flex",
-              gap: "0.5rem",
               width: "100%",
             }}
           >
-            <NewsletterInput
-              type='email'
-              placeholder={t("newsletter_placeholder")}
-              required
-              aria-label={t("newsletter_aria_label")}
-              fullWidth
-            />
-            <SubscribeButton
-              type='submit'
-              variant='contained'
-              aria-label={t("newsletter_button")}
-              endIcon={<SendIcon />}
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1}
+              sx={{ width: "100%" }}
             >
-              {t("newsletter_button")}
-            </SubscribeButton>
-          </form>
+              <NewsletterInput
+                type='email'
+                placeholder={t("newsletter_placeholder")}
+                required
+                aria-label={t("newsletter_aria_label")}
+                fullWidth
+              />
+              <SubscribeButton
+                type='submit'
+                variant='contained'
+                aria-label={t("newsletter_button")}
+                endIcon={<SendIcon />}
+                sx={{ minWidth: { xs: "100%", sm: "auto" } }}
+              >
+                {t("newsletter_button")}
+              </SubscribeButton>
+            </Stack>
+          </Box>
         </Stack>
       </Container>
     </NewsletterContainer>

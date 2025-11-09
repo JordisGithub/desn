@@ -11,6 +11,7 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 
 const PageContainer = styled(Box)({
@@ -85,6 +86,7 @@ const LinkText = styled(Typography)({
 });
 
 const Register: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -127,12 +129,12 @@ const Register: React.FC = () => {
         if (data.errors && Array.isArray(data.errors)) {
           setError(data.errors.join(", "));
         } else {
-          setError(data.message || "Registration failed. Please try again.");
+          setError(data.message || t("auth_error_generic"));
         }
       }
     } catch (err) {
       console.error("Registration error:", err);
-      setError("An error occurred. Please try again.");
+      setError(t("auth_error_generic"));
     } finally {
       setLoading(false);
     }
@@ -142,8 +144,8 @@ const Register: React.FC = () => {
     <PageContainer>
       <Container maxWidth='sm'>
         <FormPaper elevation={3}>
-          <Title>Create Account</Title>
-          <Subtitle>Join DESN community</Subtitle>
+          <Title>{t("register_title")}</Title>
+          <Subtitle>{t("register_subtitle")}</Subtitle>
 
           {error && (
             <Alert severity='error' sx={{ mb: 3 }}>
@@ -154,7 +156,7 @@ const Register: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <StyledTextField
               fullWidth
-              label='Full Name'
+              label={t("register_fullname")}
               name='fullName'
               value={formData.fullName}
               onChange={handleChange}
@@ -163,17 +165,16 @@ const Register: React.FC = () => {
             />
             <StyledTextField
               fullWidth
-              label='Username'
+              label={t("register_username")}
               name='username'
               value={formData.username}
               onChange={handleChange}
               required
               disabled={loading}
-              helperText='Choose a unique username (3-50 characters)'
             />
             <StyledTextField
               fullWidth
-              label='Email'
+              label={t("register_email")}
               name='email'
               type='email'
               value={formData.email}
@@ -183,14 +184,13 @@ const Register: React.FC = () => {
             />
             <StyledTextField
               fullWidth
-              label='Password'
+              label={t("register_password")}
               name='password'
               type='password'
               value={formData.password}
               onChange={handleChange}
               required
               disabled={loading}
-              helperText='Minimum 6 characters'
             />
 
             <SubmitButton
@@ -201,12 +201,13 @@ const Register: React.FC = () => {
                 loading ? <CircularProgress size={20} color='inherit' /> : null
               }
             >
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading ? t("register_submitting") : t("register_submit")}
             </SubmitButton>
           </form>
 
           <LinkText>
-            Already have an account? <Link to='/login'>Sign in</Link>
+            {t("register_has_account")}{" "}
+            <Link to='/login'>{t("register_signin_link")}</Link>
           </LinkText>
         </FormPaper>
       </Container>

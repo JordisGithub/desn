@@ -9,6 +9,7 @@ import {
   Button,
   Alert,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import HomeIcon from "@mui/icons-material/Home";
@@ -68,6 +69,7 @@ interface PaymentStatus {
 }
 
 const PaymentVerify: React.FC = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -87,14 +89,14 @@ const PaymentVerify: React.FC = () => {
       if (status === "Cancelled" || status === "cancelled") {
         setPaymentStatus({
           success: false,
-          message: "Payment was cancelled",
+          message: t("payment_cancelled"),
         });
         setLoading(false);
         return;
       }
 
       if (!pidx || !txnId) {
-        setError("Invalid payment verification parameters");
+        setError(t("payment_verify_error_title"));
         setLoading(false);
         return;
       }
@@ -108,14 +110,14 @@ const PaymentVerify: React.FC = () => {
         setPaymentStatus(data);
       } catch (err) {
         console.error("Payment verification error:", err);
-        setError("Failed to verify payment. Please contact support.");
+        setError(t("payment_verify_error_title"));
       } finally {
         setLoading(false);
       }
     };
 
     verifyPayment();
-  }, [searchParams]);
+  }, [searchParams, t]);
 
   const handleGoHome = () => {
     navigate("/");
@@ -127,10 +129,10 @@ const PaymentVerify: React.FC = () => {
         <StatusCard>
           <CircularProgress size={60} sx={{ color: "#00a77f" }} />
           <Typography variant='h6' mt={3} color='#374151'>
-            Verifying your payment...
+            {t("payment_verify_loading")}
           </Typography>
           <Typography variant='body2' color='#6b7280' mt={1}>
-            Please wait while we confirm your transaction
+            {t("payment_verify_wait")}
           </Typography>
         </StatusCard>
       </PageContainer>
@@ -146,17 +148,16 @@ const PaymentVerify: React.FC = () => {
               <ErrorIcon sx={{ fontSize: 48, color: "#ef4444" }} />
             </IconWrapper>
             <Typography variant='h5' fontWeight={600} color='#374151' mb={2}>
-              Verification Error
+              {t("payment_verify_error_title")}
             </Typography>
             <Alert severity='error' sx={{ mb: 2 }}>
               {error}
             </Alert>
             <Typography variant='body2' color='#6b7280' mb={3}>
-              If this issue persists, please contact our support team with your
-              transaction details.
+              {t("payment_verify_error_contact")}
             </Typography>
             <HomeButton startIcon={<HomeIcon />} onClick={handleGoHome}>
-              Return to Home
+              {t("payment_return_home")}
             </HomeButton>
           </StatusCard>
         </Container>
@@ -181,7 +182,9 @@ const PaymentVerify: React.FC = () => {
           </IconWrapper>
 
           <Typography variant='h5' fontWeight={600} color='#374151' mb={2}>
-            {paymentStatus.success ? "Payment Successful!" : "Payment Failed"}
+            {paymentStatus.success
+              ? t("payment_success_title")
+              : t("payment_failed_title")}
           </Typography>
 
           <Typography variant='body1' color='#6b7280' mb={3}>
@@ -198,7 +201,7 @@ const PaymentVerify: React.FC = () => {
               }}
             >
               <Typography variant='body2' color='#374151' fontWeight={500}>
-                Transaction ID
+                {t("payment_transaction_id")}
               </Typography>
               <Typography
                 variant='body2'
@@ -216,7 +219,7 @@ const PaymentVerify: React.FC = () => {
                     fontWeight={500}
                     mt={2}
                   >
-                    Amount
+                    {t("payment_amount")}
                   </Typography>
                   <Typography
                     variant='body2'
@@ -233,13 +236,12 @@ const PaymentVerify: React.FC = () => {
 
           {paymentStatus.success && (
             <Typography variant='body2' color='#6b7280' mb={2}>
-              Thank you for your generous donation! A confirmation email has
-              been sent to your email address.
+              {t("payment_thank_you")}
             </Typography>
           )}
 
           <HomeButton startIcon={<HomeIcon />} onClick={handleGoHome}>
-            Return to Home
+            {t("payment_return_home")}
           </HomeButton>
         </StatusCard>
       </Container>

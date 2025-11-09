@@ -23,16 +23,20 @@ const UnderlineBar = styled(Box)({
   marginBottom: "48px",
 });
 
-const ObjectivesGrid = styled(Box)(({ theme }) => ({
+const ObjectivesList = styled("ol")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: theme.spacing(3),
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+  counterReset: "objective-counter",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
   },
 }));
 
-const ObjectiveCard = styled(Box)(({ theme }) => ({
+const ObjectiveItem = styled("li")(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #e5e7eb",
   borderRadius: "10px",
@@ -41,27 +45,29 @@ const ObjectiveCard = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
   alignItems: "flex-start",
   minHeight: "76px",
+  counterIncrement: "objective-counter",
+  "&::before": {
+    content: "counter(objective-counter)",
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    backgroundColor: "#004c91",
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1rem",
+    fontWeight: 400,
+    flexShrink: 0,
+  },
 }));
 
-const NumberBadge = styled(Box)({
-  width: "32px",
-  height: "32px",
-  borderRadius: "50%",
-  backgroundColor: "#004c91",
-  color: "white",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: "1rem",
-  fontWeight: 400,
-  flexShrink: 0,
-});
-
-const ObjectiveText = styled(Typography)({
+const ObjectiveText = styled("span")({
   fontSize: "1.125rem",
   color: "#364153",
   lineHeight: 1.33,
   fontWeight: 400,
+  display: "block",
 });
 
 export default function ObjectivesSection() {
@@ -87,14 +93,13 @@ export default function ObjectivesSection() {
         </SectionTitle>
         <UnderlineBar />
 
-        <ObjectivesGrid>
+        <ObjectivesList aria-labelledby='objectives-heading'>
           {objectives.map((objective, index) => (
-            <ObjectiveCard key={index}>
-              <NumberBadge>{index + 1}</NumberBadge>
+            <ObjectiveItem key={index}>
               <ObjectiveText>{objective}</ObjectiveText>
-            </ObjectiveCard>
+            </ObjectiveItem>
           ))}
-        </ObjectivesGrid>
+        </ObjectivesList>
       </Container>
     </SectionContainer>
   );

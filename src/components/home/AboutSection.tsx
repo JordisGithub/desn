@@ -2,6 +2,7 @@ import { Container, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { imgAboutImage } from "../../constants/figmaAssets";
 
 const AboutContainer = styled("section")({
   backgroundColor: "#004c91",
@@ -54,9 +55,6 @@ const AboutButton = styled(Link)(({ theme }) => ({
   },
 }));
 
-const aboutImage =
-  "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800";
-
 export default function AboutSection() {
   const { t } = useTranslation();
 
@@ -72,7 +70,7 @@ export default function AboutSection() {
           alignItems='center'
         >
           <div style={{ flex: "1 1 50%" }}>
-            <AboutImage src={aboutImage} alt={t("about_alt")} />
+            <AboutImage src={imgAboutImage} alt={t("about_alt")} />
           </div>
           <div style={{ flex: "1 1 50%" }}>
             <AboutHeading as='h2' id='about-heading'>

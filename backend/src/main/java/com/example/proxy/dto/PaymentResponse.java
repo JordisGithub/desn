@@ -25,6 +25,11 @@ public class PaymentResponse {
         this.pidx = pidx;
     }
 
+    // Static factory method for error responses
+    public static PaymentResponse error(String message) {
+        return new PaymentResponse(false, message);
+    }
+
     // Getters and Setters
     public boolean isSuccess() {
         return success;

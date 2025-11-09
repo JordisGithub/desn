@@ -8,6 +8,13 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  imgProgramDisabilityInclusion,
+  imgProgramAccessibleICT,
+  imgProgramLivelihood,
+  imgProgramLifeSkills,
+  imgProgramCommunity,
+} from "../../constants/figmaAssets";
 
 const ProgramsContainer = styled("section")({
   backgroundColor: "white",
@@ -58,7 +65,27 @@ const ProgramDescription = styled(Typography)({
   fontSize: "1rem",
   lineHeight: 1.5,
   color: "rgba(0, 0, 0, 0.6)",
+  marginBottom: "1rem",
 });
+
+const CardLearnMoreButton = styled(Link)(({ theme }) => ({
+  backgroundColor: "#004c91",
+  color: "white",
+  fontWeight: 600,
+  fontSize: "0.875rem",
+  padding: theme.spacing(1, 2),
+  borderRadius: "6px",
+  textDecoration: "none",
+  display: "inline-block",
+  textTransform: "uppercase",
+  "&:hover": {
+    backgroundColor: "#003d73",
+  },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+  },
+}));
 
 const LearnMoreButton = styled(Link)(({ theme }) => ({
   backgroundColor: "#f6d469",
@@ -85,41 +112,31 @@ export default function ProgramsSection() {
     {
       titleKey: "program_disability_title",
       descKey: "program_disability_desc",
-      image:
-        "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400",
+      image: imgProgramDisabilityInclusion,
       alt: "People with disabilities participating in advocacy and awareness programs",
-    },
-    {
-      titleKey: "program_women_title",
-      descKey: "program_women_desc",
-      image:
-        "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400",
-      alt: "Women participating in skill training and empowerment programs",
     },
     {
       titleKey: "program_ict_title",
       descKey: "program_ict_desc",
-      image:
-        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400",
+      image: imgProgramAccessibleICT,
       alt: "Person using assistive technology and accessible digital tools",
     },
     {
       titleKey: "program_livelihood_title",
       descKey: "program_livelihood_desc",
-      image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400",
+      image: imgProgramLivelihood,
       alt: "Persons with disabilities participating in vocational training",
     },
     {
       titleKey: "program_life_skills_title",
       descKey: "program_life_skills_desc",
-      image:
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400",
+      image: imgProgramLifeSkills,
       alt: "Youth with disabilities learning practical life skills and education",
     },
     {
       titleKey: "program_community_title",
       descKey: "program_community_desc",
-      image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
+      image: imgProgramCommunity,
       alt: "Community members participating in accessibility and awareness initiatives",
     },
   ];
@@ -143,9 +160,28 @@ export default function ProgramsSection() {
                 image={program.image}
                 alt={program.alt}
               />
-              <CardContent sx={{ flexGrow: 1 }}>
-                <ProgramTitle as='h3'>{t(program.titleKey)}</ProgramTitle>
-                <ProgramDescription>{t(program.descKey)}</ProgramDescription>
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <ProgramTitle as='h3'>{t(program.titleKey)}</ProgramTitle>
+                  <ProgramDescription>{t(program.descKey)}</ProgramDescription>
+                </div>
+                <div>
+                  <CardLearnMoreButton
+                    to='/programs'
+                    aria-label={`${t("program_learn_more")} - ${t(
+                      program.titleKey
+                    )}`}
+                  >
+                    {t("program_learn_more")}
+                  </CardLearnMoreButton>
+                </div>
               </CardContent>
             </ProgramCard>
           ))}

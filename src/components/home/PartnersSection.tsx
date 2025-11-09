@@ -1,6 +1,12 @@
 import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import {
+  imgUndpLogo,
+  imgNationalFederationLogo,
+  imgMeedanLogo,
+  imgGovernmentOfNepalLogo,
+} from "../../constants/figmaAssets";
 
 const PartnersContainer = styled("section")({
   backgroundColor: "#f6d469",
@@ -38,15 +44,29 @@ const PartnerCard = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-const PartnerName = styled(Typography)({
-  fontWeight: 600,
+const PartnerLogo = styled("img")({
+  maxWidth: "100%",
+  maxHeight: "100px",
+  objectFit: "contain",
 });
 
 const partners = [
-  "UNDP",
-  "National Federation for the Disabled",
-  "Meedan",
-  "Government of Nepal",
+  {
+    name: "UNDP",
+    logo: imgUndpLogo,
+  },
+  {
+    name: "National Federation for the Disabled",
+    logo: imgNationalFederationLogo,
+  },
+  {
+    name: "Meedan",
+    logo: imgMeedanLogo,
+  },
+  {
+    name: "Government of Nepal",
+    logo: imgGovernmentOfNepalLogo,
+  },
 ];
 
 export default function PartnersSection() {
@@ -65,7 +85,7 @@ export default function PartnersSection() {
         <PartnersGrid>
           {partners.map((partner, index) => (
             <PartnerCard key={index}>
-              <PartnerName variant='body1'>{partner}</PartnerName>
+              <PartnerLogo src={partner.logo} alt={partner.name} />
             </PartnerCard>
           ))}
         </PartnersGrid>

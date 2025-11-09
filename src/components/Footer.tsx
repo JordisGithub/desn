@@ -9,10 +9,14 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import { useTranslation } from "react-i18next";
 
-const CTASection = styled("section")({
+const CTASection = styled("section")(({ theme }) => ({
   background: "linear-gradient(to bottom, #004c91, #00a77f)",
   textAlign: "center",
-});
+  padding: "6rem 0",
+  [theme.breakpoints.down("md")]: {
+    padding: "4rem 0",
+  },
+}));
 
 const CTAHeading = styled(Typography)(({ theme }) => ({
   fontSize: "2.5rem",
@@ -112,10 +116,7 @@ export default function Footer() {
   return (
     <>
       {/* CTA Section */}
-      <CTASection
-        aria-labelledby='cta-heading'
-        style={{ paddingTop: "6rem", paddingBottom: "6rem" }}
-      >
+      <CTASection aria-labelledby='cta-heading'>
         <Container maxWidth='md'>
           <CTAHeading as='h2' id='cta-heading'>
             {t("footer_cta_heading")}
@@ -145,7 +146,7 @@ export default function Footer() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
               gap: "2rem",
             }}
           >

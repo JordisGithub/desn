@@ -2,7 +2,7 @@
 // - GET requests are passed through without headers
 // - postWithAuth / putWithAuth / deleteWithAuth add X-API-Key header automatically
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || "";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
 // Fallback order: VITE_DEV_API_KEY -> REACT_APP_API_KEY -> hard-coded dev key.
 // Note: API keys should not be kept in frontend code. This client sends requests
 // to a backend proxy which is expected to add any required authentication headers.

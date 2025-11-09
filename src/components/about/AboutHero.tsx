@@ -1,7 +1,8 @@
 import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import { imgDesnLogo } from "../../constants/figmaAssets";
 
 const HeroContainer = styled("section")({
   position: "relative",
@@ -35,16 +36,35 @@ const ContentWrapper = styled(Box)({
   paddingBottom: "64px",
 });
 
-const LogoCircle = styled(Box)({
-  width: "64px",
-  height: "64px",
-  borderRadius: "50%",
-  backgroundColor: "#00a77f",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  marginBottom: "24px",
-});
+const LogoImage = styled("img")(({ theme }) => ({
+  height: "120px",
+  width: "auto",
+  marginBottom: theme.spacing(3),
+  filter: "brightness(0) invert(1)",
+  [theme.breakpoints.down("md")]: {
+    height: "80px",
+  },
+}));
+
+const QuoteBox = styled(Box)(({ theme }) => ({
+  backgroundColor: "rgba(255, 255, 255, 0.1)",
+  border: "2px solid rgba(255, 255, 255, 0.3)",
+  borderRadius: "12px",
+  padding: theme.spacing(3, 4),
+  marginTop: theme.spacing(4),
+  maxWidth: "800px",
+  position: "relative",
+}));
+
+const QuoteText = styled(Typography)(({ theme }) => ({
+  fontSize: "1.5rem",
+  fontStyle: "italic",
+  color: "white",
+  lineHeight: 1.5,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.25rem",
+  },
+}));
 
 const OrganizationName = styled(Typography)(({ theme }) => ({
   fontSize: "3rem",
@@ -85,14 +105,10 @@ export default function AboutHero() {
     <HeroContainer aria-labelledby='about-hero-heading'>
       <Container maxWidth='lg'>
         <ContentWrapper>
-          <Box display='flex' alignItems='center' gap='12px' mb={3}>
-            <LogoCircle>
-              <WorkspacePremiumIcon sx={{ fontSize: 40, color: "white" }} />
-            </LogoCircle>
-            <OrganizationName as='h1' id='about-hero-heading'>
-              {t("about_hero_org_name")}
-            </OrganizationName>
-          </Box>
+          <LogoImage src={imgDesnLogo} alt='DESN Logo' />
+          <OrganizationName as='h1' id='about-hero-heading'>
+            {t("about_hero_org_name")}
+          </OrganizationName>
           <Tagline>{t("about_hero_tagline")}</Tagline>
           <EstablishedBadge>
             <Typography
@@ -108,6 +124,18 @@ export default function AboutHero() {
               {t("about_hero_established_year")}
             </Typography>
           </EstablishedBadge>
+          <QuoteBox>
+            <FormatQuoteIcon
+              sx={{
+                position: "absolute",
+                top: 16,
+                left: 16,
+                fontSize: 40,
+                color: "rgba(255, 255, 255, 0.3)",
+              }}
+            />
+            <QuoteText>{t("about_hero_quote")}</QuoteText>
+          </QuoteBox>
         </ContentWrapper>
       </Container>
     </HeroContainer>

@@ -3,6 +3,8 @@ export default {
   hero_title: "The Disability Empowerment Society Nepal (DESN)",
   hero_subtitle:
     "Empowering Persons with Disabilities Through Accessibility, Inclusion, and Innovation",
+  hero_tagline:
+    "Working since 2004 to empower persons with disabilities and promote inclusive digital transformation in Nepal.",
   hero_alt:
     "DESN team members and volunteers working together at a community event in Nepal, showing collaboration and inclusion",
   mission_statement:
@@ -23,6 +25,7 @@ export default {
   // Programs Section
   programs_heading: "Program & services",
   programs_button: "Learn more about our Programs",
+  program_learn_more: "Learn More",
   program_disability_title: "Disability & Inclusion",
   program_disability_desc:
     "Promoting equal access, rights, and participation for persons with disabilities through policy advocacy and awareness programs.",

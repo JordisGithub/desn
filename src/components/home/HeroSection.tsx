@@ -1,14 +1,19 @@
 import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { imgHeroImage } from "../../constants/figmaAssets";
 
 const HeroContainer = styled("section")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(6),
-  [theme.breakpoints.up("md")]: {
-    paddingTop: theme.spacing(6),
-    paddingBottom: theme.spacing(8),
+  paddingTop: theme.spacing(6),
+  paddingBottom: theme.spacing(8),
+  [theme.breakpoints.down("md")]: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
@@ -28,7 +33,7 @@ const HeroSubheading = styled(Typography)(({ theme }) => ({
   fontSize: "1.5rem",
   fontWeight: 600,
   color: "#004c91",
-  marginBottom: theme.spacing(4),
+  marginBottom: theme.spacing(2),
   textAlign: "center",
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
@@ -39,12 +44,37 @@ const HeroSubheading = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const HeroTagline = styled(Typography)(({ theme }) => ({
+  fontSize: "1.125rem",
+  fontWeight: 400,
+  color: "#364153",
+  marginBottom: theme.spacing(4),
+  textAlign: "center",
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  lineHeight: 1.6,
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.25rem",
+    paddingLeft: theme.spacing(10),
+    paddingRight: theme.spacing(10),
+  },
+}));
+
 const HeroImage = styled("img")(({ theme }) => ({
   width: "100%",
   maxHeight: "600px",
   objectFit: "cover",
   borderRadius: theme.spacing(2),
   marginBottom: theme.spacing(4),
+  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
+  transition: "transform 0.3s ease",
+  [theme.breakpoints.down("md")]: {
+    maxHeight: "400px",
+    borderRadius: theme.spacing(1),
+  },
+  [theme.breakpoints.down("sm")]: {
+    maxHeight: "300px",
+  },
 }));
 
 const MissionStatement = styled(Typography)(({ theme }) => ({
@@ -72,10 +102,6 @@ const DescriptionText = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Image placeholder - replace with actual image
-const heroImage =
-  "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200";
-
 export default function HeroSection() {
   const { t } = useTranslation();
 
@@ -90,7 +116,9 @@ export default function HeroSection() {
           {t("hero_subtitle")}
         </HeroSubheading>
 
-        <HeroImage src={heroImage} alt={t("hero_alt")} />
+        <HeroTagline variant='body1'>{t("hero_tagline")}</HeroTagline>
+
+        <HeroImage src={imgHeroImage} alt={t("hero_alt")} />
 
         <MissionStatement variant='h3'>
           {t("mission_statement")}

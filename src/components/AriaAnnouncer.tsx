@@ -15,6 +15,7 @@ const AriaAnnouncerContext = createContext<
   AriaAnnouncerContextType | undefined
 >(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useA11yAnnouncer = () => {
   const context = useContext(AriaAnnouncerContext);
   if (!context) {

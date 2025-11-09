@@ -1,6 +1,7 @@
 import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { imgAboutPageImage } from "../../constants/figmaAssets";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -104,10 +105,7 @@ export default function IntroductionSection() {
           </TextColumn>
           <ImageColumn>
             <ImageContainer>
-              <img
-                src='https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800'
-                alt={t("about_intro_image_alt")}
-              />
+              <img src={imgAboutPageImage} alt={t("about_intro_image_alt")} />
             </ImageContainer>
           </ImageColumn>
         </ContentGrid>

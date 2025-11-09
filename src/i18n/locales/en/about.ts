@@ -3,6 +3,8 @@ export default {
   about_hero_org_name: "Disability Empowerment Society Nepal",
   about_hero_tagline:
     "Advocating for equal rights, participation, and accessibility since 2003",
+  about_hero_quote:
+    "Empowerment begins with accessibility and opportunity for all.",
   about_hero_established_label: "Established",
   about_hero_established_year: "2003",
 
@@ -63,4 +65,22 @@ export default {
   about_value_4: "Environmental consciousness and Sustainability",
   about_value_5: "Intergrated and Holistic Approach",
   about_value_6: "Transparency and Accountability in all Actions",
+
+  // Our Team
+  about_team_title: "Our Team",
+  about_team_description:
+    "DESN is led by dedicated professionals and persons with disabilities who bring expertise, passion, and lived experience to drive our mission forward.",
+  about_team_cta: "Meet Our Team",
+
+  // Partners & Networks
+  about_partners_title: "Partners & Networks",
+  about_partners_description:
+    "We collaborate with national and international organizations to create a more inclusive society for persons with disabilities.",
+
+  // CTA Section
+  about_cta_title: "Join Us in Our Mission",
+  about_cta_description:
+    "Explore our programs and discover how you can contribute to building a more inclusive Nepal.",
+  about_cta_programs: "Explore Our Programs",
+  about_cta_team: "Meet Our Team",
 };

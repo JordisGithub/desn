@@ -1,7 +1,13 @@
-import { Container, Typography, Stack } from "@mui/material";
+import { useState } from "react";
+import { Container, Typography, Stack, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import DonationPaymentModal from "../payment/DonationPaymentModal";
+import {
+  imgGetInvolvedImage1,
+  imgGetInvolvedImage2,
+} from "../../constants/figmaAssets";
 
 const GetInvolvedContainer = styled("section")({
   backgroundColor: "#004c91",
@@ -25,6 +31,13 @@ const VolunteerImage = styled("img")(({ theme }) => ({
   height: "376px",
   objectFit: "cover",
   borderRadius: theme.spacing(2),
+  [theme.breakpoints.down("md")]: {
+    height: "280px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    height: "200px",
+  },
 }));
 
 const CallToActionText = styled(Typography)(({ theme }) => ({
@@ -51,20 +64,46 @@ const GetInvolvedButton = styled(Link)(({ theme }) => ({
   display: "inline-block",
   "&:hover": {
     backgroundColor: "#f5c943",
+    transform: "translateY(-2px)",
+    boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
   },
   "&:focus": {
     outline: "3px solid white",
     outlineOffset: "2px",
   },
+  transition: "all 0.3s ease",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    textAlign: "center",
+  },
 }));
 
-const volunteerImage1 =
-  "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400";
-const volunteerImage2 =
-  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400";
+const DonateBtn = styled(Button)(({ theme }) => ({
+  backgroundColor: "#f6d469",
+  color: "#2b2b2b",
+  fontWeight: 600,
+  fontSize: "1.25rem",
+  textTransform: "capitalize",
+  padding: theme.spacing(1.5, 3),
+  borderRadius: "100px",
+  "&:hover": {
+    backgroundColor: "#f5c943",
+    transform: "translateY(-2px)",
+    boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+  },
+  "&:focus": {
+    outline: "3px solid white",
+    outlineOffset: "2px",
+  },
+  transition: "all 0.3s ease",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+}));
 
 export default function GetInvolvedSection() {
   const { t } = useTranslation();
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
 
   return (
     <GetInvolvedContainer
@@ -81,29 +120,46 @@ export default function GetInvolvedSection() {
           spacing={4}
           alignItems='center'
         >
-          <div style={{ flex: "1 1 50%" }}>
-            <Stack direction='row' spacing={2}>
+          <div style={{ flex: "1 1 50%", width: "100%" }}>
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
               <VolunteerImage
-                src={volunteerImage1}
+                src={imgGetInvolvedImage1}
                 alt={t("get_involved_alt_1")}
               />
               <VolunteerImage
-                src={volunteerImage2}
+                src={imgGetInvolvedImage2}
                 alt={t("get_involved_alt_2")}
               />
             </Stack>
           </div>
           <div style={{ flex: "1 1 50%" }}>
             <CallToActionText as='p'>{t("get_involved_cta")}</CallToActionText>
-            <GetInvolvedButton
-              to='/get-involved'
-              aria-label={t("get_involved_button")}
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{ flexWrap: "wrap" }}
             >
-              {t("get_involved_button")}
-            </GetInvolvedButton>
+              <GetInvolvedButton
+                to='/get-involved'
+                aria-label={t("get_involved_button")}
+              >
+                {t("get_involved_button")}
+              </GetInvolvedButton>
+              <DonateBtn
+                onClick={() => setDonationModalOpen(true)}
+                aria-label='Donate Now'
+              >
+                Donate
+              </DonateBtn>
+            </Stack>
           </div>
         </Stack>
       </Container>
+
+      <DonationPaymentModal
+        open={donationModalOpen}
+        onClose={() => setDonationModalOpen(false)}
+      />
     </GetInvolvedContainer>
   );
 }

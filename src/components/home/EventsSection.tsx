@@ -7,7 +7,13 @@ import {
   Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  imgEventAirMidPoint,
+  imgEventInternationalDay,
+  imgEventAirAwardCeremony,
+} from "../../constants/figmaAssets";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -29,6 +35,9 @@ const EventsGrid = styled("div")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr",
   gap: theme.spacing(4),
+  [theme.breakpoints.up("sm")]: {
+    gridTemplateColumns: "repeat(2, 1fr)",
+  },
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
   },
@@ -68,6 +77,20 @@ const EventTitle = styled(Typography)({
   marginBottom: "1rem",
 });
 
+const EventTitleLink = styled(Link)({
+  color: "#351c42",
+  textDecoration: "none",
+  "&:hover": {
+    textDecoration: "underline",
+    color: "#004c91",
+  },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    borderRadius: "4px",
+  },
+});
+
 const EventDescription = styled(Typography)({
   marginBottom: "1rem",
   fontSize: "1rem",
@@ -83,36 +106,36 @@ export default function EventsSection() {
 
   const events = [
     {
+      id: "air-mid-point-check-in",
       date: "2025-10-24",
       dateLabelKey: "event_1_date",
       timeKey: "event_1_time",
       titleKey: "event_1_title",
       descKey: "event_1_desc",
       organizer: "knowbility",
-      image:
-        "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400",
+      image: imgEventAirMidPoint,
       altKey: "event_1_alt",
     },
     {
+      id: "international-day-of-persons-with-disabilities",
       date: "2025-12-02",
       dateLabelKey: "event_2_date",
       timeKey: "event_2_time",
       titleKey: "event_2_title",
       descKey: "event_2_desc",
       organizer: "DESN",
-      image:
-        "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400",
+      image: imgEventInternationalDay,
       altKey: "event_2_alt",
     },
     {
+      id: "air-award-ceremony",
       date: "2026-01-15",
       dateLabelKey: "event_3_date",
       timeKey: "event_3_time",
       titleKey: "event_3_title",
       descKey: "event_3_desc",
       organizer: "knowbility",
-      image:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400",
+      image: imgEventAirAwardCeremony,
       altKey: "event_3_alt",
     },
   ];
@@ -143,7 +166,14 @@ export default function EventsSection() {
                   </EventDate>
                   <EventTime>{t(event.timeKey)}</EventTime>
                 </Stack>
-                <EventTitle as='h3'>{t(event.titleKey)}</EventTitle>
+                <EventTitle as='h3'>
+                  <EventTitleLink
+                    to={`/events/${event.id}`}
+                    aria-label={`View details for ${t(event.titleKey)}`}
+                  >
+                    {t(event.titleKey)}
+                  </EventTitleLink>
+                </EventTitle>
                 <EventDescription>{t(event.descKey)}</EventDescription>
                 <EventOrganizer>
                   <strong>{t("event_organizer")}</strong> {event.organizer}

@@ -4,11 +4,11 @@ export default {
   nav: {
     home: "Home",
     about: "About Us",
+    get_involved: "Get Involved",
     programs: "Program & Services",
     resources: "Resources & Publications",
     events: "Event & Calendar",
     projects: "Projects",
-    get_involved: "Get Involved",
     contact: "Contact Us",
   },
   // Header
