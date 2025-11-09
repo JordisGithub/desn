@@ -28,3 +28,4 @@ backend/data/
 *.mv.db
 *.lock.db
 *.trace.db
+backend/data/*.lock.db
