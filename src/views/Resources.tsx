@@ -341,16 +341,19 @@ const Resources: React.FC = () => {
   };
 
   return (
-    <Box>
+    <>
       {/* Hero Section */}
       <Box
         sx={{
           background:
             "linear-gradient(135deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
           color: "white",
-          py: 8,
+          minHeight: { xs: "400px", sm: "450px", md: "500px" },
+          py: { xs: 6, sm: 8, md: 10 },
           position: "relative",
           overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
         }}
       >
         {/* Background decorative elements */}
@@ -379,7 +382,10 @@ const Resources: React.FC = () => {
           }}
         />
 
-        <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
+        <Container
+          maxWidth='xl'
+          sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3, md: 6 } }}
+        >
           <Chip
             label={t("nav.resources")}
             sx={{
@@ -717,7 +723,7 @@ const Resources: React.FC = () => {
           </Box>
         </Container>
       </Box>
-    </Box>
+    </>
   );
 };
 

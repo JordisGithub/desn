@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import LanguageIcon from "@mui/icons-material/Language";
 
 const CardsSection = styled("section")(({ theme }) => ({
   backgroundColor: "white",

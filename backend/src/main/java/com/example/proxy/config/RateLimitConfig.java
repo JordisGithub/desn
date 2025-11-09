@@ -2,7 +2,6 @@ package com.example.proxy.config;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,10 +29,10 @@ public class RateLimitConfig {
      * Each bucket allows CAPACITY requests and refills at rate of CAPACITY per REFILL_DURATION
      */
     public Bucket createBucket() {
-        Bandwidth limit = Bandwidth.classic(
-            CAPACITY,
-            Refill.intervally(CAPACITY, REFILL_DURATION)
-        );
+        Bandwidth limit = Bandwidth.builder()
+            .capacity(CAPACITY)
+            .refillGreedy(CAPACITY, REFILL_DURATION)
+            .build();
         return Bucket.builder()
             .addLimit(limit)
             .build();

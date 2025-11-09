@@ -8,13 +8,12 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  imgProgramDisabilityInclusion,
-  imgProgramAccessibleICT,
-  imgProgramLivelihood,
-  imgProgramLifeSkills,
-  imgProgramCommunity,
-} from "../../constants/figmaAssets";
+import program1 from "../../assets/home/program1.jpg";
+import program2 from "../../assets/home/program2.jpg";
+import program3 from "../../assets/home/program3.jpg";
+import program4 from "../../assets/home/program4.jpg";
+import program5 from "../../assets/home/program5.jpg";
+// import program6 from "../../assets/home/program6.jpg";
 
 const ProgramsContainer = styled("section")({
   backgroundColor: "white",
@@ -112,31 +111,31 @@ export default function ProgramsSection() {
     {
       titleKey: "program_disability_title",
       descKey: "program_disability_desc",
-      image: imgProgramDisabilityInclusion,
+      image: program1,
       alt: "People with disabilities participating in advocacy and awareness programs",
     },
     {
       titleKey: "program_ict_title",
       descKey: "program_ict_desc",
-      image: imgProgramAccessibleICT,
+      image: program2,
       alt: "Person using assistive technology and accessible digital tools",
     },
     {
       titleKey: "program_livelihood_title",
       descKey: "program_livelihood_desc",
-      image: imgProgramLivelihood,
+      image: program3,
       alt: "Persons with disabilities participating in vocational training",
     },
     {
       titleKey: "program_life_skills_title",
       descKey: "program_life_skills_desc",
-      image: imgProgramLifeSkills,
+      image: program4,
       alt: "Youth with disabilities learning practical life skills and education",
     },
     {
       titleKey: "program_community_title",
       descKey: "program_community_desc",
-      image: imgProgramCommunity,
+      image: program5,
       alt: "Community members participating in accessibility and awareness initiatives",
     },
   ];
@@ -146,7 +145,7 @@ export default function ProgramsSection() {
       aria-labelledby='programs-heading'
       style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionHeading as='h2' id='programs-heading'>
           {t("programs_heading")}
         </SectionHeading>

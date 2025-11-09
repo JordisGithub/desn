@@ -1,7 +1,8 @@
 import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import { imgHeroImage } from "../../constants/figmaAssets";
+import nepalHeroImage from "../../assets/home/nepal-hero-image.png";
+
 
 const HeroContainer = styled("section")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -107,18 +108,17 @@ export default function HeroSection() {
 
   return (
     <HeroContainer aria-labelledby='hero-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <HeroHeading as='h1' id='hero-heading' variant='h2'>
           {t("hero_title")}
         </HeroHeading>
-joseph test
         <HeroSubheading as='p' variant='h2'>
           {t("hero_subtitle")}
         </HeroSubheading>
 
         <HeroTagline variant='body1'>{t("hero_tagline")}</HeroTagline>
 
-        <HeroImage src={imgHeroImage} alt={t("hero_alt")} />
+        <HeroImage src={nepalHeroImage} alt={t("hero_alt")} />
 
         <MissionStatement variant='h3'>
           {t("mission_statement")}

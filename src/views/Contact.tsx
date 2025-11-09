@@ -4,7 +4,6 @@ import ContactHero from "../components/contact/ContactHero";
 import ContactCards from "../components/contact/ContactCards";
 import ContactFormSection from "../components/contact/ContactFormSection";
 import MapLocationSection from "../components/contact/MapLocationSection";
-import Footer from "../components/Footer";
 
 const SkipLink = styled("a")({
   position: "absolute",
@@ -34,7 +33,6 @@ export default function Contact() {
         <ContactFormSection />
         <MapLocationSection />
       </main>
-      <Footer />
     </>
   );
 }

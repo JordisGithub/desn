@@ -75,7 +75,7 @@ export default function NewsletterSection() {
       aria-labelledby='newsletter-heading'
       style={{ paddingTop: "3rem", paddingBottom: "3rem" }}
     >
-      <Container maxWidth='md'>
+      <Container maxWidth='lg' sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={4}

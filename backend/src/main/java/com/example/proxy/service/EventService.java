@@ -45,19 +45,23 @@ public class EventService {
         return eventRepository.findPastEvents(LocalDateTime.now());
     }
     
+    @SuppressWarnings("null")
     public Optional<Event> getEventById(Long id) {
         return eventRepository.findById(id);
     }
     
+    @SuppressWarnings("null")
     public Event saveEvent(Event event) {
         return eventRepository.save(event);
     }
     
+    @SuppressWarnings("null")
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }
     
     @Transactional
+    @SuppressWarnings("null")
     public Map<String, Object> registerForEvent(Long eventId, String username, String email) {
         Map<String, Object> response = new HashMap<>();
         

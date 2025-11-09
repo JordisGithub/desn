@@ -1,20 +1,3 @@
-// Figma design assets - Home page images
-// These URLs are valid for 7 days from generation
-
-// Partner organization logos
-export const imgUndpLogo =
-  "https://www.figma.com/api/mcp/asset/bcf55283-64c8-4e3c-bd7a-4857fc9a23ff";
-export const imgNationalFederationLogo =
-  "https://www.figma.com/api/mcp/asset/d7e8dc5d-c805-416e-98db-5d769fd58d60";
-export const imgMeedanLogo =
-  "https://www.figma.com/api/mcp/asset/d71a5f12-aaec-4d27-b448-75de16bb2498";
-export const imgGovernmentOfNepalLogo =
-  "https://www.figma.com/api/mcp/asset/5061c90e-32cf-4149-b659-64e6d0a63622";
-
-// Map and location
-export const imgMap =
-  "https://www.figma.com/api/mcp/asset/5989b403-f02b-4056-8597-f3aafbcac22b";
-
 // Event images
 export const imgEventAirMidPoint =
   "https://www.figma.com/api/mcp/asset/87472c0f-d235-4980-9acb-cf7b1975093d";
@@ -22,18 +5,6 @@ export const imgEventInternationalDay =
   "https://www.figma.com/api/mcp/asset/08bc7720-401e-4744-83f6-d7fd174aa968";
 export const imgEventAirAwardCeremony =
   "https://www.figma.com/api/mcp/asset/60375c08-8a75-4aac-99b5-15c42181a987";
-
-// Program images
-export const imgProgramDisabilityInclusion =
-  "https://www.figma.com/api/mcp/asset/428141df-1619-424f-9bfd-cc3a2ad50469";
-export const imgProgramAccessibleICT =
-  "https://www.figma.com/api/mcp/asset/adafb20b-23b7-4781-8a4d-ee54537fca59";
-export const imgProgramLivelihood =
-  "https://www.figma.com/api/mcp/asset/1339a96b-b839-47ce-a7c8-14bff371c975";
-export const imgProgramLifeSkills =
-  "https://www.figma.com/api/mcp/asset/542473c0-c97e-4146-b39c-69d3f4e58752";
-export const imgProgramCommunity =
-  "https://www.figma.com/api/mcp/asset/5fe5d2d0-3425-4289-b0f6-110e5476078f";
 
 // Hero and about section images
 export const imgHeroImage =

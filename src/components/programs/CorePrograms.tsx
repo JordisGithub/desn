@@ -7,13 +7,11 @@ import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import SchoolIcon from "@mui/icons-material/School";
 import ComputerIcon from "@mui/icons-material/Computer";
-import {
-  imgProgramDisabilityInclusion,
-  imgProgramAccessibleICT,
-  imgProgramLivelihood,
-  imgProgramLifeSkills,
-  imgProgramCommunity,
-} from "../../constants/figmaAssets";
+import program1 from "../../assets/home/program1.jpg";
+import program2 from "../../assets/home/program2.jpg";
+import program3 from "../../assets/home/program3.jpg";
+import program4 from "../../assets/home/program4.jpg";
+import program5 from "../../assets/home/program5.jpg";
 
 const CoreProgramsSection = styled("section")({
   backgroundColor: "#f9fafb",
@@ -327,7 +325,7 @@ export default function CorePrograms() {
           <HorizontalCard>
             <Box position='relative'>
               <ProgramImage
-                src={imgProgramDisabilityInclusion}
+                src={program1}
                 alt={t("programs:core.program1.image_alt")}
               />
               <IconBadge
@@ -441,7 +439,7 @@ export default function CorePrograms() {
             </ProgramContent>
             <Box position='relative' sx={{ order: { xs: 1, md: 2 } }}>
               <ProgramImage
-                src={imgProgramCommunity}
+                src={program2}
                 alt={t("programs:core.program2.image_alt")}
               />
               <IconBadge
@@ -461,7 +459,7 @@ export default function CorePrograms() {
           <VerticalCard>
             <Box position='relative'>
               <VerticalCardImage
-                src={imgProgramLifeSkills}
+                src={program3}
                 alt={t("programs:core.program3.image_alt")}
               />
               <Badge
@@ -522,7 +520,7 @@ export default function CorePrograms() {
           <VerticalCard>
             <Box position='relative'>
               <VerticalCardImage
-                src={imgProgramLivelihood}
+                src={program4}
                 alt={t("programs:core.program4.image_alt")}
               />
               <Badge
@@ -576,7 +574,7 @@ export default function CorePrograms() {
           <VerticalCard>
             <Box position='relative'>
               <VerticalCardImage
-                src={imgProgramAccessibleICT}
+                src={program5}
                 alt={t("programs:core.program5.image_alt")}
               />
               <Badge

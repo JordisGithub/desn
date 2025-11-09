@@ -2,11 +2,11 @@ import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import { imgDesnLogo } from "../../constants/figmaAssets";
+import desnLogo from "../../assets/DESN_logo_500x500.jpg";
 
 const HeroContainer = styled("section")({
   position: "relative",
-  height: "500px",
+  minHeight: "600px",
   overflow: "hidden",
   backgroundImage:
     'url("https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920")',
@@ -103,9 +103,9 @@ export default function AboutHero() {
 
   return (
     <HeroContainer aria-labelledby='about-hero-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentWrapper>
-          <LogoImage src={imgDesnLogo} alt='DESN Logo' />
+          <LogoImage src={desnLogo} alt='DESN Logo' />
           <OrganizationName as='h1' id='about-hero-heading'>
             {t("about_hero_org_name")}
           </OrganizationName>

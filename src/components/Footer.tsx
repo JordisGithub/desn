@@ -8,33 +8,34 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import { useTranslation } from "react-i18next";
+import desnLogo from "../assets/DESN_logo_500x500.jpg";
 
 const CTASection = styled("section")(({ theme }) => ({
   background: "linear-gradient(to bottom, #004c91, #00a77f)",
   textAlign: "center",
-  padding: "6rem 0",
+  padding: "4rem 0",
   [theme.breakpoints.down("md")]: {
-    padding: "4rem 0",
+    padding: "3rem 0",
   },
 }));
 
 const CTAHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
+  fontSize: "2rem",
   fontWeight: 400,
   color: "white",
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(2),
   [theme.breakpoints.up("md")]: {
-    fontSize: "3.75rem",
+    fontSize: "2.5rem",
   },
 }));
 
 const CTADescription = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
+  fontSize: "1rem",
   color: "rgba(255, 255, 255, 0.95)",
-  marginBottom: theme.spacing(4),
+  marginBottom: theme.spacing(2.5),
   lineHeight: 1.6,
   [theme.breakpoints.up("md")]: {
-    fontSize: "1.5rem",
+    fontSize: "1.25rem",
   },
 }));
 
@@ -61,8 +62,11 @@ const FooterContainer = styled("footer")({
 });
 
 const SocialSection = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4, 0),
+  padding: theme.spacing(2, 0),
   borderBottom: "1px solid rgba(43, 43, 43, 0.1)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 }));
 
 const SocialHeading = styled(Typography)({
@@ -123,7 +127,7 @@ const SocialIcon = styled("a")({
 
 const CopyrightBar = styled("div")({
   backgroundColor: "#004c91",
-  padding: "1.5rem 0",
+  padding: "1rem 0",
 });
 
 const BottomLinks = styled(Box)({
@@ -131,7 +135,7 @@ const BottomLinks = styled(Box)({
   justifyContent: "center",
   alignItems: "center",
   gap: "2rem",
-  marginBottom: "1rem",
+  marginBottom: "0.5rem",
   flexWrap: "wrap",
 });
 
@@ -186,8 +190,8 @@ export default function Footer() {
         <Container maxWidth='lg'>
           {/* Social Media Section - Top of Footer */}
           <SocialSection>
-            <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
-            <Stack direction='row' spacing={2}>
+            <Stack direction='row' spacing={2} alignItems='center'>
+              <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
               <SocialIcon
                 href='https://facebook.com'
                 aria-label='Facebook'
@@ -216,18 +220,31 @@ export default function Footer() {
           </SocialSection>
 
           {/* Footer Links Grid */}
-          <Box sx={{ py: 6 }}>
+          <Box sx={{ py: 3 }}>
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "3rem",
+                gap: "2rem",
               }}
             >
               {/* About DESN */}
               <div>
                 <FooterHeading>{t("footer_about_heading")}</FooterHeading>
-                <FooterText sx={{ mb: 2 }}>{t("footer_about_text")}</FooterText>
+                <Stack direction='row' spacing={2} alignItems='flex-start'>
+                  <Box sx={{ flexShrink: 0 }}>
+                    <img
+                      src={desnLogo}
+                      alt='DESN Logo'
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+                  <FooterText>{t("footer_about_text")}</FooterText>
+                </Stack>
               </div>
 
               {/* Quick Links */}

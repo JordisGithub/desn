@@ -5,7 +5,6 @@ import ProgramStats from "../components/programs/ProgramStats";
 import CorePrograms from "../components/programs/CorePrograms";
 import OurApproach from "../components/programs/OurApproach";
 import ProgramsCTA from "../components/programs/ProgramsCTA";
-import Footer from "../components/Footer";
 
 const SkipLink = styled("a")({
   position: "absolute",
@@ -36,7 +35,6 @@ export default function Programs() {
         <OurApproach />
         <ProgramsCTA />
       </main>
-      <Footer />
     </>
   );
 }

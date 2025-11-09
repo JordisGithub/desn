@@ -1,12 +1,13 @@
 import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import {
-  imgUndpLogo,
-  imgNationalFederationLogo,
-  imgMeedanLogo,
-  imgGovernmentOfNepalLogo,
-} from "../../constants/figmaAssets";
+// import { imgNationalFederationLogo } from "../../constants/figmaAssets";
+import abilis from "../../assets/grantors/abilis.png";
+import apnicLogo from "../../assets/grantors/APNIC.png";
+import governmentNepalLogo from "../../assets/grantors/GvmtNepal.png";
+import khyentseLogo from "../../assets/grantors/khyentse_foundation.png";
+import meedanLogo from "../../assets/grantors/Meedan.svg";
+import undpLogo from "../../assets/grantors/UNDP.png";
 
 const PartnersContainer = styled("section")({
   backgroundColor: "#f6d469",
@@ -45,27 +46,35 @@ const PartnerCard = styled("div")(({ theme }) => ({
 }));
 
 const PartnerLogo = styled("img")({
-  maxWidth: "100%",
-  maxHeight: "100px",
+  width: "100%",
+  height: "100px",
   objectFit: "contain",
 });
 
 const partners = [
   {
     name: "UNDP",
-    logo: imgUndpLogo,
+    logo: undpLogo,
+  },
+  {
+    name: "APNIC",
+    logo: apnicLogo,
+  },
+  {
+    name: "Khyentse Foundation",
+    logo: khyentseLogo,
   },
   {
     name: "National Federation for the Disabled",
-    logo: imgNationalFederationLogo,
+    logo: abilis,
   },
   {
     name: "Meedan",
-    logo: imgMeedanLogo,
+    logo: meedanLogo,
   },
   {
     name: "Government of Nepal",
-    logo: imgGovernmentOfNepalLogo,
+    logo: governmentNepalLogo,
   },
 ];
 
@@ -77,7 +86,7 @@ export default function PartnersSection() {
       aria-labelledby='partners-heading'
       style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionHeading as='h2' id='partners-heading'>
           {t("partners_heading")}
         </SectionHeading>

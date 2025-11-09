@@ -29,14 +29,18 @@ import LoginIcon from "@mui/icons-material/Login";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import DonationPaymentModal from "./payment/DonationPaymentModal";
+import desnLogo from "../assets/DESN_logo_500x500.jpg";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
   borderBottom: "1px solid #e0e0e0",
-  padding: theme.spacing(1.5, 4),
+  padding: theme.spacing(2, 4),
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  maxWidth: "1920px",
+  margin: "0 auto",
+  width: "100%",
   [theme.breakpoints.down("md")]: {
     padding: theme.spacing(1.5, 2),
   },
@@ -81,7 +85,9 @@ const NavBar = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(2, 4),
   justifyContent: "center",
   minHeight: "64px !important",
-  borderBottom: "1px solid #e0e0e0",
+  maxWidth: "1920px",
+  margin: "0 auto",
+  width: "100%",
   [theme.breakpoints.down("md")]: {
     justifyContent: "space-between",
   },
@@ -93,8 +99,12 @@ const LogoLink = styled(RouterLink)({
 });
 
 const Logo = styled("img")({
-  height: "60px",
+  height: "80px",
   cursor: "pointer",
+  transition: "transform 0.2s ease",
+  "&:hover": {
+    transform: "scale(1.05)",
+  },
 });
 
 const NavLinks = styled(Box)(({ theme }) => ({
@@ -102,7 +112,7 @@ const NavLinks = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
   alignItems: "center",
   flex: 1,
-  justifyContent: "center",
+  justifyContent: "flex-start",
   [theme.breakpoints.down("lg")]: {
     display: "none", // Hide desktop nav on tablet and mobile
   },
@@ -229,45 +239,94 @@ const Header: React.FC = () => {
   return (
     <>
       {/* Top Utility Bar - Logo, Language, Login, Search */}
-      <TopBar>
-        <TopBarLeft>
-          <LogoLink to='/'>
-            <Logo
-              src='https://www.figma.com/api/mcp/asset/ccc1b5e8-ef62-4fef-ae8f-f8e654b30036'
-              alt='DESN Logo'
-              style={{ height: "48px" }}
-            />
-          </LogoLink>
-        </TopBarLeft>
+      <Box
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1100,
+          backgroundColor: "white",
+        }}
+      >
+        <TopBar>
+          <TopBarLeft>
+            <LogoLink to='/'>
+              <Logo src={desnLogo} alt='DESN Logo' style={{ height: "90px" }} />
+            </LogoLink>
+          </TopBarLeft>{" "}
+          <TopBarRight>
+            <LanguageButton
+              onClick={handleLanguageClick}
+              startIcon={<PublicIcon />}
+              endIcon={<KeyboardArrowDownIcon />}
+              sx={{ display: { xs: "none", md: "flex" } }}
+            >
+              {lang.toUpperCase()}
+            </LanguageButton>
+            <Menu
+              anchorEl={langAnchorEl}
+              open={Boolean(langAnchorEl)}
+              onClose={() => handleLanguageClose()}
+            >
+              <MenuItem onClick={() => handleLanguageClose("en")}>
+                English
+              </MenuItem>
+              <MenuItem onClick={() => handleLanguageClose("ne")}>
+                नेपाली
+              </MenuItem>
+            </Menu>
 
-        <TopBarRight>
-          <LanguageButton
-            onClick={handleLanguageClick}
-            startIcon={<PublicIcon />}
-            endIcon={<KeyboardArrowDownIcon />}
-            sx={{ display: { xs: "none", md: "flex" } }}
-          >
-            {lang.toUpperCase()}
-          </LanguageButton>
-          <Menu
-            anchorEl={langAnchorEl}
-            open={Boolean(langAnchorEl)}
-            onClose={() => handleLanguageClose()}
-          >
-            <MenuItem onClick={() => handleLanguageClose("en")}>
-              English
-            </MenuItem>
-            <MenuItem onClick={() => handleLanguageClose("ne")}>
-              नेपाली
-            </MenuItem>
-          </Menu>
-
-          {user ? (
-            <>
+            {user ? (
+              <>
+                <Button
+                  onClick={handleUserMenuClick}
+                  startIcon={<AccountCircleIcon />}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  sx={{
+                    color: "#004c91",
+                    textTransform: "none",
+                    fontSize: "14px",
+                    display: { xs: "none", md: "flex" },
+                  }}
+                >
+                  {user.fullName || user.username}
+                </Button>
+                <Menu
+                  anchorEl={userMenuAnchorEl}
+                  open={Boolean(userMenuAnchorEl)}
+                  onClose={handleUserMenuClose}
+                >
+                  {isAuthenticated && !isAdmin && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/member/dashboard");
+                        handleUserMenuClose();
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                      My Events
+                    </MenuItem>
+                  )}
+                  {isAdmin && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/admin/dashboard");
+                        handleUserMenuClose();
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                      Admin Dashboard
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={handleLogout}>
+                    <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
               <Button
-                onClick={handleUserMenuClick}
-                startIcon={<AccountCircleIcon />}
-                endIcon={<KeyboardArrowDownIcon />}
+                onClick={handleLogin}
+                startIcon={<LoginIcon />}
                 sx={{
                   color: "#004c91",
                   textTransform: "none",
@@ -275,106 +334,61 @@ const Header: React.FC = () => {
                   display: { xs: "none", md: "flex" },
                 }}
               >
-                {user.fullName || user.username}
+                Login
               </Button>
-              <Menu
-                anchorEl={userMenuAnchorEl}
-                open={Boolean(userMenuAnchorEl)}
-                onClose={handleUserMenuClose}
-              >
-                {isAuthenticated && !isAdmin && (
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/member/dashboard");
-                      handleUserMenuClose();
-                    }}
-                  >
-                    <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                    My Events
-                  </MenuItem>
-                )}
-                {isAdmin && (
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/admin/dashboard");
-                      handleUserMenuClose();
-                    }}
-                  >
-                    <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                    Admin Dashboard
-                  </MenuItem>
-                )}
-                <MenuItem onClick={handleLogout}>
-                  <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
-                  Logout
-                </MenuItem>
-              </Menu>
-            </>
-          ) : (
-            <Button
-              onClick={handleLogin}
-              startIcon={<LoginIcon />}
+            )}
+
+            <SearchField
+              placeholder={t("header.search_placeholder")}
+              variant='outlined'
+              size='small'
               sx={{
-                color: "#004c91",
-                textTransform: "none",
-                fontSize: "14px",
-                display: { xs: "none", md: "flex" },
+                width: { xs: "200px", md: "300px" },
+                display: { xs: "none", sm: "block" },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <SearchIcon sx={{ color: "#666", fontSize: "20px" }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <MobileMenuButton
+              edge='end'
+              aria-label='menu'
+              onClick={toggleMobileMenu}
+            >
+              <MenuIcon />
+            </MobileMenuButton>
+          </TopBarRight>
+        </TopBar>
+
+        {/* Main Navigation Bar */}
+        <AppBar position='static' elevation={1}>
+          <NavBar>
+            <NavLinks>
+              {navItems.map((item) => (
+                <NavLink key={item.path} to={item.path}>
+                  {item.label}
+                </NavLink>
+              ))}
+            </NavLinks>
+            <Box
+              sx={{
+                display: { xs: "none", md: "block" },
+                position: "absolute",
+                right: "32px",
               }}
             >
-              Login
-            </Button>
-          )}
-
-          <SearchField
-            placeholder={t("header.search_placeholder")}
-            variant='outlined'
-            size='small'
-            sx={{
-              width: { xs: "200px", md: "300px" },
-              display: { xs: "none", sm: "block" },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position='start'>
-                  <SearchIcon sx={{ color: "#666", fontSize: "20px" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <MobileMenuButton
-            edge='end'
-            aria-label='menu'
-            onClick={toggleMobileMenu}
-          >
-            <MenuIcon />
-          </MobileMenuButton>
-        </TopBarRight>
-      </TopBar>
-
-      {/* Main Navigation Bar */}
-      <AppBar position='static' elevation={0}>
-        <NavBar>
-          <NavLinks>
-            {navItems.map((item) => (
-              <NavLink key={item.path} to={item.path}>
-                {item.label}
-              </NavLink>
-            ))}
-          </NavLinks>
-          <Box
-            sx={{
-              display: { xs: "none", md: "block" },
-              position: "absolute",
-              right: "32px",
-            }}
-          >
-            <DonateButton onClick={() => setDonationModalOpen(true)}>
-              {t("header.donate")}
-            </DonateButton>
-          </Box>
-        </NavBar>
-      </AppBar>
+              <DonateButton onClick={() => setDonationModalOpen(true)}>
+                {t("header.donate")}
+              </DonateButton>
+            </Box>
+          </NavBar>
+        </AppBar>
+      </Box>
 
       {/* Mobile Menu Drawer */}
       <Drawer

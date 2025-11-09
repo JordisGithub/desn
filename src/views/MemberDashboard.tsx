@@ -18,8 +18,6 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import EventService from "../services/EventService";
 import ResourceService from "../services/ResourceService";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -473,7 +471,6 @@ export default function MemberDashboard() {
   if (loading || loadingFavorites) {
     return (
       <PageContainer>
-        <Header />
         <Box
           sx={{
             display: "flex",
@@ -484,14 +481,12 @@ export default function MemberDashboard() {
         >
           <CircularProgress size={60} />
         </Box>
-        <Footer />
       </PageContainer>
     );
   }
 
   return (
     <PageContainer>
-      <Header />
       <main id='main-content'>
         <DashboardContainer maxWidth='lg'>
           <PageTitle variant='h1'>{t("member_dashboard_title")}</PageTitle>
@@ -641,7 +636,6 @@ export default function MemberDashboard() {
           )}
         </DashboardContainer>
       </main>
-      <Footer />
 
       {/* Cancel Confirmation Dialog */}
       <Dialog open={cancelDialogOpen} onClose={handleCancelClose}>

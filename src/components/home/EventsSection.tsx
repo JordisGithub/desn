@@ -145,7 +145,7 @@ export default function EventsSection() {
       aria-labelledby='events-heading'
       style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionHeading as='h2' id='events-heading'>
           {t("events_heading")}
         </SectionHeading>

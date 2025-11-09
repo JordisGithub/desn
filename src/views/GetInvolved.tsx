@@ -7,7 +7,6 @@ import VolunteerForm from "../components/getinvolved/VolunteerForm";
 import DonationSection from "../components/getinvolved/DonationSection";
 import MembershipSection from "../components/getinvolved/MembershipSection";
 import CTASection from "../components/getinvolved/CTASection";
-import Footer from "../components/Footer";
 
 const GetInvolved: React.FC = () => {
   return (
@@ -19,7 +18,6 @@ const GetInvolved: React.FC = () => {
       <DonationSection />
       <MembershipSection />
       <CTASection />
-      <Footer />
     </Box>
   );
 };

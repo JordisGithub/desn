@@ -57,21 +57,25 @@ public class ResourceService {
         return counts;
     }
     
+    @SuppressWarnings("null")
     public Optional<Resource> getResourceById(Long id) {
         return resourceRepository.findById(id);
     }
     
     @Transactional
+    @SuppressWarnings("null")
     public Resource saveResource(Resource resource) {
         return resourceRepository.save(resource);
     }
     
     @Transactional
+    @SuppressWarnings("null")
     public void deleteResource(Long id) {
         resourceRepository.deleteById(id);
     }
     
     @Transactional
+    @SuppressWarnings("null")
     public void incrementClicks(Long resourceId) {
         resourceRepository.findById(resourceId).ifPresent(resource -> {
             resource.setClicks(resource.getClicks() + 1);
@@ -81,6 +85,7 @@ public class ResourceService {
     }
     
     @Transactional
+    @SuppressWarnings("null")
     public Map<String, Object> toggleFavorite(Long resourceId, String username) {
         Map<String, Object> response = new HashMap<>();
         
