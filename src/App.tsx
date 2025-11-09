@@ -6,9 +6,11 @@ import AriaAnnouncer from "./components/AriaAnnouncer";
 import Home from "./views/Home";
 import About from "./views/About";
 import GetInvolved from "./views/GetInvolved";
+import Events from "./views/Events";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import AdminDashboard from "./views/AdminDashboard";
+import MemberDashboard from "./views/MemberDashboard";
 import PaymentVerify from "./views/PaymentVerify";
 import AccessibilityStatement from "./views/AccessibilityStatement";
 import Box from "@mui/material/Box";
@@ -31,6 +33,7 @@ export default function App() {
                 <Route path='/' element={<Home />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/get-involved' element={<GetInvolved />} />
+                <Route path='/events' element={<Events />} />
                 <Route
                   path='/accessibility'
                   element={<AccessibilityStatement />}
@@ -38,6 +41,7 @@ export default function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/admin/dashboard' element={<AdminDashboard />} />
+                <Route path='/member/dashboard' element={<MemberDashboard />} />
                 <Route path='/payment/verify' element={<PaymentVerify />} />
                 {/* Add more routes here as pages are created */}
                 <Route

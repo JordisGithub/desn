@@ -87,4 +87,12 @@ export default {
   newsletter_placeholder: "enter your email",
   newsletter_button: "Subscribe now",
   newsletter_aria_label: "Email address for newsletter subscription",
+
+  // Events Page
+  events_hero_title: "Events & Calendar",
+  events_hero_subtitle:
+    "Join us in our mission to create an inclusive society. Discover upcoming events, workshops, and celebrations.",
+  events_upcoming_title: "Upcoming Events",
+  events_upcoming_subtitle:
+    "Mark your calendars for these important events and join us in making a difference.",
 };
