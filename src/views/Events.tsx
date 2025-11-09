@@ -90,7 +90,7 @@ export default function Events() {
         <EventsHero />
         <UpcomingEvents />
         <FeaturedEvent />
-        
+
         {/* Calendar Section */}
         <CalendarSection>
           <Container maxWidth='lg'>

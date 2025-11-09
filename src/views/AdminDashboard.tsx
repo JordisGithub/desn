@@ -159,15 +159,23 @@ const AdminDashboard: React.FC = () => {
       // Note: These endpoints are not yet implemented in the backend
       // They will return 404 until the backend API is created
       const [membershipRes, volunteerRes, donationsRes] = await Promise.all([
-        fetch("http://localhost:8080/api/forms/membership", { headers }).catch(() => null),
-        fetch("http://localhost:8080/api/forms/volunteer", { headers }).catch(() => null),
-        fetch("http://localhost:8080/api/payment/transactions", { headers }).catch(() => null),
+        fetch("http://localhost:8080/api/forms/membership", { headers }).catch(
+          () => null
+        ),
+        fetch("http://localhost:8080/api/forms/volunteer", { headers }).catch(
+          () => null
+        ),
+        fetch("http://localhost:8080/api/payment/transactions", {
+          headers,
+        }).catch(() => null),
       ]);
 
       if (membershipRes?.ok) {
         try {
           const membershipData = await membershipRes.json();
-          setMembershipApplications(Array.isArray(membershipData) ? membershipData : []);
+          setMembershipApplications(
+            Array.isArray(membershipData) ? membershipData : []
+          );
         } catch (e) {
           console.error("Error parsing membership data:", e);
         }
@@ -176,7 +184,9 @@ const AdminDashboard: React.FC = () => {
       if (volunteerRes?.ok) {
         try {
           const volunteerData = await volunteerRes.json();
-          setVolunteerApplications(Array.isArray(volunteerData) ? volunteerData : []);
+          setVolunteerApplications(
+            Array.isArray(volunteerData) ? volunteerData : []
+          );
         } catch (e) {
           console.error("Error parsing volunteer data:", e);
         }
@@ -185,7 +195,9 @@ const AdminDashboard: React.FC = () => {
       if (donationsRes?.ok) {
         try {
           const donationsData = await donationsRes.json();
-          setPaymentTransactions(Array.isArray(donationsData) ? donationsData : []);
+          setPaymentTransactions(
+            Array.isArray(donationsData) ? donationsData : []
+          );
         } catch (e) {
           console.error("Error parsing donations data:", e);
         }

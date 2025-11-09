@@ -36,29 +36,29 @@ const MonthTitle = styled(Typography)({
   color: "#004c91",
 });
 
-const DayCell = styled(Box)<{ isToday?: boolean; hasEvent?: boolean; isSelected?: boolean }>(
-  ({ isToday, hasEvent, isSelected }) => ({
-    aspectRatio: "1",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    borderRadius: "8px",
-    position: "relative",
-    transition: "all 0.2s",
-    backgroundColor: isSelected
-      ? "#004c91"
-      : isToday
-      ? "#e3f2fd"
-      : "transparent",
-    color: isSelected ? "white" : isToday ? "#004c91" : "#333",
-    fontWeight: isToday || isSelected ? 600 : 400,
-    border: hasEvent && !isSelected ? "2px solid #f6d469" : "none",
-    "&:hover": {
-      backgroundColor: isSelected ? "#003d73" : "#f5f5f5",
-      transform: "scale(1.05)",
-    },
-    "&::after": hasEvent && !isSelected
+const DayCell = styled(Box)<{
+  isToday?: boolean;
+  hasEvent?: boolean;
+  isSelected?: boolean;
+}>(({ isToday, hasEvent, isSelected }) => ({
+  aspectRatio: "1",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  borderRadius: "8px",
+  position: "relative",
+  transition: "all 0.2s",
+  backgroundColor: isSelected ? "#004c91" : isToday ? "#e3f2fd" : "transparent",
+  color: isSelected ? "white" : isToday ? "#004c91" : "#333",
+  fontWeight: isToday || isSelected ? 600 : 400,
+  border: hasEvent && !isSelected ? "2px solid #f6d469" : "none",
+  "&:hover": {
+    backgroundColor: isSelected ? "#003d73" : "#f5f5f5",
+    transform: "scale(1.05)",
+  },
+  "&::after":
+    hasEvent && !isSelected
       ? {
           content: '""',
           position: "absolute",
@@ -71,8 +71,7 @@ const DayCell = styled(Box)<{ isToday?: boolean; hasEvent?: boolean; isSelected?
           backgroundColor: "#f6d469",
         }
       : {},
-  })
-);
+}));
 
 const DayName = styled(Typography)({
   textAlign: "center",
@@ -240,17 +239,19 @@ export default function EventCalendar({ events }: EventCalendarProps) {
   const days = getDaysInMonth(currentDate);
 
   return (
-    <Box sx={{ display: "flex", gap: 4, flexWrap: { xs: "wrap", md: "nowrap" } }}>
+    <Box
+      sx={{ display: "flex", gap: 4, flexWrap: { xs: "wrap", md: "nowrap" } }}
+    >
       {/* Calendar */}
       <CalendarContainer sx={{ flex: { xs: "1 1 100%", md: "0 0 60%" } }}>
         <CalendarHeader>
-          <IconButton onClick={handlePreviousMonth} aria-label="Previous month">
+          <IconButton onClick={handlePreviousMonth} aria-label='Previous month'>
             <ChevronLeft />
           </IconButton>
           <MonthTitle>
             {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
           </MonthTitle>
-          <IconButton onClick={handleNextMonth} aria-label="Next month">
+          <IconButton onClick={handleNextMonth} aria-label='Next month'>
             <ChevronRight />
           </IconButton>
         </CalendarHeader>
@@ -285,7 +286,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 hasEvent={hasEventOnDate(date)}
                 isSelected={isSelected(date)}
                 onClick={() => handleDateClick(date)}
-                role="button"
+                role='button'
                 tabIndex={0}
                 aria-label={`${date.getDate()} ${monthNames[date.getMonth()]}`}
               >
@@ -297,7 +298,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
           )}
         </Box>
 
-        <Box sx={{ marginTop: 3, display: "flex", gap: 2, alignItems: "center" }}>
+        <Box
+          sx={{ marginTop: 3, display: "flex", gap: 2, alignItems: "center" }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Box
               sx={{
@@ -307,7 +310,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 border: "2px solid #f6d469",
               }}
             />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant='body2' color='text.secondary'>
               Has Events
             </Typography>
           </Box>
@@ -320,7 +323,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 backgroundColor: "#e3f2fd",
               }}
             />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant='body2' color='text.secondary'>
               Today
             </Typography>
           </Box>
@@ -339,9 +342,14 @@ export default function EventCalendar({ events }: EventCalendarProps) {
         >
           {selectedDate ? (
             <>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}
+              >
                 <CalendarToday sx={{ color: "#004c91" }} />
-                <Typography variant="h6" sx={{ color: "#004c91", fontWeight: 600 }}>
+                <Typography
+                  variant='h6'
+                  sx={{ color: "#004c91", fontWeight: 600 }}
+                >
                   {selectedDate.toLocaleDateString("en-US", {
                     weekday: "long",
                     year: "numeric",
@@ -355,10 +363,10 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 filteredEvents.map((event) => (
                   <EventCard key={event.id}>
                     <CardContent>
-                      <EventTitle variant="h6">{event.title}</EventTitle>
+                      <EventTitle variant='h6'>{event.title}</EventTitle>
                       <Typography
-                        variant="body2"
-                        color="text.secondary"
+                        variant='body2'
+                        color='text.secondary'
                         sx={{ mb: 2 }}
                       >
                         {event.description}
@@ -377,7 +385,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                       <Box sx={{ mt: 2 }}>
                         <Chip
                           label={`${event.currentAttendees}/${event.maxAttendees} attending`}
-                          size="small"
+                          size='small'
                           color={
                             event.currentAttendees >= event.maxAttendees
                               ? "error"
@@ -397,8 +405,8 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   }}
                 >
                   <CalendarToday sx={{ fontSize: "4rem", mb: 2 }} />
-                  <Typography variant="h6">No events on this day</Typography>
-                  <Typography variant="body2">
+                  <Typography variant='h6'>No events on this day</Typography>
+                  <Typography variant='body2'>
                     Select a day with events to see details
                   </Typography>
                 </Box>
@@ -413,8 +421,8 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               }}
             >
               <CalendarToday sx={{ fontSize: "4rem", mb: 2 }} />
-              <Typography variant="h6">Select a Date</Typography>
-              <Typography variant="body2">
+              <Typography variant='h6'>Select a Date</Typography>
+              <Typography variant='body2'>
                 Click on a day in the calendar to see events
               </Typography>
             </Box>
