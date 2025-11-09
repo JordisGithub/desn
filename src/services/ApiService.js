@@ -50,9 +50,10 @@ function buildJsonOptions(method, body, additionalHeaders = {}) {
 }
 
 // Public helpers
-async function get(endpoint) {
-  // GETs should be passed through without any custom headers (per requirement)
-  return request(endpoint, { method: "GET" });
+async function get(endpoint, options = {}) {
+  // GETs can now accept optional headers for authenticated requests
+  const headers = options.headers || {};
+  return request(endpoint, { method: "GET", headers });
 }
 
 async function postWithAuth(endpoint, data) {

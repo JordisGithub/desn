@@ -47,14 +47,54 @@ export default {
   yes_cancel_registration: "हो, दर्ता रद्द गर्नुहोस्",
 
   // Member Dashboard
-  member_dashboard_title: "मेरा कार्यक्रमहरू",
+  member_dashboard_title: "मेरो ड्यासबोर्ड",
   member_dashboard_subtitle:
-    "आफ्नो कार्यक्रम दर्ताहरू हेर्नुहोस् र व्यवस्थापन गर्नुहोस्",
+    "आफ्नो कार्यक्रम दर्ताहरू र मनपर्ने प्रकाशनहरू हेर्नुहोस् र व्यवस्थापन गर्नुहोस्",
   member_dashboard_no_registrations:
     "तपाईंले अहिलेसम्म कुनै कार्यक्रममा दर्ता गर्नुभएको छैन।",
+  favorite_publications: "मनपर्ने प्रकाशनहरू",
+  no_favorite_publications: "तपाईंले अहिलेसम्म कुनै प्रकाशन मनपराउनुभएको छैन।",
+  browse_publications: "प्रकाशनहरू हेर्नुहोस्",
 
   // Cancel Registration Dialog
   cancel_registration_title: "कार्यक्रम दर्ता रद्द गर्ने?",
   cancel_registration_message:
     "के तपाईं यसको लागि आफ्नो दर्ता रद्द गर्न निश्चित हुनुहुन्छ",
+
+  // Resources Page
+  resources: {
+    hero_title: "ज्ञान पुस्तकालय",
+    hero_description:
+      "अपाङ्गता अधिकार र समावेशीकरणमा रिपोर्ट, अनुसन्धान पत्र, तालिम सामग्री र मल्टिमिडिया स्रोतहरूको हाम्रो व्यापक संग्रह पहुँच गर्नुहोस्।",
+    browse_resources: "स्रोतहरू हेर्नुहोस्",
+    featured_content: "विशेष सामग्री",
+    featured_title: "विशेष प्रकाशनहरू",
+    featured_description:
+      "अपाङ्गता अधिकार, पहुँच र समावेशी विकासलाई सम्बोधन गर्ने हाम्रा सबैभन्दा भर्खरका र प्रभावकारी प्रकाशनहरू।",
+    all_resources_title: "सबै स्रोतहरू",
+    all_resources_description:
+      "प्रकार र विषयद्वारा संगठित, हाम्रो पूर्ण प्रकाशन पुस्तकालय ब्राउज गर्नुहोस्।",
+    search_placeholder: "शीर्षक वा विवरणद्वारा खोज्नुहोस्...",
+    showing_results: "{total} मध्ये {count} स्रोतहरू देखाइँदै",
+    no_resources_found: "तपाईंको मापदण्ड अनुरूप कुनै स्रोत फेला परेन।",
+    stay_updated_title: "अपडेट रहनुहोस्",
+    stay_updated_description:
+      "नवीनतम प्रकाशनहरू र स्रोतहरू सिधै आफ्नो इनबक्समा प्राप्त गर्न हाम्रो न्यूजलेटर सदस्यता लिनुहोस्।",
+    subscribe_now: "अहिले सदस्यता लिनुहोस्",
+    request_resources: "स्रोत अनुरोध गर्नुहोस्",
+    download: "डाउनलोड गर्नुहोस्",
+    watch: "हेर्नुहोस्",
+    pages: "पृष्ठहरू",
+    views: "हेराइहरू",
+    resource_types: {
+      all: "सबै स्रोतहरू",
+      annual_report: "वार्षिक प्रतिवेदनहरू",
+      policy_brief: "नीति संक्षेपहरू",
+      training_manual: "तालिम पुस्तिकाहरू",
+      research: "अनुसन्धान",
+      guideline: "दिशानिर्देशहरू",
+      newsletter: "न्यूजलेटरहरू",
+      video: "भिडियो स्रोतहरू",
+    },
+  },
 };
