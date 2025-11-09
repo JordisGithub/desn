@@ -16,9 +16,14 @@ import {
   CircularProgress,
   Alert,
   Chip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import EventService from "../services/EventService";
 
 const PageContainer = styled(Box)({
   minHeight: "100vh",
@@ -98,6 +103,27 @@ interface PaymentTransaction {
   completedAt?: string;
 }
 
+interface EventRegistrationData {
+  eventId: string;
+  maxCapacity: number;
+  currentRegistrations: number;
+  availableSpots: number;
+  registrations: Array<{
+    username: string;
+    email: string;
+    fullName: string;
+    registeredAt: string;
+    status: string;
+  }>;
+}
+
+const eventIdToTitle: Record<string, string> = {
+  "air-midpoint-checkin": "AIR Mid-Point Check-In",
+  "international-day-disabilities":
+    "International Day of Persons with Disabilities",
+  "air-awards-ceremony": "AIR Awards Ceremony",
+};
+
 const AdminDashboard: React.FC = () => {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -111,6 +137,7 @@ const AdminDashboard: React.FC = () => {
   const [paymentTransactions, setPaymentTransactions] = useState<
     PaymentTransaction[]
   >([]);
+  const [eventsData, setEventsData] = useState<EventRegistrationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -154,6 +181,20 @@ const AdminDashboard: React.FC = () => {
       if (paymentsRes.ok) {
         const paymentsData = await paymentsRes.json();
         setPaymentTransactions(paymentsData);
+      }
+
+      // Fetch events data
+      if (token) {
+        try {
+          const eventsResponse = await EventService.getAllEventsRegistrations(
+            token
+          );
+          if (eventsResponse.success) {
+            setEventsData(eventsResponse.events);
+          }
+        } catch (err) {
+          console.error("Error fetching events data:", err);
+        }
       }
 
       if (!membershipRes.ok && !volunteerRes.ok && !paymentsRes.ok) {
@@ -214,6 +255,11 @@ const AdminDashboard: React.FC = () => {
                 label={`Payment Transactions (${paymentTransactions.length})`}
                 id='tab-2'
                 aria-controls='tabpanel-2'
+              />
+              <Tab
+                label={`Event Registrations (${eventsData.length})`}
+                id='tab-3'
+                aria-controls='tabpanel-3'
               />
             </Tabs>
           </Box>
@@ -424,6 +470,119 @@ const AdminDashboard: React.FC = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={3}>
+                {eventsData.length === 0 ? (
+                  <Box sx={{ textAlign: "center", py: 4, color: "#666" }}>
+                    No event registrations yet
+                  </Box>
+                ) : (
+                  eventsData.map((event) => (
+                    <Accordion key={event.eventId} sx={{ mb: 2 }}>
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            pr: 2,
+                          }}
+                        >
+                          <Typography
+                            variant='h6'
+                            sx={{ color: "#004c91", fontWeight: 600 }}
+                          >
+                            {eventIdToTitle[event.eventId] || event.eventId}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: 2,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Chip
+                              label={`${event.currentRegistrations}/${event.maxCapacity}`}
+                              color='primary'
+                              size='small'
+                            />
+                            <Chip
+                              label={`${event.availableSpots} spots left`}
+                              color={
+                                event.availableSpots === 0
+                                  ? "error"
+                                  : event.availableSpots < 10
+                                  ? "warning"
+                                  : "success"
+                              }
+                              size='small'
+                            />
+                          </Box>
+                        </Box>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <TableContainer>
+                          <Table size='small'>
+                            <TableHead>
+                              <TableRow>
+                                <StyledTableCell>Registered At</StyledTableCell>
+                                <StyledTableCell>Full Name</StyledTableCell>
+                                <StyledTableCell>Username</StyledTableCell>
+                                <StyledTableCell>Email</StyledTableCell>
+                                <StyledTableCell>Status</StyledTableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {event.registrations.length === 0 ? (
+                                <TableRow>
+                                  <TableCell
+                                    colSpan={5}
+                                    align='center'
+                                    sx={{ py: 2, color: "#666" }}
+                                  >
+                                    No registrations for this event
+                                  </TableCell>
+                                </TableRow>
+                              ) : (
+                                event.registrations.map(
+                                  (registration, index) => (
+                                    <TableRow key={index} hover>
+                                      <TableCell>
+                                        {formatDate(registration.registeredAt)}
+                                      </TableCell>
+                                      <TableCell>
+                                        {registration.fullName}
+                                      </TableCell>
+                                      <TableCell>
+                                        {registration.username}
+                                      </TableCell>
+                                      <TableCell>
+                                        {registration.email}
+                                      </TableCell>
+                                      <TableCell>
+                                        <Chip
+                                          label={registration.status}
+                                          size='small'
+                                          color={
+                                            registration.status === "confirmed"
+                                              ? "success"
+                                              : "default"
+                                          }
+                                        />
+                                      </TableCell>
+                                    </TableRow>
+                                  )
+                                )
+                              )}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </AccordionDetails>
+                    </Accordion>
+                  ))
+                )}
               </TabPanel>
             </>
           )}

@@ -178,7 +178,7 @@ const DrawerContent = styled(Box)({
 
 const Header: React.FC = () => {
   const { lang, setLang } = useLanguage();
-  const { user, isAdmin, logout } = useAuth();
+  const { user, isAdmin, logout, isAuthenticated } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
@@ -231,9 +231,9 @@ const Header: React.FC = () => {
     { label: t("nav.home"), path: "/" },
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.get_involved"), path: "/get-involved" },
+    { label: t("nav.events"), path: "/events" },
     { label: t("nav.programs"), path: "/programs" },
     { label: t("nav.resources"), path: "/resources" },
-    { label: t("nav.events"), path: "/events" },
     { label: t("nav.projects"), path: "/projects" },
     { label: t("nav.contact"), path: "/contact" },
   ];
@@ -350,6 +350,17 @@ const Header: React.FC = () => {
                   open={Boolean(userMenuAnchorEl)}
                   onClose={handleUserMenuClose}
                 >
+                  {isAuthenticated && !isAdmin && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate("/member/dashboard");
+                        handleUserMenuClose();
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                      My Events
+                    </MenuItem>
+                  )}
                   {isAdmin && (
                     <MenuItem
                       onClick={() => {
@@ -431,6 +442,19 @@ const Header: React.FC = () => {
             </ListItem>
             {user ? (
               <>
+                {!isAdmin && (
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => {
+                        navigate("/member/dashboard");
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      <DashboardIcon sx={{ mr: 2 }} />
+                      <ListItemText primary='My Events' />
+                    </ListItemButton>
+                  </ListItem>
+                )}
                 {isAdmin && (
                   <ListItem disablePadding>
                     <ListItemButton
