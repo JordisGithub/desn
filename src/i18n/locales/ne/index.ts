@@ -6,6 +6,7 @@ import get_involved from "./get_involved";
 import auth from "./auth";
 import payment from "./payment";
 import accessibility from "./accessibility";
+import contact from "./contact";
 
 export default {
   ...common,
@@ -16,4 +17,5 @@ export default {
   ...payment,
   ...accessibility,
   get_involved,
+  contact,
 };
