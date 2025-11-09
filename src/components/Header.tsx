@@ -20,11 +20,6 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
-import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import PublicIcon from "@mui/icons-material/Public";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -36,61 +31,60 @@ import CloseIcon from "@mui/icons-material/Close";
 import DonationPaymentModal from "./payment/DonationPaymentModal";
 
 const TopBar = styled(Box)(({ theme }) => ({
-  backgroundColor: "#004c91",
-  padding: theme.spacing(2.75, 4),
+  backgroundColor: "#ffffff",
+  borderBottom: "1px solid #e0e0e0",
+  padding: theme.spacing(1.5, 4),
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   [theme.breakpoints.down("md")]: {
-    display: "none", // Hide top bar on mobile/tablet
+    padding: theme.spacing(1.5, 2),
   },
 }));
 
 const SearchField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: "10px",
-    color: "white",
+    backgroundColor: "#f5f5f5",
+    borderRadius: "24px",
+    fontSize: "14px",
     "& fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.2)",
+      borderColor: "transparent",
     },
     "&:hover fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.3)",
+      borderColor: "#004c91",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.4)",
+      borderColor: "#004c91",
+      borderWidth: "1px",
     },
     "& input::placeholder": {
-      color: "rgba(255, 255, 255, 0.6)",
+      color: "#666",
       opacity: 1,
     },
   },
 });
 
-const ContactInfo = styled(Box)(({ theme }) => ({
+const TopBarLeft = styled(Box)({
   display: "flex",
-  gap: theme.spacing(4),
   alignItems: "center",
-  color: "white",
-}));
+  gap: "16px",
+});
 
-const ContactItem = styled(Box)(({ theme }) => ({
+const TopBarRight = styled(Box)({
   display: "flex",
-  gap: theme.spacing(1),
   alignItems: "center",
-  fontSize: "16px",
-}));
-
-const SocialLinks = styled(Box)(({ theme }) => ({
-  display: "flex",
-  gap: theme.spacing(2),
-}));
+  gap: "24px",
+});
 
 const NavBar = styled(Toolbar)(({ theme }) => ({
   backgroundColor: "white",
   padding: theme.spacing(2, 4),
-  justifyContent: "space-between",
-  minHeight: "80px !important",
+  justifyContent: "center",
+  minHeight: "64px !important",
+  borderBottom: "1px solid #e0e0e0",
+  [theme.breakpoints.down("md")]: {
+    justifyContent: "space-between",
+  },
 }));
 
 const LogoLink = styled(RouterLink)({
@@ -123,12 +117,6 @@ const NavLink = styled(RouterLink)(({ theme }) => ({
   "&:hover": {
     color: "#004c91",
   },
-}));
-
-const RightSection = styled(Box)(({ theme }) => ({
-  display: "flex",
-  gap: theme.spacing(2),
-  alignItems: "center",
 }));
 
 const LanguageButton = styled(Button)(({ theme }) => ({
@@ -240,69 +228,133 @@ const Header: React.FC = () => {
 
   return (
     <>
+      {/* Top Utility Bar - Logo, Language, Login, Search */}
       <TopBar>
-        <SearchField
-          placeholder={t("header.search_placeholder")}
-          variant='outlined'
-          size='small'
-          sx={{ width: "500px" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <SearchIcon sx={{ color: "rgba(255, 255, 255, 0.6)" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <ContactInfo>
-          <ContactItem>
-            <EmailIcon fontSize='small' />
-            <span>disabilityemp@gmail.com</span>
-          </ContactItem>
-          <ContactItem>
-            <PhoneIcon fontSize='small' />
-            <span>+977-15709205</span>
-          </ContactItem>
-          <SocialLinks>
-            <IconButton
-              size='small'
-              sx={{ color: "white" }}
-              aria-label='Facebook'
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              size='small'
-              sx={{ color: "white" }}
-              aria-label='Twitter'
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              size='small'
-              sx={{ color: "white" }}
-              aria-label='LinkedIn'
-            >
-              <LinkedInIcon />
-            </IconButton>
-          </SocialLinks>
-        </ContactInfo>
-      </TopBar>
-      <AppBar position='static' elevation={1}>
-        <NavBar>
+        <TopBarLeft>
           <LogoLink to='/'>
             <Logo
               src='https://www.figma.com/api/mcp/asset/ccc1b5e8-ef62-4fef-ae8f-f8e654b30036'
               alt='DESN Logo'
+              style={{ height: "48px" }}
             />
           </LogoLink>
+        </TopBarLeft>
+
+        <TopBarRight>
+          <LanguageButton
+            onClick={handleLanguageClick}
+            startIcon={<PublicIcon />}
+            endIcon={<KeyboardArrowDownIcon />}
+            sx={{ display: { xs: "none", md: "flex" } }}
+          >
+            {lang.toUpperCase()}
+          </LanguageButton>
+          <Menu
+            anchorEl={langAnchorEl}
+            open={Boolean(langAnchorEl)}
+            onClose={() => handleLanguageClose()}
+          >
+            <MenuItem onClick={() => handleLanguageClose("en")}>
+              English
+            </MenuItem>
+            <MenuItem onClick={() => handleLanguageClose("ne")}>
+              नेपाली
+            </MenuItem>
+          </Menu>
+
+          {user ? (
+            <>
+              <Button
+                onClick={handleUserMenuClick}
+                startIcon={<AccountCircleIcon />}
+                endIcon={<KeyboardArrowDownIcon />}
+                sx={{
+                  color: "#004c91",
+                  textTransform: "none",
+                  fontSize: "14px",
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                {user.fullName || user.username}
+              </Button>
+              <Menu
+                anchorEl={userMenuAnchorEl}
+                open={Boolean(userMenuAnchorEl)}
+                onClose={handleUserMenuClose}
+              >
+                {isAuthenticated && !isAdmin && (
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/member/dashboard");
+                      handleUserMenuClose();
+                    }}
+                  >
+                    <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                    My Events
+                  </MenuItem>
+                )}
+                {isAdmin && (
+                  <MenuItem
+                    onClick={() => {
+                      navigate("/admin/dashboard");
+                      handleUserMenuClose();
+                    }}
+                  >
+                    <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
+                    Admin Dashboard
+                  </MenuItem>
+                )}
+                <MenuItem onClick={handleLogout}>
+                  <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Button
+              onClick={handleLogin}
+              startIcon={<LoginIcon />}
+              sx={{
+                color: "#004c91",
+                textTransform: "none",
+                fontSize: "14px",
+                display: { xs: "none", md: "flex" },
+              }}
+            >
+              Login
+            </Button>
+          )}
+
+          <SearchField
+            placeholder={t("header.search_placeholder")}
+            variant='outlined'
+            size='small'
+            sx={{
+              width: { xs: "200px", md: "300px" },
+              display: { xs: "none", sm: "block" },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <SearchIcon sx={{ color: "#666", fontSize: "20px" }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
           <MobileMenuButton
-            edge='start'
+            edge='end'
             aria-label='menu'
             onClick={toggleMobileMenu}
           >
             <MenuIcon />
           </MobileMenuButton>
+        </TopBarRight>
+      </TopBar>
+
+      {/* Main Navigation Bar */}
+      <AppBar position='static' elevation={0}>
+        <NavBar>
           <NavLinks>
             {navItems.map((item) => (
               <NavLink key={item.path} to={item.path}>
@@ -310,92 +362,17 @@ const Header: React.FC = () => {
               </NavLink>
             ))}
           </NavLinks>
-          <RightSection>
-            <LanguageButton
-              onClick={handleLanguageClick}
-              startIcon={<PublicIcon />}
-              endIcon={<KeyboardArrowDownIcon />}
-            >
-              {lang.toUpperCase()}
-            </LanguageButton>
-            <Menu
-              anchorEl={langAnchorEl}
-              open={Boolean(langAnchorEl)}
-              onClose={() => handleLanguageClose()}
-            >
-              <MenuItem onClick={() => handleLanguageClose("en")}>
-                English
-              </MenuItem>
-              <MenuItem onClick={() => handleLanguageClose("ne")}>
-                नेपाली
-              </MenuItem>
-            </Menu>
-
-            {user ? (
-              <>
-                <Button
-                  onClick={handleUserMenuClick}
-                  startIcon={<AccountCircleIcon />}
-                  endIcon={<KeyboardArrowDownIcon />}
-                  sx={{
-                    color: "#004c91",
-                    textTransform: "none",
-                    fontSize: "16px",
-                  }}
-                >
-                  {user.fullName || user.username}
-                </Button>
-                <Menu
-                  anchorEl={userMenuAnchorEl}
-                  open={Boolean(userMenuAnchorEl)}
-                  onClose={handleUserMenuClose}
-                >
-                  {isAuthenticated && !isAdmin && (
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/member/dashboard");
-                        handleUserMenuClose();
-                      }}
-                    >
-                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                      My Events
-                    </MenuItem>
-                  )}
-                  {isAdmin && (
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/admin/dashboard");
-                        handleUserMenuClose();
-                      }}
-                    >
-                      <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                      Admin Dashboard
-                    </MenuItem>
-                  )}
-                  <MenuItem onClick={handleLogout}>
-                    <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </>
-            ) : (
-              <Button
-                onClick={handleLogin}
-                startIcon={<LoginIcon />}
-                sx={{
-                  color: "#004c91",
-                  textTransform: "none",
-                  fontSize: "16px",
-                }}
-              >
-                Login
-              </Button>
-            )}
-
+          <Box
+            sx={{
+              display: { xs: "none", md: "block" },
+              position: "absolute",
+              right: "32px",
+            }}
+          >
             <DonateButton onClick={() => setDonationModalOpen(true)}>
               {t("header.donate")}
             </DonateButton>
-          </RightSection>
+          </Box>
         </NavBar>
       </AppBar>
 

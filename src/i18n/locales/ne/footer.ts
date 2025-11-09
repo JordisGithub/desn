@@ -7,6 +7,7 @@ export default {
   footer_button_donate: "दान गर्नुहोस्",
 
   // Footer
+  footer_stay_connected: "जोडिन सम्पर्कमा रहनुहोस्",
   footer_about_heading: "DESN को बारेमा",
   footer_about_text:
     "२०६० सालमा स्थापित, DESN ले नेपालमा अपाङ्गता भएका व्यक्तिहरूको समान अधिकार र पहुँचको लागि वकालत गर्दछ।",
@@ -21,6 +22,7 @@ export default {
   footer_link_privacy: "गोपनीयता नीति",
   footer_link_terms: "सेवाका सर्तहरू",
   footer_link_accessibility: "पहुँच कथन",
+  footer_link_account_privacy: "खाता गोपनीयता",
   footer_copyright: "© प्रतिलिपि अधिकार २०२५ DESN। सबै अधिकार सुरक्षित",
   footer_donate_button: "दान गर्नुहोस्",
 };

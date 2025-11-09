@@ -9,6 +9,7 @@ import GetInvolved from "./views/GetInvolved";
 import Events from "./views/Events";
 import Resources from "./views/Resources";
 import Contact from "./views/Contact";
+import Programs from "./views/Programs";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import AdminDashboard from "./views/AdminDashboard";
@@ -38,6 +39,7 @@ export default function App() {
                 <Route path='/events' element={<Events />} />
                 <Route path='/resources' element={<Resources />} />
                 <Route path='/contact' element={<Contact />} />
+                <Route path='/programs' element={<Programs />} />
                 <Route
                   path='/accessibility'
                   element={<AccessibilityStatement />}
@@ -48,10 +50,6 @@ export default function App() {
                 <Route path='/member/dashboard' element={<MemberDashboard />} />
                 <Route path='/payment/verify' element={<PaymentVerify />} />
                 {/* Add more routes here as pages are created */}
-                <Route
-                  path='/programs'
-                  element={<div>Programs page coming soon</div>}
-                />
                 <Route
                   path='/donate'
                   element={<div>Donate page coming soon</div>}

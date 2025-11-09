@@ -7,6 +7,7 @@ export default {
   footer_button_donate: "Donate",
 
   // Footer
+  footer_stay_connected: "Stay Connected",
   footer_about_heading: "About DESN",
   footer_about_text:
     "Established in 2004, DESN advocates for equal rights and accessibility for persons with disabilities in Nepal.",
@@ -21,6 +22,7 @@ export default {
   footer_link_privacy: "Privacy Policy",
   footer_link_terms: "Terms of Service",
   footer_link_accessibility: "Accessibility Statement",
+  footer_link_account_privacy: "Account Privacy",
   footer_copyright: "© Copyright 2025 DESN. All Rights Reserved",
   footer_donate_button: "Donate",
 };
