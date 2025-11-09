@@ -120,19 +120,23 @@ cd backend
 
 ### Step 2: Build the Backend
 
-This compiles the Java code and downloads necessary dependencies (this may take a few minutes the first time):
+This compiles the Java code and downloads necessary dependencies (this may take a few minutes the first time).
+
+**IMPORTANT:** If you're using **PowerShell** (the default in Windows 11), you MUST type `.\` before the command!
+
+**On Windows PowerShell (most common):**
+
+```powershell
+.\mvnw.cmd clean package -DskipTests
+```
 
 **On Windows Command Prompt:**
 
-```
+```cmd
 mvnw.cmd clean package -DskipTests
 ```
 
-**On Windows PowerShell:**
-
-```
-.\mvnw.cmd clean package -DskipTests
-```
+> **Note:** The `.\` tells PowerShell to run a file in the current directory. Without it, you'll get an error saying the command is not recognized.
 
 Wait for it to complete. You should see `BUILD SUCCESS` at the end.
 
@@ -179,16 +183,18 @@ You'll need **TWO** separate command windows - one for backend, one for frontend
 
 3. Start the backend server:
 
+   **IMPORTANT:** Remember to use `.\` if you're in PowerShell!
+
+   **On PowerShell (most common):**
+
+   ```powershell
+   .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+   ```
+
    **On Command Prompt:**
 
-   ```
+   ```cmd
    mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
-   ```
-
-   **On PowerShell:**
-
-   ```
-   .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
    ```
 
 4. Wait for the backend to start. You'll see messages in the console. When you see:
@@ -277,6 +283,22 @@ Both servers will stop.
 
 ## Troubleshooting
 
+### "mvnw.cmd is not recognized" or "The term 'mvnw.cmd' is not recognized"
+
+**This is the most common error!** You're using PowerShell and forgot the `.\` prefix.
+
+**Solution:** Add `.\` before the command:
+
+```powershell
+.\mvnw.cmd clean package -DskipTests
+```
+
+**Why?** In PowerShell, you must use `.\` to run executables in the current directory. Command Prompt doesn't need this.
+
+**How to tell which one you're using:**
+- PowerShell prompt looks like: `PS C:\Users\YourName\Projects\desn\backend>`
+- Command Prompt looks like: `C:\Users\YourName\Projects\desn\backend>`
+
 ### "Command not found" or "'git' is not recognized"
 
 - You need to close and reopen your Command Prompt after installing software
@@ -353,12 +375,21 @@ If you run into issues:
 
 ### Daily Development Workflow
 
-1. Open TWO Command Prompt/PowerShell windows
+1. Open TWO PowerShell or Command Prompt windows
 2. Window 1 - Backend:
+   
+   **PowerShell:**
+   ```powershell
+   cd C:\Users\YourName\Projects\desn\backend
+   .\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
    ```
+   
+   **Command Prompt:**
+   ```cmd
    cd C:\Users\YourName\Projects\desn\backend
    mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
    ```
+
 3. Window 2 - Frontend:
    ```
    cd C:\Users\YourName\Projects\desn
@@ -366,6 +397,8 @@ If you run into issues:
    ```
 4. Open browser to: http://localhost:5173
 5. When done: Press `Ctrl + C` in both windows
+
+> **Remember:** If using PowerShell, always add `.\` before `mvnw.cmd`!
 
 ### Useful Commands
 
