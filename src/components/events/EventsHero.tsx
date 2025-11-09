@@ -4,22 +4,13 @@ import { useTranslation } from "react-i18next";
 
 const HeroContainer = styled("section")(({ theme }) => ({
   background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
-  minHeight: "500px",
   paddingTop: theme.spacing(12),
-  paddingBottom: theme.spacing(12),
+  paddingBottom: theme.spacing(6),
   position: "relative",
   overflow: "hidden",
-  display: "flex",
-  alignItems: "center",
   [theme.breakpoints.down("md")]: {
-    minHeight: "400px",
     paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  [theme.breakpoints.down("sm")]: {
-    minHeight: "350px",
-    paddingTop: theme.spacing(6),
-    paddingBottom: theme.spacing(6),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
@@ -59,7 +50,7 @@ export default function EventsHero() {
 
   return (
     <HeroContainer aria-labelledby='events-hero-heading'>
-      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
+      <Container maxWidth='lg'>
         <HeroTitle variant='h1' id='events-hero-heading'>
           {t("events_hero_title")}
         </HeroTitle>

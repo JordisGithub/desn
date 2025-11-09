@@ -9,11 +9,9 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  imgEventAirMidPoint,
-  imgEventInternationalDay,
-  imgEventAirAwardCeremony,
-} from "../../constants/figmaAssets";
+import events1 from "../../assets/home/events1.jpg";
+import events2 from "../../assets/home/events2.jpg";
+import events3 from "../../assets/home/events3.jpg";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -113,7 +111,7 @@ export default function EventsSection() {
       titleKey: "event_1_title",
       descKey: "event_1_desc",
       organizer: "knowbility",
-      image: imgEventAirMidPoint,
+      image: events1,
       altKey: "event_1_alt",
     },
     {
@@ -124,7 +122,7 @@ export default function EventsSection() {
       titleKey: "event_2_title",
       descKey: "event_2_desc",
       organizer: "DESN",
-      image: imgEventInternationalDay,
+      image: events2,
       altKey: "event_2_alt",
     },
     {
@@ -135,7 +133,7 @@ export default function EventsSection() {
       titleKey: "event_3_title",
       descKey: "event_3_desc",
       organizer: "knowbility",
-      image: imgEventAirAwardCeremony,
+      image: events3,
       altKey: "event_3_alt",
     },
   ];
@@ -154,10 +152,17 @@ export default function EventsSection() {
           {events.map((event, index) => (
             <EventCard key={index}>
               <CardMedia
-                component='img'
-                height='256'
+                component='div'
                 image={event.image}
-                alt={t(event.altKey)}
+                sx={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  flexShrink: 0,
+                }}
+                role='img'
+                aria-label={t(event.altKey)}
               />
               <CardContent>
                 <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
