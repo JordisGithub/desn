@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Minimal mvnw wrapper: use local mvn if available, otherwise run Maven inside Docker
+set -euo pipefail
+
+MAVEN_BIN=""
+if command -v mvn >/dev/null 2>&1; then
+  MAVEN_BIN="mvn"
+fi
+
+if [ -n "$MAVEN_BIN" ]; then
+  exec "$MAVEN_BIN" "$@"
+else
+  echo "mvn not found in PATH — using Dockerized Maven to run the command"
+  docker run --rm -v "$(pwd)":/workspace -w /workspace maven:3.9.11-eclipse-temurin-17 mvn "$@"
+fi
