@@ -25,11 +25,13 @@ import {
   Visibility as VisibilityIcon,
   PlayArrow as PlayArrowIcon,
 } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import ResourceService from "../services/ResourceService";
 import type { Resource, ResourcesResponse } from "../services/ResourceService";
 
 const Resources: React.FC = () => {
+  const { t } = useTranslation();
   const { isAuthenticated, user } = useAuth();
   const token = user?.token;
 
@@ -44,14 +46,38 @@ const Resources: React.FC = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
 
   const resourceTypes = [
-    { key: "", label: "All Resources", icon: "📚" },
-    { key: "annual-report", label: "Annual Reports", icon: "📊" },
-    { key: "policy-brief", label: "Policy Briefs", icon: "📋" },
-    { key: "training-manual", label: "Training Manuals", icon: "📖" },
-    { key: "research", label: "Research", icon: "🔬" },
-    { key: "guideline", label: "Guidelines", icon: "📝" },
-    { key: "newsletter", label: "Newsletters", icon: "📰" },
-    { key: "video", label: "Video Resources", icon: "🎥" },
+    { key: "", label: t("resources.resource_types.all"), icon: "📚" },
+    {
+      key: "annual-report",
+      label: t("resources.resource_types.annual_report"),
+      icon: "📊",
+    },
+    {
+      key: "policy-brief",
+      label: t("resources.resource_types.policy_brief"),
+      icon: "📋",
+    },
+    {
+      key: "training-manual",
+      label: t("resources.resource_types.training_manual"),
+      icon: "📖",
+    },
+    {
+      key: "research",
+      label: t("resources.resource_types.research"),
+      icon: "🔬",
+    },
+    {
+      key: "guideline",
+      label: t("resources.resource_types.guideline"),
+      icon: "📝",
+    },
+    {
+      key: "newsletter",
+      label: t("resources.resource_types.newsletter"),
+      icon: "📰",
+    },
+    { key: "video", label: t("resources.resource_types.video"), icon: "🎥" },
   ];
 
   // Fetch featured resources
@@ -272,7 +298,7 @@ const Resources: React.FC = () => {
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                 <DescriptionIcon fontSize='small' color='action' />
                 <Typography variant='caption' color='text.secondary'>
-                  {resource.pages} pages
+                  {resource.pages} {t("resources.pages")}
                 </Typography>
               </Box>
             )}
@@ -285,7 +311,9 @@ const Resources: React.FC = () => {
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <VisibilityIcon fontSize='small' color='action' />
               <Typography variant='caption' color='text.secondary'>
-                {isVideo ? `${resource.clicks} views` : resource.clicks}
+                {isVideo
+                  ? `${resource.clicks} ${t("resources.views")}`
+                  : resource.clicks}
               </Typography>
             </Box>
           </Box>
@@ -298,7 +326,7 @@ const Resources: React.FC = () => {
             startIcon={isVideo ? <PlayArrowIcon /> : <DownloadIcon />}
             onClick={() => handleDownload(resource)}
           >
-            {isVideo ? "Watch" : "Download"}
+            {isVideo ? t("resources.watch") : t("resources.download")}
           </Button>
           <IconButton
             color={isFavorited ? "error" : "default"}
@@ -353,7 +381,7 @@ const Resources: React.FC = () => {
 
         <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
           <Chip
-            label='Resources & Publications'
+            label={t("nav.resources")}
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.2)",
               color: "white",
@@ -369,12 +397,10 @@ const Resources: React.FC = () => {
             gutterBottom
             fontWeight='bold'
           >
-            Knowledge Library
+            {t("resources.hero_title")}
           </Typography>
           <Typography variant='h6' sx={{ mb: 4, maxWidth: 800, opacity: 0.95 }}>
-            Access our comprehensive collection of reports, research papers,
-            training materials, and multimedia resources on disability rights
-            and inclusion.
+            {t("resources.hero_description")}
           </Typography>
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
             <Button
@@ -388,7 +414,7 @@ const Resources: React.FC = () => {
               }}
               href='#all-resources'
             >
-              Browse Resources
+              {t("resources.browse_resources")}
             </Button>
             <Button
               variant='outlined'
@@ -400,7 +426,7 @@ const Resources: React.FC = () => {
               }}
               href='#featured'
             >
-              Featured Content
+              {t("resources.featured_content")}
             </Button>
           </Box>
         </Container>
@@ -416,7 +442,7 @@ const Resources: React.FC = () => {
             gutterBottom
             color='primary'
           >
-            Featured Publications
+            {t("resources.featured_title")}
           </Typography>
           <Typography
             variant='body1'
@@ -424,8 +450,7 @@ const Resources: React.FC = () => {
             color='text.secondary'
             sx={{ mb: 6 }}
           >
-            Our most recent and impactful publications addressing disability
-            rights, accessibility, and inclusive development.
+            {t("resources.featured_description")}
           </Typography>
 
           {featuredLoading ? (
@@ -466,7 +491,7 @@ const Resources: React.FC = () => {
             gutterBottom
             color='primary'
           >
-            All Resources
+            {t("resources.all_resources_title")}
           </Typography>
           <Typography
             variant='body1'
@@ -474,8 +499,7 @@ const Resources: React.FC = () => {
             color='text.secondary'
             sx={{ mb: 6 }}
           >
-            Browse our complete library of publications, organized by type and
-            topic.
+            {t("resources.all_resources_description")}
           </Typography>
 
           {/* Search and Filter */}
@@ -491,7 +515,7 @@ const Resources: React.FC = () => {
             >
               <TextField
                 fullWidth
-                placeholder='Search by title or description...'
+                placeholder={t("resources.search_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 InputProps={{
@@ -512,7 +536,10 @@ const Resources: React.FC = () => {
                   fontSize='small'
                   sx={{ verticalAlign: "middle", mr: 0.5 }}
                 />
-                Showing {resources.length} of {resources.length} resources
+                {t("resources.showing_results", {
+                  count: resources.length,
+                  total: resources.length,
+                })}
               </Typography>
             </Box>
 
@@ -606,7 +633,7 @@ const Resources: React.FC = () => {
           ) : resources.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 8 }}>
               <Typography variant='h6' color='text.secondary'>
-                No resources found matching your criteria.
+                {t("resources.no_resources_found")}
               </Typography>
             </Box>
           ) : (
@@ -652,11 +679,10 @@ const Resources: React.FC = () => {
           sx={{ position: "relative", zIndex: 1, textAlign: "center" }}
         >
           <Typography variant='h3' gutterBottom fontWeight='bold'>
-            Stay Updated
+            {t("resources.stay_updated_title")}
           </Typography>
           <Typography variant='h6' sx={{ mb: 4, opacity: 0.95 }}>
-            Subscribe to our newsletter to receive the latest publications and
-            resources directly to your inbox.
+            {t("resources.stay_updated_description")}
           </Typography>
           <Box
             sx={{
@@ -675,7 +701,7 @@ const Resources: React.FC = () => {
                 "&:hover": { bgcolor: "grey.100" },
               }}
             >
-              Subscribe Now
+              {t("resources.subscribe_now")}
             </Button>
             <Button
               variant='outlined'
@@ -686,7 +712,7 @@ const Resources: React.FC = () => {
                 "&:hover": { borderColor: "grey.300" },
               }}
             >
-              Request Resources
+              {t("resources.request_resources")}
             </Button>
           </Box>
         </Container>

@@ -257,9 +257,22 @@ interface EventStatus {
   availableSpots: number;
 }
 
+interface BackendEvent {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  imageUrl?: string;
+  maxAttendees: number;
+  currentAttendees: number;
+  featured: boolean;
+}
+
 interface EventData {
   id: number;
-  eventId: string;
+  eventId: number; // Changed from string to number
   type: string;
   organizer: string;
   title: string;
@@ -276,67 +289,73 @@ export default function UpcomingEvents() {
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [eventStatuses, setEventStatuses] = useState<
-    Record<string, EventStatus>
+    Record<number, EventStatus>
   >({});
+  const [events, setEvents] = useState<EventData[]>([]);
 
-  const events = [
-    {
-      id: 1,
-      eventId: "air-midpoint-checkin",
-      type: "Workshop",
-      organizer: "Knowbility",
-      title: "AIR Mid-Point Check-In",
-      description:
-        "Reviewing DESN's accessible website progress with the Digital A11y Alliance.",
-      date: "October 25, 2025",
-      time: "10:00 AM - 2:00 PM",
-      location: "Online via Zoom",
-      calendarDate: 25,
-    },
-    {
-      id: 2,
-      eventId: "international-day-disabilities",
-      type: "Celebration",
-      organizer: "DESN",
-      title: "International Day of Persons with Disabilities",
-      description:
-        'Celebrating "Innovation for Inclusion" through awareness and advocacy.',
-      date: "December 3, 2025",
-      time: "9:00 AM - 5:00 PM",
-      location: "DESN Office, Lalitpur, Nepal",
-      calendarDate: 2,
-    },
-    {
-      id: 3,
-      eventId: "air-awards-ceremony",
-      type: "Awards",
-      organizer: "Knowbility",
-      title: "AIR Awards Ceremony",
-      description:
-        "Recognition of completed accessible websites by Knowbility.",
-      date: "January 16, 2026",
-      time: "7:00 PM - 9:00 PM",
-      location: "Online Event",
-      calendarDate: null,
-    },
-  ];
-
+  // Fetch events from backend
   useEffect(() => {
-    // Fetch event statuses for all events
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/events/upcoming"
+        );
+        const backendEvents: BackendEvent[] = await response.json();
+
+        // Transform backend events to frontend format
+        const transformedEvents: EventData[] = backendEvents.map((event) => {
+          const startDate = new Date(event.startDate);
+          const endDate = new Date(event.endDate);
+
+          return {
+            id: event.id,
+            eventId: event.id, // Use numeric ID
+            type: "Event",
+            organizer: "DESN",
+            title: event.title,
+            description: event.description,
+            date: startDate.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            time: `${startDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+            })} - ${endDate.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+            })}`,
+            location: event.location,
+            calendarDate: startDate.getDate(),
+          };
+        });
+
+        setEvents(transformedEvents);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Fetch event statuses after events are loaded
+  useEffect(() => {
+    if (events.length === 0) return;
+
     const fetchEventStatuses = async () => {
-      const statuses: Record<string, EventStatus> = {};
+      const statuses: Record<number, EventStatus> = {};
 
       for (const event of events) {
         try {
-          const response = await EventService.getEventStatus(event.eventId);
-          if (response.success) {
-            statuses[event.eventId] = {
-              isFull: response.isFull,
-              currentRegistrations: response.currentRegistrations,
-              maxCapacity: response.maxCapacity,
-              availableSpots: response.availableSpots,
-            };
-          }
+          const response = await EventService.getEventById(event.eventId);
+          statuses[event.eventId] = {
+            isFull: response.currentAttendees >= response.maxAttendees,
+            currentRegistrations: response.currentAttendees,
+            maxCapacity: response.maxAttendees,
+            availableSpots: response.maxAttendees - response.currentAttendees,
+          };
         } catch (error) {
           console.error(
             `Error fetching status for event ${event.eventId}:`,
@@ -349,8 +368,7 @@ export default function UpcomingEvents() {
     };
 
     fetchEventStatuses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [events]);
 
   const handleRegisterClick = (event: EventData) => {
     setSelectedEvent(event);
@@ -367,20 +385,18 @@ export default function UpcomingEvents() {
     const refreshEventStatus = async () => {
       if (selectedEvent) {
         try {
-          const response = await EventService.getEventStatus(
+          const response = await EventService.getEventById(
             selectedEvent.eventId
           );
-          if (response.success) {
-            setEventStatuses((prev) => ({
-              ...prev,
-              [selectedEvent.eventId]: {
-                isFull: response.isFull,
-                currentRegistrations: response.currentRegistrations,
-                maxCapacity: response.maxCapacity,
-                availableSpots: response.availableSpots,
-              },
-            }));
-          }
+          setEventStatuses((prev) => ({
+            ...prev,
+            [selectedEvent.eventId]: {
+              isFull: response.currentAttendees >= response.maxAttendees,
+              currentRegistrations: response.currentAttendees,
+              maxCapacity: response.maxAttendees,
+              availableSpots: response.maxAttendees - response.currentAttendees,
+            },
+          }));
         } catch (error) {
           console.error("Error refreshing event status:", error);
         }

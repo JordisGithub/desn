@@ -96,13 +96,12 @@ class ResourceService {
    */
   async createResource(
     resourceData: Partial<Resource>,
-    token: string
+    _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.post("/api/resources", resourceData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await ApiService.postWithAuth(
+      "/api/resources",
+      resourceData
+    );
     return response;
   }
 
@@ -112,16 +111,11 @@ class ResourceService {
   async updateResource(
     resourceId: number,
     resourceData: Partial<Resource>,
-    token: string
+    _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.put(
+    const response = await ApiService.putWithAuth(
       `/api/resources/${resourceId}`,
-      resourceData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      resourceData
     );
     return response;
   }
@@ -131,13 +125,11 @@ class ResourceService {
    */
   async deleteResource(
     resourceId: number,
-    token: string
+    _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.delete(`/api/resources/${resourceId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await ApiService.deleteWithAuth(
+      `/api/resources/${resourceId}`
+    );
     return response;
   }
 
@@ -147,16 +139,11 @@ class ResourceService {
   async toggleFavorite(
     resourceId: number,
     username: string,
-    token: string
+    _token: string
   ): Promise<FavoriteResponse> {
-    const response = await ApiService.post(
+    const response = await ApiService.postWithAuth(
       `/api/resources/${resourceId}/favorite`,
-      { username },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      { username }
     );
     return response;
   }
@@ -165,7 +152,7 @@ class ResourceService {
    * Track click on a resource (for analytics)
    */
   async trackClick(resourceId: number): Promise<ClickResponse> {
-    const response = await ApiService.post(
+    const response = await ApiService.postWithAuth(
       `/api/resources/${resourceId}/click`,
       {}
     );

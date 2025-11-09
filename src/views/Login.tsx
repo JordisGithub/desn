@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
+// @ts-expect-error ApiService is a JS file
+import ApiService from "../services/ApiService";
 
 const PageContainer = styled(Box)({
   minHeight: "100vh",
@@ -110,15 +112,7 @@ const Login: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
+      const data = await ApiService.postWithAuth("/api/auth/login", formData);
 
       if (data.success) {
         login(data.user);

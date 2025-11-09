@@ -73,7 +73,7 @@ public class ResourceController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> createResource(
             @RequestBody Resource resource,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Creating new resource: {}", resource.getTitle());
         
@@ -96,7 +96,7 @@ public class ResourceController {
     public ResponseEntity<Map<String, Object>> updateResource(
             @PathVariable Long id,
             @RequestBody Resource resource,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Updating resource with id: {}", id);
         
@@ -121,7 +121,7 @@ public class ResourceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> deleteResource(
             @PathVariable Long id,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Deleting resource with id: {}", id);
         
@@ -150,7 +150,7 @@ public class ResourceController {
     public ResponseEntity<Map<String, Object>> toggleFavorite(
             @PathVariable Long id,
             @RequestBody Map<String, String> request,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         String username = request.get("username");
         log.info("Toggling favorite for resource {} by user {}", id, username);
@@ -187,7 +187,7 @@ public class ResourceController {
     @GetMapping("/user/{username}/favorites")
     public ResponseEntity<List<Map<String, Object>>> getUserFavorites(
             @PathVariable String username,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Fetching favorites for user: {}", username);
         
@@ -210,7 +210,7 @@ public class ResourceController {
     public ResponseEntity<Map<String, Boolean>> getFavoriteStatus(
             @PathVariable Long id,
             @RequestParam String username,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Checking favorite status for resource {} by user {}", id, username);
         
@@ -223,7 +223,7 @@ public class ResourceController {
     
     @GetMapping("/admin/all")
     public ResponseEntity<List<Resource>> getAllResourcesForAdmin(
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Admin fetching all resources");
         List<Resource> resources = resourceService.getAllResources();

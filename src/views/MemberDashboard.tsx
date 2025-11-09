@@ -21,11 +21,16 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EventService from "../services/EventService";
+import ResourceService from "../services/ResourceService";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import CancelIcon from "@mui/icons-material/Cancel";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DescriptionIcon from "@mui/icons-material/Description";
+import DownloadIcon from "@mui/icons-material/Download";
+import ArticleIcon from "@mui/icons-material/Article";
 
 const PageContainer = styled("div")({
   minHeight: "100vh",
@@ -164,45 +169,165 @@ const BrowseEventsButton = styled(Button)({
   },
 });
 
+const SectionTitle = styled(Typography)({
+  fontSize: "2rem",
+  fontWeight: 600,
+  color: "#004c91",
+  marginTop: "3rem",
+  marginBottom: "1.5rem",
+  fontFamily: "'Poppins', sans-serif",
+});
+
+const ResourceCard = styled(Card)({
+  borderRadius: "16px",
+  border: "1px solid #e5e7eb",
+  boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.08)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
+    transform: "translateY(-4px)",
+  },
+});
+
+const ResourceCardContent = styled(CardContent)({
+  padding: "1.5rem",
+  display: "flex",
+  gap: "1rem",
+});
+
+const ResourceIcon = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "60px",
+  height: "60px",
+  borderRadius: "12px",
+  backgroundColor: "#e3f2fd",
+  flexShrink: 0,
+  "& .MuiSvgIcon-root": {
+    fontSize: "2rem",
+    color: "#004c91",
+  },
+});
+
+const ResourceInfo = styled(Box)({
+  flex: 1,
+});
+
+const ResourceTitle = styled(Typography)({
+  fontSize: "1.125rem",
+  fontWeight: 600,
+  color: "#004c91",
+  marginBottom: "0.5rem",
+  fontFamily: "'Poppins', sans-serif",
+});
+
+const ResourceDescription = styled(Typography)({
+  fontSize: "0.875rem",
+  color: "#4a5565",
+  marginBottom: "0.75rem",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+});
+
+const ResourceMeta = styled(Box)({
+  display: "flex",
+  gap: "1rem",
+  alignItems: "center",
+  flexWrap: "wrap",
+});
+
+const ResourceType = styled(Chip)({
+  fontSize: "0.75rem",
+  height: "24px",
+});
+
+const ResourceDate = styled(Typography)({
+  fontSize: "0.75rem",
+  color: "#717182",
+});
+
+const ResourceActions = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+  alignItems: "flex-end",
+});
+
+const DownloadButton = styled(Button)({
+  backgroundColor: "#004c91",
+  color: "white",
+  borderRadius: "8px",
+  padding: "8px 16px",
+  fontSize: "0.875rem",
+  textTransform: "none",
+  fontWeight: 600,
+  minWidth: "120px",
+  "&:hover": {
+    backgroundColor: "#003d73",
+  },
+});
+
+const RemoveFavoriteButton = styled(Button)({
+  color: "#d32f2f",
+  borderRadius: "8px",
+  padding: "8px 16px",
+  fontSize: "0.875rem",
+  textTransform: "none",
+  fontWeight: 600,
+  minWidth: "120px",
+  "&:hover": {
+    backgroundColor: "#ffebee",
+  },
+});
+
 interface Registration {
-  eventId: string;
-  username: string;
-  email: string;
-  fullName: string;
+  registrationId: number;
   registeredAt: string;
-  status: string;
+  event: {
+    id: number;
+    title: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    location: string;
+    imageUrl?: string;
+    maxAttendees: number;
+    currentAttendees: number;
+    featured: boolean;
+  };
 }
 
-const eventIdToDetails: Record<
-  string,
-  { title: string; date: string; time: string; location: string }
-> = {
-  "air-midpoint-checkin": {
-    title: "AIR Mid-Point Check-In",
-    date: "October 25, 2025",
-    time: "10:00 AM - 2:00 PM",
-    location: "Online via Zoom",
-  },
-  "international-day-disabilities": {
-    title: "International Day of Persons with Disabilities",
-    date: "December 3, 2025",
-    time: "9:00 AM - 5:00 PM",
-    location: "DESN Office, Lalitpur, Nepal",
-  },
-  "air-awards-ceremony": {
-    title: "AIR Awards Ceremony",
-    date: "January 16, 2026",
-    time: "7:00 PM - 9:00 PM",
-    location: "Online Event",
-  },
-};
+interface FavoriteResource {
+  favoriteId: number;
+  favoritedAt: string;
+  resource: {
+    id: number;
+    title: string;
+    description: string;
+    type: string;
+    fileUrl: string;
+    thumbnailUrl?: string;
+    pages?: number;
+    publishDate: string;
+    clicks: number;
+    favoriteCount: number;
+    featured: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
 
 export default function MemberDashboard() {
   const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteResource[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingFavorites, setLoadingFavorites] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [eventToCancel, setEventToCancel] = useState<Registration | null>(null);
@@ -219,25 +344,41 @@ export default function MemberDashboard() {
 
       try {
         setLoading(true);
-        const response = await EventService.getUserRegistrations(
+        const registrations = await EventService.getUserRegistrations(
           user.username,
           user.token
         );
-
-        if (response.success) {
-          setRegistrations(response.registrations);
-        } else {
-          setError("Failed to load your registrations");
-        }
+        // Ensure registrations is always an array
+        setRegistrations(Array.isArray(registrations) ? registrations : []);
       } catch (err) {
         console.error("Error fetching registrations:", err);
         setError("An error occurred while loading your registrations");
+        setRegistrations([]); // Set empty array on error
       } finally {
         setLoading(false);
       }
     };
 
+    const fetchFavorites = async () => {
+      if (!user) return;
+
+      try {
+        setLoadingFavorites(true);
+        const favoritesData = await ResourceService.getUserFavorites(
+          user.username,
+          user.token
+        );
+        setFavorites(favoritesData);
+      } catch (err) {
+        console.error("Error fetching favorites:", err);
+        // Don't set error here, just log it - we don't want to block the whole dashboard
+      } finally {
+        setLoadingFavorites(false);
+      }
+    };
+
     fetchRegistrations();
+    fetchFavorites();
   }, [isAuthenticated, navigate, user]);
 
   const handleCancelClick = (registration: Registration) => {
@@ -251,14 +392,14 @@ export default function MemberDashboard() {
     setCancelling(true);
     try {
       const response = await EventService.cancelRegistration(
-        eventToCancel.eventId,
+        eventToCancel.event.id,
         user.username,
         user.token
       );
 
       if (response.success) {
         setRegistrations((prev) =>
-          prev.filter((reg) => reg.eventId !== eventToCancel.eventId)
+          prev.filter((reg) => reg.event.id !== eventToCancel.event.id)
         );
         setCancelDialogOpen(false);
         setEventToCancel(null);
@@ -278,7 +419,58 @@ export default function MemberDashboard() {
     setEventToCancel(null);
   };
 
-  if (loading) {
+  const handleRemoveFavorite = async (resourceId: number) => {
+    if (!user) return;
+
+    try {
+      await ResourceService.toggleFavorite(
+        resourceId,
+        user.username,
+        user.token
+      );
+      // Remove from favorites list
+      setFavorites((prev) =>
+        prev.filter((fav) => fav.resource.id !== resourceId)
+      );
+    } catch (err) {
+      console.error("Error removing favorite:", err);
+      setError("Failed to remove favorite");
+    }
+  };
+
+  const handleDownload = (fileUrl: string, title: string) => {
+    // Create a link and trigger download
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = title;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const getResourceTypeLabel = (type: string): string => {
+    const labels: Record<string, string> = {
+      "annual-report": "Annual Report",
+      "policy-brief": "Policy Brief",
+      "training-manual": "Training Manual",
+      research: "Research",
+      guideline: "Guideline",
+      newsletter: "Newsletter",
+      video: "Video Resource",
+    };
+    return labels[type] || type;
+  };
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  if (loading || loadingFavorites) {
     return (
       <PageContainer>
         <Header />
@@ -324,34 +516,41 @@ export default function MemberDashboard() {
           ) : (
             <EventsGrid>
               {registrations.map((registration) => {
-                const eventDetails = eventIdToDetails[registration.eventId];
-                if (!eventDetails) return null;
+                const event = registration.event;
+                const eventDate = new Date(event.startDate);
+                const eventEndDate = new Date(event.endDate);
 
                 return (
-                  <EventCard key={registration.eventId}>
+                  <EventCard key={registration.event.id}>
                     <EventCardContent>
                       <StatusChip
-                        label={
-                          registration.status === "confirmed"
-                            ? "Confirmed"
-                            : registration.status
-                        }
+                        label='Confirmed'
                         color='success'
                         size='small'
                       />
-                      <EventTitle>{eventDetails.title}</EventTitle>
+                      <EventTitle>{event.title}</EventTitle>
                       <EventMeta>
                         <MetaItem>
                           <CalendarTodayIcon />
-                          <MetaText>{eventDetails.date}</MetaText>
+                          <MetaText>{eventDate.toLocaleDateString()}</MetaText>
                         </MetaItem>
                         <MetaItem>
                           <AccessTimeIcon />
-                          <MetaText>{eventDetails.time}</MetaText>
+                          <MetaText>
+                            {eventDate.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}{" "}
+                            -{" "}
+                            {eventEndDate.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </MetaText>
                         </MetaItem>
                         <MetaItem>
                           <LocationOnIcon />
-                          <MetaText>{eventDetails.location}</MetaText>
+                          <MetaText>{event.location}</MetaText>
                         </MetaItem>
                       </EventMeta>
                       <CancelButton
@@ -366,6 +565,80 @@ export default function MemberDashboard() {
               })}
             </EventsGrid>
           )}
+
+          {/* Favorite Publications Section */}
+          <SectionTitle variant='h2'>{t("favorite_publications")}</SectionTitle>
+
+          {favorites.length === 0 ? (
+            <EmptyState>
+              <FavoriteIcon
+                sx={{ fontSize: "5rem", color: "#c4c4c4", mb: 2 }}
+              />
+              <EmptyStateText>{t("no_favorite_publications")}</EmptyStateText>
+              <BrowseEventsButton onClick={() => navigate("/resources")}>
+                {t("browse_publications")}
+              </BrowseEventsButton>
+            </EmptyState>
+          ) : (
+            <EventsGrid>
+              {favorites.map((favorite) => (
+                <ResourceCard key={favorite.favoriteId}>
+                  <ResourceCardContent>
+                    <ResourceIcon>
+                      {favorite.resource.type === "video" ? (
+                        <ArticleIcon />
+                      ) : (
+                        <DescriptionIcon />
+                      )}
+                    </ResourceIcon>
+                    <ResourceInfo>
+                      <ResourceTitle>{favorite.resource.title}</ResourceTitle>
+                      <ResourceDescription>
+                        {favorite.resource.description}
+                      </ResourceDescription>
+                      <ResourceMeta>
+                        <ResourceType
+                          label={getResourceTypeLabel(favorite.resource.type)}
+                          size='small'
+                          color='primary'
+                          variant='outlined'
+                        />
+                        {favorite.resource.pages && (
+                          <ResourceDate>
+                            {favorite.resource.pages} pages
+                          </ResourceDate>
+                        )}
+                        <ResourceDate>
+                          {formatDate(favorite.resource.publishDate)}
+                        </ResourceDate>
+                      </ResourceMeta>
+                    </ResourceInfo>
+                    <ResourceActions>
+                      <DownloadButton
+                        startIcon={<DownloadIcon />}
+                        onClick={() =>
+                          handleDownload(
+                            favorite.resource.fileUrl,
+                            favorite.resource.title
+                          )
+                        }
+                      >
+                        Download
+                      </DownloadButton>
+                      <RemoveFavoriteButton
+                        startIcon={<CancelIcon />}
+                        onClick={() =>
+                          handleRemoveFavorite(favorite.resource.id)
+                        }
+                      >
+                        Remove
+                      </RemoveFavoriteButton>
+                    </ResourceActions>
+                  </ResourceCardContent>
+                </ResourceCard>
+              ))}
+            </EventsGrid>
+          )}
         </DashboardContainer>
       </main>
       <Footer />
@@ -376,10 +649,7 @@ export default function MemberDashboard() {
         <DialogContent>
           <Typography>
             {t("cancel_registration_message")}
-            {eventToCancel && eventIdToDetails[eventToCancel.eventId] && (
-              <strong> {eventIdToDetails[eventToCancel.eventId].title}</strong>
-            )}
-            ?
+            {eventToCancel && <strong> {eventToCancel.event.title}</strong>}?
           </Typography>
         </DialogContent>
         <DialogActions>

@@ -104,7 +104,8 @@ interface PaymentTransaction {
 }
 
 interface EventRegistrationData {
-  eventId: string;
+  eventId: number;
+  eventTitle: string;
   maxCapacity: number;
   currentRegistrations: number;
   availableSpots: number;
@@ -116,13 +117,6 @@ interface EventRegistrationData {
     status: string;
   }>;
 }
-
-const eventIdToTitle: Record<string, string> = {
-  "air-midpoint-checkin": "AIR Mid-Point Check-In",
-  "international-day-disabilities":
-    "International Day of Persons with Disabilities",
-  "air-awards-ceremony": "AIR Awards Ceremony",
-};
 
 const AdminDashboard: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -162,25 +156,39 @@ const AdminDashboard: React.FC = () => {
         "Content-Type": "application/json",
       };
 
-      const [membershipRes, volunteerRes, paymentsRes] = await Promise.all([
-        fetch("/api/forms/membership", { headers }),
-        fetch("/api/forms/volunteer", { headers }),
-        fetch("/api/payment/transactions", { headers }),
+      // Note: These endpoints are not yet implemented in the backend
+      // They will return 404 until the backend API is created
+      const [membershipRes, volunteerRes, donationsRes] = await Promise.all([
+        fetch("http://localhost:8080/api/forms/membership", { headers }).catch(() => null),
+        fetch("http://localhost:8080/api/forms/volunteer", { headers }).catch(() => null),
+        fetch("http://localhost:8080/api/payment/transactions", { headers }).catch(() => null),
       ]);
 
-      if (membershipRes.ok) {
-        const membershipData = await membershipRes.json();
-        setMembershipApplications(membershipData);
+      if (membershipRes?.ok) {
+        try {
+          const membershipData = await membershipRes.json();
+          setMembershipApplications(Array.isArray(membershipData) ? membershipData : []);
+        } catch (e) {
+          console.error("Error parsing membership data:", e);
+        }
       }
 
-      if (volunteerRes.ok) {
-        const volunteerData = await volunteerRes.json();
-        setVolunteerApplications(volunteerData);
+      if (volunteerRes?.ok) {
+        try {
+          const volunteerData = await volunteerRes.json();
+          setVolunteerApplications(Array.isArray(volunteerData) ? volunteerData : []);
+        } catch (e) {
+          console.error("Error parsing volunteer data:", e);
+        }
       }
 
-      if (paymentsRes.ok) {
-        const paymentsData = await paymentsRes.json();
-        setPaymentTransactions(paymentsData);
+      if (donationsRes?.ok) {
+        try {
+          const donationsData = await donationsRes.json();
+          setPaymentTransactions(Array.isArray(donationsData) ? donationsData : []);
+        } catch (e) {
+          console.error("Error parsing donations data:", e);
+        }
       }
 
       // Fetch events data
@@ -189,20 +197,21 @@ const AdminDashboard: React.FC = () => {
           const eventsResponse = await EventService.getAllEventsRegistrations(
             token
           );
-          if (eventsResponse.success) {
-            setEventsData(eventsResponse.events);
-          }
+          // EventService now returns data directly, not wrapped in {success, events}
+          setEventsData(Array.isArray(eventsResponse) ? eventsResponse : []);
         } catch (err) {
           console.error("Error fetching events data:", err);
         }
       }
 
-      if (!membershipRes.ok && !volunteerRes.ok && !paymentsRes.ok) {
-        setError("Failed to fetch data");
-      }
+      // Don't show error if endpoints aren't implemented yet
+      // if (!membershipRes?.ok && !volunteerRes?.ok && !paymentsRes?.ok) {
+      //   setError("Failed to fetch data");
+      // }
     } catch (err) {
       console.error("Error fetching applications:", err);
-      setError("An error occurred while fetching applications");
+      // Don't show error to user if endpoints don't exist yet
+      // setError("An error occurred while fetching applications");
     } finally {
       setLoading(false);
     }
@@ -252,7 +261,7 @@ const AdminDashboard: React.FC = () => {
                 aria-controls='tabpanel-1'
               />
               <Tab
-                label={`Payment Transactions (${paymentTransactions.length})`}
+                label={`Donations (${paymentTransactions.length})`}
                 id='tab-2'
                 aria-controls='tabpanel-2'
               />
@@ -401,7 +410,7 @@ const AdminDashboard: React.FC = () => {
                             align='center'
                             sx={{ py: 4, color: "#666" }}
                           >
-                            No payment transactions yet
+                            No donations yet
                           </TableCell>
                         </TableRow>
                       ) : (
@@ -494,7 +503,7 @@ const AdminDashboard: React.FC = () => {
                             variant='h6'
                             sx={{ color: "#004c91", fontWeight: 600 }}
                           >
-                            {eventIdToTitle[event.eventId] || event.eventId}
+                            {event.eventTitle || event.eventId}
                           </Typography>
                           <Box
                             sx={{

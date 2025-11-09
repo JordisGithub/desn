@@ -107,7 +107,7 @@ const DetailValue = styled(Typography)({
 interface EventRegistrationModalProps {
   open: boolean;
   onClose: () => void;
-  eventId: string;
+  eventId: number;
   eventTitle: string;
   eventDate: string;
   eventTime: string;
