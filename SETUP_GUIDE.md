@@ -324,6 +324,40 @@ Both servers will stop.
 
 **Root Cause:** Your `JAVA_HOME` environment variable is not set correctly.
 
+---
+
+#### QUICK FIX (Temporary - Works Immediately!)
+
+If you need to get running RIGHT NOW, you can set JAVA_HOME temporarily in your current PowerShell window:
+
+1. First, find where Java is installed:
+   ```powershell
+   where.exe java
+   ```
+   This will show something like: `C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot\bin\java.exe`
+
+2. Set JAVA_HOME temporarily (adjust the path based on what you found above):
+   ```powershell
+   $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot"
+   ```
+   **Important:** Remove the `\bin\java.exe` part - only use the path up to the `jdk-21.x.x-hotspot` folder!
+
+3. Verify it's set:
+   ```powershell
+   echo $env:JAVA_HOME
+   ```
+
+4. Now run the Maven command:
+   ```powershell
+   .\mvnw.cmd clean package -DskipTests
+   ```
+
+**Note:** This only works in the current PowerShell window. When you close it, you'll need to do this again. For a permanent fix, see the solution below.
+
+---
+
+#### PERMANENT FIX (Recommended)
+
 **Solution:**
 
 1. First, verify Java is installed:
