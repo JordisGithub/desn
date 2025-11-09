@@ -67,7 +67,9 @@ class ResourceService {
     if (search) params.append("search", search);
 
     const queryString = params.toString();
-    const endpoint = queryString ? `/resources?${queryString}` : "/resources";
+    const endpoint = queryString
+      ? `/api/resources?${queryString}`
+      : "/api/resources";
 
     const response = await ApiService.get(endpoint);
     return response;
@@ -77,7 +79,7 @@ class ResourceService {
    * Get featured resources
    */
   async getFeaturedResources(): Promise<Resource[]> {
-    const response = await ApiService.get("/resources/featured");
+    const response = await ApiService.get("/api/resources/featured");
     return response;
   }
 
@@ -85,7 +87,7 @@ class ResourceService {
    * Get single resource by ID
    */
   async getResource(resourceId: number): Promise<Resource> {
-    const response = await ApiService.get(`/resources/${resourceId}`);
+    const response = await ApiService.get(`/api/resources/${resourceId}`);
     return response;
   }
 
@@ -96,7 +98,7 @@ class ResourceService {
     resourceData: Partial<Resource>,
     token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.post("/resources", resourceData, {
+    const response = await ApiService.post("/api/resources", resourceData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -113,7 +115,7 @@ class ResourceService {
     token: string
   ): Promise<ResourceActionResponse> {
     const response = await ApiService.put(
-      `/resources/${resourceId}`,
+      `/api/resources/${resourceId}`,
       resourceData,
       {
         headers: {
@@ -131,7 +133,7 @@ class ResourceService {
     resourceId: number,
     token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.delete(`/resources/${resourceId}`, {
+    const response = await ApiService.delete(`/api/resources/${resourceId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -148,7 +150,7 @@ class ResourceService {
     token: string
   ): Promise<FavoriteResponse> {
     const response = await ApiService.post(
-      `/resources/${resourceId}/favorite`,
+      `/api/resources/${resourceId}/favorite`,
       { username },
       {
         headers: {
@@ -164,7 +166,7 @@ class ResourceService {
    */
   async trackClick(resourceId: number): Promise<ClickResponse> {
     const response = await ApiService.post(
-      `/resources/${resourceId}/click`,
+      `/api/resources/${resourceId}/click`,
       {}
     );
     return response;
@@ -178,7 +180,7 @@ class ResourceService {
     token: string
   ): Promise<ResourceFavorite[]> {
     const response = await ApiService.get(
-      `/resources/user/${username}/favorites`,
+      `/api/resources/user/${username}/favorites`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -197,7 +199,7 @@ class ResourceService {
     token: string
   ): Promise<{ isFavorited: boolean }> {
     const response = await ApiService.get(
-      `/resources/${resourceId}/favorite-status?username=${username}`,
+      `/api/resources/${resourceId}/favorite-status?username=${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -211,7 +213,7 @@ class ResourceService {
    * Get all resources for admin (with full analytics)
    */
   async getAllResourcesForAdmin(token: string): Promise<Resource[]> {
-    const response = await ApiService.get("/resources/admin/all", {
+    const response = await ApiService.get("/api/resources/admin/all", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

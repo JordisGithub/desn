@@ -1,0 +1,134 @@
+package com.example.proxy.config;
+
+import com.example.proxy.entity.Resource;
+import com.example.proxy.repository.ResourceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Configuration
+@Profile("dev")
+public class SampleDataConfig {
+    
+    private static final Logger log = LoggerFactory.getLogger(SampleDataConfig.class);
+    
+    @Bean
+    CommandLineRunner initResourceData(ResourceRepository resourceRepository) {
+        return args -> {
+            if (resourceRepository.count() == 0) {
+                log.info("Initializing sample resource data...");
+                
+                Resource annualReport = new Resource();
+                annualReport.setTitle("DESN Annual Report 2024");
+                annualReport.setDescription("Comprehensive overview of our activities, achievements, and impact in advancing disability rights and inclusion throughout Nepal.");
+                annualReport.setType("annual-report");
+                annualReport.setFileUrl("/resources/files/annual-report-2024.pdf");
+                annualReport.setThumbnailUrl("/resources/thumbnails/annual-report.jpg");
+                annualReport.setPages(48);
+                annualReport.setPublishDate(LocalDateTime.of(2024, 12, 15, 0, 0));
+                annualReport.setFeatured(true);
+                annualReport.setClicks(0);
+                annualReport.setFavoriteCount(0);
+                
+                Resource policyBrief = new Resource();
+                policyBrief.setTitle("Policy Brief: Inclusive Education in Nepal");
+                policyBrief.setDescription("Analysis and recommendations for implementing inclusive education policies that ensure equal access to quality education for students with disabilities.");
+                policyBrief.setType("policy-brief");
+                policyBrief.setFileUrl("/resources/files/policy-brief-inclusive-education.pdf");
+                policyBrief.setThumbnailUrl("/resources/thumbnails/policy-brief.jpg");
+                policyBrief.setPages(12);
+                policyBrief.setPublishDate(LocalDateTime.of(2024, 11, 20, 0, 0));
+                policyBrief.setFeatured(true);
+                policyBrief.setClicks(0);
+                policyBrief.setFavoriteCount(0);
+                
+                Resource trainingManual = new Resource();
+                trainingManual.setTitle("Disability-Inclusive Development Training Manual");
+                trainingManual.setDescription("Comprehensive training resource for organizations and professionals working on disability-inclusive development programs.");
+                trainingManual.setType("training-manual");
+                trainingManual.setFileUrl("/resources/files/training-manual-did.pdf");
+                trainingManual.setThumbnailUrl("/resources/thumbnails/training-manual.jpg");
+                trainingManual.setPages(85);
+                trainingManual.setPublishDate(LocalDateTime.of(2024, 10, 10, 0, 0));
+                trainingManual.setFeatured(true);
+                trainingManual.setClicks(0);
+                trainingManual.setFavoriteCount(0);
+                
+                Resource research = new Resource();
+                research.setTitle("Research Report: Barriers to Accessibility in Nepal");
+                research.setDescription("In-depth research examining physical, social, and institutional barriers faced by persons with disabilities in Nepal.");
+                research.setType("research");
+                research.setFileUrl("/resources/files/research-accessibility-barriers.pdf");
+                research.setThumbnailUrl("/resources/thumbnails/research.jpg");
+                research.setPages(72);
+                research.setPublishDate(LocalDateTime.of(2024, 9, 5, 0, 0));
+                research.setFeatured(false);
+                research.setClicks(0);
+                research.setFavoriteCount(0);
+                
+                Resource guideline = new Resource();
+                guideline.setTitle("Guidelines for Accessible Public Spaces");
+                guideline.setDescription("Practical guidelines for designing and implementing accessible public spaces and infrastructure in accordance with international standards.");
+                guideline.setType("guideline");
+                guideline.setFileUrl("/resources/files/guidelines-accessible-spaces.pdf");
+                guideline.setThumbnailUrl("/resources/thumbnails/guideline.jpg");
+                guideline.setPages(32);
+                guideline.setPublishDate(LocalDateTime.of(2024, 8, 15, 0, 0));
+                guideline.setFeatured(false);
+                guideline.setClicks(0);
+                guideline.setFavoriteCount(0);
+                
+                Resource newsletter1 = new Resource();
+                newsletter1.setTitle("DESN Newsletter - December 2024");
+                newsletter1.setDescription("Monthly newsletter featuring updates on our programs, advocacy efforts, success stories, and upcoming events.");
+                newsletter1.setType("newsletter");
+                newsletter1.setFileUrl("/resources/files/newsletter-dec-2024.pdf");
+                newsletter1.setThumbnailUrl("/resources/thumbnails/newsletter.jpg");
+                newsletter1.setPages(8);
+                newsletter1.setPublishDate(LocalDateTime.of(2024, 12, 1, 0, 0));
+                newsletter1.setFeatured(false);
+                newsletter1.setClicks(0);
+                newsletter1.setFavoriteCount(0);
+                
+                Resource newsletter2 = new Resource();
+                newsletter2.setTitle("DESN Newsletter - November 2024");
+                newsletter2.setDescription("Monthly newsletter featuring updates on our programs, advocacy efforts, success stories, and upcoming events.");
+                newsletter2.setType("newsletter");
+                newsletter2.setFileUrl("/resources/files/newsletter-nov-2024.pdf");
+                newsletter2.setThumbnailUrl("/resources/thumbnails/newsletter.jpg");
+                newsletter2.setPages(8);
+                newsletter2.setPublishDate(LocalDateTime.of(2024, 11, 1, 0, 0));
+                newsletter2.setFeatured(false);
+                newsletter2.setClicks(0);
+                newsletter2.setFavoriteCount(0);
+                
+                Resource video = new Resource();
+                video.setTitle("Understanding Disability Rights in Nepal");
+                video.setDescription("Educational video providing an overview of disability rights legislation and advocacy work in Nepal.");
+                video.setType("video");
+                video.setFileUrl("https://www.youtube.com/watch?v=example");
+                video.setThumbnailUrl("/resources/thumbnails/video.jpg");
+                video.setPages(null);
+                video.setPublishDate(LocalDateTime.of(2024, 10, 20, 0, 0));
+                video.setFeatured(false);
+                video.setClicks(0);
+                video.setFavoriteCount(0);
+                
+                resourceRepository.saveAll(List.of(
+                    annualReport, policyBrief, trainingManual, research, 
+                    guideline, newsletter1, newsletter2, video
+                ));
+                
+                log.info("Sample resource data initialized successfully!");
+            } else {
+                log.info("Resource data already exists, skipping initialization.");
+            }
+        };
+    }
+}
