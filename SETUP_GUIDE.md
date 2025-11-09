@@ -330,29 +330,54 @@ Both servers will stop.
 
 If you need to get running RIGHT NOW, you can set JAVA_HOME temporarily in your current PowerShell window:
 
-1. First, find where Java is installed:
+1. First, check what Java version you have:
+   ```powershell
+   java -version
+   ```
+   **You MUST have Java 21!** If you see Java 17 or another version, that's the problem.
+
+2. Find ALL Java installations on your system:
    ```powershell
    where.exe java
    ```
-   This will show something like: `C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot\bin\java.exe`
+   This might show multiple paths. Look for one with **`jdk-21`** in the path.
+   
+   Example output:
+   ```
+   C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot\bin\java.exe
+   C:\Program Files\Java\jdk-17.0.5\bin\java.exe  ← OLD VERSION, don't use this!
+   ```
 
-2. Set JAVA_HOME temporarily (adjust the path based on what you found above):
+3. Set JAVA_HOME to point to Java 21 ONLY:
    ```powershell
    $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot"
    ```
-   **Important:** Remove the `\bin\java.exe` part - only use the path up to the `jdk-21.x.x-hotspot` folder!
+   **Important:** 
+   - Remove the `\bin\java.exe` part - only use the path up to the `jdk-21.x.x-hotspot` folder!
+   - Make sure it's the Java 21 path, NOT Java 17 or any other version!
 
-3. Verify it's set:
+4. Verify it's set correctly:
    ```powershell
    echo $env:JAVA_HOME
    ```
+   Should show the Java 21 path.
 
-4. Now run the Maven command:
+5. Verify Java 21 is being used:
+   ```powershell
+   & "$env:JAVA_HOME\bin\java.exe" -version
+   ```
+   Should show `openjdk version "21.x.x"`
+
+6. Now run the Maven command:
    ```powershell
    .\mvnw.cmd clean package -DskipTests
    ```
 
 **Note:** This only works in the current PowerShell window. When you close it, you'll need to do this again. For a permanent fix, see the solution below.
+
+**If you have multiple Java versions:** The old Java 17 might be first in your PATH. The temporary JAVA_HOME setting above will override it, but for a permanent fix, you should either:
+- Set JAVA_HOME permanently in system environment variables (see PERMANENT FIX below)
+- Or uninstall the old Java 17 version
 
 ---
 
@@ -392,6 +417,39 @@ If you need to get running RIGHT NOW, you can set JAVA_HOME temporarily in your 
    cd C:\Users\YourName\Projects\desn\backend
    .\mvnw.cmd clean package -DskipTests
    ```
+
+### "java -version" shows Java 17 (or wrong version) but I installed Java 21
+
+**Problem:** You have multiple Java versions installed, and the system is using the old one.
+
+**Solution:**
+
+1. Find all Java installations:
+   ```powershell
+   where.exe java
+   ```
+
+2. Check which version each path points to:
+   ```powershell
+   "C:\Program Files\Eclipse Adoptium\jdk-21.0.8-hotspot\bin\java.exe" -version
+   ```
+
+3. **Option A - Set JAVA_HOME to override (Recommended):**
+   - Follow the "PERMANENT FIX" section above to set JAVA_HOME to the Java 21 path
+   - This will make Maven use Java 21 even if Java 17 is in PATH
+
+4. **Option B - Uninstall old Java (Clean approach):**
+   - Go to Windows Settings → Apps → Installed Apps
+   - Search for "Java" or "JDK"
+   - Uninstall any Java 17 or older versions
+   - Keep only Java 21
+
+5. After fixing, verify:
+   ```powershell
+   echo $env:JAVA_HOME
+   java -version
+   ```
+   Both should point to Java 21.
 
 ### "Command not found" or "'git' is not recognized"
 
