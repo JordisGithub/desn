@@ -29,3 +29,7 @@ backend/data/
 *.lock.db
 *.trace.db
 backend/data/*.lock.db
+
+# Backend build output
+backend/target/
+target/
