@@ -111,7 +111,7 @@ export default function HeroSection() {
         <HeroHeading as='h1' id='hero-heading' variant='h2'>
           {t("hero_title")}
         </HeroHeading>
-
+joseph test
         <HeroSubheading as='p' variant='h2'>
           {t("hero_subtitle")}
         </HeroSubheading>
