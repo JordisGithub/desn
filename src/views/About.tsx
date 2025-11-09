@@ -9,7 +9,6 @@ import ValuesSection from "../components/about/ValuesSection";
 import OurTeamSection from "../components/about/OurTeamSection";
 import PartnersNetworksSection from "../components/about/PartnersNetworksSection";
 import AboutCTASection from "../components/about/AboutCTASection";
-import Footer from "../components/Footer";
 
 const SkipLink = styled("a")({
   position: "absolute",
@@ -44,7 +43,6 @@ export default function About() {
         <PartnersNetworksSection />
         <AboutCTASection />
       </main>
-      <Footer />
     </>
   );
 }

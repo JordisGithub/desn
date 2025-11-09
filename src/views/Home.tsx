@@ -7,7 +7,6 @@ import GetInvolvedSection from "../components/home/GetInvolvedSection";
 import EventsSection from "../components/home/EventsSection";
 import PartnersSection from "../components/home/PartnersSection";
 import NewsletterSection from "../components/home/NewsletterSection";
-import Footer from "../components/Footer";
 
 const SkipLink = styled("a")({
   position: "absolute",
@@ -40,7 +39,6 @@ export default function Home() {
         <PartnersSection />
         <NewsletterSection />
       </main>
-      <Footer />
     </>
   );
 }

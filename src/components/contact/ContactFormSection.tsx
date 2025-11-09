@@ -13,10 +13,6 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import SendIcon from "@mui/icons-material/Send";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import ShareIcon from "@mui/icons-material/Share";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
 
 const FormSection = styled("section")(({ theme }) => ({
   backgroundColor: "#f9fafb",
@@ -163,25 +159,6 @@ const TimeLabel = styled(Typography)({
   color: "#101828",
   fontWeight: 400,
 });
-
-const SocialCard = styled(Card)(({ theme }) => ({
-  border: "2px solid #e5e7eb",
-  borderRadius: theme.spacing(1.75),
-  boxShadow: "none",
-  padding: theme.spacing(2.75),
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  cursor: "pointer",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    borderColor: "#004c91",
-    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-  },
-  "&:not(:last-child)": {
-    marginBottom: theme.spacing(2.5),
-  },
-}));
 
 export default function ContactFormSection() {
   const { t } = useTranslation();

@@ -110,7 +110,7 @@ export default function GetInvolvedSection() {
       aria-labelledby='get-involved-heading'
       style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionHeading as='h2' id='get-involved-heading'>
           {t("get_involved_heading")}
         </SectionHeading>

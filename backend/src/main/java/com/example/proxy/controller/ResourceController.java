@@ -33,6 +33,13 @@ public class ResourceController {
         
         log.info("Fetching resources - type: {}, search: {}", type, search);
         
+        // Add cache control headers (5 minutes) for performance
+        return ResponseEntity.ok()
+                .cacheControl(org.springframework.http.CacheControl.maxAge(5, java.util.concurrent.TimeUnit.MINUTES))
+                .body(getResourcesData(type, search));
+    }
+    
+    private Map<String, Object> getResourcesData(String type, String search) {
         List<Resource> resources;
         
         if (type != null && search != null) {
@@ -52,14 +59,17 @@ public class ResourceController {
         response.put("total", resources.size());
         response.put("typeCounts", typeCounts);
         
-        return ResponseEntity.ok(response);
+        return response;
     }
     
     @GetMapping("/featured")
     public ResponseEntity<List<Resource>> getFeaturedResources() {
         log.info("Fetching featured resources");
         List<Resource> resources = resourceService.getFeaturedResources();
-        return ResponseEntity.ok(resources);
+        // Cache featured resources for 10 minutes
+        return ResponseEntity.ok()
+                .cacheControl(org.springframework.http.CacheControl.maxAge(10, java.util.concurrent.TimeUnit.MINUTES))
+                .body(resources);
     }
     
     @GetMapping("/{id}")

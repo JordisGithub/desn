@@ -31,21 +31,30 @@ public class EventController {
     public ResponseEntity<List<Event>> getAllEvents() {
         log.info("Fetching all events");
         List<Event> events = eventService.getAllEvents();
-        return ResponseEntity.ok(events);
+        // Cache all events for 5 minutes
+        return ResponseEntity.ok()
+                .cacheControl(org.springframework.http.CacheControl.maxAge(5, java.util.concurrent.TimeUnit.MINUTES))
+                .body(events);
     }
     
     @GetMapping("/featured")
     public ResponseEntity<List<Event>> getFeaturedEvents() {
         log.info("Fetching featured events");
         List<Event> events = eventService.getFeaturedEvents();
-        return ResponseEntity.ok(events);
+        // Cache featured events for 10 minutes
+        return ResponseEntity.ok()
+                .cacheControl(org.springframework.http.CacheControl.maxAge(10, java.util.concurrent.TimeUnit.MINUTES))
+                .body(events);
     }
     
     @GetMapping("/upcoming")
     public ResponseEntity<List<Event>> getUpcomingEvents() {
         log.info("Fetching upcoming events");
         List<Event> events = eventService.getUpcomingEvents();
-        return ResponseEntity.ok(events);
+        // Cache upcoming events for 3 minutes (fresher data)
+        return ResponseEntity.ok()
+                .cacheControl(org.springframework.http.CacheControl.maxAge(3, java.util.concurrent.TimeUnit.MINUTES))
+                .body(events);
     }
     
     @GetMapping("/past")

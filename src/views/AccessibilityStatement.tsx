@@ -7,7 +7,6 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import GroupsIcon from "@mui/icons-material/Groups";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import LanguageIcon from "@mui/icons-material/Language";
-import TextFieldsIcon from "@mui/icons-material/TextFields";
 import ContrastIcon from "@mui/icons-material/Contrast";
 import KeyboardIcon from "@mui/icons-material/Keyboard";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -16,7 +15,6 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import VerifiedIcon from "@mui/icons-material/Verified";
 
 // Styled Components
@@ -107,51 +105,6 @@ const LastUpdated = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(5),
   "& strong": {
     fontWeight: 700,
-  },
-}));
-
-const CTAContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  gap: theme.spacing(3),
-  flexWrap: "wrap",
-}));
-
-const PrimaryButton = styled(Link)(({ theme }) => ({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: theme.spacing(1.5),
-  backgroundColor: "#ffffff",
-  color: "#004c91",
-  padding: theme.spacing(2.5, 5),
-  borderRadius: "100px",
-  textDecoration: "none",
-  fontSize: "1.125rem",
-  fontWeight: 500,
-  boxShadow:
-    "0px 20px 25px -5px rgba(0,0,0,0.1), 0px 8px 10px -6px rgba(0,0,0,0.1)",
-  transition: "transform 0.2s, box-shadow 0.2s",
-  "&:hover": {
-    transform: "translateY(-2px)",
-    boxShadow:
-      "0px 25px 30px -5px rgba(0,0,0,0.15), 0px 10px 15px -6px rgba(0,0,0,0.15)",
-  },
-}));
-
-const SecondaryButton = styled(Link)(({ theme }) => ({
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "2px solid #ffffff",
-  color: "#ffffff",
-  padding: theme.spacing(2.25, 5),
-  borderRadius: "100px",
-  textDecoration: "none",
-  fontSize: "1.125rem",
-  fontWeight: 500,
-  transition: "background-color 0.2s, transform 0.2s",
-  "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    transform: "translateY(-2px)",
   },
 }));
 

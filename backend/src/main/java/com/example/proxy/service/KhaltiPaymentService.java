@@ -51,6 +51,7 @@ public class KhaltiPaymentService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public PaymentResponse initiatePayment(InitiatePaymentRequest request) {
         try {
             // Generate unique transaction ID
@@ -133,6 +134,7 @@ public class KhaltiPaymentService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public PaymentResponse verifyPayment(String transactionId, String pidx) {
         try {
             PaymentTransaction transaction = paymentRepository.findByTransactionId(transactionId)

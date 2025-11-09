@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { Container, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import Footer from "../components/Footer";
 import EventsHero from "../components/events/EventsHero";
 import UpcomingEvents from "../components/events/UpcomingEvents";
 import FeaturedEvent from "../components/events/FeaturedEvent";
@@ -102,7 +101,6 @@ export default function Events() {
           </Container>
         </CalendarSection>
       </main>
-      <Footer />
     </>
   );
 }

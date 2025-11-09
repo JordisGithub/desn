@@ -1,12 +1,11 @@
 import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import {
-  imgUndpLogo,
-  imgNationalFederationLogo,
-  imgMeedanLogo,
-  imgGovernmentOfNepalLogo,
-} from "../../constants/figmaAssets";
+import meedanLogo from "../../assets/grantors/Meedan.svg";
+import apnicLogo from "../../assets/grantors/APNIC.png";
+import khyentseLogo from "../../assets/grantors/khyentse_foundation.png";
+import undpLogo from "../../assets/grantors/UNDP.png";
+import governmentNepalLogo from "../../assets/grantors/GvmtNepal.png";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -78,19 +77,23 @@ export default function PartnersNetworksSection() {
   const partners = [
     {
       name: "UNDP",
-      logo: imgUndpLogo,
+      logo: undpLogo,
     },
     {
-      name: "National Federation of Disabled Nepal",
-      logo: imgNationalFederationLogo,
+      name: "APNIC",
+      logo: apnicLogo,
+    },
+    {
+      name: "Khyentse Foundation",
+      logo: khyentseLogo,
     },
     {
       name: "Meedan",
-      logo: imgMeedanLogo,
+      logo: meedanLogo,
     },
     {
       name: "Government of Nepal",
-      logo: imgGovernmentOfNepalLogo,
+      logo: governmentNepalLogo,
     },
   ];
 

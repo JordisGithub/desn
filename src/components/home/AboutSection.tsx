@@ -2,7 +2,7 @@ import { Container, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { imgAboutImage } from "../../constants/figmaAssets";
+import imgAboutImage from "../../assets/home/home-aboutus.jpg";
 
 const AboutContainer = styled("section")({
   backgroundColor: "#004c91",
@@ -63,7 +63,7 @@ export default function AboutSection() {
       aria-labelledby='about-heading'
       style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
     >
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={4}
