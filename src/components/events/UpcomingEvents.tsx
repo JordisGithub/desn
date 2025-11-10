@@ -286,6 +286,7 @@ interface EventData {
 export default function UpcomingEvents() {
   const { t } = useTranslation();
   const [currentDate] = useState(new Date(2025, 10, 1)); // November 2025
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [eventStatuses, setEventStatuses] = useState<
@@ -466,7 +467,7 @@ export default function UpcomingEvents() {
 
   return (
     <SectionContainer aria-labelledby='upcoming-events-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='upcoming-events-heading'>
           {t("events_upcoming_title")}
         </SectionTitle>
@@ -497,6 +498,12 @@ export default function UpcomingEvents() {
                     isToday={dayInfo.isToday}
                     hasEvent={dayInfo.hasEvent}
                     isOtherMonth={dayInfo.isOtherMonth}
+                    onClick={() =>
+                      !dayInfo.isOtherMonth && setSelectedDate(dayInfo.day)
+                    }
+                    sx={{
+                      cursor: dayInfo.isOtherMonth ? "default" : "pointer",
+                    }}
                   >
                     {dayInfo.day}
                   </DayCell>
@@ -514,69 +521,149 @@ export default function UpcomingEvents() {
 
           {/* Event Details */}
           <EventsColumn>
-            <EventsHeader>Event Details</EventsHeader>
-            {events.map((event) => {
-              const status = eventStatuses[event.eventId];
-              const isFull = status?.isFull || false;
+            <EventsHeader>
+              {selectedDate
+                ? `Events on November ${selectedDate}`
+                : "Event Details"}
+            </EventsHeader>
+            {selectedDate
+              ? events
+                  .filter((event) => event.calendarDate === selectedDate)
+                  .map((event) => {
+                    const status = eventStatuses[event.eventId];
+                    const isFull = status?.isFull || false;
 
-              return (
-                <EventCard key={event.id}>
-                  <BadgeContainer>
-                    <EventBadge label={event.type} color='primary' />
-                    <EventBadge label={event.organizer} color='secondary' />
-                    {status && (
-                      <Chip
-                        label={`${status.availableSpots} spots left`}
-                        size='small'
+                    return (
+                      <EventCard key={event.id}>
+                        <BadgeContainer>
+                          <EventBadge label={event.type} color='primary' />
+                          <EventBadge
+                            label={event.organizer}
+                            color='secondary'
+                          />
+                          {status && (
+                            <Chip
+                              label={`${status.availableSpots} spots left`}
+                              size='small'
+                              sx={{
+                                backgroundColor:
+                                  status.availableSpots < 10
+                                    ? "#ffebee"
+                                    : "#e8f5e9",
+                                color:
+                                  status.availableSpots < 10
+                                    ? "#c62828"
+                                    : "#2e7d32",
+                                fontSize: "0.75rem",
+                                fontWeight: 500,
+                                height: "22px",
+                              }}
+                            />
+                          )}
+                        </BadgeContainer>
+
+                        <EventTitle>{event.title}</EventTitle>
+                        <EventDescription>{event.description}</EventDescription>
+
+                        <EventMeta>
+                          <MetaItem>
+                            <CalendarTodayIcon />
+                            <MetaText>{event.date}</MetaText>
+                          </MetaItem>
+                          <MetaItem>
+                            <AccessTimeIcon />
+                            <MetaText>{event.time}</MetaText>
+                          </MetaItem>
+                          <MetaItem>
+                            <LocationOnIcon />
+                            <MetaText>{event.location}</MetaText>
+                          </MetaItem>
+                        </EventMeta>
+
+                        <RegisterButton
+                          endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
+                          onClick={() => handleRegisterClick(event)}
+                          disabled={isFull}
+                          sx={{
+                            backgroundColor: isFull ? "#e0e0e0" : "#004c91",
+                            color: isFull ? "#9e9e9e" : "white",
+                            cursor: isFull ? "not-allowed" : "pointer",
+                            "&:hover": {
+                              backgroundColor: isFull ? "#e0e0e0" : "#003d73",
+                            },
+                          }}
+                        >
+                          {isFull ? "Event Full" : "Register Now"}
+                        </RegisterButton>
+                      </EventCard>
+                    );
+                  })
+              : events.map((event) => {
+                  const status = eventStatuses[event.eventId];
+                  const isFull = status?.isFull || false;
+
+                  return (
+                    <EventCard key={event.id}>
+                      <BadgeContainer>
+                        <EventBadge label={event.type} color='primary' />
+                        <EventBadge label={event.organizer} color='secondary' />
+                        {status && (
+                          <Chip
+                            label={`${status.availableSpots} spots left`}
+                            size='small'
+                            sx={{
+                              backgroundColor:
+                                status.availableSpots < 10
+                                  ? "#ffebee"
+                                  : "#e8f5e9",
+                              color:
+                                status.availableSpots < 10
+                                  ? "#c62828"
+                                  : "#2e7d32",
+                              fontSize: "0.75rem",
+                              fontWeight: 500,
+                              height: "22px",
+                            }}
+                          />
+                        )}
+                      </BadgeContainer>
+
+                      <EventTitle>{event.title}</EventTitle>
+                      <EventDescription>{event.description}</EventDescription>
+
+                      <EventMeta>
+                        <MetaItem>
+                          <CalendarTodayIcon />
+                          <MetaText>{event.date}</MetaText>
+                        </MetaItem>
+                        <MetaItem>
+                          <AccessTimeIcon />
+                          <MetaText>{event.time}</MetaText>
+                        </MetaItem>
+                        <MetaItem>
+                          <LocationOnIcon />
+                          <MetaText>{event.location}</MetaText>
+                        </MetaItem>
+                      </EventMeta>
+
+                      <RegisterButton
+                        endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
+                        onClick={() => handleRegisterClick(event)}
+                        disabled={isFull}
                         sx={{
-                          backgroundColor:
-                            status.availableSpots < 10 ? "#ffebee" : "#e8f5e9",
-                          color:
-                            status.availableSpots < 10 ? "#c62828" : "#2e7d32",
-                          fontSize: "0.75rem",
-                          fontWeight: 500,
-                          height: "22px",
+                          backgroundColor: isFull ? "#e0e0e0" : "#004c91",
+                          color: isFull ? "#9e9e9e" : "white",
+                          cursor: isFull ? "not-allowed" : "pointer",
+                          "&:hover": {
+                            backgroundColor: isFull ? "#e0e0e0" : "#003d73",
+                          },
                         }}
-                      />
-                    )}
-                  </BadgeContainer>
-
-                  <EventTitle>{event.title}</EventTitle>
-                  <EventDescription>{event.description}</EventDescription>
-
-                  <EventMeta>
-                    <MetaItem>
-                      <CalendarTodayIcon />
-                      <MetaText>{event.date}</MetaText>
-                    </MetaItem>
-                    <MetaItem>
-                      <AccessTimeIcon />
-                      <MetaText>{event.time}</MetaText>
-                    </MetaItem>
-                    <MetaItem>
-                      <LocationOnIcon />
-                      <MetaText>{event.location}</MetaText>
-                    </MetaItem>
-                  </EventMeta>
-
-                  <RegisterButton
-                    endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
-                    onClick={() => handleRegisterClick(event)}
-                    disabled={isFull}
-                    sx={{
-                      backgroundColor: isFull ? "#e0e0e0" : "#004c91",
-                      color: isFull ? "#9e9e9e" : "white",
-                      cursor: isFull ? "not-allowed" : "pointer",
-                      "&:hover": {
-                        backgroundColor: isFull ? "#e0e0e0" : "#003d73",
-                      },
-                    }}
-                  >
-                    {isFull ? "Event Full" : "Register Now"}
-                  </RegisterButton>
-                </EventCard>
-              );
-            })}
+                      >
+                        {isFull ? "Event Full" : "Register Now"}
+                      </RegisterButton>
+                    </EventCard>
+                  );
+                })}
           </EventsColumn>
         </ContentGrid>
       </Container>

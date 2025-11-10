@@ -13,7 +13,7 @@ import program2 from "../../assets/home/program2.jpg";
 import program3 from "../../assets/home/program3.jpg";
 import program4 from "../../assets/home/program4.jpg";
 import program5 from "../../assets/home/program5.jpg";
-// import program6 from "../../assets/home/program6.jpg";
+import program6 from "../../assets/home/program6.jpg";
 
 const ProgramsContainer = styled("section")({
   backgroundColor: "white",
@@ -111,13 +111,13 @@ export default function ProgramsSection() {
     {
       titleKey: "program_disability_title",
       descKey: "program_disability_desc",
-      image: program1,
+      image: program2,
       alt: "People with disabilities participating in advocacy and awareness programs",
     },
     {
       titleKey: "program_ict_title",
       descKey: "program_ict_desc",
-      image: program2,
+      image: program1,
       alt: "Person using assistive technology and accessible digital tools",
     },
     {
@@ -133,9 +133,15 @@ export default function ProgramsSection() {
       alt: "Youth with disabilities learning practical life skills and education",
     },
     {
+      titleKey: "program_women_title",
+      descKey: "program_women_desc",
+      image: program5,
+      alt: "Community members participating in accessibility and awareness initiatives",
+    },
+    {
       titleKey: "program_community_title",
       descKey: "program_community_desc",
-      image: program5,
+      image: program6,
       alt: "Community members participating in accessibility and awareness initiatives",
     },
   ];
@@ -154,10 +160,17 @@ export default function ProgramsSection() {
           {programs.map((program, index) => (
             <ProgramCard key={index}>
               <CardMedia
-                component='img'
-                height='192'
+                component='div'
                 image={program.image}
-                alt={program.alt}
+                sx={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  flexShrink: 0,
+                }}
+                role='img'
+                aria-label={program.alt}
               />
               <CardContent
                 sx={{

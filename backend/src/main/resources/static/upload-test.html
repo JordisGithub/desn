@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DESN - File Upload Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #004c91 0%, #00a77f 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 600px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      h1 {
+        color: #004c91;
+        margin-bottom: 10px;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      select,
+      input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      select:focus,
+      input[type="file"]:focus {
+        outline: none;
+        border-color: #004c91;
+      }
+
+      .file-input-wrapper {
+        position: relative;
+        border: 2px dashed #e0e0e0;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .file-input-wrapper:hover {
+        border-color: #004c91;
+        background: #f5f5f5;
+      }
+
+      .file-input-wrapper.dragover {
+        border-color: #004c91;
+        background: #e3f2fd;
+      }
+
+      input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+      }
+
+      .file-info {
+        color: #666;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background: #004c91;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      button:hover:not(:disabled) {
+        background: #003d73;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .message {
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 14px;
+        display: none;
+      }
+
+      .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .message.show {
+        display: block;
+      }
+
+      .response-details {
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        font-size: 12px;
+        word-break: break-all;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.6s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📄 DESN File Upload</h1>
+      <p class="subtitle">Upload PDF resources for the Publications page</p>
+
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="category">Resource Category</label>
+          <select id="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="annual-report">Annual Report</option>
+            <option value="policy-brief">Policy Brief</option>
+            <option value="training-manual">Training Manual</option>
+            <option value="research">Research</option>
+            <option value="guideline">Guideline</option>
+            <option value="newsletter">Newsletter</option>
+            <option value="video">Video</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>PDF File (Max 10MB)</label>
+          <div class="file-input-wrapper" id="fileDropZone">
+            <input
+              type="file"
+              id="fileInput"
+              accept=".pdf,application/pdf"
+              required
+            />
+            <div>
+              <p style="font-size: 18px; margin-bottom: 8px">📎</p>
+              <p style="color: #004c91; font-weight: 600">
+                Click to browse or drag & drop
+              </p>
+              <p class="file-info">Only PDF files up to 10MB</p>
+            </div>
+          </div>
+          <div
+            id="selectedFile"
+            class="file-info"
+            style="margin-top: 12px"
+          ></div>
+        </div>
+
+        <button type="submit" id="uploadBtn">Upload File</button>
+      </form>
+
+      <div id="message" class="message"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("uploadForm");
+      const fileInput = document.getElementById("fileInput");
+      const categorySelect = document.getElementById("category");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const message = document.getElementById("message");
+      const selectedFileDiv = document.getElementById("selectedFile");
+      const fileDropZone = document.getElementById("fileDropZone");
+
+      // File selection handler
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          displayFileInfo(file);
+        }
+      });
+
+      // Drag and drop handlers
+      fileDropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        fileDropZone.classList.add("dragover");
+      });
+
+      fileDropZone.addEventListener("dragleave", () => {
+        fileDropZone.classList.remove("dragover");
+      });
+
+      fileDropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        fileDropZone.classList.remove("dragover");
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          displayFileInfo(files[0]);
+        }
+      });
+
+      function displayFileInfo(file) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        selectedFileDiv.innerHTML = `
+                <strong>Selected:</strong> ${file.name} (${sizeMB} MB)
+            `;
+      }
+
+      // Form submission
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const file = fileInput.files[0];
+        const category = categorySelect.value;
+
+        if (!file || !category) {
+          showMessage("Please select both a category and a file.", "error");
+          return;
+        }
+
+        // Validate file size (10MB)
+        if (file.size > 10 * 1024 * 1024) {
+          showMessage("File size exceeds 10MB limit.", "error");
+          return;
+        }
+
+        // Validate file type
+        if (file.type !== "application/pdf") {
+          showMessage("Only PDF files are allowed.", "error");
+          return;
+        }
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("category", category);
+
+        // Disable button and show loading
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = '<span class="spinner"></span>Uploading...';
+        message.classList.remove("show");
+
+        try {
+          const response = await fetch(
+            "http://localhost:8080/api/files/upload",
+            {
+              method: "POST",
+              body: formData,
+              // Add authorization header if you have a token:
+              // headers: {
+              //     'Authorization': 'Bearer YOUR_JWT_TOKEN_HERE'
+              // }
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            showMessage(
+              `✅ ${data.message}`,
+              "success",
+              `<div class="response-details">
+                            <strong>File URL:</strong> ${data.fileUrl}<br>
+                            <strong>File Path:</strong> ${data.filePath}<br>
+                            <strong>Category:</strong> ${data.category}<br>
+                            <strong>Size:</strong> ${(
+                              data.fileSize / 1024
+                            ).toFixed(2)} KB
+                        </div>`
+            );
+
+            // Reset form
+            form.reset();
+            selectedFileDiv.innerHTML = "";
+          } else {
+            showMessage(`❌ ${data.message || "Upload failed"}`, "error");
+          }
+        } catch (error) {
+          console.error("Upload error:", error);
+          showMessage(
+            "❌ Network error. Make sure the backend is running on port 8080.",
+            "error"
+          );
+        } finally {
+          uploadBtn.disabled = false;
+          uploadBtn.innerHTML = "Upload File";
+        }
+      });
+
+      function showMessage(text, type, details = "") {
+        message.className = `message ${type} show`;
+        message.innerHTML = text + details;
+      }
+    </script>
+  </body>
+</html>

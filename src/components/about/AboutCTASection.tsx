@@ -86,7 +86,7 @@ export default function AboutCTASection() {
 
   return (
     <CTAContainer aria-labelledby='cta-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <CTATitle variant='h2' id='cta-heading'>
           {t("about_cta_title")}
         </CTATitle>

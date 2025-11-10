@@ -348,12 +348,9 @@ const Resources: React.FC = () => {
           background:
             "linear-gradient(135deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
           color: "white",
-          minHeight: { xs: "400px", sm: "450px", md: "500px" },
-          py: { xs: 6, sm: 8, md: 10 },
+          py: 8,
           position: "relative",
           overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
         }}
       >
         {/* Background decorative elements */}
@@ -408,88 +405,13 @@ const Resources: React.FC = () => {
           <Typography variant='h6' sx={{ mb: 4, maxWidth: 800, opacity: 0.95 }}>
             {t("resources.hero_description")}
           </Typography>
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-            <Button
-              variant='contained'
-              size='large'
-              sx={{
-                bgcolor: "white",
-                color: "primary.main",
-                "&:hover": { bgcolor: "grey.100" },
-                boxShadow: 3,
-              }}
-              href='#all-resources'
-            >
-              {t("resources.browse_resources")}
-            </Button>
-            <Button
-              variant='outlined'
-              size='large'
-              sx={{
-                borderColor: "white",
-                color: "white",
-                "&:hover": { borderColor: "grey.300" },
-              }}
-              href='#featured'
-            >
-              {t("resources.featured_content")}
-            </Button>
-          </Box>
-        </Container>
-      </Box>
-
-      {/* Featured Publications Section */}
-      <Box id='featured' sx={{ py: 10, bgcolor: "grey.50" }}>
-        <Container maxWidth='lg'>
-          <Typography
-            variant='h3'
-            component='h2'
-            align='center'
-            gutterBottom
-            color='primary'
-          >
-            {t("resources.featured_title")}
-          </Typography>
-          <Typography
-            variant='body1'
-            align='center'
-            color='text.secondary'
-            sx={{ mb: 6 }}
-          >
-            {t("resources.featured_description")}
-          </Typography>
-
-          {featuredLoading ? (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: 4,
-              }}
-            >
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} variant='rectangular' height={400} />
-              ))}
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: 4,
-              }}
-            >
-              {featuredResources.map((resource) => (
-                <ResourceCard key={resource.id} resource={resource} />
-              ))}
-            </Box>
-          )}
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}></Box>
         </Container>
       </Box>
 
       {/* All Resources Section */}
       <Box id='all-resources' sx={{ py: 10 }}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <Typography
             variant='h3'
             component='h2'
@@ -681,8 +603,13 @@ const Resources: React.FC = () => {
           }}
         />
         <Container
-          maxWidth='md'
-          sx={{ position: "relative", zIndex: 1, textAlign: "center" }}
+          maxWidth='xl'
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            textAlign: "center",
+            px: { xs: 2, sm: 3, md: 6 },
+          }}
         >
           <Typography variant='h3' gutterBottom fontWeight='bold'>
             {t("resources.stay_updated_title")}

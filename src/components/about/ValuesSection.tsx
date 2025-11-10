@@ -104,7 +104,7 @@ export default function ValuesSection() {
 
   return (
     <SectionContainer aria-labelledby='values-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='values-heading'>
           {t("about_values_title")}
         </SectionTitle>

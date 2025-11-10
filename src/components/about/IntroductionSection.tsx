@@ -88,7 +88,7 @@ export default function IntroductionSection() {
 
   return (
     <SectionContainer aria-labelledby='intro-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Box textAlign='center' mb={6}>
           <SectionTitle variant='h2' id='intro-heading'>
             {t("about_intro_section_title")}

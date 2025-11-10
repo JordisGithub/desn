@@ -1,9 +1,9 @@
-import { Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import nepalHeroImage from "../../assets/home/nepal-hero-image.png";
 
-
+// Main hero container
 const HeroContainer = styled("section")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   paddingTop: theme.spacing(6),
@@ -18,119 +18,197 @@ const HeroContainer = styled("section")(({ theme }) => ({
   },
 }));
 
+// Combined wrapper for text and image
+const HeroContentWrapper = styled(Box)({
+  position: "relative",
+  overflow: "hidden",
+  borderRadius: "24px",
+  boxShadow: "0px 12px 40px rgba(0, 76, 145, 0.15)",
+});
+
+// Text overlay with darker sunset brownish gradient for better contrast
+const HeroTextOverlay = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 2,
+  background:
+    "linear-gradient(180deg, rgba(139, 69, 19, 0.92) 0%, rgba(160, 82, 45, 0.88) 10%, rgba(184, 94, 50, 0.82) 20%, rgba(205, 133, 63, 0.75) 35%, rgba(222, 184, 135, 0.5) 50%, rgba(245, 222, 179, 0) 100%)",
+  padding: theme.spacing(0.5, 3, 8, 3),
+  [theme.breakpoints.up("md")]: {
+    padding: theme.spacing(1, 6, 12, 6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(0.5, 2, 6, 2),
+  },
+}));
+
+// Hero image
+const HeroImage = styled("img")(({ theme }) => ({
+  width: "100%",
+  height: "auto",
+  minHeight: "600px",
+  maxHeight: "750px",
+  objectFit: "cover",
+  display: "block",
+  [theme.breakpoints.down("md")]: {
+    minHeight: "500px",
+    maxHeight: "600px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    minHeight: "400px",
+    maxHeight: "500px",
+  },
+}));
+
+// Organization name heading - single line
 const HeroHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2rem",
+  fontSize: "2.25rem",
   fontWeight: 700,
-  color: "#004c91",
-  marginBottom: theme.spacing(3),
+  color: "#ffffff",
+  marginBottom: theme.spacing(2),
   lineHeight: 1.2,
   textAlign: "center",
+  textShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
+  letterSpacing: "-0.02em",
   [theme.breakpoints.up("md")]: {
     fontSize: "3rem",
   },
-}));
-
-const HeroSubheading = styled(Typography)(({ theme }) => ({
-  fontSize: "1.5rem",
-  fontWeight: 600,
-  color: "#004c91",
-  marginBottom: theme.spacing(2),
-  textAlign: "center",
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  [theme.breakpoints.up("md")]: {
-    fontSize: "2rem",
-    paddingLeft: theme.spacing(8),
-    paddingRight: theme.spacing(8),
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.5rem",
   },
 }));
 
+// Tagline/mission text - second line
 const HeroTagline = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
-  fontWeight: 400,
-  color: "#364153",
-  marginBottom: theme.spacing(4),
+  fontSize: "1.375rem",
+  fontWeight: 600,
+  color: "#ffffff",
   textAlign: "center",
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  lineHeight: 1.6,
+  lineHeight: 1.3,
+  marginBottom: theme.spacing(1.5),
+  textShadow: "0 3px 8px rgba(0, 0, 0, 0.4)",
+  letterSpacing: "-0.01em",
   [theme.breakpoints.up("md")]: {
-    fontSize: "1.25rem",
-    paddingLeft: theme.spacing(10),
-    paddingRight: theme.spacing(10),
-  },
-}));
-
-const HeroImage = styled("img")(({ theme }) => ({
-  width: "100%",
-  maxHeight: "600px",
-  objectFit: "cover",
-  borderRadius: theme.spacing(2),
-  marginBottom: theme.spacing(4),
-  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
-  transition: "transform 0.3s ease",
-  [theme.breakpoints.down("md")]: {
-    maxHeight: "400px",
-    borderRadius: theme.spacing(1),
+    fontSize: "1.75rem",
   },
   [theme.breakpoints.down("sm")]: {
-    maxHeight: "300px",
-  },
-}));
-
-const MissionStatement = styled(Typography)(({ theme }) => ({
-  fontSize: "1.5rem",
-  fontWeight: 500,
-  color: "#004c91",
-  marginBottom: theme.spacing(2),
-  textAlign: "center",
-  [theme.breakpoints.up("md")]: {
-    fontSize: "2rem",
-  },
-}));
-
-const DescriptionText = styled(Typography)(({ theme }) => ({
-  fontSize: "1rem",
-  color: "#364153",
-  textAlign: "center",
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  lineHeight: 1.6,
-  [theme.breakpoints.up("md")]: {
     fontSize: "1.125rem",
-    paddingLeft: theme.spacing(12),
-    paddingRight: theme.spacing(12),
   },
+}));
+
+// Additional description text - third line
+const HeroDescription = styled(Typography)(({ theme }) => ({
+  fontSize: "1.125rem",
+  fontWeight: 500,
+  color: "#ffffff",
+  textAlign: "center",
+  lineHeight: 1.4,
+  textShadow: "0 2px 6px rgba(0, 0, 0, 0.4)",
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.25rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+  },
+}));
+
+// Copy block that appears under the hero image
+const HeroCopyWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  marginTop: theme.spacing(4),
+  [theme.breakpoints.down("sm")]: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
+const HeroCopyCard = styled(Box)(({ theme }) => ({
+  maxWidth: 1100,
+  background:
+    "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.95))",
+  color: theme.palette.text.primary,
+  padding: theme.spacing(4),
+  borderRadius: 14,
+  boxShadow: "0 10px 30px rgba(2,6,23,0.08)",
+  borderLeft: `6px solid ${theme.palette.primary.main}`,
+  lineHeight: 1.6,
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(3),
+    margin: theme.spacing(0, 2),
+  },
+}));
+
+const HeroCopyHeading = styled(Typography)(({ theme }) => ({
+  fontSize: "1rem",
+  fontWeight: 700,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(1),
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+}));
+
+const HeroCopyText = styled(Typography)(({ theme }) => ({
+  fontSize: "1rem",
+  color: theme.palette.text.secondary,
 }));
 
 export default function HeroSection() {
   const { t } = useTranslation();
 
   return (
-    <HeroContainer aria-labelledby='hero-heading'>
+    <HeroContainer aria-labelledby='hero-heading' role='banner'>
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <HeroHeading as='h1' id='hero-heading' variant='h2'>
-          {t("hero_title")}
-        </HeroHeading>
-        <HeroSubheading as='p' variant='h2'>
-          {t("hero_subtitle")}
-        </HeroSubheading>
+        <HeroContentWrapper>
+          {/* Text overlay with sunset gradient */}
+          <HeroTextOverlay>
+            <Container maxWidth='lg'>
+              {/* Main heading - Line 1 */}
+              <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
+                {t("hero_title")}
+              </HeroHeading>
 
-        <HeroTagline variant='body1'>{t("hero_tagline")}</HeroTagline>
+              {/* Mission statement - Line 2 */}
+              <HeroTagline as='p' variant='h2'>
+                {t("hero_subtitle")}
+              </HeroTagline>
 
-        <HeroImage src={nepalHeroImage} alt={t("hero_alt")} />
+              {/* Additional context - Line 3 */}
+              <HeroDescription as='p'>{t("hero_tagline")}</HeroDescription>
+            </Container>
+          </HeroTextOverlay>
 
-        <MissionStatement variant='h3'>
-          {t("mission_statement")}
-        </MissionStatement>
+          {/* Hero image */}
+          <HeroImage src={nepalHeroImage} alt={t("hero_alt")} loading='eager' />
+        </HeroContentWrapper>
 
-        <DescriptionText variant='body1' sx={{ mb: 2 }}>
-          {t("hero_description_1")}
-        </DescriptionText>
+        {/* Styled copy block under the hero image */}
+        <HeroCopyWrapper aria-label='About DESN'>
+          <HeroCopyCard role='region' aria-labelledby='desn-about-heading'>
+            <HeroCopyHeading id='desn-about-heading'>
+              Creating a rights-based, barrier-free and inclusive society
+            </HeroCopyHeading>
 
-        <DescriptionText variant='body1'>
-          {t("hero_description_2")}
-        </DescriptionText>
+            <HeroCopyText paragraph>
+              Creating a rights-based, barrier-free and inclusive society for
+              persons with disabilities, helpless individuals, and single women
+              across Nepal. The Disability Empowerment Society Nepal (DESN) is a
+              non-profit, non-political social organization founded and led by
+              persons with disabilities in 2004 (2060 B.S.). Established under
+              the Organization Registration Act, 1972, DESN works for the
+              welfare and empowerment of persons with disabilities, helpless
+              people, and single women through advocacy, education, technology,
+              and livelihood support.
+            </HeroCopyText>
+
+            <HeroCopyText sx={{ fontWeight: 700, mt: 1 }}>
+              Our mission is to build an inclusive Nepal where everyone,
+              regardless of ability, can live independently, with dignity and
+              equal opportunities.
+            </HeroCopyText>
+          </HeroCopyCard>
+        </HeroCopyWrapper>
       </Container>
     </HeroContainer>
   );

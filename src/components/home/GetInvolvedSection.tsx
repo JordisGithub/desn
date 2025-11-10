@@ -4,10 +4,8 @@ import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DonationPaymentModal from "../payment/DonationPaymentModal";
-import {
-  imgGetInvolvedImage1,
-  imgGetInvolvedImage2,
-} from "../../constants/figmaAssets";
+import getinvolved1 from "../../assets/home/getinvolved1.jpg";
+import getinvolved2 from "../../assets/home/getinvolved2.jpg";
 
 const GetInvolvedContainer = styled("section")({
   backgroundColor: "#004c91",
@@ -123,11 +121,11 @@ export default function GetInvolvedSection() {
           <div style={{ flex: "1 1 50%", width: "100%" }}>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
               <VolunteerImage
-                src={imgGetInvolvedImage1}
+                src={getinvolved1}
                 alt={t("get_involved_alt_1")}
               />
               <VolunteerImage
-                src={imgGetInvolvedImage2}
+                src={getinvolved2}
                 alt={t("get_involved_alt_2")}
               />
             </Stack>

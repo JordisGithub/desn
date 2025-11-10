@@ -123,7 +123,7 @@ export default function FeaturedEvent() {
 
   return (
     <SectionContainer aria-labelledby='featured-event-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentGrid>
           <ContentColumn>
             <Box>
