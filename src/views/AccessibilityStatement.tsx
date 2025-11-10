@@ -59,7 +59,6 @@ const HeroSection = styled(Box)(({ theme }) => ({
 const HeroContent = styled(Container)({
   position: "relative",
   zIndex: 1,
-  maxWidth: "1000px !important",
 });
 
 const Badge = styled(Box)(({ theme }) => ({
@@ -278,7 +277,7 @@ export default function AccessibilityStatement() {
 
       {/* Commitment Section */}
       <Section sx={{ backgroundColor: "#ffffff" }}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <SectionTitle variant='h2'>Our Accessibility Commitment</SectionTitle>
           <SectionSubtitle>
             As an organization dedicated to disability empowerment,
@@ -436,7 +435,7 @@ export default function AccessibilityStatement() {
 
       {/* Features Section */}
       <Section id='features' sx={{ backgroundColor: "#f9fafb" }}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <SectionTitle variant='h2'>Accessibility Features</SectionTitle>
           <SectionSubtitle>
             Our website includes comprehensive accessibility features to ensure
@@ -994,7 +993,7 @@ export default function AccessibilityStatement() {
 
       {/* Contact Section */}
       <Section id='contact' sx={{ backgroundColor: "#ffffff" }}>
-        <Container maxWidth='lg'>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <SectionTitle variant='h2'>Report Accessibility Issues</SectionTitle>
           <SectionSubtitle>
             We welcome your feedback on the accessibility of our website. Please

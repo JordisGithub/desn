@@ -220,8 +220,8 @@ const Header: React.FC = () => {
       try {
         const results = await SearchService.search(searchQuery, 8);
         setSearchResults(results);
-  setSearchOpen(true);
-  setActiveIndex(-1);
+        setSearchOpen(true);
+        setActiveIndex(-1);
       } catch (err) {
         console.error("Search error", err);
         setSearchResults([]);
@@ -241,7 +241,8 @@ const Header: React.FC = () => {
       setActiveIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const sel = activeIndex >= 0 ? searchResults[activeIndex] : searchResults[0];
+      const sel =
+        activeIndex >= 0 ? searchResults[activeIndex] : searchResults[0];
       if (sel) {
         setSearchOpen(false);
         setSearchQuery("");

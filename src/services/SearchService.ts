@@ -25,7 +25,9 @@ class SearchService {
 
     try {
       // Try sessionStorage cache first
-      const cached = typeof window !== "undefined" && sessionStorage.getItem("desn_search_index");
+      const cached =
+        typeof window !== "undefined" &&
+        sessionStorage.getItem("desn_search_index");
       if (cached) {
         this.items = JSON.parse(cached) as SearchItem[];
       } else {
@@ -34,8 +36,10 @@ class SearchService {
           ApiService.get("/api/events"),
         ]);
 
-  const resources: Array<Record<string, unknown>> = resourcesRes?.resources || resourcesRes || [];
-  const events: Array<Record<string, unknown>> = eventsRes?.events || eventsRes || [];
+        const resources: Array<Record<string, unknown>> =
+          resourcesRes?.resources || resourcesRes || [];
+        const events: Array<Record<string, unknown>> =
+          eventsRes?.events || eventsRes || [];
 
         const resourceItems: SearchItem[] = resources.map((r) => {
           const rr = r as Record<string, unknown>;
@@ -63,20 +67,65 @@ class SearchService {
         });
 
         const pageItems: SearchItem[] = [
-          { id: "page-home", type: "page", title: "Home", url: "/", excerpt: "" },
-          { id: "page-about", type: "page", title: "About", url: "/about", excerpt: "" },
-          { id: "page-get-involved", type: "page", title: "Get Involved", url: "/get-involved", excerpt: "" },
-          { id: "page-events", type: "page", title: "Events", url: "/events", excerpt: "" },
-          { id: "page-resources", type: "page", title: "Resources", url: "/resources", excerpt: "" },
-          { id: "page-programs", type: "page", title: "Programs", url: "/programs", excerpt: "" },
-          { id: "page-contact", type: "page", title: "Contact", url: "/contact", excerpt: "" },
+          {
+            id: "page-home",
+            type: "page",
+            title: "Home",
+            url: "/",
+            excerpt: "",
+          },
+          {
+            id: "page-about",
+            type: "page",
+            title: "About",
+            url: "/about",
+            excerpt: "",
+          },
+          {
+            id: "page-get-involved",
+            type: "page",
+            title: "Get Involved",
+            url: "/get-involved",
+            excerpt: "",
+          },
+          {
+            id: "page-events",
+            type: "page",
+            title: "Events",
+            url: "/events",
+            excerpt: "",
+          },
+          {
+            id: "page-resources",
+            type: "page",
+            title: "Resources",
+            url: "/resources",
+            excerpt: "",
+          },
+          {
+            id: "page-programs",
+            type: "page",
+            title: "Programs",
+            url: "/programs",
+            excerpt: "",
+          },
+          {
+            id: "page-contact",
+            type: "page",
+            title: "Contact",
+            url: "/contact",
+            excerpt: "",
+          },
         ];
 
         this.items = [...resourceItems, ...eventItems, ...pageItems];
 
         try {
           if (typeof window !== "undefined") {
-            sessionStorage.setItem("desn_search_index", JSON.stringify(this.items));
+            sessionStorage.setItem(
+              "desn_search_index",
+              JSON.stringify(this.items)
+            );
           }
         } catch {
           // ignore sessionStorage errors
@@ -105,8 +154,12 @@ class SearchService {
     // If query is long enough, prefer server-side search (faster for large datasets)
     if (query.trim().length >= 4) {
       try {
-        const res = await ApiService.get(`/api/search?q=${encodeURIComponent(query)}&limit=${limit}`);
-        const resources = (res?.resources || []) as Array<Record<string, unknown>>;
+        const res = await ApiService.get(
+          `/api/search?q=${encodeURIComponent(query)}&limit=${limit}`
+        );
+        const resources = (res?.resources || []) as Array<
+          Record<string, unknown>
+        >;
         const events = (res?.events || []) as Array<Record<string, unknown>>;
 
         const items: SearchItem[] = [
@@ -153,7 +206,8 @@ class SearchService {
   // Force refresh (clear cache and rebuild)
   async refresh(): Promise<void> {
     try {
-      if (typeof window !== "undefined") sessionStorage.removeItem("desn_search_index");
+      if (typeof window !== "undefined")
+        sessionStorage.removeItem("desn_search_index");
     } catch (err) {
       // ignore
     }

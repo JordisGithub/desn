@@ -34,6 +34,7 @@ public class PaymentController {
     public ResponseEntity<?> initiatePayment(
             @Valid @RequestBody InitiatePaymentRequest request,
             BindingResult bindingResult) {
+    log.info("Received payment initiate request: amount={}, donorName={}, donorEmail={}", request.getAmount(), request.getDonorName(), request.getDonorEmail());
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = bindingResult.getFieldErrors().stream()

@@ -42,7 +42,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "optimize-images": "node ./scripts/optimize-images.js"
+    "optimize-images": "node ./scripts/optimize-images.cjs"
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.1.14"

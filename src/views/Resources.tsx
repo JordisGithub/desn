@@ -78,8 +78,6 @@ const Resources: React.FC = () => {
     { key: "video", label: t("resources.resource_types.video"), icon: "🎥" },
   ];
 
-
-
   // Fetch resources based on filters
   useEffect(() => {
     const fetchResources = async () => {
@@ -224,7 +222,8 @@ const Resources: React.FC = () => {
               sx={{
                 height: 200,
                 bgcolor: "grey.200",
-                backgroundImage: "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
+                backgroundImage:
+                  "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}

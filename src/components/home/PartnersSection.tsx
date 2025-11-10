@@ -14,42 +14,69 @@ const PartnersContainer = styled("section")({
 });
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
-  fontWeight: 600,
+  fontSize: "2rem",
+  fontWeight: 700,
   color: "#351c42",
-  marginBottom: theme.spacing(6),
+  marginBottom: theme.spacing(4),
   textAlign: "center",
   textTransform: "capitalize",
+  letterSpacing: "-0.01em",
   [theme.breakpoints.up("md")]: {
-    fontSize: "3rem",
+    fontSize: "2.5rem",
+    marginBottom: theme.spacing(5),
   },
 }));
 
 const PartnersGrid = styled("div")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
-  gap: theme.spacing(4),
+  gap: theme.spacing(2),
+  maxWidth: "1000px",
+  margin: "0 auto",
   [theme.breakpoints.up("sm")]: {
-    gridTemplateColumns: "repeat(4, 1fr)",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: theme.spacing(2.5),
+  },
+  [theme.breakpoints.up("md")]: {
+    gridTemplateColumns: "repeat(6, 1fr)",
+    gap: theme.spacing(3),
   },
 }));
 
 const PartnerCard = styled("div")(({ theme }) => ({
   backgroundColor: "white",
-  padding: theme.spacing(3),
-  borderRadius: theme.spacing(2),
+  padding: theme.spacing(2),
+  borderRadius: theme.spacing(1.5),
   textAlign: "center",
-  minHeight: "128px",
+  minHeight: "80px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
+  },
+  [theme.breakpoints.up("md")]: {
+    padding: theme.spacing(2.5),
+    minHeight: "90px",
+  },
 }));
 
-const PartnerLogo = styled("img")({
+const PartnerLogo = styled("img")(({ theme }) => ({
   width: "100%",
-  height: "100px",
+  height: "60px",
   objectFit: "contain",
-});
+  filter: "grayscale(20%)",
+  transition: "filter 0.2s ease",
+  "&:hover": {
+    filter: "grayscale(0%)",
+  },
+  [theme.breakpoints.up("md")]: {
+    height: "70px",
+  },
+}));
 
 const partners = [
   {
@@ -84,7 +111,7 @@ export default function PartnersSection() {
   return (
     <PartnersContainer
       aria-labelledby='partners-heading'
-      style={{ paddingTop: "5rem", paddingBottom: "5rem" }}
+      style={{ paddingTop: "3.5rem", paddingBottom: "3.5rem" }}
     >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionHeading as='h2' id='partners-heading'>

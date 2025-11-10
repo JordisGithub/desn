@@ -5,7 +5,10 @@ import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import desnLogo from "../../assets/DESN_logo_500x500.jpg";
 import useLazyBackground from "../../hooks/useLazyBackground";
 import type { MutableRefObject } from "react";
-import heroImage from "../../assets/home/about-hero.jpg";
+const heroImageUrl = new URL(
+  "../../assets/home/home-aboutus.jpg",
+  import.meta.url
+).href;
 
 const HeroContainer = styled("section")({
   position: "relative",
@@ -91,7 +94,11 @@ export default function AboutHero() {
   const bgRef = useLazyBackground() as MutableRefObject<HTMLElement | null>;
 
   return (
-  <HeroContainer aria-labelledby='about-hero-heading' data-bg={heroImage} ref={bgRef}>
+    <HeroContainer
+      aria-labelledby='about-hero-heading'
+      data-bg={heroImageUrl}
+      ref={bgRef}
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentWrapper>
           <LogoImage src={desnLogo} alt='DESN Logo' />

@@ -1,19 +1,8 @@
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-} from "@mui/material";
+import { Container, Typography, Card, CardContent } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import program1 from "../../assets/home/program1.jpg";
-import program2 from "../../assets/home/program2.jpg";
-import program3 from "../../assets/home/program3.jpg";
-import program4 from "../../assets/home/program4.jpg";
-import program5 from "../../assets/home/program5.jpg";
-import program6 from "../../assets/home/program6.jpg";
+import OptimizedImage from "../OptimizedImage";
 
 const ProgramsContainer = styled("section")({
   backgroundColor: "white",
@@ -34,38 +23,53 @@ const SectionHeading = styled(Typography)(({ theme }) => ({
 const ProgramsGrid = styled("div")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr",
-  gap: theme.spacing(4),
+  gap: theme.spacing(3),
   [theme.breakpoints.up("sm")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
   },
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
+    gap: theme.spacing(4),
   },
 }));
 
-const ProgramCard = styled(Card)({
+const ProgramCard = styled(Card)(({ theme }) => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
+  borderRadius: theme.spacing(2),
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: "0 8px 24px rgba(0, 76, 145, 0.15)",
+  },
   "&:focus-within": {
     outline: "3px solid #004c91",
     outlineOffset: "2px",
   },
-});
+}));
 
-const ProgramTitle = styled(Typography)({
-  fontSize: "1.25rem",
-  fontWeight: 600,
-  color: "#004c91",
-  marginBottom: "1rem",
-});
-
-const ProgramDescription = styled(Typography)({
+const ProgramTitle = styled(Typography)(({ theme }) => ({
   fontSize: "1rem",
+  fontWeight: 700,
+  color: "#004c91",
+  marginBottom: theme.spacing(1),
+  lineHeight: 1.3,
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.125rem",
+  },
+}));
+
+const ProgramDescription = styled(Typography)(({ theme }) => ({
+  fontSize: "0.875rem",
   lineHeight: 1.5,
-  color: "rgba(0, 0, 0, 0.6)",
-  marginBottom: "1rem",
-});
+  color: "rgba(0, 0, 0, 0.7)",
+  marginBottom: theme.spacing(1.5),
+  [theme.breakpoints.up("md")]: {
+    fontSize: "0.9375rem",
+  },
+}));
 
 const CardLearnMoreButton = styled(Link)(({ theme }) => ({
   backgroundColor: "#004c91",
@@ -111,37 +115,37 @@ export default function ProgramsSection() {
     {
       titleKey: "program_disability_title",
       descKey: "program_disability_desc",
-      image: program2,
+      image: "home/program2.jpg",
       alt: "People with disabilities participating in advocacy and awareness programs",
     },
     {
       titleKey: "program_ict_title",
       descKey: "program_ict_desc",
-      image: program1,
+      image: "home/program1.jpg",
       alt: "Person using assistive technology and accessible digital tools",
     },
     {
       titleKey: "program_livelihood_title",
       descKey: "program_livelihood_desc",
-      image: program3,
+      image: "home/program3.jpg",
       alt: "Persons with disabilities participating in vocational training",
     },
     {
       titleKey: "program_life_skills_title",
       descKey: "program_life_skills_desc",
-      image: program4,
+      image: "home/program4.jpg",
       alt: "Youth with disabilities learning practical life skills and education",
     },
     {
       titleKey: "program_women_title",
       descKey: "program_women_desc",
-      image: program5,
+      image: "home/program5.jpg",
       alt: "Community members participating in accessibility and awareness initiatives",
     },
     {
       titleKey: "program_community_title",
       descKey: "program_community_desc",
-      image: program6,
+      image: "home/program6.jpg",
       alt: "Community members participating in accessibility and awareness initiatives",
     },
   ];
@@ -159,25 +163,36 @@ export default function ProgramsSection() {
         <ProgramsGrid>
           {programs.map((program, index) => (
             <ProgramCard key={index}>
-              <CardMedia
-                component='img'
-                image={program.image}
-                loading='lazy'
-                alt={program.alt}
-                sx={{
+              <div
+                style={{
                   width: "100%",
-                  aspectRatio: "1 / 1",
-                  objectFit: "cover",
-                  objectPosition: "center",
+                  aspectRatio: "16 / 9",
+                  overflow: "hidden",
                   flexShrink: 0,
+                  borderRadius: "16px 16px 0 0",
                 }}
-              />
+              >
+                <OptimizedImage
+                  src={program.image}
+                  alt={program.alt}
+                  loading='lazy'
+                  sizes='(max-width: 600px) 400px, (max-width: 960px) 50vw, 33vw'
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    display: "block",
+                  }}
+                />
+              </div>
               <CardContent
                 sx={{
                   flexGrow: 1,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  p: 2,
                 }}
               >
                 <div>
