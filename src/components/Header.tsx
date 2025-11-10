@@ -193,9 +193,14 @@ const Header: React.FC = () => {
   const handleLanguageClose = (newLang?: "en" | "ne") => {
     if (newLang) {
       setLang(newLang);
-      i18n.changeLanguage(newLang);
+      // Ensure i18n fully changes before closing menu
+      void i18n.changeLanguage(newLang).then(() => {
+        // Force a re-render by creating a new object
+        setLangAnchorEl(null);
+      });
+    } else {
+      setLangAnchorEl(null);
     }
-    setLangAnchorEl(null);
   };
 
   const handleUserMenuClick = (event: React.MouseEvent<HTMLElement>) => {

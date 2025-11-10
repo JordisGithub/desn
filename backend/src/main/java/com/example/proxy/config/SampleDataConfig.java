@@ -20,7 +20,6 @@ public class SampleDataConfig {
     private static final Logger log = LoggerFactory.getLogger(SampleDataConfig.class);
     
     @Bean
-    @SuppressWarnings("null")
     CommandLineRunner initResourceData(ResourceRepository resourceRepository) {
         return args -> {
             // Clear existing data on startup

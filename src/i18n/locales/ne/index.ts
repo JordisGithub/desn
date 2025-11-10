@@ -8,6 +8,7 @@ import payment from "./payment";
 import accessibility from "./accessibility";
 import contact from "./contact";
 import programs from "./programs";
+import events from "./events";
 
 export default {
   ...common,
@@ -17,7 +18,8 @@ export default {
   ...auth,
   ...payment,
   ...accessibility,
-  get_involved,
-  contact,
-  programs,
+  ...get_involved,
+  ...contact,
+  ...programs,
+  ...events,
 };

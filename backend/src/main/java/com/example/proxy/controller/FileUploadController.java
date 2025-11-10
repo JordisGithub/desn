@@ -56,7 +56,6 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         
-        // TODO: Add role check to verify user is admin
         // You can add JWT token validation and role extraction here
         
         try {
@@ -167,7 +166,6 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         
-        // TODO: Add role check to verify user is admin
         // You can add JWT token validation and role extraction here
         
         try {
