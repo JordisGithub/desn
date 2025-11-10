@@ -187,25 +187,15 @@ export default function HeroSection() {
         <HeroCopyWrapper aria-label='About DESN'>
           <HeroCopyCard role='region' aria-labelledby='desn-about-heading'>
             <HeroCopyHeading id='desn-about-heading'>
-              Creating a rights-based, barrier-free and inclusive society
+              {t("hero_copy_heading")}
             </HeroCopyHeading>
 
             <HeroCopyText paragraph>
-              Creating a rights-based, barrier-free and inclusive society for
-              persons with disabilities, helpless individuals, and single women
-              across Nepal. The Disability Empowerment Society Nepal (DESN) is a
-              non-profit, non-political social organization founded and led by
-              persons with disabilities in 2004 (2060 B.S.). Established under
-              the Organization Registration Act, 1972, DESN works for the
-              welfare and empowerment of persons with disabilities, helpless
-              people, and single women through advocacy, education, technology,
-              and livelihood support.
+              {t("hero_copy_description_1")}
             </HeroCopyText>
 
             <HeroCopyText sx={{ fontWeight: 700, mt: 1 }}>
-              Our mission is to build an inclusive Nepal where everyone,
-              regardless of ability, can live independently, with dignity and
-              equal opportunities.
+              {t("hero_copy_description_2")}
             </HeroCopyText>
           </HeroCopyCard>
         </HeroCopyWrapper>
