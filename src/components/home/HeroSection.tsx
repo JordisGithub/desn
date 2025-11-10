@@ -114,6 +114,46 @@ const HeroDescription = styled(Typography)(({ theme }) => ({
   },
 }));
 
+// Copy block that appears under the hero image
+const HeroCopyWrapper = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  marginTop: theme.spacing(4),
+  [theme.breakpoints.down("sm")]: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
+const HeroCopyCard = styled(Box)(({ theme }) => ({
+  maxWidth: 1100,
+  background:
+    "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.95))",
+  color: theme.palette.text.primary,
+  padding: theme.spacing(4),
+  borderRadius: 14,
+  boxShadow: "0 10px 30px rgba(2,6,23,0.08)",
+  borderLeft: `6px solid ${theme.palette.primary.main}`,
+  lineHeight: 1.6,
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(3),
+    margin: theme.spacing(0, 2),
+  },
+}));
+
+const HeroCopyHeading = styled(Typography)(({ theme }) => ({
+  fontSize: "1rem",
+  fontWeight: 700,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(1),
+  textTransform: "uppercase",
+  letterSpacing: "0.08em",
+}));
+
+const HeroCopyText = styled(Typography)(({ theme }) => ({
+  fontSize: "1rem",
+  color: theme.palette.text.secondary,
+}));
+
 export default function HeroSection() {
   const { t } = useTranslation();
 
@@ -142,6 +182,33 @@ export default function HeroSection() {
           {/* Hero image */}
           <HeroImage src={nepalHeroImage} alt={t("hero_alt")} loading='eager' />
         </HeroContentWrapper>
+
+        {/* Styled copy block under the hero image */}
+        <HeroCopyWrapper aria-label='About DESN'>
+          <HeroCopyCard role='region' aria-labelledby='desn-about-heading'>
+            <HeroCopyHeading id='desn-about-heading'>
+              Creating a rights-based, barrier-free and inclusive society
+            </HeroCopyHeading>
+
+            <HeroCopyText paragraph>
+              Creating a rights-based, barrier-free and inclusive society for
+              persons with disabilities, helpless individuals, and single women
+              across Nepal. The Disability Empowerment Society Nepal (DESN) is a
+              non-profit, non-political social organization founded and led by
+              persons with disabilities in 2004 (2060 B.S.). Established under
+              the Organization Registration Act, 1972, DESN works for the
+              welfare and empowerment of persons with disabilities, helpless
+              people, and single women through advocacy, education, technology,
+              and livelihood support.
+            </HeroCopyText>
+
+            <HeroCopyText sx={{ fontWeight: 700, mt: 1 }}>
+              Our mission is to build an inclusive Nepal where everyone,
+              regardless of ability, can live independently, with dignity and
+              equal opportunities.
+            </HeroCopyText>
+          </HeroCopyCard>
+        </HeroCopyWrapper>
       </Container>
     </HeroContainer>
   );

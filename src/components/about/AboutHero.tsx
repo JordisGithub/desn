@@ -6,7 +6,7 @@ import desnLogo from "../../assets/DESN_logo_500x500.jpg";
 
 const HeroContainer = styled("section")({
   position: "relative",
-  minHeight: "600px",
+  height: "500px",
   overflow: "hidden",
   backgroundImage:
     'url("https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920")',

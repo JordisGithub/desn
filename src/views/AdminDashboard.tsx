@@ -24,6 +24,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import EventService from "../services/EventService";
+import ResourceUploadPanel from "../components/admin/ResourceUploadPanel";
 
 const PageContainer = styled(Box)({
   minHeight: "100vh",
@@ -282,6 +283,7 @@ const AdminDashboard: React.FC = () => {
                 id='tab-3'
                 aria-controls='tabpanel-3'
               />
+              <Tab label='Resources' id='tab-4' aria-controls='tabpanel-4' />
             </Tabs>
           </Box>
 
@@ -604,6 +606,10 @@ const AdminDashboard: React.FC = () => {
                     </Accordion>
                   ))
                 )}
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={4}>
+                <ResourceUploadPanel />
               </TabPanel>
             </>
           )}

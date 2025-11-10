@@ -58,7 +58,7 @@ export default function OurTeamSection() {
 
   return (
     <SectionContainer aria-labelledby='team-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Box textAlign='center'>
           <SectionTitle variant='h2' id='team-heading'>
             {t("about_team_title")}

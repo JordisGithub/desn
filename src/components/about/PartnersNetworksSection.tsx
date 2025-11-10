@@ -99,7 +99,7 @@ export default function PartnersNetworksSection() {
 
   return (
     <SectionContainer aria-labelledby='partners-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Box textAlign='center'>
           <SectionTitle variant='h2' id='partners-heading'>
             {t("about_partners_title")}

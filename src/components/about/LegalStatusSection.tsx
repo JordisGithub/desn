@@ -89,7 +89,7 @@ export default function LegalStatusSection() {
 
   return (
     <SectionContainer aria-labelledby='legal-status-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Box>
           <SectionTitle variant='h2' id='legal-status-heading'>
             {t("about_legal_title")}

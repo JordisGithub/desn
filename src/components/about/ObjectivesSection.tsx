@@ -87,7 +87,7 @@ export default function ObjectivesSection() {
 
   return (
     <SectionContainer aria-labelledby='objectives-heading'>
-      <Container maxWidth='lg'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='objectives-heading'>
           {t("about_objectives_title")}
         </SectionTitle>
