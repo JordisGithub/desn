@@ -152,17 +152,17 @@ export default function EventsSection() {
           {events.map((event, index) => (
             <EventCard key={index}>
               <CardMedia
-                component='div'
+                component='img'
                 image={event.image}
+                loading='lazy'
+                alt={t(event.altKey)}
                 sx={{
                   width: "100%",
                   aspectRatio: "1 / 1",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  objectFit: "cover",
+                  objectPosition: "center",
                   flexShrink: 0,
                 }}
-                role='img'
-                aria-label={t(event.altKey)}
               />
               <CardContent>
                 <Stack direction='row' spacing={1} sx={{ mb: 2 }}>

@@ -36,12 +36,10 @@ const Resources: React.FC = () => {
   const token = user?.token;
 
   const [loading, setLoading] = useState(true);
-  const [featuredLoading, setFeaturedLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [resources, setResources] = useState<Resource[]>([]);
-  const [featuredResources, setFeaturedResources] = useState<Resource[]>([]);
   const [typeCounts, setTypeCounts] = useState<Record<string, number>>({});
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
 
@@ -80,21 +78,7 @@ const Resources: React.FC = () => {
     { key: "video", label: t("resources.resource_types.video"), icon: "🎥" },
   ];
 
-  // Fetch featured resources
-  useEffect(() => {
-    const fetchFeatured = async () => {
-      try {
-        const featured = await ResourceService.getFeaturedResources();
-        setFeaturedResources(featured);
-      } catch (err) {
-        console.error("Error fetching featured resources:", err);
-      } finally {
-        setFeaturedLoading(false);
-      }
-    };
 
-    fetchFeatured();
-  }, []);
 
   // Fetch resources based on filters
   useEffect(() => {
@@ -171,13 +155,6 @@ const Resources: React.FC = () => {
               : r
           )
         );
-        setFeaturedResources((prev) =>
-          prev.map((r) =>
-            r.id === resourceId
-              ? { ...r, favoriteCount: response.favoriteCount }
-              : r
-          )
-        );
       }
     } catch (err) {
       console.error("Error toggling favorite:", err);
@@ -228,19 +205,32 @@ const Resources: React.FC = () => {
           },
         }}
       >
-        <CardMedia
-          component='div'
-          sx={{
-            height: 200,
-            bgcolor: "grey.200",
-            position: "relative",
-            backgroundImage: resource.thumbnailUrl
-              ? `url(${resource.thumbnailUrl})`
-              : "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        <Box sx={{ position: "relative" }}>
+          {resource.thumbnailUrl ? (
+            <CardMedia
+              component='img'
+              image={resource.thumbnailUrl}
+              loading='lazy'
+              alt={resource.title}
+              sx={{
+                height: 200,
+                width: "100%",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <CardMedia
+              component='div'
+              sx={{
+                height: 200,
+                bgcolor: "grey.200",
+                backgroundImage: "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+          )}
+
           <Box
             sx={{
               position: "absolute",
@@ -271,7 +261,7 @@ const Resources: React.FC = () => {
               <DescriptionIcon sx={{ fontSize: 32, color: "primary.main" }} />
             </Box>
           )}
-        </CardMedia>
+        </Box>
 
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography

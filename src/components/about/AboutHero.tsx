@@ -3,26 +3,14 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import desnLogo from "../../assets/DESN_logo_500x500.jpg";
+import useLazyBackground from "../../hooks/useLazyBackground";
+import type { MutableRefObject } from "react";
+import heroImage from "../../assets/home/about-hero.jpg";
 
 const HeroContainer = styled("section")({
   position: "relative",
   height: "500px",
   overflow: "hidden",
-  backgroundImage:
-    'url("https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920")',
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background:
-      "linear-gradient(to right, rgba(0, 76, 145, 0.95), rgba(0, 76, 145, 0.7))",
-    opacity: 0.98,
-  },
 });
 
 const ContentWrapper = styled(Box)({
@@ -100,9 +88,10 @@ const EstablishedBadge = styled(Box)(({ theme }) => ({
 
 export default function AboutHero() {
   const { t } = useTranslation();
+  const bgRef = useLazyBackground() as MutableRefObject<HTMLElement | null>;
 
   return (
-    <HeroContainer aria-labelledby='about-hero-heading'>
+  <HeroContainer aria-labelledby='about-hero-heading' data-bg={heroImage} ref={bgRef}>
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentWrapper>
           <LogoImage src={desnLogo} alt='DESN Logo' />

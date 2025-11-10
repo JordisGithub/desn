@@ -160,17 +160,17 @@ export default function ProgramsSection() {
           {programs.map((program, index) => (
             <ProgramCard key={index}>
               <CardMedia
-                component='div'
+                component='img'
                 image={program.image}
+                loading='lazy'
+                alt={program.alt}
                 sx={{
                   width: "100%",
                   aspectRatio: "1 / 1",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  objectFit: "cover",
+                  objectPosition: "center",
                   flexShrink: 0,
                 }}
-                role='img'
-                aria-label={program.alt}
               />
               <CardContent
                 sx={{
