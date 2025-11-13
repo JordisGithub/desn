@@ -15,7 +15,7 @@ public class RestTemplateConfig {
 
     @Bean
     @SuppressWarnings("null")
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(100);
         connectionManager.setDefaultMaxPerRoute(20);

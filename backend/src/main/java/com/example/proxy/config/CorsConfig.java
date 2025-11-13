@@ -20,7 +20,7 @@ public class CorsConfig {
     private Long maxAge;
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // Parse allowed origins from comma-separated string
