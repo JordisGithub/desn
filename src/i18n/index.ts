@@ -4,23 +4,21 @@ import { initReactI18next } from "react-i18next";
 // Get saved language from localStorage or default to 'en'
 const savedLanguage = localStorage.getItem("language") || "en";
 
-// Load translations dynamically
-const loadResources = async () => {
-  const resources: Record<string, { translation: Record<string, string> }> = {};
+// Import translations directly instead of dynamic imports
+import enTranslations from "./locales/en";
+import neTranslations from "./locales/ne";
 
-  for (const lang of ["en", "ne"]) {
-    try {
-      const module = await import(`./locales/${lang}`);
-      resources[lang] = { translation: module.default };
-    } catch (error) {
-      console.error(`Failed to load ${lang} translations:`, error);
-    }
-  }
+// Load translations synchronously
+const loadResources = () => {
+  const resources = {
+    en: { translation: enTranslations },
+    ne: { translation: neTranslations },
+  };
 
   return resources;
 };
 
-const resourcesPromise = loadResources();
+const resources = loadResources();
 
 i18n.use(initReactI18next).init({
   lng: savedLanguage,
@@ -29,22 +27,9 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
   react: {
-    useSuspense: false, // Prevent blocking on language load
+    useSuspense: false,
   },
-  resources: {},
-});
-
-// Load translations when they're ready
-resourcesPromise.then((resources) => {
-  for (const lang in resources) {
-    i18n.addResourceBundle(
-      lang,
-      "translation",
-      resources[lang].translation,
-      true,
-      true
-    );
-  }
+  resources,
 });
 
 // Save language preference when it changes
