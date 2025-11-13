@@ -175,7 +175,10 @@ export default function Footer() {
             spacing={2}
             justifyContent='center'
           >
-            <CTAButton to='/get-involved' aria-label={t("footer_button_get_involved")}>
+            <CTAButton
+              to='/get-involved'
+              aria-label={t("footer_button_get_involved")}
+            >
               {t("footer_button_get_involved")}
             </CTAButton>
             <CTAButton to='/donate' aria-label={t("footer_button_donate")}>

@@ -26,15 +26,18 @@ const ImageWrapper = styled(Box)(({ theme }) => ({
   maxWidth: "500px",
   margin: "0 auto",
   padding: theme.spacing(2),
-  background: "linear-gradient(145deg, rgba(0, 167, 127, 0.25), rgba(0, 167, 127, 0.15))",
+  background:
+    "linear-gradient(145deg, rgba(0, 167, 127, 0.25), rgba(0, 167, 127, 0.15))",
   borderRadius: theme.spacing(3),
-  boxShadow: "0 12px 40px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 167, 127, 0.3)",
+  boxShadow:
+    "0 12px 40px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 167, 127, 0.3)",
   transition: "transform 0.3s ease, box-shadow 0.3s ease",
   backdropFilter: "blur(10px)",
   border: "3px solid rgba(0, 167, 127, 0.4)",
   "&:hover": {
     transform: "translateY(-6px)",
-    boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(0, 167, 127, 0.4), 0 0 30px rgba(0, 167, 127, 0.2)",
+    boxShadow:
+      "0 16px 50px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(0, 167, 127, 0.4), 0 0 30px rgba(0, 167, 127, 0.2)",
     border: "3px solid rgba(0, 167, 127, 0.6)",
   },
   [theme.breakpoints.down("md")]: {
@@ -52,7 +55,8 @@ const ImageInner = styled(Box)(({ theme }) => ({
     content: '""',
     position: "absolute",
     inset: 0,
-    background: "linear-gradient(180deg, rgba(0, 76, 145, 0) 0%, rgba(0, 76, 145, 0.05) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(0, 76, 145, 0) 0%, rgba(0, 76, 145, 0.05) 100%)",
     pointerEvents: "none",
   },
 }));
@@ -105,12 +109,14 @@ const AboutButton = styled(Link)(({ theme }) => ({
   display: "inline-flex",
   alignItems: "center",
   gap: theme.spacing(1),
-  boxShadow: "0 4px 15px rgba(246, 212, 105, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2)",
+  boxShadow:
+    "0 4px 15px rgba(246, 212, 105, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2)",
   transition: "all 0.3s ease",
   "&:hover": {
     backgroundColor: "#f5c943",
     transform: "translateY(-2px)",
-    boxShadow: "0 6px 20px rgba(246, 212, 105, 0.4), 0 3px 8px rgba(0, 0, 0, 0.25)",
+    boxShadow:
+      "0 6px 20px rgba(246, 212, 105, 0.4), 0 3px 8px rgba(0, 0, 0, 0.25)",
   },
   "&:active": {
     transform: "translateY(0)",
@@ -143,9 +149,9 @@ export default function AboutSection() {
             <ImageWrapper>
               <ImageInner>
                 <OptimizedImage
-                  src="home/home-aboutus.jpg"
+                  src='home/home-aboutus.jpg'
                   alt={t("about_alt")}
-                  loading="lazy"
+                  loading='lazy'
                   style={{
                     width: "100%",
                     height: "auto",
@@ -162,7 +168,7 @@ export default function AboutSection() {
             <AboutDescription>{t("about_description")}</AboutDescription>
             <AboutButton to='/about' aria-label={t("about_button")}>
               {t("about_button")}
-              <span aria-hidden="true">→</span>
+              <span aria-hidden='true'>→</span>
             </AboutButton>
           </ContentWrapper>
         </Stack>
