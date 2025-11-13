@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import nepalHeroImage from "../../assets/home/nepal-hero-image.png";
+import OptimizedImage from "../OptimizedImage";
 
 // Main hero container
 const HeroContainer = styled("section")(({ theme }) => ({
@@ -44,23 +44,7 @@ const HeroTextOverlay = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Hero image
-const HeroImage = styled("img")(({ theme }) => ({
-  width: "100%",
-  height: "auto",
-  minHeight: "600px",
-  maxHeight: "750px",
-  objectFit: "cover",
-  display: "block",
-  [theme.breakpoints.down("md")]: {
-    minHeight: "500px",
-    maxHeight: "600px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    minHeight: "400px",
-    maxHeight: "500px",
-  },
-}));
+// Hero image is rendered by OptimizedImage (responsive variants)
 
 // Organization name heading - single line
 const HeroHeading = styled(Typography)(({ theme }) => ({
@@ -180,7 +164,19 @@ export default function HeroSection() {
           </HeroTextOverlay>
 
           {/* Hero image */}
-          <HeroImage src={nepalHeroImage} alt={t("hero_alt")} loading='eager' />
+          <OptimizedImage
+            src={"home/nepal-hero-image.png"}
+            alt={t("hero_alt")}
+            loading='eager'
+            style={{
+              width: "100%",
+              height: "auto",
+              minHeight: 600,
+              maxHeight: 750,
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
         </HeroContentWrapper>
 
         {/* Styled copy block under the hero image */}

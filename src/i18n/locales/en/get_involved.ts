@@ -1,10 +1,10 @@
 export default {
   hero: {
-    title: "Get Involved",
+    title: "Get Involved with DESN",
     subtitle:
-      "Join us in building an inclusive Nepal where everyone has equal opportunities and dignity",
+      "Join us in creating an inclusive society for persons with disabilities in Nepal",
     description:
-      "Your time, resources, and advocacy can make a real difference in the lives of persons with disabilities, helpless individuals, and single women.",
+      "There are many ways you can support our mission—whether through volunteering your time, making a donation, or becoming a member. Every contribution helps us build a more accessible and inclusive Nepal.",
   },
   impact: {
     title: "Our Impact",
@@ -15,11 +15,11 @@ export default {
     years_of_service: "Years of Service",
   },
   volunteer: {
-    title: "Volunteer With Us",
+    title: "Volunteer with Us",
     description:
-      "Join our mission to promote accessibility, inclusion, and empowerment for persons with disabilities across Nepal. Whether you have a few hours a week or can commit to longer-term projects, your contribution matters.",
+      "Join our mission to promote accessibility, inclusion, and empowerment for persons with disabilities across Nepal. Whether you have a few hours a week or can commit to long-term projects, your contribution matters.",
     benefits: {
-      flexible: "Flexible scheduling to fit your availability",
+      flexible: "Flexible schedule based on your availability",
       training: "Training and support provided",
       impact: "Make meaningful connections and impact",
     },
@@ -33,11 +33,11 @@ export default {
       outreach: {
         title: "Community Outreach",
         description:
-          "Assist in awareness campaigns and community engagement programs",
+          "Assist with awareness campaigns and community engagement programs",
         time: "Flexible",
       },
       tech: {
-        title: "Technology Training",
+        title: "Tech Training",
         description:
           "Share your tech skills to help persons with disabilities access digital tools",
         time: "2-4 hours/week",
@@ -51,19 +51,19 @@ export default {
     },
     form: {
       title: "Apply to Volunteer",
-      required: "Asterisk field Required *",
+      required: "Fields marked with an asterisk are required *",
       full_name: "Full Name *",
       email: "Email Address *",
       phone: "Phone Number *",
-      message: "Tell us about your interest and relevant experience",
+      message: "Tell us about your interests and relevant experience",
       submit: "Submit Application",
       submitting: "Submitting...",
       success_message:
-        "Thank you for your volunteer application! We're excited about your interest in supporting our mission. We will review your application and contact you soon with next steps.",
+        "Thank you for your volunteer application! We're excited about your interest in supporting our mission. We'll review your application and get in touch with you soon about next steps.",
     },
   },
   donation: {
-    title: "Donation",
+    title: "Donate",
     description:
       "Support our work through Electronic Fund Transfer (EFT) or Khalti. Your contribution helps provide education, training, and opportunities to those who need it most.",
     security_note:
@@ -77,12 +77,12 @@ export default {
       title: "Bank Transfer (EFT)",
       org_name: "Organization Legal Name",
       address: "Address: Siddhi Road, Tikathali",
-      address_detail: "Lalitpur, Bagmati Province 44700 Nepal",
-      wire_transfer: "Wire-transfer",
+      address_detail: "Lalitpur, Bagmati Pradesh 44700 Nepal",
+      wire_transfer: "Wire-Transfer",
       currency: "USD",
       wire_details: "Wire-Transfer Bank Details",
       beneficiary: "Beneficiary Account Name",
-      beneficiary_name: "Apangata Sashaktikaran Samaj Nepal",
+      beneficiary_name: "Disability Empowerment Society Nepal",
       account_number_label: "Account Number:",
       account_number: "1120100001609001",
       swift_code_label: "Swift Code:",
@@ -90,7 +90,7 @@ export default {
       bank_address_label: "Bank Address:",
       bank_name: "Rastriya Banijya Bank",
       bank_branch: "Lagankhel Lalitpur Metropolitan City - 19",
-      bank_location: "Lalitpur, Bagmati Province, 8368, Nepal",
+      bank_location: "Lalitpur, Bagmati Pradesh, 8368, Nepal",
     },
     khalti: {
       title: "Khalti Payment",
@@ -109,11 +109,11 @@ export default {
       },
       training: {
         amount: "NPR 15,000",
-        description: "Provides skill training for 5 women",
+        description: "Provides skills training for 5 women",
       },
       accessibility: {
         amount: "NPR 50,000",
-        description: "Supports a complete accessibility program",
+        description: "Supports a full accessibility program",
       },
     },
   },
@@ -122,13 +122,13 @@ export default {
     intro:
       "By joining DESN, you support ongoing advocacy and capacity-building programs that empower persons with disabilities.",
     description:
-      "Become a member of DESN to stay informed, collaborate, and advocate for disability rights and inclusive development. Join a community of passionate individuals working towards a more inclusive Nepal.",
+      "Become a member of DESN to stay informed, collaborate, and advocate for disability rights and inclusive development. Join a community of passionate individuals working toward a more inclusive Nepal.",
     security_note:
       "All online payments are securely processed through Khalti and Rastriya Banijya Bank systems.",
     benefits: {
       title: "Membership Benefits",
       updates: "Regular updates on DESN activities and programs",
-      meetings: "Invitation to annual general meetings and special events",
+      meetings: "Invitations to annual general meetings and special events",
       networking: "Networking opportunities with disability rights advocates",
       resources: "Access to exclusive resources and publications",
       voice: "Voice in organizational decision-making",
@@ -136,7 +136,7 @@ export default {
     },
     form: {
       title: "Apply for Membership",
-      required: "Asterisk field Required *",
+      required: "Fields marked with an asterisk are required *",
       full_name: "Full Name *",
       email: "Email Address *",
       phone: "Phone Number *",
@@ -145,11 +145,11 @@ export default {
       submit: "Submit Application",
       submitting: "Submitting...",
       success_message:
-        "Thank you for your application! We will contact you soon.",
+        "Thank you for your membership application! We appreciate your support and will get in touch soon with next steps. Together, we're building a more inclusive Nepal.",
     },
   },
   cta: {
-    title: "Join Us in Our Mission",
+    title: "Join Our Mission",
     subtitle:
       "Together, we can create a more inclusive and equitable society for all.",
     get_involved: "Get Involved",

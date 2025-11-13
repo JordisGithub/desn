@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -20,6 +20,11 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
+import Paper from "@mui/material/Paper";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import EventIcon from "@mui/icons-material/Event";
+import DescriptionIcon from "@mui/icons-material/Description";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PublicIcon from "@mui/icons-material/Public";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -30,6 +35,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import DonationPaymentModal from "./payment/DonationPaymentModal";
 import desnLogo from "../assets/DESN_logo_500x500.jpg";
+import SearchService from "../services/SearchService";
+import type { SearchItem } from "../services/SearchService";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -185,6 +192,66 @@ const Header: React.FC = () => {
   );
   const [donationModalOpen, setDonationModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  useEffect(() => {
+    // Close results when clicking outside
+    const onDocClick = (e: MouseEvent) => {
+      if (!searchRef.current) return;
+      if (!searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, []);
+
+  useEffect(() => {
+    if (!searchQuery || searchQuery.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    const id = setTimeout(async () => {
+      try {
+        const results = await SearchService.search(searchQuery, 8);
+        setSearchResults(results);
+        setSearchOpen(true);
+        setActiveIndex(-1);
+      } catch (err) {
+        console.error("Search error", err);
+        setSearchResults([]);
+      }
+    }, 250);
+
+    return () => clearTimeout(id);
+  }, [searchQuery]);
+
+  const onSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!searchOpen || searchResults.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((i) => Math.min(i + 1, searchResults.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const sel =
+        activeIndex >= 0 ? searchResults[activeIndex] : searchResults[0];
+      if (sel) {
+        setSearchOpen(false);
+        setSearchQuery("");
+        navigate(sel.url);
+      }
+    } else if (e.key === "Escape") {
+      setSearchOpen(false);
+    }
+  };
 
   const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
     setLangAnchorEl(event.currentTarget);
@@ -351,6 +418,13 @@ const Header: React.FC = () => {
                 width: { xs: "200px", md: "300px" },
                 display: { xs: "none", sm: "block" },
               }}
+              ref={searchRef}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => {
+                if (searchResults.length > 0) setSearchOpen(true);
+              }}
+              onKeyDown={onSearchKeyDown}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -359,6 +433,54 @@ const Header: React.FC = () => {
                 ),
               }}
             />
+
+            {/* Search results dropdown */}
+            {searchOpen && searchResults.length > 0 && (
+              <Box
+                sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
+              >
+                <Paper
+                  elevation={3}
+                  sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
+                >
+                  <List dense>
+                    {searchResults.map((r, idx) => (
+                      <ListItem key={r.id} disablePadding>
+                        <ListItemButton
+                          selected={idx === activeIndex}
+                          onMouseEnter={() => setActiveIndex(idx)}
+                          onClick={() => {
+                            setSearchOpen(false);
+                            setSearchQuery("");
+                            navigate(r.url);
+                          }}
+                        >
+                          <ListItemIcon>
+                            {r.type === "event" ? (
+                              <EventIcon fontSize='small' />
+                            ) : r.type === "resource" ? (
+                              <DescriptionIcon fontSize='small' />
+                            ) : (
+                              <MenuBookIcon fontSize='small' />
+                            )}
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={r.title}
+                            secondary={
+                              r.type === "page"
+                                ? "Page"
+                                : r.type === "resource"
+                                ? "Resource"
+                                : "Event"
+                            }
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              </Box>
+            )}
 
             <MobileMenuButton
               edge='end'

@@ -54,6 +54,12 @@ public class KhaltiPaymentService {
     @SuppressWarnings("null")
     public PaymentResponse initiatePayment(InitiatePaymentRequest request) {
         try {
+            // Validate Khalti configuration
+            if (khaltiSecretKey == null || khaltiSecretKey.trim().isEmpty()) {
+                log.warn("Khalti secret key is not configured - payment features are disabled");
+                return new PaymentResponse(false, "Payment gateway is not configured yet. Please contact the administrator to enable donations.");
+            }
+            
             // Generate unique transaction ID
             String transactionId = generateTransactionId();
 

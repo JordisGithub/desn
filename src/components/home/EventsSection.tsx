@@ -1,17 +1,8 @@
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Stack,
-} from "@mui/material";
+import { Container, Typography, Card, CardContent, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import events1 from "../../assets/home/events1.jpg";
-import events2 from "../../assets/home/events2.jpg";
-import events3 from "../../assets/home/events3.jpg";
+import OptimizedImage from "../OptimizedImage";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -32,24 +23,32 @@ const SectionHeading = styled(Typography)(({ theme }) => ({
 const EventsGrid = styled("div")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr",
-  gap: theme.spacing(4),
+  gap: theme.spacing(3),
   [theme.breakpoints.up("sm")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
   },
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
+    gap: theme.spacing(4),
   },
 }));
 
-const EventCard = styled(Card)({
+const EventCard = styled(Card)(({ theme }) => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
+  borderRadius: theme.spacing(2),
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: "0 8px 24px rgba(0, 76, 145, 0.15)",
+  },
   "&:focus-within": {
     outline: "3px solid #004c91",
     outlineOffset: "2px",
   },
-});
+}));
 
 const EventDate = styled("time")({
   backgroundColor: "#f6d469",
@@ -111,7 +110,7 @@ export default function EventsSection() {
       titleKey: "event_1_title",
       descKey: "event_1_desc",
       organizer: "knowbility",
-      image: events1,
+      image: "home/events1.jpg",
       altKey: "event_1_alt",
     },
     {
@@ -122,7 +121,7 @@ export default function EventsSection() {
       titleKey: "event_2_title",
       descKey: "event_2_desc",
       organizer: "DESN",
-      image: events2,
+      image: "home/events2.jpg",
       altKey: "event_2_alt",
     },
     {
@@ -133,7 +132,7 @@ export default function EventsSection() {
       titleKey: "event_3_title",
       descKey: "event_3_desc",
       organizer: "knowbility",
-      image: events3,
+      image: "home/events3.jpg",
       altKey: "event_3_alt",
     },
   ];
@@ -151,19 +150,29 @@ export default function EventsSection() {
         <EventsGrid>
           {events.map((event, index) => (
             <EventCard key={index}>
-              <CardMedia
-                component='div'
-                image={event.image}
-                sx={{
+              <div
+                style={{
                   width: "100%",
-                  aspectRatio: "1 / 1",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  aspectRatio: "16 / 9",
+                  overflow: "hidden",
                   flexShrink: 0,
+                  borderRadius: "16px 16px 0 0",
                 }}
-                role='img'
-                aria-label={t(event.altKey)}
-              />
+              >
+                <OptimizedImage
+                  src={event.image}
+                  alt={t(event.altKey)}
+                  loading='lazy'
+                  sizes='(max-width: 600px) 400px, (max-width: 960px) 50vw, 33vw'
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    display: "block",
+                  }}
+                />
+              </div>
               <CardContent>
                 <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
                   <EventDate dateTime={event.date}>

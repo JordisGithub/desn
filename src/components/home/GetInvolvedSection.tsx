@@ -123,10 +123,12 @@ export default function GetInvolvedSection() {
               <VolunteerImage
                 src={getinvolved1}
                 alt={t("get_involved_alt_1")}
+                loading='lazy'
               />
               <VolunteerImage
                 src={getinvolved2}
                 alt={t("get_involved_alt_2")}
+                loading='lazy'
               />
             </Stack>
           </div>
