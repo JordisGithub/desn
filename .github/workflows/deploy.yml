@@ -1,0 +1,91 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        env:
+          # Point frontend API calls to the same host; endpoints already include the /api prefix
+          VITE_API_BASE_URL: "http://${{ secrets.SERVER_HOST }}"
+        run: npm run build
+
+      - name: Build backend
+        working-directory: ./backend
+        run: mvn clean package -DskipTests
+
+      - name: Deploy to AWS Server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          # Setup SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+
+          # Create deployment directory on server
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "mkdir -p /home/ubuntu/desn-app/{frontend,backend,logs}"
+
+          # Copy frontend build
+          scp -i ~/.ssh/deploy_key -r dist/* $SERVER_USER@$SERVER_HOST:/home/ubuntu/desn-app/frontend/
+
+          # Copy backend JAR (detect non-original jar)
+          JAR_FILE=$(ls backend/target/*.jar | grep -v "original" | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "No backend jar found in backend/target" >&2
+            exit 1
+          fi
+          scp -i ~/.ssh/deploy_key "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/ubuntu/desn-app/backend/app.jar
+
+          # Copy deployment script
+          scp -i ~/.ssh/deploy_key scripts/deploy-server.sh $SERVER_USER@$SERVER_HOST:/home/ubuntu/desn-app/
+
+          # Execute deployment script on server
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "bash /home/ubuntu/desn-app/deploy-server.sh"
+
+      - name: Verify deployment
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Wait for services to start
+          sleep 10
+
+          # Check if backend is running
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "curl -f http://localhost:8080/actuator/health || exit 1"
+
+          echo "✅ Deployment successful!"
+          echo "🌐 Frontend: http://$SERVER_HOST"
+          echo "🔧 Backend: http://$SERVER_HOST/api"
