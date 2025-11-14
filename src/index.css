@@ -66,3 +66,78 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Accessibility Enhancements */
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --focus-outline-width: 3px;
+    --focus-outline-color: #000;
+  }
+
+  * {
+    border-color: currentColor !important;
+  }
+
+  a {
+    text-decoration: underline !important;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    border: 2px solid currentColor !important;
+  }
+}
+
+/* Focus Visible Styles for Keyboard Navigation */
+*:focus-visible {
+  outline: 3px solid #004c91;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Remove focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #004c91;
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Screen Reader Only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -48,7 +48,8 @@
     "optimize-images": "node ./scripts/optimize-images.cjs",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:a11y": "vitest run --reporter=verbose"
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.1.14"
