@@ -1,8 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { renderWithProviders, testAccessibility } from "../test/test-utils";
 import AdminDashboard from "./AdminDashboard";
 
 describe("Admin Dashboard Page Accessibility", () => {
+  // Mock admin user in localStorage before each test
+  beforeEach(() => {
+    const adminUser = {
+      username: "admin",
+      email: "admin@test.com",
+      fullName: "Admin User",
+      role: "ADMIN",
+      token: "test-token",
+    };
+    localStorage.setItem("user", JSON.stringify(adminUser));
+  });
+
   it("should not have any accessibility violations (WCAG 2.2 AA)", async () => {
     const { container } = renderWithProviders(<AdminDashboard />);
     const results = await testAccessibility(container);

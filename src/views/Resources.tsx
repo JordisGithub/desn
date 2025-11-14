@@ -432,6 +432,7 @@ const Resources: React.FC = () => {
             >
               <TextField
                 fullWidth
+                label={t("resources.search_label")}
                 placeholder={t("resources.search_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

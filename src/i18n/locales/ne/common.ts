@@ -1,4 +1,20 @@
 export default {
+  // Page Titles (for document.title)
+  page_titles: {
+    home: "गृहपृष्ठ - अपाङ्गता भएका व्यक्तिहरूलाई सशक्तिकरण",
+    about: "हाम्रो बारेमा - हाम्रो मिशन र दृष्टिकोण",
+    programs: "कार्यक्रम र सेवाहरू",
+    events: "कार्यक्रम र पात्रो",
+    get_involved: "संलग्न हुनुहोस् - फरक पार्नुहोस्",
+    resources: "स्रोत र प्रकाशनहरू",
+    contact: "सम्पर्क गर्नुहोस्",
+    login: "आफ्नो खातामा लगइन गर्नुहोस्",
+    register: "नयाँ खाता सिर्जना गर्नुहोस्",
+    member_dashboard: "सदस्य ड्यासबोर्ड",
+    admin_dashboard: "प्रशासक ड्यासबोर्ड",
+    payment_verify: "भुक्तानी प्रमाणीकरण",
+    accessibility: "पहुँच वक्तव्य",
+  },
   // Navigation
   skip_to_content: "मुख्य सामग्रीमा जानुहोस्",
   nav: {
@@ -74,6 +90,7 @@ export default {
     all_resources_title: "सबै स्रोतहरू",
     all_resources_description:
       "प्रकार र विषयद्वारा संगठित, हाम्रो पूर्ण प्रकाशन पुस्तकालय ब्राउज गर्नुहोस्।",
+    search_label: "स्रोतहरू खोज्नुहोस्",
     search_placeholder: "शीर्षक वा विवरणद्वारा खोज्नुहोस्...",
     showing_results: "{total} मध्ये {count} स्रोतहरू देखाइँदै",
     no_resources_found: "तपाईंको मापदण्ड अनुरूप कुनै स्रोत फेला परेन।",

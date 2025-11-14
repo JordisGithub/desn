@@ -1,4 +1,20 @@
 export default {
+  // Page Titles (for document.title)
+  page_titles: {
+    home: "Home - Empowering Individuals with Disabilities",
+    about: "About Us - Our Mission & Vision",
+    programs: "Programs & Services",
+    events: "Events & Calendar",
+    get_involved: "Get Involved - Make a Difference",
+    resources: "Resources & Publications",
+    contact: "Contact Us",
+    login: "Login to Your Account",
+    register: "Create New Account",
+    member_dashboard: "Member Dashboard",
+    admin_dashboard: "Admin Dashboard",
+    payment_verify: "Payment Verification",
+    accessibility: "Accessibility Statement",
+  },
   // Navigation
   skip_to_content: "Skip to main content",
   nav: {
@@ -74,6 +90,7 @@ export default {
     all_resources_title: "All Resources",
     all_resources_description:
       "Browse our complete library of publications, organized by type and topic.",
+    search_label: "Search Resources",
     search_placeholder: "Search by title or description...",
     showing_results: "Showing {count} of {total} resources",
     no_resources_found: "No resources found matching your criteria.",

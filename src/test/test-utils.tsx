@@ -34,32 +34,40 @@ export function renderWithProviders(
 }
 
 // Helper function to run accessibility tests
-export async function testAccessibility(container: HTMLElement) {
+export async function testAccessibility(
+  container: HTMLElement,
+  additionalOptions?: Partial<axe.RunOptions>
+) {
+  const defaultRules = {
+    // WCAG 2.2 AA rules
+    "color-contrast": { enabled: true },
+    "valid-lang": { enabled: true },
+    "html-has-lang": { enabled: true },
+    "landmark-one-main": { enabled: true },
+    "page-has-heading-one": { enabled: true },
+    region: { enabled: true },
+    bypass: { enabled: true },
+    "focus-order-semantics": { enabled: true },
+    label: { enabled: true },
+    "link-name": { enabled: true },
+    "button-name": { enabled: true },
+    "image-alt": { enabled: true },
+    "input-button-name": { enabled: true },
+    "aria-allowed-attr": { enabled: true },
+    "aria-required-attr": { enabled: true },
+    "aria-valid-attr-value": { enabled: true },
+    "aria-valid-attr": { enabled: true },
+    "aria-hidden-focus": { enabled: true },
+    "heading-order": { enabled: true },
+    "duplicate-id": { enabled: true },
+    list: { enabled: true },
+    listitem: { enabled: true },
+  };
+
   const results = await axe.run(container, {
     rules: {
-      // WCAG 2.2 AA rules
-      "color-contrast": { enabled: true },
-      "valid-lang": { enabled: true },
-      "html-has-lang": { enabled: true },
-      "landmark-one-main": { enabled: true },
-      "page-has-heading-one": { enabled: true },
-      region: { enabled: true },
-      bypass: { enabled: true },
-      "focus-order-semantics": { enabled: true },
-      label: { enabled: true },
-      "link-name": { enabled: true },
-      "button-name": { enabled: true },
-      "image-alt": { enabled: true },
-      "input-button-name": { enabled: true },
-      "aria-allowed-attr": { enabled: true },
-      "aria-required-attr": { enabled: true },
-      "aria-valid-attr-value": { enabled: true },
-      "aria-valid-attr": { enabled: true },
-      "aria-hidden-focus": { enabled: true },
-      "heading-order": { enabled: true },
-      "duplicate-id": { enabled: true },
-      list: { enabled: true },
-      listitem: { enabled: true },
+      ...defaultRules,
+      ...additionalOptions?.rules,
     },
   });
 
