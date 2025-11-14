@@ -38,6 +38,25 @@ public class DataInitializer {
                                    VolunteerApplicationRepository volunteerRepository,
                                    PaymentTransactionRepository paymentRepository) {
         return args -> {
+            // Create owner user if not exists
+            if (!userRepository.existsByUsername("owner")) {
+                User owner = new User();
+                owner.setUsername("owner");
+                owner.setEmail("owner@desn.org.np");
+                owner.setPassword(passwordEncoder.encode("owner123"));
+                owner.setFullName("DESN Owner");
+                owner.setRole(User.Role.OWNER);
+                owner.setEnabled(true);
+                
+                userRepository.save(owner);
+                logger.info("✅ Default owner user created successfully!");
+                logger.info("   Username: owner");
+                logger.info("   Password: owner123");
+                logger.info("   ⚠️  IMPORTANT: Change this password in production!");
+            } else {
+                logger.info("Owner user already exists. Skipping initialization.");
+            }
+            
             // Check if admin user already exists
             if (!userRepository.existsByUsername("admin")) {
                 User admin = new User();

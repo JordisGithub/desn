@@ -313,10 +313,10 @@ export default function CorePrograms() {
       <Container maxWidth='xl'>
         <SectionHeader>
           <SectionTitle id='core-programs-title'>
-            {t("programs:core.title")}
+            {t("programs.core.title")}
           </SectionTitle>
           <SectionDescription>
-            {t("programs:core.description")}
+            {t("programs.core.description")}
           </SectionDescription>
         </SectionHeader>
 
@@ -326,7 +326,7 @@ export default function CorePrograms() {
             <Box position='relative'>
               <ProgramImage
                 src={program1}
-                alt={t("programs:core.program1.image_alt")}
+                alt={t("programs.core.program1.image_alt")}
               />
               <IconBadge
                 bgcolor='rgba(0, 76, 145, 0.1)'
@@ -338,35 +338,35 @@ export default function CorePrograms() {
             <ProgramContent>
               <div>
                 <Badge bgcolor='rgba(0, 76, 145, 0.1)'>
-                  <BadgeText>{t("programs:core.program1.badge")}</BadgeText>
+                  <BadgeText>{t("programs.core.program1.badge")}</BadgeText>
                 </Badge>
-                <ProgramTitle>{t("programs:core.program1.title")}</ProgramTitle>
+                <ProgramTitle>{t("programs.core.program1.title")}</ProgramTitle>
                 <ProgramDescription>
-                  {t("programs:core.program1.description")}
+                  {t("programs.core.program1.description")}
                 </ProgramDescription>
                 <StatsContainer>
                   <StatItem>
                     <StatNumber>5000+</StatNumber>
-                    <StatLabel>{t("programs:core.beneficiaries")}</StatLabel>
+                    <StatLabel>{t("programs.core.beneficiaries")}</StatLabel>
                   </StatItem>
                   <StatItem>
                     <StatNumber>25</StatNumber>
-                    <StatLabel>{t("programs:core.projects")}</StatLabel>
+                    <StatLabel>{t("programs.core.projects")}</StatLabel>
                   </StatItem>
                   <StatItem>
                     <StatNumber>High</StatNumber>
-                    <StatLabel>{t("programs:core.impact")}</StatLabel>
+                    <StatLabel>{t("programs.core.impact")}</StatLabel>
                   </StatItem>
                 </StatsContainer>
-                <FeaturesTitle>{t("programs:core.key_features")}</FeaturesTitle>
+                <FeaturesTitle>{t("programs.core.key_features")}</FeaturesTitle>
                 <FeaturesList>
                   {Array.isArray(
-                    t("programs:core.program1.features", {
+                    t("programs.core.program1.features", {
                       returnObjects: true,
                     })
                   ) &&
                     (
-                      t("programs:core.program1.features", {
+                      t("programs.core.program1.features", {
                         returnObjects: true,
                       }) as string[]
                     ).map((feature: string, index: number) => (
@@ -380,7 +380,7 @@ export default function CorePrograms() {
                 </FeaturesList>
               </div>
               <LearnMoreButton endIcon={<ArrowForwardIcon />}>
-                {t("programs:core.learn_more")}
+                {t("programs.core.learn_more")}
               </LearnMoreButton>
             </ProgramContent>
           </HorizontalCard>
@@ -392,35 +392,35 @@ export default function CorePrograms() {
             <ProgramContent sx={{ order: { xs: 2, md: 1 } }}>
               <div>
                 <Badge bgcolor='rgba(150, 89, 149, 0.1)'>
-                  <BadgeText>{t("programs:core.program2.badge")}</BadgeText>
+                  <BadgeText>{t("programs.core.program2.badge")}</BadgeText>
                 </Badge>
-                <ProgramTitle>{t("programs:core.program2.title")}</ProgramTitle>
+                <ProgramTitle>{t("programs.core.program2.title")}</ProgramTitle>
                 <ProgramDescription>
-                  {t("programs:core.program2.description")}
+                  {t("programs.core.program2.description")}
                 </ProgramDescription>
                 <StatsContainer>
                   <StatItem>
                     <StatNumber color='#351c42'>1200+</StatNumber>
-                    <StatLabel>{t("programs:core.beneficiaries")}</StatLabel>
+                    <StatLabel>{t("programs.core.beneficiaries")}</StatLabel>
                   </StatItem>
                   <StatItem>
                     <StatNumber color='#2b2b2b'>15</StatNumber>
-                    <StatLabel>{t("programs:core.projects")}</StatLabel>
+                    <StatLabel>{t("programs.core.projects")}</StatLabel>
                   </StatItem>
                   <StatItem>
                     <StatNumber color='#2b2b2b'>High</StatNumber>
-                    <StatLabel>{t("programs:core.impact")}</StatLabel>
+                    <StatLabel>{t("programs.core.impact")}</StatLabel>
                   </StatItem>
                 </StatsContainer>
-                <FeaturesTitle>{t("programs:core.key_features")}</FeaturesTitle>
+                <FeaturesTitle>{t("programs.core.key_features")}</FeaturesTitle>
                 <FeaturesList>
                   {Array.isArray(
-                    t("programs:core.program2.features", {
+                    t("programs.core.program2.features", {
                       returnObjects: true,
                     })
                   ) &&
                     (
-                      t("programs:core.program2.features", {
+                      t("programs.core.program2.features", {
                         returnObjects: true,
                       }) as string[]
                     ).map((feature: string, index: number) => (
@@ -434,13 +434,13 @@ export default function CorePrograms() {
                 </FeaturesList>
               </div>
               <LearnMoreButton endIcon={<ArrowForwardIcon />}>
-                {t("programs:core.learn_more")}
+                {t("programs.core.learn_more")}
               </LearnMoreButton>
             </ProgramContent>
             <Box position='relative' sx={{ order: { xs: 1, md: 2 } }}>
               <ProgramImage
                 src={program2}
-                alt={t("programs:core.program2.image_alt")}
+                alt={t("programs.core.program2.image_alt")}
               />
               <IconBadge
                 bgcolor='white'
@@ -460,7 +460,7 @@ export default function CorePrograms() {
             <Box position='relative'>
               <VerticalCardImage
                 src={program3}
-                alt={t("programs:core.program3.image_alt")}
+                alt={t("programs.core.program3.image_alt")}
               />
               <Badge
                 bgcolor='#2b2b2b'
@@ -472,7 +472,7 @@ export default function CorePrograms() {
                 }}
               >
                 <BadgeText sx={{ color: "white" }}>
-                  {t("programs:core.program3.badge")}
+                  {t("programs.core.program3.badge")}
                 </BadgeText>
               </Badge>
               <IconBadge
@@ -485,33 +485,33 @@ export default function CorePrograms() {
             </Box>
             <VerticalCardContent>
               <VerticalCardTitle>
-                {t("programs:core.program3.title")}
+                {t("programs.core.program3.title")}
               </VerticalCardTitle>
               <VerticalCardDescription>
-                {t("programs:core.program3.description")}
+                {t("programs.core.program3.description")}
               </VerticalCardDescription>
               <VerticalStatsContainer>
                 <StatItem>
                   <VerticalStatNumber color='#00a77f'>3000+</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.beneficiaries")}
+                    {t("programs.core.beneficiaries")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>30</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.projects")}
+                    {t("programs.core.projects")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>Very High</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.impact")}
+                    {t("programs.core.impact")}
                   </VerticalStatLabel>
                 </StatItem>
               </VerticalStatsContainer>
               <VerticalLearnMoreButton endIcon={<ArrowForwardIcon />}>
-                {t("programs:core.learn_more")}
+                {t("programs.core.learn_more")}
               </VerticalLearnMoreButton>
             </VerticalCardContent>
           </VerticalCard>
@@ -521,7 +521,7 @@ export default function CorePrograms() {
             <Box position='relative'>
               <VerticalCardImage
                 src={program4}
-                alt={t("programs:core.program4.image_alt")}
+                alt={t("programs.core.program4.image_alt")}
               />
               <Badge
                 bgcolor='#004c91'
@@ -533,39 +533,39 @@ export default function CorePrograms() {
                 }}
               >
                 <BadgeText sx={{ color: "white" }}>
-                  {t("programs:core.program4.badge")}
+                  {t("programs.core.program4.badge")}
                 </BadgeText>
               </Badge>
             </Box>
             <VerticalCardContent>
               <VerticalCardTitle>
-                {t("programs:core.program4.title")}
+                {t("programs.core.program4.title")}
               </VerticalCardTitle>
               <VerticalCardDescription>
-                {t("programs:core.program4.description")}
+                {t("programs.core.program4.description")}
               </VerticalCardDescription>
               <VerticalStatsContainer>
                 <StatItem>
                   <VerticalStatNumber>2500+</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.beneficiaries")}
+                    {t("programs.core.beneficiaries")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>20</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.projects")}
+                    {t("programs.core.projects")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>High</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.impact")}
+                    {t("programs.core.impact")}
                   </VerticalStatLabel>
                 </StatItem>
               </VerticalStatsContainer>
               <VerticalLearnMoreButton endIcon={<ArrowForwardIcon />}>
-                {t("programs:core.learn_more")}
+                {t("programs.core.learn_more")}
               </VerticalLearnMoreButton>
             </VerticalCardContent>
           </VerticalCard>
@@ -575,7 +575,7 @@ export default function CorePrograms() {
             <Box position='relative'>
               <VerticalCardImage
                 src={program5}
-                alt={t("programs:core.program5.image_alt")}
+                alt={t("programs.core.program5.image_alt")}
               />
               <Badge
                 bgcolor='white'
@@ -587,7 +587,7 @@ export default function CorePrograms() {
                 }}
               >
                 <BadgeText sx={{ color: "#004c91" }}>
-                  {t("programs:core.program5.badge")}
+                  {t("programs.core.program5.badge")}
                 </BadgeText>
               </Badge>
               <IconBadge
@@ -600,33 +600,33 @@ export default function CorePrograms() {
             </Box>
             <VerticalCardContent>
               <VerticalCardTitle>
-                {t("programs:core.program5.title")}
+                {t("programs.core.program5.title")}
               </VerticalCardTitle>
               <VerticalCardDescription>
-                {t("programs:core.program5.description")}
+                {t("programs.core.program5.description")}
               </VerticalCardDescription>
               <VerticalStatsContainer>
                 <StatItem>
                   <VerticalStatNumber>4000+</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.beneficiaries")}
+                    {t("programs.core.beneficiaries")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>18</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.projects")}
+                    {t("programs.core.projects")}
                   </VerticalStatLabel>
                 </StatItem>
                 <StatItem>
                   <VerticalStatNumber>Very High</VerticalStatNumber>
                   <VerticalStatLabel>
-                    {t("programs:core.impact")}
+                    {t("programs.core.impact")}
                   </VerticalStatLabel>
                 </StatItem>
               </VerticalStatsContainer>
               <VerticalLearnMoreButton endIcon={<ArrowForwardIcon />}>
-                {t("programs:core.learn_more")}
+                {t("programs.core.learn_more")}
               </VerticalLearnMoreButton>
             </VerticalCardContent>
           </VerticalCard>

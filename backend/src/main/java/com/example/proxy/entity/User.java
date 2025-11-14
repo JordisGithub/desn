@@ -46,6 +46,7 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     public enum Role {
+        OWNER,
         ADMIN,
         MEMBER
     }

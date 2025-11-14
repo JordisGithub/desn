@@ -105,21 +105,21 @@ export default function ProgramsCTA() {
       <GradientOverlay aria-hidden='true' />
       <Container maxWidth='xl'>
         <ContentContainer>
-          <CTATitle id='programs-cta-title'>{t("programs:cta.title")}</CTATitle>
-          <CTADescription>{t("programs:cta.description")}</CTADescription>
+          <CTATitle id='programs-cta-title'>{t("programs.cta.title")}</CTATitle>
+          <CTADescription>{t("programs.cta.description")}</CTADescription>
           <ButtonContainer>
             <PrimaryButton
               href='/get-involved'
               endIcon={<ArrowForwardIcon />}
-              aria-label={t("programs:cta.get_involved_button")}
+              aria-label={t("programs.cta.get_involved_button")}
             >
-              {t("programs:cta.get_involved_button")}
+              {t("programs.cta.get_involved_button")}
             </PrimaryButton>
             <SecondaryButton
               href='/contact'
-              aria-label={t("programs:cta.contact_button")}
+              aria-label={t("programs.cta.contact_button")}
             >
-              {t("programs:cta.contact_button")}
+              {t("programs.cta.contact_button")}
             </SecondaryButton>
           </ButtonContainer>
         </ContentContainer>
