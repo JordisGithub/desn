@@ -7,13 +7,14 @@ set -e
 
 SERVER_IP="13.204.228.199"
 SERVER_USER="ubuntu"
+SSH_KEY="$HOME/.ssh/desn-server.pem"
 
 echo "🔧 Fixing HTTPS configuration for desnepal.com..."
 echo "Server: $SERVER_IP"
 echo ""
 
 # Check if we can connect
-if ! ssh -o ConnectTimeout=5 $SERVER_USER@$SERVER_IP "echo 'Connected'" &>/dev/null; then
+if ! ssh -i "$SSH_KEY" -o ConnectTimeout=5 $SERVER_USER@$SERVER_IP "echo 'Connected'" &>/dev/null; then
     echo "❌ Cannot connect to server. Please ensure:"
     echo "   1. Your SSH key is properly configured"
     echo "   2. The server is running"
@@ -26,11 +27,11 @@ echo ""
 
 # Backup current Nginx config
 echo "📦 Backing up current Nginx configuration..."
-ssh $SERVER_USER@$SERVER_IP "sudo cp /etc/nginx/sites-available/desn /etc/nginx/sites-available/desn.backup.\$(date +%Y%m%d_%H%M%S)"
+ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo cp /etc/nginx/sites-available/desn /etc/nginx/sites-available/desn.backup.\$(date +%Y%m%d_%H%M%S)"
 
 # Create the corrected Nginx configuration
 echo "📝 Creating new Nginx configuration..."
-ssh $SERVER_USER@$SERVER_IP "sudo tee /etc/nginx/sites-available/desn > /dev/null" <<'NGINX_CONFIG'
+ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo tee /etc/nginx/sites-available/desn > /dev/null" <<'NGINX_CONFIG'
 # HTTP server - redirect all traffic to HTTPS
 server {
     listen 80;
@@ -119,11 +120,11 @@ echo ""
 
 # Test Nginx configuration
 echo "🧪 Testing Nginx configuration..."
-if ssh $SERVER_USER@$SERVER_IP "sudo nginx -t"; then
+if ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo nginx -t"; then
     echo "✅ Nginx configuration is valid"
 else
     echo "❌ Nginx configuration test failed. Restoring backup..."
-    ssh $SERVER_USER@$SERVER_IP "sudo cp /etc/nginx/sites-available/desn.backup.* /etc/nginx/sites-available/desn"
+    ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo cp /etc/nginx/sites-available/desn.backup.* /etc/nginx/sites-available/desn"
     exit 1
 fi
 
@@ -131,15 +132,15 @@ echo ""
 
 # Reload Nginx
 echo "🔄 Reloading Nginx..."
-ssh $SERVER_USER@$SERVER_IP "sudo systemctl reload nginx"
+ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo systemctl reload nginx"
 
 echo "✅ Nginx reloaded successfully"
 echo ""
 
 # Verify services are running
 echo "🔍 Verifying services..."
-ssh $SERVER_USER@$SERVER_IP "sudo systemctl is-active nginx && echo '✅ Nginx is running'"
-ssh $SERVER_USER@$SERVER_IP "sudo systemctl is-active desn-backend && echo '✅ Backend is running'"
+ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo systemctl is-active nginx && echo '✅ Nginx is running'"
+ssh -i "$SSH_KEY" $SERVER_USER@$SERVER_IP "sudo systemctl is-active desn-backend && echo '✅ Backend is running'"
 
 echo ""
 echo "🎉 HTTPS configuration fix complete!"
