@@ -113,12 +113,25 @@ const Register: React.FC = () => {
     setError(null);
 
     try {
-      const data = await ApiService.postWithAuth(
+      interface RegisterResponse {
+        success: boolean;
+        message?: string;
+        errors?: string[];
+        user?: {
+          username: string;
+          email: string;
+          fullName: string;
+          role: string;
+          token: string;
+        };
+      }
+
+      const data = await ApiService.postWithAuth<RegisterResponse>(
         "/api/auth/register",
         formData
       );
 
-      if (data.success) {
+      if (data.success && data.user) {
         login(data.user);
         navigate("/");
       } else {

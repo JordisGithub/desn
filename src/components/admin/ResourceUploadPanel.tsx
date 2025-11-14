@@ -70,7 +70,10 @@ export default function ResourceUploadPanel() {
   const fetchResources = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await ApiService.get("/api/resources");
+      interface ResourcesResponse {
+        resources: UploadedFile[];
+      }
+      const data = await ApiService.get<ResourcesResponse>("/api/resources");
       setResources(data.resources || []);
     } catch (error) {
       console.error("Error fetching resources:", error);

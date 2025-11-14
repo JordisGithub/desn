@@ -3,14 +3,24 @@
 // - postWithAuth / putWithAuth / deleteWithAuth add X-API-Key header automatically
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
-// Fallback order: VITE_DEV_API_KEY -> REACT_APP_API_KEY -> hard-coded dev key.
-// Note: API keys should not be kept in frontend code. This client sends requests
-// to a backend proxy which is expected to add any required authentication headers.
-// Keep BASE_URL pointed to your backend proxy (e.g. '/api' or 'http://localhost:8080').
 
-const DEV_API_KEY = ""; // API key should not be used in client-side code
+interface RequestOptions extends RequestInit {
+  headers?: Record<string, string>;
+}
 
-async function request(endpoint, options = {}) {
+interface ApiError extends Error {
+  status?: number;
+  data?: unknown;
+}
+
+interface GetOptions {
+  headers?: Record<string, string>;
+}
+
+async function request<T = unknown>(
+  endpoint: string,
+  options: RequestOptions = {}
+): Promise<T> {
   const url = `${BASE_URL}${endpoint}`;
   const res = await fetch(url, options);
 
@@ -19,18 +29,22 @@ async function request(endpoint, options = {}) {
   const data = isJson ? await res.json() : await res.text();
 
   if (!res.ok) {
-    const err = new Error(res.statusText || "Request failed");
+    const err: ApiError = new Error(res.statusText || "Request failed");
     err.status = res.status;
     err.data = data;
     throw err;
   }
 
-  return data;
+  return data as T;
 }
 
-function buildJsonOptions(method, body, additionalHeaders = {}) {
-  const headers = { ...additionalHeaders };
-  let finalBody = undefined;
+function buildJsonOptions(
+  method: string,
+  body?: unknown,
+  additionalHeaders: Record<string, string> = {}
+): RequestOptions {
+  const headers: Record<string, string> = { ...additionalHeaders };
+  let finalBody: string | FormData | undefined = undefined;
 
   if (body !== undefined) {
     // Allow FormData to pass through without JSON encoding
@@ -50,27 +64,39 @@ function buildJsonOptions(method, body, additionalHeaders = {}) {
 }
 
 // Public helpers
-async function get(endpoint, options = {}) {
+async function get<T = unknown>(
+  endpoint: string,
+  options: GetOptions = {}
+): Promise<T> {
   // GETs can now accept optional headers for authenticated requests
   const headers = options.headers || {};
-  return request(endpoint, { method: "GET", headers });
+  return request<T>(endpoint, { method: "GET", headers });
 }
 
-async function postWithAuth(endpoint, data) {
+async function postWithAuth<T = unknown>(
+  endpoint: string,
+  data?: unknown
+): Promise<T> {
   // The backend proxy should attach the server-side API key. Client must not include it.
   const opts = buildJsonOptions("POST", data);
-  return request(endpoint, opts);
+  return request<T>(endpoint, opts);
 }
 
-async function putWithAuth(endpoint, data) {
+async function putWithAuth<T = unknown>(
+  endpoint: string,
+  data?: unknown
+): Promise<T> {
   const opts = buildJsonOptions("PUT", data);
-  return request(endpoint, opts);
+  return request<T>(endpoint, opts);
 }
 
-async function deleteWithAuth(endpoint, data) {
+async function deleteWithAuth<T = unknown>(
+  endpoint: string,
+  data?: unknown
+): Promise<T> {
   // Some APIs accept a body on DELETE; include it if provided
   const opts = buildJsonOptions("DELETE", data);
-  return request(endpoint, opts);
+  return request<T>(endpoint, opts);
 }
 
 // Export as named and default

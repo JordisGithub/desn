@@ -70,7 +70,7 @@ class ResourceService {
       ? `/api/resources?${queryString}`
       : "/api/resources";
 
-    const response = await ApiService.get(endpoint);
+    const response = await ApiService.get<ResourcesResponse>(endpoint);
     return response;
   }
 
@@ -78,7 +78,9 @@ class ResourceService {
    * Get featured resources
    */
   async getFeaturedResources(): Promise<Resource[]> {
-    const response = await ApiService.get("/api/resources/featured");
+    const response = await ApiService.get<Resource[]>(
+      "/api/resources/featured"
+    );
     return response;
   }
 
@@ -86,7 +88,9 @@ class ResourceService {
    * Get single resource by ID
    */
   async getResource(resourceId: number): Promise<Resource> {
-    const response = await ApiService.get(`/api/resources/${resourceId}`);
+    const response = await ApiService.get<Resource>(
+      `/api/resources/${resourceId}`
+    );
     return response;
   }
 
@@ -97,7 +101,7 @@ class ResourceService {
     resourceData: Partial<Resource>,
     _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.postWithAuth(
+    const response = await ApiService.postWithAuth<ResourceActionResponse>(
       "/api/resources",
       resourceData
     );
@@ -112,7 +116,7 @@ class ResourceService {
     resourceData: Partial<Resource>,
     _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.putWithAuth(
+    const response = await ApiService.putWithAuth<ResourceActionResponse>(
       `/api/resources/${resourceId}`,
       resourceData
     );
@@ -126,7 +130,7 @@ class ResourceService {
     resourceId: number,
     _token: string
   ): Promise<ResourceActionResponse> {
-    const response = await ApiService.deleteWithAuth(
+    const response = await ApiService.deleteWithAuth<ResourceActionResponse>(
       `/api/resources/${resourceId}`
     );
     return response;
@@ -140,7 +144,7 @@ class ResourceService {
     username: string,
     _token: string
   ): Promise<FavoriteResponse> {
-    const response = await ApiService.postWithAuth(
+    const response = await ApiService.postWithAuth<FavoriteResponse>(
       `/api/resources/${resourceId}/favorite`,
       { username }
     );
@@ -151,7 +155,7 @@ class ResourceService {
    * Track click on a resource (for analytics)
    */
   async trackClick(resourceId: number): Promise<ClickResponse> {
-    const response = await ApiService.postWithAuth(
+    const response = await ApiService.postWithAuth<ClickResponse>(
       `/api/resources/${resourceId}/click`,
       {}
     );
@@ -165,7 +169,7 @@ class ResourceService {
     username: string,
     token: string
   ): Promise<ResourceFavorite[]> {
-    const response = await ApiService.get(
+    const response = await ApiService.get<ResourceFavorite[]>(
       `/api/resources/user/${username}/favorites`,
       {
         headers: {
@@ -184,7 +188,7 @@ class ResourceService {
     username: string,
     token: string
   ): Promise<{ isFavorited: boolean }> {
-    const response = await ApiService.get(
+    const response = await ApiService.get<{ isFavorited: boolean }>(
       `/api/resources/${resourceId}/favorite-status?username=${username}`,
       {
         headers: {
@@ -199,11 +203,14 @@ class ResourceService {
    * Get all resources for admin (with full analytics)
    */
   async getAllResourcesForAdmin(token: string): Promise<Resource[]> {
-    const response = await ApiService.get("/api/resources/admin/all", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await ApiService.get<Resource[]>(
+      "/api/resources/admin/all",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response;
   }
 

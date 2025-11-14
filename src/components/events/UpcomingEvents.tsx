@@ -257,19 +257,6 @@ interface EventStatus {
   availableSpots: number;
 }
 
-interface BackendEvent {
-  id: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  imageUrl?: string;
-  maxAttendees: number;
-  currentAttendees: number;
-  featured: boolean;
-}
-
 interface EventData {
   id: number;
   eventId: number; // Changed from string to number
@@ -298,10 +285,7 @@ export default function UpcomingEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/events/upcoming"
-        );
-        const backendEvents: BackendEvent[] = await response.json();
+        const backendEvents = await EventService.getUpcomingEvents();
 
         // Transform backend events to frontend format
         const transformedEvents: EventData[] = backendEvents.map((event) => {
