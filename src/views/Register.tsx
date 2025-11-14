@@ -161,7 +161,12 @@ const Register: React.FC = () => {
           <Subtitle>{t("register_subtitle")}</Subtitle>
 
           {error && (
-            <Alert severity='error' sx={{ mb: 3 }}>
+            <Alert
+              severity='error'
+              role='alert'
+              aria-live='assertive'
+              sx={{ mb: 3 }}
+            >
               {error}
             </Alert>
           )}
