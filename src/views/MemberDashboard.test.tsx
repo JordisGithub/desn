@@ -17,13 +17,17 @@ describe("Member Dashboard Page Accessibility", () => {
 
   it("should not have any accessibility violations (WCAG 2.2 AA)", async () => {
     const { container } = renderWithProviders(<MemberDashboard />);
+    // Wait for component to render (handles navigation redirect)
+    await new Promise((resolve) => setTimeout(resolve, 100));
     const results = await testAccessibility(container);
 
     expect(results.violations).toHaveLength(0);
   });
 
-  it("should have proper heading hierarchy", () => {
+  it("should have proper heading hierarchy", async () => {
     const { container } = renderWithProviders(<MemberDashboard />);
+    // Wait for component to render
+    await new Promise((resolve) => setTimeout(resolve, 100));
     const h1 = container.querySelector("h1");
     expect(h1).toBeInTheDocument();
   });

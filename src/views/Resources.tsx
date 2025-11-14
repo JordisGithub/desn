@@ -393,7 +393,10 @@ const Resources: React.FC = () => {
           >
             {t("resources.hero_title")}
           </Typography>
-          <Typography variant='h6' sx={{ mb: 4, maxWidth: 800, opacity: 0.95 }}>
+          <Typography
+            variant='body1'
+            sx={{ mb: 4, maxWidth: 800, opacity: 0.95, fontSize: "1.125rem" }}
+          >
             {t("resources.hero_description")}
           </Typography>
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}></Box>
@@ -606,7 +609,10 @@ const Resources: React.FC = () => {
           <Typography variant='h3' gutterBottom fontWeight='bold'>
             {t("resources.stay_updated_title")}
           </Typography>
-          <Typography variant='h6' sx={{ mb: 4, opacity: 0.95 }}>
+          <Typography
+            variant='body1'
+            sx={{ mb: 4, opacity: 0.95, fontSize: "1.125rem" }}
+          >
             {t("resources.stay_updated_description")}
           </Typography>
           <Box
