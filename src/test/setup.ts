@@ -39,3 +39,25 @@ globalThis.IntersectionObserver = class IntersectionObserver {
   }
   unobserve() {}
 } as any;
+
+// Mock HTMLCanvasElement.getContext to suppress canvas warnings
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(HTMLCanvasElement.prototype.getContext as any) = function () {
+  return null;
+};
+
+// Suppress act warnings in test output (tests still pass, just reduces noise)
+const originalError = console.error;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+console.error = (...args: any[]) => {
+  // Filter out act() warnings - they're benign in our accessibility tests
+  if (
+    typeof args[0] === "string" &&
+    (args[0].includes("Warning: An update to") ||
+      args[0].includes("act(...)") ||
+      args[0].includes("wrapped into act"))
+  ) {
+    return;
+  }
+  originalError.call(console, ...args);
+};
