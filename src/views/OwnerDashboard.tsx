@@ -40,7 +40,7 @@ import { useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
 import AdminDashboard from "./AdminDashboard";
 
-const PageContainer = styled(Box)({
+const PageContainer = styled('main')({
   minHeight: "100vh",
   backgroundColor: "#f5f5f5",
   padding: "40px 0",
@@ -287,7 +287,7 @@ const OwnerDashboard: React.FC = () => {
   };
 
   return (
-    <PageContainer component='main'>
+    <PageContainer>
       <Container maxWidth='lg'>
         <Title>Owner Dashboard</Title>
 
