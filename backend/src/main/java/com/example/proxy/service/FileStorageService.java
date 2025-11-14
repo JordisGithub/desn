@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.UUID;
@@ -28,7 +27,7 @@ public class FileStorageService {
     
     public FileStorageService(FileStorageConfig fileStorageConfig) {
         this.fileStorageConfig = fileStorageConfig;
-        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir())
+        this.fileStorageLocation = Path.of(fileStorageConfig.getUploadDir())
                 .toAbsolutePath().normalize();
         
         try {
@@ -143,8 +142,8 @@ public class FileStorageService {
         // Check file size
         if (file.getSize() > fileStorageConfig.getMaxFileSize()) {
             throw new IllegalArgumentException(
-                String.format("File size exceeds maximum allowed size of %d bytes", 
-                    fileStorageConfig.getMaxFileSize())
+                    "File size exceeds maximum allowed size of %d bytes".formatted(
+                            fileStorageConfig.getMaxFileSize())
             );
         }
         

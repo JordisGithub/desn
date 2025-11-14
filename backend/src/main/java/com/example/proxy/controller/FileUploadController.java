@@ -39,8 +39,8 @@ public class FileUploadController {
      */
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "category", defaultValue = "general") String category,
+            @RequestParam MultipartFile file,
+            @RequestParam(defaultValue = "general") String category,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
         
         log.info("Upload request received - File: {}, Category: {}", 

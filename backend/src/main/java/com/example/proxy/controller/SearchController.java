@@ -27,8 +27,8 @@ public class SearchController {
     private EventRepository eventRepository;
 
     @GetMapping("/search")
-    public ResponseEntity<Map<String, Object>> search(@RequestParam("q") String q,
-                                                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
+    public ResponseEntity<Map<String, Object>> search(@RequestParam String q,
+                                                      @RequestParam(required = false, defaultValue = "10") int limit) {
         // Simple DB search for resources
         List<Resource> resources = resourceRepository.searchByTitleOrDescription(q);
 

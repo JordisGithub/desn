@@ -20,7 +20,7 @@ public class RateLimitConfig {
     private static final Duration REFILL_DURATION = Duration.ofMinutes(1);
 
     @Bean
-    public Map<String, Bucket> rateLimitBuckets() {
+    Map<String, Bucket> rateLimitBuckets() {
         return new ConcurrentHashMap<>();
     }
 
