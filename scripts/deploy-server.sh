@@ -16,6 +16,11 @@ echo "🚀 Starting DESN application deployment..."
 echo "⏹️  Stopping existing services..."
 sudo systemctl stop desn-backend 2>/dev/null || true
 sudo systemctl stop nginx 2>/dev/null || true
+sudo systemctl stop caddy 2>/dev/null || true
+
+# Stop any process using port 80
+echo "🔍 Checking for processes on port 80..."
+sudo fuser -k 80/tcp 2>/dev/null || true
 
 # Install required packages if not present
 if ! command -v java &> /dev/null; then
@@ -41,13 +46,13 @@ After=network.target
 Type=simple
 User=ubuntu
 WorkingDirectory=$BACKEND_DIR
-ExecStart=/usr/bin/java -jar $BACKEND_DIR/app.jar --spring.profiles.active=prod
+EnvironmentFile=$BACKEND_DIR/.env
+ExecStart=/usr/bin/java -Xmx512m -Xms256m -jar $BACKEND_DIR/app.jar --spring.profiles.active=prod
 Restart=always
 RestartSec=10
 StandardOutput=append:$LOG_DIR/backend.log
 StandardError=append:$LOG_DIR/backend-error.log
 
-Environment="JAVA_OPTS=-Xmx512m -Xms256m"
 Environment="SERVER_PORT=8080"
 
 [Install]
@@ -131,7 +136,15 @@ for i in {1..30}; do
     fi
     if [ $i -eq 30 ]; then
         echo "❌ Backend failed to start in time"
-        sudo journalctl -u desn-backend -n 50
+        echo ""
+        echo "📋 Last 50 lines of systemd journal:"
+        sudo journalctl -u desn-backend -n 50 --no-pager
+        echo ""
+        echo "📋 Backend error log:"
+        sudo tail -n 50 $LOG_DIR/backend-error.log 2>/dev/null || echo "No error log found"
+        echo ""
+        echo "📋 Backend output log:"
+        sudo tail -n 50 $LOG_DIR/backend.log 2>/dev/null || echo "No output log found"
         exit 1
     fi
     sleep 2
