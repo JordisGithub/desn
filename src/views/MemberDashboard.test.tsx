@@ -1,8 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { renderWithProviders, testAccessibility } from "../test/test-utils";
 import MemberDashboard from "./MemberDashboard";
 
 describe("Member Dashboard Page Accessibility", () => {
+  // Mock authenticated user in localStorage before each test
+  beforeEach(() => {
+    const memberUser = {
+      username: "member",
+      email: "member@test.com",
+      fullName: "Member User",
+      role: "MEMBER",
+      token: "test-token",
+    };
+    localStorage.setItem("user", JSON.stringify(memberUser));
+  });
+
   it("should not have any accessibility violations (WCAG 2.2 AA)", async () => {
     const { container } = renderWithProviders(<MemberDashboard />);
     const results = await testAccessibility(container);

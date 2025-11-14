@@ -25,10 +25,15 @@ describe("Home Page Accessibility", () => {
     });
   });
 
-  it("should have accessible navigation", () => {
+  it("should have accessible links", () => {
     const { container } = renderWithProviders(<Home />);
-    const nav = container.querySelector("nav");
-    expect(nav).toBeInTheDocument();
+    const links = container.querySelectorAll("a");
+
+    links.forEach((link) => {
+      const hasText = link.textContent?.trim();
+      const hasAriaLabel = link.getAttribute("aria-label");
+      expect(hasText || hasAriaLabel).toBeTruthy();
+    });
   });
 
   it("should have proper landmark regions", () => {

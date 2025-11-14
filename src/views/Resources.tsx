@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Box,
   Container,
@@ -32,6 +33,7 @@ import type { Resource, ResourcesResponse } from "../services/ResourceService";
 
 const Resources: React.FC = () => {
   const { t } = useTranslation();
+  usePageTitle("page_titles.resources");
   const { isAuthenticated, user } = useAuth();
   const token = user?.token;
 
@@ -432,6 +434,7 @@ const Resources: React.FC = () => {
             >
               <TextField
                 fullWidth
+                label={t("resources.search_label")}
                 placeholder={t("resources.search_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

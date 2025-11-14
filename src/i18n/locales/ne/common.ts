@@ -1,4 +1,37 @@
 export default {
+  // Page Titles (for document.title)
+  page_titles: {
+    home: "गृहपृष्ठ - अपाङ्गता भएका व्यक्तिहरूलाई सशक्तिकरण",
+    about: "हाम्रो बारेमा - हाम्रो मिशन र दृष्टिकोण",
+    programs: "कार्यक्रम र सेवाहरू",
+    events: "कार्यक्रम र पात्रो",
+    get_involved: "संलग्न हुनुहोस् - फरक पार्नुहोस्",
+    resources: "स्रोत र प्रकाशनहरू",
+    contact: "सम्पर्क गर्नुहोस्",
+    login: "आफ्नो खातामा लगइन गर्नुहोस्",
+    register: "नयाँ खाता सिर्जना गर्नुहोस्",
+    member_dashboard: "सदस्य ड्यासबोर्ड",
+    admin_dashboard: "प्रशासक ड्यासबोर्ड",
+    payment_verify: "भुक्तानी प्रमाणीकरण",
+    accessibility: "पहुँच वक्तव्य",
+  },
+  // Image Alt Texts
+  image_alts: {
+    hero_home:
+      "नेपालमा अपाङ्गता भएका व्यक्तिहरूलाई सहयोग गर्ने DESN टोली सदस्यहरू",
+    hero_about: "DESN संगठन भवन र टोली सहयोग",
+    hero_programs: "DESN कार्यक्रमहरूमा भाग लिने समुदायका सदस्यहरू",
+    hero_events: "सहभागीहरू र स्वयंसेवकहरू सहितको DESN कार्यक्रम सभा",
+    hero_get_involved:
+      "अपाङ्गता अधिकारलाई समर्थन गर्न सँगै काम गर्ने स्वयंसेवकहरू",
+    hero_contact: "DESN कार्यालय स्थान र सम्पर्क जानकारी",
+    logo: "DESN - अपाङ्गता उन्मूलन सेवा नेटवर्क नेपाल",
+    partner_logo: "साझेदार संस्थाको लोगो",
+    team_member: "DESN टोली सदस्य",
+    event_thumbnail: "कार्यक्रम चित्रित छवि",
+    resource_thumbnail: "स्रोत प्रकाशन आवरण",
+    program_icon: "कार्यक्रम सेवा आइकन",
+  },
   // Navigation
   skip_to_content: "मुख्य सामग्रीमा जानुहोस्",
   nav: {
@@ -74,6 +107,7 @@ export default {
     all_resources_title: "सबै स्रोतहरू",
     all_resources_description:
       "प्रकार र विषयद्वारा संगठित, हाम्रो पूर्ण प्रकाशन पुस्तकालय ब्राउज गर्नुहोस्।",
+    search_label: "स्रोतहरू खोज्नुहोस्",
     search_placeholder: "शीर्षक वा विवरणद्वारा खोज्नुहोस्...",
     showing_results: "{total} मध्ये {count} स्रोतहरू देखाइँदै",
     no_resources_found: "तपाईंको मापदण्ड अनुरूप कुनै स्रोत फेला परेन।",

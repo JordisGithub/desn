@@ -42,12 +42,13 @@ const IconCircle = styled(Box)({
   marginBottom: "24px",
 });
 
-const Title = styled(Typography)({
+const Title = styled("h1")({
   fontSize: "48px",
   fontWeight: 400,
   color: "white",
-  marginBottom: "16px",
   fontFamily: "'Open Sans', sans-serif",
+  margin: 0,
+  marginBottom: "16px",
 });
 
 const Subtitle = styled(Typography)({

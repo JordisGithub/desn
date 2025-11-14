@@ -1,4 +1,37 @@
 export default {
+  // Page Titles (for document.title)
+  page_titles: {
+    home: "Home - Empowering Individuals with Disabilities",
+    about: "About Us - Our Mission & Vision",
+    programs: "Programs & Services",
+    events: "Events & Calendar",
+    get_involved: "Get Involved - Make a Difference",
+    resources: "Resources & Publications",
+    contact: "Contact Us",
+    login: "Login to Your Account",
+    register: "Create New Account",
+    member_dashboard: "Member Dashboard",
+    admin_dashboard: "Admin Dashboard",
+    payment_verify: "Payment Verification",
+    accessibility: "Accessibility Statement",
+  },
+  // Image Alt Texts
+  image_alts: {
+    hero_home:
+      "DESN team members supporting individuals with disabilities in Nepal",
+    hero_about: "DESN organization building and team collaboration",
+    hero_programs: "Community members participating in DESN programs",
+    hero_events: "DESN event gathering with participants and volunteers",
+    hero_get_involved:
+      "Volunteers working together to support disability rights",
+    hero_contact: "DESN office location and contact information",
+    logo: "DESN - Disability Elimination Service Network Nepal",
+    partner_logo: "Partner organization logo",
+    team_member: "DESN team member",
+    event_thumbnail: "Event featured image",
+    resource_thumbnail: "Resource publication cover",
+    program_icon: "Program service icon",
+  },
   // Navigation
   skip_to_content: "Skip to main content",
   nav: {
@@ -74,6 +107,7 @@ export default {
     all_resources_title: "All Resources",
     all_resources_description:
       "Browse our complete library of publications, organized by type and topic.",
+    search_label: "Search Resources",
     search_placeholder: "Search by title or description...",
     showing_results: "Showing {count} of {total} resources",
     no_resources_found: "No resources found matching your criteria.",

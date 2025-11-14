@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Container,
   Typography,
@@ -44,12 +45,13 @@ const DashboardContainer = styled(Container)(({ theme }) => ({
   },
 }));
 
-const PageTitle = styled(Typography)(({ theme }) => ({
+const PageTitle = styled("h1")(({ theme }) => ({
   fontSize: "3rem",
   fontWeight: 400,
   color: "#004c91",
-  marginBottom: theme.spacing(2),
   fontFamily: "'Open Sans', sans-serif",
+  margin: 0,
+  marginBottom: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
     fontSize: "2.5rem",
   },
@@ -320,6 +322,7 @@ interface FavoriteResource {
 
 export default function MemberDashboard() {
   const { t } = useTranslation();
+  usePageTitle("page_titles.member_dashboard");
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
@@ -506,7 +509,7 @@ export default function MemberDashboard() {
     <PageContainer>
       <main id='main-content'>
         <DashboardContainer maxWidth='lg'>
-          <PageTitle variant='h1'>{t("member_dashboard_title")}</PageTitle>
+          <PageTitle>{t("member_dashboard_title")}</PageTitle>
           <PageSubtitle>{t("member_dashboard_subtitle")}</PageSubtitle>
 
           {error && (

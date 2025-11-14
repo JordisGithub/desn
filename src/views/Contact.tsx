@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from "../hooks/usePageTitle";
 import ContactHero from "../components/contact/ContactHero";
 import ContactCards from "../components/contact/ContactCards";
 import ContactFormSection from "../components/contact/ContactFormSection";
@@ -23,6 +24,7 @@ const SkipLink = styled("a")({
 
 export default function Contact() {
   const { t } = useTranslation();
+  usePageTitle("page_titles.contact");
 
   return (
     <>

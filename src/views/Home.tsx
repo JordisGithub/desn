@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from "../hooks/usePageTitle";
 import HeroSection from "../components/home/HeroSection";
 import AboutSection from "../components/home/AboutSection";
 import ProgramsSection from "../components/home/ProgramsSection";
@@ -26,6 +27,7 @@ const SkipLink = styled("a")({
 
 export default function Home() {
   const { t } = useTranslation();
+  usePageTitle("page_titles.home");
 
   return (
     <>

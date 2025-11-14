@@ -5,7 +5,13 @@ import Contact from "./Contact";
 describe("Contact Page Accessibility", () => {
   it("should not have any accessibility violations (WCAG 2.2 AA)", async () => {
     const { container } = renderWithProviders(<Contact />);
-    const results = await testAccessibility(container);
+    // Run accessibility test with iframe-specific rules disabled
+    // Google Maps iframe is cross-origin and cannot be scanned by axe-core
+    const results = await testAccessibility(container, {
+      rules: {
+        "frame-tested": { enabled: false },
+      },
+    });
 
     expect(results.violations).toHaveLength(0);
   });

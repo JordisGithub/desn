@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Box,
   Container,
@@ -32,12 +33,14 @@ const FormPaper = styled(Paper)({
   boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
 });
 
-const Title = styled(Typography)({
+const Title = styled("h1")({
   fontSize: "32px",
   fontWeight: 600,
   color: "#004c91",
   marginBottom: "8px",
   textAlign: "center",
+  fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+  margin: 0,
 });
 
 const Subtitle = styled(Typography)({
@@ -88,6 +91,7 @@ const LinkText = styled(Typography)({
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
+  usePageTitle("page_titles.login");
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({

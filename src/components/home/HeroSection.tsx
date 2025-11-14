@@ -142,7 +142,7 @@ export default function HeroSection() {
   const { t } = useTranslation();
 
   return (
-    <HeroContainer aria-labelledby='hero-heading' role='banner'>
+    <HeroContainer aria-labelledby='hero-heading'>
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <HeroContentWrapper>
           {/* Text overlay with sunset gradient */}
