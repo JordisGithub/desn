@@ -18,8 +18,8 @@ export default {
   ...auth,
   ...payment,
   ...accessibility,
-  ...programs,
   ...events,
   get_involved,
   contact,
+  programs,
 };
