@@ -72,7 +72,7 @@ export default function ProgramStats() {
     {
       icon: <GroupsIcon />,
       number: "15,000+",
-      label: t("programs:stats.lives_impacted"),
+      label: t("programs.stats.lives_impacted"),
       iconBg: "rgba(0, 76, 145, 0.1)",
       iconColor: "#004c91",
       numberColor: "#004c91",
@@ -80,7 +80,7 @@ export default function ProgramStats() {
     {
       icon: <CheckCircleIcon />,
       number: "5",
-      label: t("programs:stats.core_programs"),
+      label: t("programs.stats.core_programs"),
       iconBg: "#ffffff",
       iconColor: "#2b2b2b",
       numberColor: "#2b2b2b",
@@ -88,7 +88,7 @@ export default function ProgramStats() {
     {
       icon: <EmojiEventsIcon />,
       number: "108",
-      label: t("programs:stats.projects_delivered"),
+      label: t("programs.stats.projects_delivered"),
       iconBg: "#004c91",
       iconColor: "white",
       numberColor: "#2b2b2b",
@@ -96,7 +96,7 @@ export default function ProgramStats() {
     {
       icon: <TrendingUpIcon />,
       number: "95%",
-      label: t("programs:stats.success_rate"),
+      label: t("programs.stats.success_rate"),
       iconBg: "rgba(246, 212, 105, 0.1)",
       iconColor: "#004c91",
       numberColor: "#004c91",
@@ -110,7 +110,7 @@ export default function ProgramStats() {
           id='programs-stats-title'
           sx={{ position: "absolute", left: "-10000px" }}
         >
-          {t("programs:stats.section_title")}
+          {t("programs.stats.section_title")}
         </Typography>
         <StatsGrid>
           {stats.map((stat, index) => (

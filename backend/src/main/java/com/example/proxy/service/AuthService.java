@@ -64,13 +64,9 @@ public class AuthService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFullName(request.getFullName());
         
-        // Set role (default to MEMBER, only allow ADMIN via environment/config)
-        try {
-            user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            user.setRole(User.Role.MEMBER);
-        }
-        
+        // Always set new registrations to MEMBER role
+        // Only OWNER can change roles to ADMIN or OWNER
+        user.setRole(User.Role.MEMBER);
         user.setEnabled(true);
 
         user = userRepository.save(user);

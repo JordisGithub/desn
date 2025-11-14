@@ -134,7 +134,17 @@ const Login: React.FC = () => {
 
       if (data.success && data.user) {
         login(data.user);
-        navigate("/");
+
+        // Route based on user role
+        if (data.user.role === "OWNER") {
+          navigate("/owner/dashboard");
+        } else if (data.user.role === "ADMIN") {
+          navigate("/admin/dashboard");
+        } else if (data.user.role === "MEMBER") {
+          navigate("/member/dashboard");
+        } else {
+          navigate("/");
+        }
       } else {
         setError(data.message || t("auth_error_login_failed"));
       }

@@ -102,32 +102,32 @@ export default function OurApproach() {
     {
       icon: <AssessmentIcon />,
       number: "01",
-      title: t("programs:approach.assessment.title"),
-      description: t("programs:approach.assessment.description"),
+      title: t("programs.approach.assessment.title"),
+      description: t("programs.approach.assessment.description"),
       iconBg: "rgba(0, 76, 145, 0.1)",
       iconColor: "#004c91",
     },
     {
       icon: <DesignServicesIcon />,
       number: "02",
-      title: t("programs:approach.design.title"),
-      description: t("programs:approach.design.description"),
+      title: t("programs.approach.design.title"),
+      description: t("programs.approach.design.description"),
       iconBg: "rgba(0, 167, 127, 0.1)",
       iconColor: "#00a77f",
     },
     {
       icon: <BuildIcon />,
       number: "03",
-      title: t("programs:approach.implementation.title"),
-      description: t("programs:approach.implementation.description"),
+      title: t("programs.approach.implementation.title"),
+      description: t("programs.approach.implementation.description"),
       iconBg: "rgba(150, 85, 149, 0.1)",
       iconColor: "#965595",
     },
     {
       icon: <InsightsIcon />,
       number: "04",
-      title: t("programs:approach.evaluation.title"),
-      description: t("programs:approach.evaluation.description"),
+      title: t("programs.approach.evaluation.title"),
+      description: t("programs.approach.evaluation.description"),
       iconBg: "rgba(246, 212, 105, 0.1)",
       iconColor: "#2b2b2b",
     },
@@ -138,10 +138,10 @@ export default function OurApproach() {
       <Container maxWidth='xl'>
         <SectionHeader>
           <SectionTitle id='our-approach-title'>
-            {t("programs:approach.title")}
+            {t("programs.approach.title")}
           </SectionTitle>
           <SectionDescription>
-            {t("programs:approach.description")}
+            {t("programs.approach.description")}
           </SectionDescription>
         </SectionHeader>
         <ApproachGrid>

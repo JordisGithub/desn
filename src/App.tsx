@@ -19,6 +19,7 @@ const Login = lazy(() => import("./views/Login"));
 const Register = lazy(() => import("./views/Register"));
 const AdminDashboard = lazy(() => import("./views/AdminDashboard"));
 const MemberDashboard = lazy(() => import("./views/MemberDashboard"));
+const OwnerDashboard = lazy(() => import("./views/OwnerDashboard"));
 const PaymentVerify = lazy(() => import("./views/PaymentVerify"));
 const AccessibilityStatement = lazy(
   () => import("./views/AccessibilityStatement")
@@ -60,6 +61,7 @@ export default function App() {
                   />
                   <Route path='/login' element={<Login />} />
                   <Route path='/register' element={<Register />} />
+                  <Route path='/owner/dashboard' element={<OwnerDashboard />} />
                   <Route path='/admin/dashboard' element={<AdminDashboard />} />
                   <Route
                     path='/member/dashboard'

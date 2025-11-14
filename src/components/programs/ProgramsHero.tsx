@@ -130,25 +130,25 @@ export default function ProgramsHero() {
       <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
         <Box maxWidth='800px'>
           <Badge>
-            <BadgeText>{t("programs:hero.badge")}</BadgeText>
+            <BadgeText>{t("programs.hero.badge")}</BadgeText>
           </Badge>
           <Title id='programs-hero-title' variant='h1'>
-            {t("programs:hero.title")}
+            {t("programs.hero.title")}
           </Title>
-          <Description>{t("programs:hero.description")}</Description>
+          <Description>{t("programs.hero.description")}</Description>
           <CTAContainer>
             <PrimaryButton
               onClick={scrollToPrograms}
               endIcon={<ArrowForwardIcon />}
-              aria-label={t("programs:hero.explore_button")}
+              aria-label={t("programs.hero.explore_button")}
             >
-              {t("programs:hero.explore_button")}
+              {t("programs.hero.explore_button")}
             </PrimaryButton>
             <SecondaryButton
               href='/get-involved'
-              aria-label={t("programs:hero.get_involved_button")}
+              aria-label={t("programs.hero.get_involved_button")}
             >
-              {t("programs:hero.get_involved_button")}
+              {t("programs.hero.get_involved_button")}
             </SecondaryButton>
           </CTAContainer>
         </Box>
