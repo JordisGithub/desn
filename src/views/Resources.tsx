@@ -83,7 +83,7 @@ const Resources: React.FC = () => {
   // Fetch resources based on filters
   useEffect(() => {
     let isMounted = true;
-    
+
     const fetchResources = async () => {
       if (!isMounted) return;
       setLoading(true);
@@ -110,7 +110,7 @@ const Resources: React.FC = () => {
     };
 
     fetchResources();
-    
+
     return () => {
       isMounted = false;
     };
@@ -119,7 +119,7 @@ const Resources: React.FC = () => {
   // Fetch user favorites if authenticated
   useEffect(() => {
     let isMounted = true;
-    
+
     const fetchFavorites = async () => {
       if (isAuthenticated && user?.username && token) {
         try {
@@ -128,7 +128,9 @@ const Resources: React.FC = () => {
             token
           );
           if (isMounted) {
-            const favoriteIds = new Set(userFavorites.map((f) => f.resource.id));
+            const favoriteIds = new Set(
+              userFavorites.map((f) => f.resource.id)
+            );
             setFavorites(favoriteIds);
           }
         } catch (err) {
@@ -138,7 +140,7 @@ const Resources: React.FC = () => {
     };
 
     fetchFavorites();
-    
+
     return () => {
       isMounted = false;
     };
