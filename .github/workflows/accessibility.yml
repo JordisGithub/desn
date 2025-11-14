@@ -126,3 +126,136 @@ jobs:
               repo: context.repo.repo,
               body: comment
             });
+
+  a11y-mcp-audit:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: "http://localhost:8080"
+
+      - name: Serve application
+        run: |
+          npm install -g serve
+          serve -s dist -l 3000 &
+          sleep 5
+
+      - name: Install a11y-mcp
+        run: npm install -g a11y-mcp
+
+      - name: Audit pages with a11y-mcp
+        id: a11y-audit
+        continue-on-error: true
+        run: |
+          mkdir -p a11y-results
+
+          # Audit all main pages
+          echo "Auditing Home page..."
+          npx a11y-mcp audit http://localhost:3000 --tags wcag2a,wcag2aa,wcag22aa > a11y-results/home.json || true
+
+          echo "Auditing About page..."
+          npx a11y-mcp audit http://localhost:3000/about --tags wcag2a,wcag2aa,wcag22aa > a11y-results/about.json || true
+
+          echo "Auditing Programs page..."
+          npx a11y-mcp audit http://localhost:3000/programs --tags wcag2a,wcag2aa,wcag22aa > a11y-results/programs.json || true
+
+          echo "Auditing Events page..."
+          npx a11y-mcp audit http://localhost:3000/events --tags wcag2a,wcag2aa,wcag22aa > a11y-results/events.json || true
+
+          echo "Auditing Get Involved page..."
+          npx a11y-mcp audit http://localhost:3000/get-involved --tags wcag2a,wcag2aa,wcag22aa > a11y-results/get-involved.json || true
+
+          echo "Auditing Resources page..."
+          npx a11y-mcp audit http://localhost:3000/resources --tags wcag2a,wcag2aa,wcag22aa > a11y-results/resources.json || true
+
+          echo "Auditing Contact page..."
+          npx a11y-mcp audit http://localhost:3000/contact --tags wcag2a,wcag2aa,wcag22aa > a11y-results/contact.json || true
+
+      - name: Generate a11y-mcp summary
+        if: always()
+        run: |
+          echo "## 🔍 A11y MCP Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Detailed accessibility audit using axe-core via a11y-mcp:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          for file in a11y-results/*.json; do
+            if [ -f "$file" ]; then
+              page=$(basename "$file" .json)
+              echo "### $page" >> $GITHUB_STEP_SUMMARY
+              cat "$file" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+      - name: Upload a11y-mcp results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-mcp-results
+          path: a11y-results/
+          retention-days: 30
+
+      - name: Comment PR with a11y-mcp results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🔍 A11y MCP Detailed Audit\n\n';
+            comment += 'Comprehensive WCAG 2.2 AA audit using axe-core:\n\n';
+
+            const resultFiles = fs.readdirSync('a11y-results');
+            let totalViolations = 0;
+            let pages = [];
+
+            for (const file of resultFiles) {
+              if (file.endsWith('.json')) {
+                const content = fs.readFileSync(`a11y-results/${file}`, 'utf8');
+                const pageName = file.replace('.json', '');
+                
+                try {
+                  const data = JSON.parse(content);
+                  const violations = data.violations || [];
+                  totalViolations += violations.length;
+                  pages.push(`- **${pageName}**: ${violations.length} issues`);
+                } catch (e) {
+                  pages.push(`- **${pageName}**: Unable to parse results`);
+                }
+              }
+            }
+
+            if (totalViolations === 0) {
+              comment += '✅ **No accessibility violations found!**\n\n';
+            } else {
+              comment += `⚠️ **Found ${totalViolations} accessibility issues across ${pages.length} pages:**\n\n`;
+              comment += pages.join('\n') + '\n\n';
+            }
+
+            comment += '\n📊 Detailed results are available in the workflow artifacts.';
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

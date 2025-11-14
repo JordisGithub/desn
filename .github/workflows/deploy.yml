@@ -6,8 +6,77 @@ on:
       - master
 
 jobs:
+  pre-deployment-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run accessibility tests
+        run: npm run test:a11y
+
+      - name: Build application
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: "https://desnepal.com"
+
+      - name: Serve application for testing
+        run: |
+          npm install -g serve a11y-mcp
+          serve -s dist -l 3000 &
+          sleep 5
+
+      - name: Pre-deployment accessibility audit
+        id: pre-deploy-audit
+        run: |
+          mkdir -p pre-deploy-audit
+
+          # Audit critical pages with a11y-mcp
+          echo "Running pre-deployment accessibility audit..."
+          npx a11y-mcp audit http://localhost:3000 --tags wcag2a,wcag2aa,wcag22aa > pre-deploy-audit/home.json
+          npx a11y-mcp audit http://localhost:3000/about --tags wcag2a,wcag2aa,wcag22aa > pre-deploy-audit/about.json
+          npx a11y-mcp audit http://localhost:3000/events --tags wcag2a,wcag2aa,wcag22aa > pre-deploy-audit/events.json
+
+          # Count critical violations
+          critical_count=0
+          for file in pre-deploy-audit/*.json; do
+            if [ -f "$file" ]; then
+              critical=$(grep -c '"impact":"critical"' "$file" || echo "0")
+              critical_count=$((critical_count + critical))
+            fi
+          done
+
+          echo "critical_count=$critical_count" >> $GITHUB_OUTPUT
+
+          if [ "$critical_count" -gt "0" ]; then
+            echo "❌ Found $critical_count critical accessibility issues!"
+            echo "Deployment blocked. Please fix critical issues before deploying."
+            exit 1
+          fi
+
+          echo "✅ No critical accessibility issues found. Deployment approved."
+
+      - name: Upload pre-deployment audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pre-deployment-audit
+          path: pre-deploy-audit/
+          retention-days: 30
+
   deploy:
     runs-on: ubuntu-latest
+    needs: pre-deployment-validation
     # Required secrets: SSH_PRIVATE_KEY, SERVER_HOST, SERVER_USER
     # Configure these in Repository Settings > Secrets and variables > Actions
 

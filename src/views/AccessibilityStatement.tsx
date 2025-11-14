@@ -991,8 +991,199 @@ export default function AccessibilityStatement() {
         </Container>
       </Section>
 
+      {/* Testing Section */}
+      <Section sx={{ backgroundColor: "#ffffff" }}>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
+          <SectionTitle variant='h2'>
+            Accessibility Testing & Monitoring
+          </SectionTitle>
+          <SectionSubtitle>
+            We employ comprehensive testing strategies to ensure and maintain
+            WCAG 2.2 AA compliance
+          </SectionSubtitle>
+
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+              gap: 6,
+            }}
+          >
+            <CommitmentCard>
+              <CardIconContainer
+                sx={{ backgroundColor: "rgba(0, 76, 145, 0.1)" }}
+              >
+                <VerifiedIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
+              </CardIconContainer>
+              <Box>
+                <CardTitle>Automated Testing</CardTitle>
+                <CardText sx={{ mt: 2, mb: 3 }}>
+                  Continuous accessibility testing integrated into our
+                  development workflow
+                </CardText>
+                <FeatureList disablePadding>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>61 automated tests</strong> covering all pages
+                      using Vitest and jest-axe
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>axe-core integration</strong> with 25+ WCAG 2.2 AA
+                      rules enforced
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>a11y-mcp audits</strong> for detailed violation
+                      analysis with HTML snippets
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>Lighthouse CI</strong> running accessibility
+                      audits on every PR
+                    </Typography>
+                  </ListItem>
+                </FeatureList>
+              </Box>
+            </CommitmentCard>
+
+            <CommitmentCard>
+              <CardIconContainer
+                sx={{ backgroundColor: "rgba(0, 167, 127, 0.1)" }}
+              >
+                <ShieldIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
+              </CardIconContainer>
+              <Box>
+                <CardTitle>Continuous Monitoring</CardTitle>
+                <CardText sx={{ mt: 2, mb: 3 }}>
+                  Production site monitored daily for accessibility regressions
+                </CardText>
+                <FeatureList disablePadding>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>Daily scans</strong> of production site at 2 AM
+                      UTC
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>Automated alerts</strong> for critical
+                      accessibility issues
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>Pre-deployment validation</strong> blocks releases
+                      with critical violations
+                    </Typography>
+                  </ListItem>
+                  <ListItem>
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#00a77f",
+                        mr: 1.5,
+                        fontSize: "1.25rem",
+                        mt: 0.25,
+                      }}
+                    />
+                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
+                      <strong>Audit history</strong> maintained for 90 days
+                    </Typography>
+                  </ListItem>
+                </FeatureList>
+              </Box>
+            </CommitmentCard>
+          </Box>
+
+          <InfoBox sx={{ mt: 6 }}>
+            <CardIconContainer
+              sx={{
+                backgroundColor: "rgba(0, 76, 145, 0.1)",
+                width: "64px",
+                height: "64px",
+              }}
+            >
+              <CheckCircleIcon sx={{ fontSize: "2rem", color: "#004c91" }} />
+            </CardIconContainer>
+            <Box>
+              <CardTitle>Testing Coverage</CardTitle>
+              <CardText sx={{ mt: 1.5 }}>
+                Our testing infrastructure validates:{" "}
+                <strong>
+                  color contrast (WCAG 4.5:1), heading hierarchy, ARIA
+                  attributes, form labels, keyboard navigation, focus
+                  management, screen reader compatibility, semantic HTML
+                  structure, image alt text, button accessibility, link names,
+                  and landmark regions.
+                </strong>{" "}
+                All tests must pass before code reaches production.
+              </CardText>
+            </Box>
+          </InfoBox>
+        </Container>
+      </Section>
+
       {/* Contact Section */}
-      <Section id='contact' sx={{ backgroundColor: "#ffffff" }}>
+      <Section id='contact' sx={{ backgroundColor: "#f9fafb" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <SectionTitle variant='h2'>Report Accessibility Issues</SectionTitle>
           <SectionSubtitle>

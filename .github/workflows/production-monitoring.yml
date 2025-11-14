@@ -1,0 +1,177 @@
+name: Production Accessibility Monitoring
+
+on:
+  schedule:
+    # Run every day at 2 AM UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  monitor-production:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install a11y-mcp
+        run: npm install -g a11y-mcp
+
+      - name: Audit production site
+        id: production-audit
+        continue-on-error: true
+        run: |
+          mkdir -p production-results
+
+          echo "Auditing production Home page..."
+          npx a11y-mcp audit https://desnepal.com --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/home.json || true
+
+          echo "Auditing production About page..."
+          npx a11y-mcp audit https://desnepal.com/about --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/about.json || true
+
+          echo "Auditing production Programs page..."
+          npx a11y-mcp audit https://desnepal.com/programs --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/programs.json || true
+
+          echo "Auditing production Events page..."
+          npx a11y-mcp audit https://desnepal.com/events --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/events.json || true
+
+          echo "Auditing production Get Involved page..."
+          npx a11y-mcp audit https://desnepal.com/get-involved --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/get-involved.json || true
+
+          echo "Auditing production Resources page..."
+          npx a11y-mcp audit https://desnepal.com/resources --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/resources.json || true
+
+          echo "Auditing production Contact page..."
+          npx a11y-mcp audit https://desnepal.com/contact --tags wcag2a,wcag2aa,wcag22aa --includeHtml > production-results/contact.json || true
+
+      - name: Analyze results
+        id: analyze
+        run: |
+          total_violations=0
+          critical_count=0
+
+          for file in production-results/*.json; do
+            if [ -f "$file" ]; then
+              violations=$(grep -o '"violations":\[' "$file" | wc -l || echo "0")
+              total_violations=$((total_violations + violations))
+              
+              # Count critical/serious issues
+              critical=$(grep -c '"impact":"critical"' "$file" || echo "0")
+              serious=$(grep -c '"impact":"serious"' "$file" || echo "0")
+              critical_count=$((critical_count + critical + serious))
+            fi
+          done
+
+          echo "total_violations=$total_violations" >> $GITHUB_OUTPUT
+          echo "critical_count=$critical_count" >> $GITHUB_OUTPUT
+
+      - name: Generate report
+        run: |
+          echo "## 🔍 Production Accessibility Monitoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Site**: https://desnepal.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Violations: ${{ steps.analyze.outputs.total_violations }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Critical/Serious Issues: ${{ steps.analyze.outputs.critical_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.analyze.outputs.total_violations }}" -eq "0" ]; then
+            echo "✅ **No accessibility violations detected!**" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.analyze.outputs.critical_count }}" -gt "0" ]; then
+            echo "🚨 **Action Required**: Critical accessibility issues detected!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Minor issues detected** - Review recommended" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload production audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-a11y-audit-${{ github.run_number }}
+          path: production-results/
+          retention-days: 90
+
+      - name: Create issue if critical violations found
+        if: steps.analyze.outputs.critical_count > 0
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const criticalCount = ${{ steps.analyze.outputs.critical_count }};
+            const totalCount = ${{ steps.analyze.outputs.total_violations }};
+
+            let issueBody = `## 🚨 Critical Accessibility Issues Detected on Production\n\n`;
+            issueBody += `**Scan Date**: ${new Date().toUTCString()}\n`;
+            issueBody += `**Total Issues**: ${totalCount}\n`;
+            issueBody += `**Critical/Serious Issues**: ${criticalCount}\n\n`;
+            issueBody += `### Affected Pages\n\n`;
+
+            const files = fs.readdirSync('production-results');
+            for (const file of files) {
+              if (file.endsWith('.json')) {
+                const content = fs.readFileSync(`production-results/${file}`, 'utf8');
+                const page = file.replace('.json', '');
+                
+                try {
+                  const data = JSON.parse(content);
+                  const violations = data.violations || [];
+                  const critical = violations.filter(v => v.impact === 'critical' || v.impact === 'serious');
+                  
+                  if (critical.length > 0) {
+                    issueBody += `#### ${page}\n`;
+                    issueBody += `- ${critical.length} critical/serious issues\n`;
+                    
+                    critical.slice(0, 3).forEach(v => {
+                      issueBody += `  - **${v.id}**: ${v.description}\n`;
+                    });
+                    
+                    if (critical.length > 3) {
+                      issueBody += `  - ... and ${critical.length - 3} more\n`;
+                    }
+                    issueBody += `\n`;
+                  }
+                } catch (e) {
+                  console.error(`Error parsing ${file}:`, e);
+                }
+              }
+            }
+
+            issueBody += `\n### Action Required\n\n`;
+            issueBody += `Please review and fix these accessibility issues as soon as possible.\n\n`;
+            issueBody += `📊 Full audit results are available in [workflow run #${{ github.run_number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+
+            // Check if similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'accessibility,production'
+            });
+
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🚨 Critical Accessibility Issues on Production - ${new Date().toISOString().split('T')[0]}`,
+                body: issueBody,
+                labels: ['accessibility', 'production', 'urgent']
+              });
+            } else {
+              // Update existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: `## Updated Scan Results - ${new Date().toISOString()}\n\n${issueBody}`
+              });
+            }
