@@ -16,7 +16,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    @SuppressWarnings("null")
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
         // Apply rate limiting to form submission endpoints
         registry.addInterceptor(rateLimitInterceptor)

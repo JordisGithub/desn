@@ -38,6 +38,7 @@ globalThis.IntersectionObserver = class IntersectionObserver {
     return [];
   }
   unobserve() {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
 // Mock HTMLCanvasElement.getContext to suppress canvas warnings

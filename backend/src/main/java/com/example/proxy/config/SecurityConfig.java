@@ -61,8 +61,9 @@ public class SecurityConfig {
     }
 
     @Bean
+    @SuppressWarnings("deprecation")
     AuthenticationProvider authenticationProvider(AuthService authService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(authService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;

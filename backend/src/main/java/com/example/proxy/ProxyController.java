@@ -55,7 +55,6 @@ public class ProxyController {
     }
 
     @RequestMapping(value = "**", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH})
-    @SuppressWarnings("null")
     public ResponseEntity<String> proxy(HttpMethod method, HttpEntity<byte[]> httpEntity, HttpServletRequest request) throws IOException {
         String path = extractPath(request);
         String query = request.getQueryString();
