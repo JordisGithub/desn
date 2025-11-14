@@ -103,7 +103,7 @@ jobs:
           script: |
             const fs = require('fs');
             let comment = '## ⚡ Lighthouse Accessibility Audit\n\n';
-            
+
             try {
               if (fs.existsSync('./.lighthouseci/manifest.json')) {
                 const results = JSON.parse(fs.readFileSync('./.lighthouseci/manifest.json', 'utf8'));
@@ -119,7 +119,7 @@ jobs:
             } catch (error) {
               comment += '⚠️ Lighthouse CI scan completed, but results could not be parsed. Check the workflow artifacts for detailed results.';
             }
-            
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
