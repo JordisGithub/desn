@@ -287,7 +287,7 @@ const OwnerDashboard: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer component='main'>
       <Container maxWidth='lg'>
         <Title>Owner Dashboard</Title>
 
