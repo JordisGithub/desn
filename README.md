@@ -4,7 +4,7 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 
 ## 🌐 Live Application
 
-- **Production Website**: https://desnepal.com
+- **Production Website**: https://desnepal.com http://13.204.228.199/
 - **Production API**: https://desnepal.com/api
 
 ## 🚀 Quick Start for New Developers
@@ -137,6 +137,7 @@ desn/
 - **[Forms System](docs/FORMS.md)** - Form submissions and storage
 - **[Authentication](docs/AUTHENTICATION.md)** - User authentication and authorization
 - **[Security](docs/SECURITY.md)** - Security features and best practices
+- **[Nginx Configuration](docs/NGINX_CONFIGURATION.md)** - HTTPS configuration and maintenance
 
 ### Additional Resources
 

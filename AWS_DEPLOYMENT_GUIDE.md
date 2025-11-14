@@ -564,6 +564,25 @@ When issues occur, check in this order:
 7. ✅ Check file permissions: `ls -la /home/ubuntu/desn-app/`
 8. ✅ Verify environment variables: `printenv | grep -E 'CORS|SPRING'`
 
+### Common Issue: HTTPS Configuration Lost
+
+If desnepal.com is not loading via HTTPS:
+
+```bash
+# Quick fix: Run the deployment script
+scp -i /path/to/private_key.pem \
+    scripts/deploy-nginx-config.sh \
+    ubuntu@13.204.228.199:/tmp/
+
+ssh -i /path/to/private_key.pem ubuntu@13.204.228.199 \
+    "sudo bash /tmp/deploy-nginx-config.sh"
+
+# Verify HTTPS is working
+curl -I https://desnepal.com
+```
+
+See [docs/NGINX_CONFIGURATION.md](docs/NGINX_CONFIGURATION.md) for detailed troubleshooting.
+
 ---
 
 ## Contact Information
