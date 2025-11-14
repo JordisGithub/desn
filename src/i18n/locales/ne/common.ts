@@ -15,6 +15,23 @@ export default {
     payment_verify: "भुक्तानी प्रमाणीकरण",
     accessibility: "पहुँच वक्तव्य",
   },
+  // Image Alt Texts
+  image_alts: {
+    hero_home:
+      "नेपालमा अपाङ्गता भएका व्यक्तिहरूलाई सहयोग गर्ने DESN टोली सदस्यहरू",
+    hero_about: "DESN संगठन भवन र टोली सहयोग",
+    hero_programs: "DESN कार्यक्रमहरूमा भाग लिने समुदायका सदस्यहरू",
+    hero_events: "सहभागीहरू र स्वयंसेवकहरू सहितको DESN कार्यक्रम सभा",
+    hero_get_involved:
+      "अपाङ्गता अधिकारलाई समर्थन गर्न सँगै काम गर्ने स्वयंसेवकहरू",
+    hero_contact: "DESN कार्यालय स्थान र सम्पर्क जानकारी",
+    logo: "DESN - अपाङ्गता उन्मूलन सेवा नेटवर्क नेपाल",
+    partner_logo: "साझेदार संस्थाको लोगो",
+    team_member: "DESN टोली सदस्य",
+    event_thumbnail: "कार्यक्रम चित्रित छवि",
+    resource_thumbnail: "स्रोत प्रकाशन आवरण",
+    program_icon: "कार्यक्रम सेवा आइकन",
+  },
   // Navigation
   skip_to_content: "मुख्य सामग्रीमा जानुहोस्",
   nav: {

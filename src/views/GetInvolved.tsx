@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { usePageTitle } from "../hooks/usePageTitle";
 import HeroSection from "../components/getinvolved/HeroSection";
 import ImpactSection from "../components/getinvolved/ImpactSection";
 import VolunteerSection from "../components/getinvolved/VolunteerSection";
@@ -9,6 +10,8 @@ import MembershipSection from "../components/getinvolved/MembershipSection";
 import CTASection from "../components/getinvolved/CTASection";
 
 const GetInvolved: React.FC = () => {
+  usePageTitle("page_titles.get_involved");
+
   return (
     <Box>
       <HeroSection />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Container,
   Typography,
@@ -321,6 +322,7 @@ interface FavoriteResource {
 
 export default function MemberDashboard() {
   const { t } = useTranslation();
+  usePageTitle("page_titles.member_dashboard");
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<Registration[]>([]);

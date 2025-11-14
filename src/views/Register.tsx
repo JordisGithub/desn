@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Box,
   Container,
@@ -90,6 +91,7 @@ const LinkText = styled(Typography)({
 
 const Register: React.FC = () => {
   const { t } = useTranslation();
+  usePageTitle("page_titles.register");
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({

@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from "../hooks/usePageTitle";
 import EventsHero from "../components/events/EventsHero";
 import UpcomingEvents from "../components/events/UpcomingEvents";
 import FeaturedEvent from "../components/events/FeaturedEvent";
@@ -22,6 +23,7 @@ const SkipLink = styled("a")({
 
 export default function Events() {
   const { t } = useTranslation();
+  usePageTitle("page_titles.events");
 
   return (
     <>

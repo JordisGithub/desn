@@ -15,6 +15,23 @@ export default {
     payment_verify: "Payment Verification",
     accessibility: "Accessibility Statement",
   },
+  // Image Alt Texts
+  image_alts: {
+    hero_home:
+      "DESN team members supporting individuals with disabilities in Nepal",
+    hero_about: "DESN organization building and team collaboration",
+    hero_programs: "Community members participating in DESN programs",
+    hero_events: "DESN event gathering with participants and volunteers",
+    hero_get_involved:
+      "Volunteers working together to support disability rights",
+    hero_contact: "DESN office location and contact information",
+    logo: "DESN - Disability Elimination Service Network Nepal",
+    partner_logo: "Partner organization logo",
+    team_member: "DESN team member",
+    event_thumbnail: "Event featured image",
+    resource_thumbnail: "Resource publication cover",
+    program_icon: "Program service icon",
+  },
   // Navigation
   skip_to_content: "Skip to main content",
   nav: {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   Box,
   Container,
@@ -123,6 +124,7 @@ interface EventRegistrationData {
 }
 
 const AdminDashboard: React.FC = () => {
+  usePageTitle("page_titles.admin_dashboard");
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
