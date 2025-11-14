@@ -55,11 +55,13 @@ npm run a11y:summary
 When you create a PR, three accessibility jobs run automatically:
 
 1. **Accessibility Tests** (accessibility-tests)
+
    - Runs full Vitest test suite (61 tests)
    - Uses jest-axe with 25+ WCAG rules
    - Fast feedback on test failures
 
 2. **Lighthouse Audit** (lighthouse-audit)
+
    - Audits 7 main pages with Lighthouse CI
    - Generates detailed performance and accessibility reports
    - Comments on PR with results link
@@ -75,6 +77,7 @@ When you create a PR, three accessibility jobs run automatically:
 Before deploying to production (on push to `master`):
 
 1. **Pre-deployment-validation job runs:**
+
    - Full accessibility test suite
    - Builds application
    - Serves built app on localhost:3000
@@ -89,11 +92,13 @@ Before deploying to production (on push to `master`):
 Daily automated monitoring at 2 AM UTC:
 
 1. **Production site scanned:**
+
    - All 7 main pages audited
    - WCAG 2.2 AA compliance checked
    - HTML snippets included for debugging
 
 2. **Results analyzed:**
+
    - Total violations counted
    - Critical/serious issues identified
    - Results uploaded (90-day retention)
@@ -146,16 +151,19 @@ Deployment is blocked ONLY for **critical** violations. Serious/moderate/minor v
 ## Workflow Files
 
 ### `.github/workflows/accessibility.yml`
+
 - **Trigger**: Push to master/feature branches, PRs to master
 - **Jobs**: accessibility-tests, lighthouse-audit, a11y-mcp-audit
 - **Purpose**: Continuous accessibility testing
 
 ### `.github/workflows/production-monitoring.yml`
+
 - **Trigger**: Daily at 2 AM UTC, manual trigger
 - **Jobs**: monitor-production
 - **Purpose**: Daily production site monitoring
 
 ### `.github/workflows/deploy.yml`
+
 - **Trigger**: Push to master
 - **Jobs**: pre-deployment-validation, deploy
 - **Purpose**: Block deployments with critical a11y issues
@@ -165,6 +173,7 @@ Deployment is blocked ONLY for **critical** violations. Serious/moderate/minor v
 ### "No violations found but tests fail"
 
 Check the full test output. The issue might be:
+
 - Test timeout (increase in vitest.config.ts)
 - Server not running (ensure dev server is up)
 - Port conflict (change port in package.json scripts)
@@ -183,6 +192,7 @@ The workflow checks for existing open issues with labels `accessibility` and `pr
 ### Local audit returning errors
 
 Ensure:
+
 ```bash
 # Dev server is running
 npm run dev
@@ -228,16 +238,17 @@ npm run a11y:audit
 
 ## Quick Reference
 
-| Command | Purpose |
-|---------|---------|
-| `npm run a11y:audit` | Audit current page |
-| `npm run a11y:audit:all` | Audit all pages |
-| `npm run a11y:summary` | Get quick summary |
-| `npm run test:a11y` | Run full test suite |
+| Command                  | Purpose             |
+| ------------------------ | ------------------- |
+| `npm run a11y:audit`     | Audit current page  |
+| `npm run a11y:audit:all` | Audit all pages     |
+| `npm run a11y:summary`   | Get quick summary   |
+| `npm run test:a11y`      | Run full test suite |
 
 ## Support
 
 For questions about accessibility testing:
+
 1. Check this guide first
 2. Review ACCESSIBILITY_FEATURES.md
 3. Check GitHub workflow logs
