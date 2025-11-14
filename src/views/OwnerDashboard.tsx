@@ -67,11 +67,6 @@ const StyledTableCell = styled(TableCell)({
   color: "#004c91",
 });
 
-const ActionButton = styled(Button)({
-  marginRight: "8px",
-  textTransform: "none",
-});
-
 interface User {
   id: number;
   username: string;
@@ -80,6 +75,14 @@ interface User {
   role: string;
   enabled: boolean;
   createdAt: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  user?: User;
+  enabled?: boolean;
 }
 
 interface TabPanelProps {
@@ -140,6 +143,7 @@ const OwnerDashboard: React.FC = () => {
     if (tabValue === 0) {
       fetchUsers();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, navigate, tabValue]);
 
   const fetchUsers = async () => {
@@ -150,8 +154,8 @@ const OwnerDashboard: React.FC = () => {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       setUsers(Array.isArray(response) ? response : []);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch users");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch users");
     } finally {
       setLoading(false);
     }
@@ -161,9 +165,10 @@ const OwnerDashboard: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.post("/api/users", formData, {
-        headers: { Authorization: `Bearer ${user?.token}` },
-      });
+      const response = await ApiService.postWithAuth<ApiResponse>(
+        "/api/users",
+        formData
+      );
 
       if (response.success) {
         setSuccessMessage("User created successfully");
@@ -180,8 +185,8 @@ const OwnerDashboard: React.FC = () => {
       } else {
         setError(response.error || "Failed to create user");
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to create user");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create user");
     } finally {
       setLoading(false);
     }
@@ -191,12 +196,9 @@ const OwnerDashboard: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.put(
+      const response = await ApiService.putWithAuth<ApiResponse>(
         `/api/users/${userId}/role`,
-        { role: newRole },
-        {
-          headers: { Authorization: `Bearer ${user?.token}` },
-        }
+        { role: newRole }
       );
 
       if (response.success) {
@@ -208,8 +210,10 @@ const OwnerDashboard: React.FC = () => {
       } else {
         setError(response.error || "Failed to update user role");
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to update user role");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to update user role"
+      );
     } finally {
       setLoading(false);
     }
@@ -221,13 +225,9 @@ const OwnerDashboard: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.delete(
-        `/api/users/${selectedUser.id}`,
-        {
-          headers: { Authorization: `Bearer ${user?.token}` },
-        }
+      const response = await ApiService.deleteWithAuth<ApiResponse>(
+        `/api/users/${selectedUser.id}`
       );
-
       if (response.success) {
         setSuccessMessage("User deleted successfully");
         setOpenDeleteDialog(false);
@@ -237,8 +237,8 @@ const OwnerDashboard: React.FC = () => {
       } else {
         setError(response.error || "Failed to delete user");
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to delete user");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete user");
     } finally {
       setLoading(false);
     }
@@ -248,12 +248,9 @@ const OwnerDashboard: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await ApiService.put(
+      const response = await ApiService.putWithAuth<ApiResponse>(
         `/api/users/${userId}/toggle-status`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${user?.token}` },
-        }
+        {}
       );
 
       if (response.success) {
@@ -263,8 +260,10 @@ const OwnerDashboard: React.FC = () => {
       } else {
         setError(response.error || "Failed to update user status");
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to update user status");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to update user status"
+      );
     } finally {
       setLoading(false);
     }
