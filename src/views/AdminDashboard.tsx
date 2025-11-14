@@ -25,6 +25,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import EventService from "../services/EventService";
 import ResourceUploadPanel from "../components/admin/ResourceUploadPanel";
+import ApiService from "../services/ApiService";
 
 const PageContainer = styled(Box)({
   minHeight: "100vh",
@@ -154,50 +155,42 @@ const AdminDashboard: React.FC = () => {
       const token = user?.token;
       const headers = {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       };
 
       // Note: These endpoints are not yet implemented in the backend
       // They will return 404 until the backend API is created
       const [membershipRes, volunteerRes, donationsRes] = await Promise.all([
-        fetch("http://localhost:8080/api/forms/membership", { headers }).catch(
+        ApiService.get("/api/forms/membership", { headers }).catch(() => null),
+        ApiService.get("/api/forms/volunteer", { headers }).catch(() => null),
+        ApiService.get("/api/payment/transactions", { headers }).catch(
           () => null
         ),
-        fetch("http://localhost:8080/api/forms/volunteer", { headers }).catch(
-          () => null
-        ),
-        fetch("http://localhost:8080/api/payment/transactions", {
-          headers,
-        }).catch(() => null),
       ]);
 
-      if (membershipRes?.ok) {
+      if (membershipRes) {
         try {
-          const membershipData = await membershipRes.json();
           setMembershipApplications(
-            Array.isArray(membershipData) ? membershipData : []
+            Array.isArray(membershipRes) ? membershipRes : []
           );
         } catch (e) {
           console.error("Error parsing membership data:", e);
         }
       }
 
-      if (volunteerRes?.ok) {
+      if (volunteerRes) {
         try {
-          const volunteerData = await volunteerRes.json();
           setVolunteerApplications(
-            Array.isArray(volunteerData) ? volunteerData : []
+            Array.isArray(volunteerRes) ? volunteerRes : []
           );
         } catch (e) {
           console.error("Error parsing volunteer data:", e);
         }
       }
 
-      if (donationsRes?.ok) {
+      if (donationsRes) {
         try {
-          const donationsData = await donationsRes.json();
           setPaymentTransactions(
-            Array.isArray(donationsData) ? donationsData : []
+            Array.isArray(donationsRes) ? donationsRes : []
           );
         } catch (e) {
           console.error("Error parsing donations data:", e);

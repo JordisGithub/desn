@@ -1,4 +1,3 @@
-// @ts-expect-error - ApiService is a JS file
 import ApiService from "./ApiService";
 
 interface UserData {

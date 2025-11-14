@@ -1,5 +1,4 @@
-// @ts-expect-error ApiService is a JS file
-import ApiService from "./ApiService.js";
+import ApiService from "./ApiService";
 
 export interface Resource {
   id: number;

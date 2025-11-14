@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
-// @ts-expect-error ApiService is a JS file
 import ApiService from "../services/ApiService";
 
 const PageContainer = styled(Box)({

@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import { CloudUpload, Delete, Refresh, Download } from "@mui/icons-material";
 import { useAuth } from "../../contexts/AuthContext";
+import ApiService from "../../services/ApiService";
 
 interface UploadedFile {
   id: number;
@@ -69,8 +70,7 @@ export default function ResourceUploadPanel() {
   const fetchResources = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/resources");
-      const data = await response.json();
+      const data = await ApiService.get("/api/resources");
       setResources(data.resources || []);
     } catch (error) {
       console.error("Error fetching resources:", error);
@@ -145,8 +145,8 @@ export default function ResourceUploadPanel() {
       formData.append("file", selectedFile);
       formData.append("category", category);
 
-      const uploadResponse = await fetch(
-        "http://localhost:8080/api/files/upload",
+      const uploadData = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL || ""}/api/files/upload`,
         {
           method: "POST",
           headers: {
@@ -154,11 +154,9 @@ export default function ResourceUploadPanel() {
           },
           body: formData,
         }
-      );
+      ).then((res) => res.json());
 
-      const uploadData = await uploadResponse.json();
-
-      if (!uploadResponse.ok || !uploadData.success) {
+      if (!uploadData.success) {
         throw new Error(uploadData.message || "Upload failed");
       }
 
@@ -167,7 +165,9 @@ export default function ResourceUploadPanel() {
         title: selectedFile.name.replace(".pdf", ""),
         description: `${CATEGORY_MAP[category] || category} document`,
         type: category,
-        fileUrl: `http://localhost:8080${uploadData.fileUrl}`,
+        fileUrl: `${import.meta.env.VITE_API_BASE_URL || ""}${
+          uploadData.fileUrl
+        }`,
         pages: 0,
         featured: false,
         clicks: 0,
@@ -175,8 +175,8 @@ export default function ResourceUploadPanel() {
         publishDate: new Date().toISOString(),
       };
 
-      const resourceResponse = await fetch(
-        "http://localhost:8080/api/resources",
+      const resourceData = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL || ""}/api/resources`,
         {
           method: "POST",
           headers: {
@@ -185,11 +185,9 @@ export default function ResourceUploadPanel() {
           },
           body: JSON.stringify(resource),
         }
-      );
+      ).then((res) => res.json());
 
-      const resourceData = await resourceResponse.json();
-
-      if (!resourceResponse.ok || !resourceData.success) {
+      if (!resourceData.success) {
         throw new Error("Failed to create resource entry");
       }
 
@@ -232,34 +230,36 @@ export default function ResourceUploadPanel() {
       const category = urlParts[urlParts.length - 2];
 
       // Delete file from storage
-      const fileDeleteResponse = await fetch(
-        `http://localhost:8080/api/files/${category}/${filename}`,
+      await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL || ""
+        }/api/files/${category}/${filename}`,
         {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
-      );
-
-      if (!fileDeleteResponse.ok) {
-        throw new Error("Failed to delete file");
-      }
+      ).then((res) => {
+        if (!res.ok) throw new Error("Failed to delete file");
+        return res;
+      });
 
       // Delete resource from database
-      const resourceDeleteResponse = await fetch(
-        `http://localhost:8080/api/resources/${resourceToDelete.id}`,
+      await fetch(
+        `${import.meta.env.VITE_API_BASE_URL || ""}/api/resources/${
+          resourceToDelete.id
+        }`,
         {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
-      );
-
-      if (!resourceDeleteResponse.ok) {
-        throw new Error("Failed to delete resource entry");
-      }
+      ).then((res) => {
+        if (!res.ok) throw new Error("Failed to delete resource entry");
+        return res;
+      });
 
       setMessage({
         type: "success",
