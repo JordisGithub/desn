@@ -63,15 +63,18 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
+  const isActive = value === index;
+
   return (
     <div
       role='tabpanel'
-      hidden={value !== index}
+      hidden={!isActive}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
+      aria-hidden={!isActive}
       {...other}
     >
-      {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
+      {isActive && <Box sx={{ pt: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -286,7 +289,7 @@ const AdminDashboard: React.FC = () => {
 
           {loading ? (
             <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
-              <CircularProgress />
+              <CircularProgress aria-label='Loading applications' />
             </Box>
           ) : (
             <>
