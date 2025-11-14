@@ -23,11 +23,20 @@ echo "🔍 Checking for processes on port 80..."
 sudo fuser -k 80/tcp 2>/dev/null || true
 
 # Install required packages if not present
+echo "📦 Checking Java version..."
 if ! command -v java &> /dev/null; then
-    echo "📦 Installing Java 21..."
+    echo "Installing Java 21..."
     sudo apt-get update
     sudo apt-get install -y openjdk-21-jre-headless
+elif ! java -version 2>&1 | grep -q "openjdk version \"21"; then
+    echo "Updating to Java 21..."
+    sudo apt-get update
+    sudo apt-get install -y openjdk-21-jre-headless
+    sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
 fi
+
+# Verify Java version
+java -version
 
 if ! command -v nginx &> /dev/null; then
     echo "📦 Installing Nginx..."
@@ -47,7 +56,7 @@ Type=simple
 User=ubuntu
 WorkingDirectory=$BACKEND_DIR
 EnvironmentFile=$BACKEND_DIR/.env
-ExecStart=/usr/bin/java -Xmx512m -Xms256m -jar $BACKEND_DIR/app.jar --spring.profiles.active=prod
+ExecStart=/usr/lib/jvm/java-21-openjdk-amd64/bin/java -Xmx512m -Xms256m -jar $BACKEND_DIR/app.jar --spring.profiles.active=prod
 Restart=always
 RestartSec=10
 StandardOutput=append:$LOG_DIR/backend.log
