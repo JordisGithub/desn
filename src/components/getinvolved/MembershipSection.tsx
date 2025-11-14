@@ -11,8 +11,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SendIcon from "@mui/icons-material/Send";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
-// @ts-expect-error - ApiService is a JS file
-import { postWithAuth } from "../../services/ApiService.js";
+import { postWithAuth } from "../../services/ApiService";
 
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 12),
@@ -216,10 +215,18 @@ const MembershipSection: React.FC = () => {
     setSubmitSuccess(false);
 
     try {
-      const response = await postWithAuth("/api/forms/membership", {
-        ...formData,
-        language: lang,
-      });
+      interface SubmissionResponse {
+        success: boolean;
+        message?: string;
+      }
+
+      const response = await postWithAuth<SubmissionResponse>(
+        "/api/forms/membership",
+        {
+          ...formData,
+          language: lang,
+        }
+      );
 
       if (response.success) {
         setSubmitSuccess(true);

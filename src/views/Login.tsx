@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
-// @ts-expect-error ApiService is a JS file
 import ApiService from "../services/ApiService";
 
 const PageContainer = styled(Box)({
@@ -112,9 +111,24 @@ const Login: React.FC = () => {
     setError(null);
 
     try {
-      const data = await ApiService.postWithAuth("/api/auth/login", formData);
+      interface LoginResponse {
+        success: boolean;
+        message?: string;
+        user?: {
+          username: string;
+          email: string;
+          fullName: string;
+          role: string;
+          token: string;
+        };
+      }
 
-      if (data.success) {
+      const data = await ApiService.postWithAuth<LoginResponse>(
+        "/api/auth/login",
+        formData
+      );
+
+      if (data.success && data.user) {
         login(data.user);
         navigate("/");
       } else {

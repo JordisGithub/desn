@@ -342,12 +342,29 @@ export default function MemberDashboard() {
 
       try {
         setLoading(true);
-        const registrations = await EventService.getUserRegistrations(
+        const eventResponses = await EventService.getUserRegistrations(
           user.username,
           user.token
         );
-        // Ensure registrations is always an array
-        setRegistrations(Array.isArray(registrations) ? registrations : []);
+        // Transform EventResponse[] to Registration[] format
+        const transformedRegistrations: Registration[] = eventResponses.map(
+          (event, index) => ({
+            registrationId: index, // Placeholder since API doesn't return registration ID
+            registeredAt: new Date().toISOString(), // Placeholder
+            event: {
+              id: event.id,
+              title: event.title,
+              description: event.description,
+              startDate: event.startDate,
+              endDate: event.endDate,
+              location: event.location,
+              maxAttendees: event.maxAttendees,
+              currentAttendees: event.currentAttendees,
+              featured: false, // Placeholder
+            },
+          })
+        );
+        setRegistrations(transformedRegistrations);
       } catch (err) {
         console.error("Error fetching registrations:", err);
         setError("An error occurred while loading your registrations");

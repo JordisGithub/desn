@@ -1,6 +1,5 @@
 import Fuse from "fuse.js";
-// @ts-expect-error - ApiService is JS
-import ApiService from "./ApiService.js";
+import ApiService from "./ApiService";
 
 export type SearchItemType = "resource" | "event" | "page";
 
@@ -31,15 +30,21 @@ class SearchService {
       if (cached) {
         this.items = JSON.parse(cached) as SearchItem[];
       } else {
+        interface ResourcesResponse {
+          resources?: Array<Record<string, unknown>>;
+        }
+        interface EventsResponse {
+          events?: Array<Record<string, unknown>>;
+        }
+
         const [resourcesRes, eventsRes] = await Promise.all([
-          ApiService.get("/api/resources"),
-          ApiService.get("/api/events"),
+          ApiService.get<ResourcesResponse>("/api/resources"),
+          ApiService.get<EventsResponse>("/api/events"),
         ]);
 
         const resources: Array<Record<string, unknown>> =
-          resourcesRes?.resources || resourcesRes || [];
-        const events: Array<Record<string, unknown>> =
-          eventsRes?.events || eventsRes || [];
+          resourcesRes?.resources || [];
+        const events: Array<Record<string, unknown>> = eventsRes?.events || [];
 
         const resourceItems: SearchItem[] = resources.map((r) => {
           const rr = r as Record<string, unknown>;
@@ -154,7 +159,12 @@ class SearchService {
     // If query is long enough, prefer server-side search (faster for large datasets)
     if (query.trim().length >= 4) {
       try {
-        const res = await ApiService.get(
+        interface SearchResponse {
+          resources?: Array<Record<string, unknown>>;
+          events?: Array<Record<string, unknown>>;
+        }
+
+        const res = await ApiService.get<SearchResponse>(
           `/api/search?q=${encodeURIComponent(query)}&limit=${limit}`
         );
         const resources = (res?.resources || []) as Array<
@@ -208,7 +218,7 @@ class SearchService {
     try {
       if (typeof window !== "undefined")
         sessionStorage.removeItem("desn_search_index");
-    } catch (err) {
+    } catch {
       // ignore
     }
     this.fuse = null;

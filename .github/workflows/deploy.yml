@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Required secrets: SSH_PRIVATE_KEY, SERVER_HOST, SERVER_USER
+    # Configure these in Repository Settings > Secrets and variables > Actions
 
     steps:
       - name: Checkout code
@@ -31,8 +33,8 @@ jobs:
 
       - name: Build frontend
         env:
-          # Point frontend API calls to the same host; endpoints already include the /api prefix
-          VITE_API_BASE_URL: "http://${{ secrets.SERVER_HOST }}"
+          # Point frontend API calls to production HTTPS endpoint
+          VITE_API_BASE_URL: "https://desnepal.com"
         run: npm run build
 
       - name: Build backend
@@ -66,8 +68,8 @@ jobs:
           scp -i ~/.ssh/deploy_key "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/ubuntu/desn-app/backend/app.jar
 
           # Create environment file on server with production settings
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/ubuntu/desn-app/backend/.env" <<'ENVFILE'
-          CORS_ALLOWED_ORIGINS=https://desnepal.com,https://www.desnepal.com,http://${{ secrets.SERVER_HOST }}
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/ubuntu/desn-app/backend/.env" <<ENVFILE
+          CORS_ALLOWED_ORIGINS=https://desnepal.com,https://www.desnepal.com,http://${SERVER_HOST}
           EMAIL_NOTIFICATIONS_ENABLED=false
           ENVFILE
 

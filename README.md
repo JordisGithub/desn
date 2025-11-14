@@ -1,96 +1,63 @@
-# DESN - Disabled Environment Service Nepal# React + TypeScript + Vite
+# DESN - Disabled Environment Service Nepal
 
-Website for Disabled Environment Service Nepal, a non-profit organization supporting individuals with disabilities through education, employment, and advocacy programs.This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website for Disabled Environment Service Nepal, a non-profit organization supporting individuals with disabilities through education, employment, and advocacy programs.
 
-## 🚀 Quick Start for New DevelopersCurrently, two official plugins are available:
+## 🌐 Live Application
 
-### Prerequisites- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- **Production Website**: https://desnepal.com
+- **Production API**: https://desnepal.com/api
 
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Quick Start for New Developers
+
+### Prerequisites
 
 - **Node.js** 18+ and npm
-
-- **Java** 17+## React Compiler
-
+- **Java** 21
 - **Maven** 3.6+
+- **Git**
 
-- **Git**The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Clone the Repository
 
-### 1. Clone the Repository## Expanding the ESLint configuration
-
-````bashIf you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
+```bash
 git clone https://github.com/JordisGithub/desn.git
+cd desn
+```
 
-cd desn```js
+### 2. Frontend Setup
 
-```export default defineConfig([
-
-  globalIgnores(["dist"]),
-
-### 2. Frontend Setup  {
-
-    files: ["**/*.{ts,tsx}"],
-
-```bash    extends: [
-
-# Install dependencies      // Other configs...
-
+```bash
+# Install dependencies
 npm install
 
-      // Remove tseslint.configs.recommended and replace with this
+# Start development server
+npm run dev
+```
 
-# Start development server      tseslint.configs.recommendedTypeChecked,
+Frontend will be available at: **http://localhost:5173**
 
-npm run dev      // Alternatively, use this for stricter rules
+### 3. Backend Setup
 
-```      tseslint.configs.strictTypeChecked,
+```bash
+# Navigate to backend directory
+cd backend
 
-      // Optionally, add this for stylistic rules
+# Make mvnw executable (on Mac/Linux)
+chmod +x ./mvnw
 
-Frontend will be available at: **http://localhost:5175**      tseslint.configs.stylisticTypeChecked,
+# Start Spring Boot application with development profile
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
 
+Backend API will be available at: **http://localhost:8080**
 
+### 4. Access the Application
 
-### 3. Backend Setup      // Other configs...
-
-    ],
-
-```bash    languageOptions: {
-
-# Navigate to backend directory      parserOptions: {
-
-cd backend        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-
-        tsconfigRootDir: import.meta.dirname,
-
-# Make mvnw executable (on Mac/Linux)      },
-
-chmod +x ./mvnw      // other options...
-
-    },
-
-# Start Spring Boot application  },
-
-./mvnw spring-boot:run]);
-
-````
-
-Backend API will be available at: **http://localhost:8080**## Local development - API key
-
-### 4. Access the ApplicationThis project reads a development API key for protected POST/PUT/DELETE requests from an environment variable.
-
-- **Website**: http://localhost:5175- For Vite (recommended), set `VITE_DEV_API_KEY` in your environment or a `.env` file at the project root:
-
+- **Website**: http://localhost:5173
 - **API**: http://localhost:8080
-
-- **H2 Database Console**: http://localhost:8080/h2-console```bash
-
-  - JDBC URL: `jdbc:h2:mem:testdb`# .env
-
-  - Username: `sa`VITE_DEV_API_KEY=your_dev_key_here
-
-  - Password: `password````
+- **H2 Database Console**: http://localhost:8080/h2-console
+  - JDBC URL: `jdbc:h2:mem:testdb`
+  - Username: `sa`
+  - Password: `password`
 
 ## 🏗️ Project Structure- For Create React App style environments the fallback `REACT_APP_API_KEY` will also be read if present.
 
@@ -218,41 +185,82 @@ npm run lint         # Run ESLint
 
 ## 🌍 Environment Variables
 
-### Frontend (.env)
+### Frontend
+
+#### Development (.env)
 
 ```bash
-# Optional: Development API key
+# Optional: Development API key for protected endpoints
 VITE_DEV_API_KEY=your_dev_key_here
 ```
 
-### Backend (Environment Variables)
+#### Production Build
 
 ```bash
-# Database (for PostgreSQL in production)
+# Required: API base URL for production builds
+VITE_API_BASE_URL=https://desnepal.com
+
+# Build command example:
+# VITE_API_BASE_URL=https://desnepal.com npm run build
+```
+
+### Backend (Application Profiles)
+
+The backend uses Spring profiles for different environments:
+
+- **Development**: `dev` (H2 in-memory database, file storage)
+- **Production**: `prod` (production database, secure settings)
+
+#### Development (application-dev.properties)
+
+```bash
+# H2 Database (in-memory)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.h2.console.enabled=true
+
+# CORS for local development
+app.cors.allowed-origins=http://localhost:5173,http://localhost:5174
+
+# File storage mode
+storage.mode=file
+storage.file.base-path=./data
+```
+
+#### Production (Environment Variables)
+
+Set these on your production server:
+
+```bash
+# Spring Profile
+SPRING_PROFILES_ACTIVE=prod
+
+# Database (PostgreSQL recommended)
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn_prod
 SPRING_DATASOURCE_USERNAME=desn_user
 SPRING_DATASOURCE_PASSWORD=secure_password
 
-# Khalti Payment Gateway
-KHALTI_PUBLIC_KEY=test_public_key_xxx
-KHALTI_SECRET_KEY=test_secret_key_xxx
-KHALTI_API_URL=https://a.khalti.com/api/v2
-
 # CORS Configuration
-CORS_ALLOWED_ORIGINS=http://localhost:5175,https://desn.org.np
+CORS_ALLOWED_ORIGINS=https://desnepal.com,https://www.desnepal.com
+
+# JWT Security
+JWT_SECRET=your-secure-secret-key-min-256-bits
+JWT_EXPIRATION=86400000
+
+# Khalti Payment Gateway
+KHALTI_PUBLIC_KEY=live_public_key_xxx
+KHALTI_SECRET_KEY=live_secret_key_xxx
+KHALTI_API_URL=https://khalti.com/api/v2
 
 # Email Notifications (Optional)
 SPRING_MAIL_HOST=smtp.gmail.com
 SPRING_MAIL_PORT=587
 SPRING_MAIL_USERNAME=your-email@gmail.com
 SPRING_MAIL_PASSWORD=your-app-password
-ADMIN_EMAIL=admin@desn.org.np
-
-# JWT Secret (Production)
-JWT_SECRET=your-secure-secret-key-min-256-bits
+ADMIN_EMAIL=admin@desnepal.com
+FROM_EMAIL=noreply@desnepal.com
 
 # Storage Mode
-STORAGE_MODE=database  # or "file" for development
+STORAGE_MODE=database  # or "file" for file-based storage
 ```
 
 ## 🎨 Tech Stack
@@ -302,21 +310,113 @@ STORAGE_MODE=database  # or "file" for development
 - `GET /api/forms/volunteer` - List all volunteer applications
 - `GET /api/payment/transactions` - List all payment transactions
 
-## 🚀 Deployment
+## 🚀 Production Deployment
+
+### Current Production Setup
+
+The application is deployed on **AWS EC2** with the following architecture:
+
+- **Server**: Ubuntu 22.04 on AWS EC2 (13.204.228.199)
+- **Web Server**: Nginx 1.24.0 (reverse proxy + SSL termination)
+- **SSL Certificate**: Let's Encrypt (auto-renewal enabled, expires Feb 12, 2026)
+- **Domain**: desnepal.com
+- **Frontend**: Built React app served by Nginx from `/home/ubuntu/desn-app/frontend/dist`
+- **Backend**: Spring Boot JAR running on port 8080
+- **Database**: H2 (development) / PostgreSQL (recommended for production)
+
+### Nginx Configuration
+
+Nginx serves as a reverse proxy:
+
+- Serves frontend static files at root (`/`)
+- Proxies API requests (`/api/*`) to backend on `localhost:8080`
+- Handles SSL/TLS termination
+- Redirects HTTP to HTTPS
+
+Configuration file: `/etc/nginx/sites-available/desn`
+
+### Deployment Steps
+
+#### 1. Build Frontend
+
+```bash
+# Set production API URL and build
+VITE_API_BASE_URL=https://desnepal.com npm run build
+
+# Output will be in dist/ directory
+```
+
+#### 2. Deploy Frontend to Server
+
+```bash
+# Copy built files to server
+scp -r dist/* ubuntu@13.204.228.199:/home/ubuntu/desn-app/frontend/dist/
+
+# Or on the server, pull and rebuild:
+cd /home/ubuntu/desn-app/frontend
+git pull
+VITE_API_BASE_URL=https://desnepal.com npm run build
+
+# Ensure proper permissions
+sudo chmod -R 755 /home/ubuntu/desn-app/frontend
+```
+
+#### 3. Build and Deploy Backend
+
+```bash
+# Build JAR file
+cd backend
+./mvnw clean package -DskipTests
+
+# Copy to server
+scp target/proxy-backend-*.jar ubuntu@13.204.228.199:/home/ubuntu/desn-app/backend/
+
+# On server, restart the backend service
+sudo systemctl restart desn-backend
+# Or if running manually:
+# java -jar /home/ubuntu/desn-app/backend/proxy-backend-*.jar
+```
+
+#### 4. Verify Deployment
+
+```bash
+# Check frontend
+curl -I https://desnepal.com
+
+# Check backend API
+curl https://desnepal.com/api/resources
+
+# Check SSL certificate
+curl -vI https://desnepal.com 2>&1 | grep -i 'expire'
+```
 
 ### Production Checklist
 
-- [ ] Update Khalti credentials to production keys
-- [ ] Configure PostgreSQL database
-- [ ] Set secure JWT secret
-- [ ] Update CORS allowed origins
-- [ ] Enable HTTPS
-- [ ] Change default admin password
-- [ ] Set up email notifications
-- [ ] Configure monitoring and logging
-- [ ] Set up automated backups
+- [x] SSL certificate installed (Let's Encrypt)
+- [x] HTTPS enabled and enforced
+- [x] CORS configured for production domain
+- [x] Environment variables set correctly
+- [x] Frontend built with production API URL
+- [ ] Khalti credentials updated to production keys
+- [ ] PostgreSQL database configured (currently using H2)
+- [ ] JWT secret set to secure random value
+- [ ] Default admin password changed
+- [ ] Email notifications configured
+- [ ] Monitoring and logging set up
+- [ ] Automated backups configured
 
-See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) for detailed instructions.
+### SSL Certificate Renewal
+
+The Let's Encrypt certificate auto-renews via Certbot. To manually renew:
+
+```bash
+sudo certbot renew
+sudo systemctl reload nginx
+```
+
+### Troubleshooting Production Issues
+
+See [AWS_DEPLOYMENT_GUIDE.md](AWS_DEPLOYMENT_GUIDE.md) for detailed troubleshooting steps.
 
 ## 🤝 Contributing
 

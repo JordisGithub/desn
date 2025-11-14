@@ -9,8 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
 import SendIcon from "@mui/icons-material/Send";
 import { useLanguage } from "../../contexts/LanguageContext";
-// @ts-expect-error - ApiService is a JS file
-import { postWithAuth } from "../../services/ApiService.js";
+import { postWithAuth } from "../../services/ApiService";
 
 const FormContainer = styled(Box)(({ theme }) => ({
   borderRadius: "16px",
@@ -117,10 +116,18 @@ const VolunteerForm: React.FC = () => {
     setSubmitSuccess(false);
 
     try {
-      const response = await postWithAuth("/api/forms/volunteer", {
-        ...formData,
-        language: lang,
-      });
+      interface SubmissionResponse {
+        success: boolean;
+        message?: string;
+      }
+
+      const response = await postWithAuth<SubmissionResponse>(
+        "/api/forms/volunteer",
+        {
+          ...formData,
+          language: lang,
+        }
+      );
 
       if (response.success) {
         setSubmitSuccess(true);

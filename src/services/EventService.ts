@@ -1,10 +1,46 @@
-// @ts-expect-error - ApiService is a JS file
 import ApiService from "./ApiService";
 
 interface UserData {
   username: string;
   email: string;
   fullName: string;
+}
+
+interface EventResponse {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  maxAttendees: number;
+  currentAttendees: number;
+  status: string;
+}
+
+interface RegistrationResponse {
+  success: boolean;
+  message: string;
+}
+
+interface RegistrationStatus {
+  isRegistered: boolean;
+  registrationDate?: string;
+}
+
+interface EventRegistration {
+  eventId: number;
+  eventTitle: string;
+  maxCapacity: number;
+  currentRegistrations: number;
+  availableSpots: number;
+  registrations: Array<{
+    username: string;
+    email: string;
+    fullName: string;
+    registeredAt: string;
+    status: string;
+  }>;
 }
 
 const EventService = {
@@ -15,9 +51,9 @@ const EventService = {
     eventId: number,
     userData: UserData,
     _token: string
-  ): Promise<any> {
+  ): Promise<RegistrationResponse> {
     try {
-      const response = await ApiService.postWithAuth(
+      const response = await ApiService.postWithAuth<RegistrationResponse>(
         `/api/events/${eventId}/register`,
         userData
       );
@@ -35,9 +71,9 @@ const EventService = {
     eventId: number,
     username: string,
     _token: string
-  ): Promise<any> {
+  ): Promise<RegistrationResponse> {
     try {
-      const response = await ApiService.deleteWithAuth(
+      const response = await ApiService.deleteWithAuth<RegistrationResponse>(
         `/api/events/${eventId}/register`,
         { username }
       );
@@ -51,12 +87,29 @@ const EventService = {
   /**
    * Get event by ID
    */
-  async getEventById(eventId: number): Promise<any> {
+  async getEventById(eventId: number): Promise<EventResponse> {
     try {
-      const response = await ApiService.get(`/api/events/${eventId}`);
+      const response = await ApiService.get<EventResponse>(
+        `/api/events/${eventId}`
+      );
       return response;
     } catch (error) {
       console.error("Error getting event:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get upcoming events
+   */
+  async getUpcomingEvents(): Promise<EventResponse[]> {
+    try {
+      const response = await ApiService.get<EventResponse[]>(
+        "/api/events/upcoming"
+      );
+      return response;
+    } catch (error) {
+      console.error("Error getting upcoming events:", error);
       throw error;
     }
   },
@@ -68,9 +121,9 @@ const EventService = {
     eventId: number,
     username: string,
     token: string
-  ): Promise<any> {
+  ): Promise<RegistrationStatus> {
     try {
-      const response = await ApiService.get(
+      const response = await ApiService.get<RegistrationStatus>(
         `/api/events/${eventId}/registration-status?username=${username}`,
         {
           headers: {
@@ -88,9 +141,12 @@ const EventService = {
   /**
    * Get all registrations for a specific user
    */
-  async getUserRegistrations(username: string, token: string): Promise<any> {
+  async getUserRegistrations(
+    username: string,
+    token: string
+  ): Promise<EventResponse[]> {
     try {
-      const response = await ApiService.get(
+      const response = await ApiService.get<EventResponse[]>(
         `/api/events/user/${username}/registrations`,
         {
           headers: {
@@ -108,10 +164,13 @@ const EventService = {
   /**
    * Get all registrations for a specific event (admin only)
    */
-  async getEventRegistrations(eventId: string, token: string): Promise<any> {
+  async getEventRegistrations(
+    eventId: string,
+    token: string
+  ): Promise<EventRegistration> {
     try {
-      const response = await ApiService.get(
-        `/api/events/${eventId}/registrations`,
+      const response = await ApiService.get<EventRegistration>(
+        `/api/admin/events/${eventId}/registrations`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,13 +187,16 @@ const EventService = {
   /**
    * Get all events with their registrations (admin only)
    */
-  async getAllEventsRegistrations(token: string): Promise<any> {
+  async getAllEventsRegistrations(token: string): Promise<EventRegistration[]> {
     try {
-      const response = await ApiService.get("/api/events/all/registrations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await ApiService.get<EventRegistration[]>(
+        `/api/admin/events/registrations`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response;
     } catch (error) {
       console.error("Error getting all events registrations:", error);
