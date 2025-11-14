@@ -33,10 +33,12 @@ const PageContainer = styled(Box)({
   padding: "40px 0",
 });
 
-const Title = styled(Typography)({
+const Title = styled("h1")({
   fontSize: "36px",
   fontWeight: 600,
   color: "#004c91",
+  fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+  margin: 0,
   marginBottom: "32px",
 });
 

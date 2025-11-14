@@ -3,6 +3,8 @@ import { render, type RenderOptions } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import i18n from "../i18n";
+import { AuthProvider } from "../contexts/AuthContext";
+import { LanguageProvider } from "../contexts/LanguageContext";
 import axe from "axe-core";
 
 // Custom render function that wraps components with necessary providers
@@ -18,7 +20,11 @@ export function renderWithProviders(
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <BrowserRouter>
-      <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+      <LanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <AuthProvider>{children}</AuthProvider>
+        </I18nextProvider>
+      </LanguageProvider>
     </BrowserRouter>
   );
 

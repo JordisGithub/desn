@@ -114,7 +114,10 @@ const DayHeader = styled(Typography)({
   marginBottom: "0.25rem",
 });
 
-const DayCell = styled(Button)<{
+const DayCell = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "isToday" && prop !== "hasEvent" && prop !== "isOtherMonth",
+})<{
   isToday?: boolean;
   hasEvent?: boolean;
   isOtherMonth?: boolean;
@@ -463,11 +466,11 @@ export default function UpcomingEvents() {
             <CalendarHeader>Event Calendar</CalendarHeader>
             <Calendar>
               <CalendarNav>
-                <NavButton>
+                <NavButton aria-label='Previous month'>
                   <ChevronLeftIcon />
                 </NavButton>
                 <MonthYear>{monthYear}</MonthYear>
-                <NavButton>
+                <NavButton aria-label='Next month'>
                   <ChevronRightIcon />
                 </NavButton>
               </CalendarNav>
@@ -485,6 +488,10 @@ export default function UpcomingEvents() {
                     onClick={() =>
                       !dayInfo.isOtherMonth && setSelectedDate(dayInfo.day)
                     }
+                    aria-label={`Select ${dayInfo.day}${
+                      dayInfo.hasEvent ? " (has event)" : ""
+                    }${dayInfo.isToday ? " (today)" : ""}`}
+                    disabled={dayInfo.isOtherMonth}
                     sx={{
                       cursor: dayInfo.isOtherMonth ? "default" : "pointer",
                     }}
