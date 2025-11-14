@@ -82,7 +82,10 @@ const Resources: React.FC = () => {
 
   // Fetch resources based on filters
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchResources = async () => {
+      if (!isMounted) return;
       setLoading(true);
       setError("");
       try {
@@ -90,21 +93,33 @@ const Resources: React.FC = () => {
           selectedType || undefined,
           searchQuery || undefined
         );
-        setResources(response.resources);
-        setTypeCounts(response.typeCounts);
+        if (isMounted) {
+          setResources(response.resources);
+          setTypeCounts(response.typeCounts);
+        }
       } catch (err) {
-        setError("Failed to load resources. Please try again.");
-        console.error("Error fetching resources:", err);
+        if (isMounted) {
+          setError("Failed to load resources. Please try again.");
+          console.error("Error fetching resources:", err);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchResources();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [selectedType, searchQuery]);
 
   // Fetch user favorites if authenticated
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchFavorites = async () => {
       if (isAuthenticated && user?.username && token) {
         try {
@@ -112,8 +127,10 @@ const Resources: React.FC = () => {
             user.username,
             token
           );
-          const favoriteIds = new Set(userFavorites.map((f) => f.resource.id));
-          setFavorites(favoriteIds);
+          if (isMounted) {
+            const favoriteIds = new Set(userFavorites.map((f) => f.resource.id));
+            setFavorites(favoriteIds);
+          }
         } catch (err) {
           console.error("Error fetching favorites:", err);
         }
@@ -121,6 +138,10 @@ const Resources: React.FC = () => {
     };
 
     fetchFavorites();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [isAuthenticated, user, token]);
 
   const handleToggleFavorite = async (resourceId: number) => {
