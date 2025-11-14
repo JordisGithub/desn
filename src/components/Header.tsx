@@ -198,23 +198,6 @@ const Header: React.FC = () => {
   const searchRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
 
-  // Skip to main content link
-  const skipToMainContent = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const mainContent = document.querySelector("main") as HTMLElement;
-    if (mainContent) {
-      mainContent.setAttribute("tabindex", "-1");
-      mainContent.focus();
-      mainContent.addEventListener(
-        "blur",
-        () => {
-          mainContent.removeAttribute("tabindex");
-        },
-        { once: true }
-      );
-    }
-  };
-
   useEffect(() => {
     // Close results when clicking outside
     const onDocClick = (e: MouseEvent) => {
@@ -327,32 +310,6 @@ const Header: React.FC = () => {
 
   return (
     <>
-      {/* Skip to main content link for keyboard users */}
-      <a
-        href='#main-content'
-        onClick={skipToMainContent}
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          zIndex: 9999,
-          padding: "8px 16px",
-          backgroundColor: "#004c91",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "4px",
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.left = "8px";
-          e.currentTarget.style.top = "8px";
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.left = "-9999px";
-          e.currentTarget.style.top = "auto";
-        }}
-      >
-        Skip to main content
-      </a>
-
       {/* Top Utility Bar - Logo, Language, Login, Search */}
       <Box
         sx={{

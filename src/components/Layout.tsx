@@ -11,6 +11,22 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const announcementRef = useFocusManagement();
 
+  const skipToMainContent = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const mainContent = document.querySelector("main") as HTMLElement;
+    if (mainContent) {
+      mainContent.setAttribute("tabindex", "-1");
+      mainContent.focus();
+      mainContent.addEventListener(
+        "blur",
+        () => {
+          mainContent.removeAttribute("tabindex");
+        },
+        { once: true }
+      );
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -19,6 +35,32 @@ export default function Layout({ children }: LayoutProps) {
         flexDirection: "column",
       }}
     >
+      {/* Skip to main content link - First in DOM for keyboard users */}
+      <a
+        href='#main-content'
+        onClick={skipToMainContent}
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          zIndex: 9999,
+          padding: "8px 16px",
+          backgroundColor: "#004c91",
+          color: "white",
+          textDecoration: "none",
+          borderRadius: "4px",
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.left = "8px";
+          e.currentTarget.style.top = "8px";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.left = "-9999px";
+          e.currentTarget.style.top = "auto";
+        }}
+      >
+        Skip to main content
+      </a>
+
       {/* Screen reader announcement for route changes */}
       <div
         ref={announcementRef}
