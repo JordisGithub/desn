@@ -340,11 +340,13 @@ export default function MemberDashboard() {
       return;
     }
 
+    let isMounted = true;
+
     const fetchRegistrations = async () => {
-      if (!user) return;
+      if (!user || !isMounted) return;
 
       try {
-        setLoading(true);
+        if (isMounted) setLoading(true);
         const eventResponses = await EventService.getUserRegistrations(
           user.username,
           user.token
@@ -367,36 +369,42 @@ export default function MemberDashboard() {
             },
           })
         );
-        setRegistrations(transformedRegistrations);
+        if (isMounted) setRegistrations(transformedRegistrations);
       } catch (err) {
         console.error("Error fetching registrations:", err);
-        setError("An error occurred while loading your registrations");
-        setRegistrations([]); // Set empty array on error
+        if (isMounted) {
+          setError("An error occurred while loading your registrations");
+          setRegistrations([]); // Set empty array on error
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     const fetchFavorites = async () => {
-      if (!user) return;
+      if (!user || !isMounted) return;
 
       try {
-        setLoadingFavorites(true);
+        if (isMounted) setLoadingFavorites(true);
         const favoritesData = await ResourceService.getUserFavorites(
           user.username,
           user.token
         );
-        setFavorites(favoritesData);
+        if (isMounted) setFavorites(favoritesData);
       } catch (err) {
         console.error("Error fetching favorites:", err);
         // Don't set error here, just log it - we don't want to block the whole dashboard
       } finally {
-        setLoadingFavorites(false);
+        if (isMounted) setLoadingFavorites(false);
       }
     };
 
     fetchRegistrations();
     fetchFavorites();
+
+    return () => {
+      isMounted = false;
+    };
   }, [isAuthenticated, navigate, user]);
 
   const handleCancelClick = (registration: Registration) => {
