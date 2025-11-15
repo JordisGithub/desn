@@ -1,12 +1,10 @@
 import { usePageTitle } from "../hooks/usePageTitle";
-import AboutHero from "../components/about/AboutHero";
-import IntroductionSection from "../components/about/IntroductionSection";
-import LegalStatusSection from "../components/about/LegalStatusSection";
-import MissionVisionSection from "../components/about/MissionVisionSection";
-import ObjectivesSection from "../components/about/ObjectivesSection";
-import ValuesSection from "../components/about/ValuesSection";
+import MissionVisionHeroSection from "../components/about/MissionVisionHeroSection";
+import FoundingFactsSection from "../components/about/FoundingFactsSection";
+import CoreValuesSection from "../components/about/CoreValuesSection";
+import ObjectivesCleanSection from "../components/about/ObjectivesCleanSection";
 import OurTeamSection from "../components/about/OurTeamSection";
-import PartnersNetworksSection from "../components/about/PartnersNetworksSection";
+import PartnersSection from "../components/home/PartnersSection";
 import AboutCTASection from "../components/about/AboutCTASection";
 
 export default function About() {
@@ -14,14 +12,12 @@ export default function About() {
 
   return (
     <>
-      <AboutHero />
-      <IntroductionSection />
-      <LegalStatusSection />
-      <MissionVisionSection />
-      <ObjectivesSection />
-      <ValuesSection />
+      <MissionVisionHeroSection />
+      <FoundingFactsSection />
+      <CoreValuesSection />
+      <ObjectivesCleanSection />
       <OurTeamSection />
-      <PartnersNetworksSection />
+      <PartnersSection />
       <AboutCTASection />
     </>
   );

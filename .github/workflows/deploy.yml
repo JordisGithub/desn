@@ -228,7 +228,7 @@ jobs:
 
           # Create environment file on server with production settings
           echo "⚙️ Creating environment file..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/$SERVER_USER/desn-app/backend/.env" <<ENVFILE
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/$SERVER_USER/desn-app/backend/.env" <<'ENVFILE'
           DATABASE_URL=jdbc:postgresql://localhost:5432/desn
           DATABASE_USERNAME=desn_user
           DATABASE_PASSWORD=desn_password_2025
@@ -236,22 +236,30 @@ jobs:
           ENVFILE
           echo "✅ Environment file created"
 
-          # Copy deployment script
-          echo "📤 Copying deployment script..."
-          scp -i ~/.ssh/deploy_key scripts/deploy-server.sh $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/ || {
-            echo "❌ Failed to copy deployment script"
+          # Deploy frontend to nginx
+          echo "🌐 Deploying frontend..."
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo cp -r /home/$SERVER_USER/desn-app/frontend/* /var/www/html/" || {
+            echo "❌ Failed to deploy frontend"
             exit 1
           }
-          echo "✅ Deployment script copied"
+          echo "✅ Frontend deployed"
 
-          # Execute deployment script on server
-          echo "🚀 Executing deployment script on server..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "SERVER_USER=$SERVER_USER bash /home/$SERVER_USER/desn-app/deploy-server.sh" || {
-            echo "❌ Deployment script failed on server"
-            echo "📋 Fetching server logs..."
-            ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "tail -50 /home/$SERVER_USER/desn-app/logs/backend-error.log 2>/dev/null || echo 'No error log found'"
+          # Restart backend service
+          echo "🚀 Restarting backend service..."
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart desn-backend" || {
+            echo "❌ Failed to restart backend"
+            echo "📋 Checking backend logs..."
+            ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo journalctl -u desn-backend -n 50 --no-pager"
             exit 1
           }
+
+          # Reload nginx
+          echo "🌐 Reloading nginx..."
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo systemctl reload nginx" || {
+            echo "❌ Failed to reload nginx"
+            exit 1
+          }
+
           echo "✅ Deployment completed successfully"
 
       - name: Verify deployment
