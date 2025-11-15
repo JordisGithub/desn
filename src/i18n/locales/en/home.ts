@@ -2,13 +2,13 @@ export default {
   // Hero Section
   hero_heading: "Empowering a Future Without Barriers",
   hero_description:
-    "Providing education and advocacy for 10,000+ people with disabilities in Nepal.",
+    "Empowering Persons with Disabilities Through Accessibility, Inclusion, and Innovation.",
   hero_button: "Donate Now",
   hero_title: "The Disability Empowerment Society Nepal (DESN)",
   hero_subtitle:
     "Empowering Persons with Disabilities Through Accessibility, Inclusion, and Innovation",
   hero_tagline:
-    "Working since 2004 to empower persons with disabilities and promote inclusive digital transformation in Nepal.",
+    "Working since 2003 to empower persons with disabilities and promote inclusive digital transformation in Nepal.",
   hero_alt:
     "DESN team members and volunteers working together at a community event in Nepal, showing collaboration and inclusion",
   mission_statement:
@@ -16,11 +16,11 @@ export default {
   hero_copy_heading:
     "Creating a rights-based, barrier-free and inclusive society",
   hero_copy_description_1:
-    "The Disability Empowerment Society Nepal (DESN) is a non-profit, non-political social organization founded and led by persons with disabilities in 2004 (2060 B.S.). Established under the Organization Registration Act, 1972, DESN works for the welfare and empowerment of persons with disabilities, helpless people, and single women through advocacy, education, technology, and livelihood support.",
+    "The Disability Empowerment Society Nepal (DESN) is a non-profit, non-political social organization founded and led by persons with disabilities in 2003 (2060 B.S.). Established under the Organization Registration Act, 1972, DESN works for the welfare and empowerment of persons with disabilities, helpless people, and single women through advocacy, education, technology, and livelihood support.",
   hero_copy_description_2:
     "Our mission is to build an inclusive Nepal where everyone, regardless of ability, can live independently, with dignity and equal opportunities.",
   hero_description_1:
-    "The Disability Empowerment Society Nepal (DESN) is a non-profit, non-political social organization founded and led by persons with disabilities in 2004 (2060 B.S.). Established under the Organization Registration Act, 1972, DESN works for the welfare and empowerment of persons with disabilities, helpless people, and single women through advocacy, education, technology, and livelihood support.",
+    "The Disability Empowerment Society Nepal (DESN) is a non-profit, non-political social organization founded and led by persons with disabilities in 2003 (2060 B.S.). Established under the Organization Registration Act, 1972, DESN works for the welfare and empowerment of persons with disabilities, helpless people, and single women through advocacy, education, technology, and livelihood support.",
   hero_description_2:
     "Our mission is to build an inclusive Nepal where everyone, regardless of ability, can live independently, with dignity and equal opportunities.",
 
@@ -32,7 +32,7 @@ export default {
   about_section_summary:
     "DESN has been consistently advocating for equal rights, participation, and accessibility to ensure that persons with disabilities and marginalized women can live in a barrier-free, inclusive environment with improved socio-economic conditions. The Disability Empowerment Society Nepal (DESN) is a non-profit, non-political social organization founded and led by persons with disabilities. Established under the Organization Registration Act, 1972, DESN works for the welfare and empowerment of persons with disabilities, helpless people, and single women through advocacy, education, technology, and livelihood support.",
   about_fact_established_label: "Established",
-  about_fact_established_value: "2004 (2060 B.S.)",
+  about_fact_established_value: "2003 (2060 B.S.)",
   about_fact_service_label: "Service Area",
   about_fact_service_value: "Nationwide - Nepal",
   about_fact_goal_label: "Primary Goal",
