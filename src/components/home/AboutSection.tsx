@@ -112,11 +112,12 @@ const AboutButton = styled(Link)(({ theme }) => ({
   boxShadow:
     "0 4px 15px rgba(246, 212, 105, 0.3), 0 2px 6px rgba(0, 0, 0, 0.2)",
   transition: "all 0.3s ease",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5c943",
     transform: "translateY(-2px)",
     boxShadow:
       "0 6px 20px rgba(246, 212, 105, 0.4), 0 3px 8px rgba(0, 0, 0, 0.25)",
+    fontWeight: 800,
   },
   "&:active": {
     transform: "translateY(0)",

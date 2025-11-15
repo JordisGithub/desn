@@ -155,4 +155,5 @@ export default {
     get_involved: "Get Involved",
     donate: "Donate",
   },
+  donate_button: "Donate",
 };

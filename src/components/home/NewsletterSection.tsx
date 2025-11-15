@@ -53,8 +53,9 @@ const SubscribeButton = styled(Button)(({ theme }) => ({
   borderRadius: "100px",
   textTransform: "capitalize",
   whiteSpace: "nowrap",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f6d469",
+    fontWeight: 800,
   },
   "&:focus": {
     outline: "3px solid white",
@@ -103,8 +104,10 @@ export default function NewsletterSection() {
                 type='email'
                 placeholder={t("newsletter_placeholder")}
                 required
-                aria-label={t("newsletter_aria_label")}
                 fullWidth
+                inputProps={{
+                  "aria-label": t("newsletter_aria_label"),
+                }}
               />
               <SubscribeButton
                 type='submit'
