@@ -7,12 +7,12 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import BusinessIcon from "@mui/icons-material/Business";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#f9fafb",
-  paddingTop: theme.spacing(10),
-  paddingBottom: theme.spacing(10),
+  backgroundColor: "#F9FAFB",
+  paddingTop: theme.spacing(14),
+  paddingBottom: theme.spacing(14),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
   },
 }));
 
