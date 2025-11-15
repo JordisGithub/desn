@@ -16,18 +16,54 @@ import EventRegistrationModal from "../events/EventRegistrationModal";
 import EventService from "../../services/EventService";
 
 const EventsContainer = styled("section")({
-  backgroundColor: "#f5f5f5",
+  backgroundColor: "white",
+  position: "relative",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "2px",
+    background:
+      "linear-gradient(90deg, transparent, rgba(246, 212, 105, 0.6), transparent)",
+  },
 });
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
   fontSize: "2.5rem",
-  fontWeight: 600,
-  color: "#004c91",
-  marginBottom: theme.spacing(6),
+  fontWeight: 700,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(2),
   textAlign: "center",
-  textTransform: "capitalize",
-  [theme.breakpoints.up("md")]: {
-    fontSize: "3rem",
+  fontFamily: "Poppins, sans-serif",
+  letterSpacing: "-0.01em",
+  lineHeight: 1.2,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.625rem",
+  },
+}));
+
+const SectionSubheading = styled(Typography)(({ theme }) => ({
+  fontSize: "1.125rem",
+  fontWeight: 400,
+  color: "#5a6c7d",
+  textAlign: "center",
+  maxWidth: "660px",
+  margin: "0 auto",
+  marginBottom: theme.spacing(6),
+  lineHeight: 1.6,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.0625rem",
+    marginBottom: theme.spacing(5),
+    maxWidth: "90%",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -37,6 +73,7 @@ const EventsGrid = styled("div")(({ theme }) => ({
   gap: theme.spacing(3),
   [theme.breakpoints.up("sm")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
+    gap: theme.spacing(3.5),
   },
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
@@ -48,87 +85,187 @@ const EventCard = styled(Card)(({ theme }) => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
-  borderRadius: theme.spacing(2),
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  borderRadius: "20px",
+  overflow: "hidden",
+  transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
+  border: "2px solid transparent",
+  position: "relative",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "5px",
+    background: "linear-gradient(90deg, #f6d469, #00a77f, #004c91)",
+    opacity: 0,
+    transition: "opacity 0.35s ease",
+  },
   "&:hover": {
-    transform: "translateY(-4px)",
-    boxShadow: "0 8px 24px rgba(0, 76, 145, 0.15)",
+    transform: "translateY(-8px) scale(1.02)",
+    boxShadow: "0 16px 40px rgba(0, 76, 145, 0.2)",
+    borderColor: "#f6d469",
+    "&::before": {
+      opacity: 1,
+    },
+    "& .event-image": {
+      transform: "scale(1.1)",
+    },
   },
   "&:focus-within": {
-    outline: "3px solid #004c91",
-    outlineOffset: "2px",
+    outline: `3px solid ${theme.palette.primary.main}`,
+    outlineOffset: "4px",
+    "&::before": {
+      opacity: 1,
+    },
   },
 }));
 
-const EventDate = styled("time")({
-  backgroundColor: "#f6d469",
-  color: "#351c42",
-  padding: "0.5rem 1rem",
-  borderRadius: "100px",
-  fontSize: "1rem",
-  fontWeight: 500,
-});
-
-const EventTime = styled("span")({
-  backgroundColor: "#f6d469",
-  color: "#2b2b2b",
-  padding: "0.5rem 1rem",
-  borderRadius: "100px",
-  fontSize: "1rem",
-});
-
-const EventTitle = styled(Typography)({
-  fontSize: "1.25rem",
-  fontWeight: 600,
-  color: "#351c42",
-  marginBottom: "1rem",
-});
-
-const EventTitleLink = styled(Link)({
-  color: "#351c42",
-  textDecoration: "none",
-  "&:hover, &:focus": {
-    textDecoration: "underline",
-    color: "#004c91",
-    fontWeight: 700,
-  },
-  "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
-    borderRadius: "4px",
+const ImageWrapper = styled("div")({
+  width: "100%",
+  aspectRatio: "16 / 9",
+  overflow: "hidden",
+  flexShrink: 0,
+  position: "relative",
+  backgroundColor: "#f0f2f5",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "50%",
+    background: "linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent)",
+    pointerEvents: "none",
   },
 });
 
-const EventDescription = styled(Typography)({
-  marginBottom: "1rem",
-  fontSize: "1rem",
-  lineHeight: 1.5,
-});
-
-const EventOrganizer = styled(Typography)({
-  fontSize: "1rem",
-});
-
-const RegisterButton = styled(Button)({
+const EventDate = styled("time")(({ theme }) => ({
   backgroundColor: "#004c91",
   color: "white",
-  width: "100%",
-  borderRadius: "8px",
-  fontSize: "0.875rem",
-  fontWeight: 500,
-  padding: "8px 16px",
-  marginTop: "1rem",
-  textTransform: "none",
+  padding: "0.625rem 1.25rem",
+  borderRadius: "100px",
+  fontSize: "0.9375rem",
+  fontWeight: 700,
+  fontFamily: "Poppins, sans-serif",
+  letterSpacing: "0.5px",
+  boxShadow: "0 2px 8px rgba(0, 76, 145, 0.25)",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem",
+    padding: "0.5rem 1rem",
+  },
+}));
+
+const EventTime = styled("span")(({ theme }) => ({
+  backgroundColor: "#00a77f",
+  color: "white",
+  padding: "0.625rem 1.25rem",
+  borderRadius: "100px",
+  fontSize: "0.9375rem",
+  fontWeight: 600,
+  fontFamily: "Poppins, sans-serif",
+  boxShadow: "0 2px 8px rgba(0, 167, 127, 0.25)",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem",
+    padding: "0.5rem 1rem",
+  },
+}));
+
+const EventTitle = styled(Typography)(({ theme }) => ({
+  fontSize: "1.375rem",
+  fontWeight: 700,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(1.5),
+  lineHeight: 1.3,
+  fontFamily: "Poppins, sans-serif",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.25rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.125rem",
+    marginBottom: theme.spacing(1.25),
+  },
+}));
+
+const EventTitleLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  textDecoration: "none",
+  transition: "color 0.25s ease",
   "&:hover, &:focus": {
-    backgroundColor: "#003d73",
-    fontWeight: 700,
+    color: "#006d54",
+    textDecoration: "underline",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
+    outline: `3px solid ${theme.palette.primary.main}`,
+    outlineOffset: "3px",
+    borderRadius: "4px",
   },
-});
+}));
+
+const EventDescription = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  fontSize: "1.0625rem",
+  lineHeight: 1.65,
+  color: "#4a5568",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.9375rem",
+    lineHeight: 1.6,
+    marginBottom: theme.spacing(1.5),
+  },
+}));
+
+const EventOrganizer = styled(Typography)(({ theme }) => ({
+  fontSize: "0.9375rem",
+  color: "#5a6c7d",
+  marginBottom: theme.spacing(2),
+  "& strong": {
+    color: theme.palette.primary.main,
+    fontWeight: 700,
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem",
+    marginBottom: theme.spacing(1.5),
+  },
+}));
+
+const RegisterButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "#f6d469",
+  color: "#1a2332",
+  width: "100%",
+  borderRadius: "12px",
+  fontSize: "1rem",
+  fontWeight: 700,
+  padding: "12px 24px",
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
+  fontFamily: "Poppins, sans-serif",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  boxShadow: "0 4px 12px rgba(246, 212, 105, 0.3)",
+  "&:hover": {
+    backgroundColor: "#f5c943",
+    transform: "translateY(-2px)",
+    boxShadow: "0 8px 20px rgba(246, 212, 105, 0.4)",
+  },
+  "&:focus": {
+    outline: `3px solid ${theme.palette.primary.main}`,
+    outlineOffset: "3px",
+  },
+  "&:disabled": {
+    backgroundColor: "#e0e0e0",
+    color: "#9e9e9e",
+    cursor: "not-allowed",
+    transform: "none",
+    boxShadow: "none",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.9375rem",
+    padding: "10px 20px",
+  },
+}));
 
 interface EventStatus {
   isFull: boolean;
@@ -271,32 +408,31 @@ export default function EventsSection() {
           {t("events_heading")}
         </SectionHeading>
 
+        <SectionSubheading>
+          Join us for upcoming events, workshops, and celebrations that promote
+          inclusion and accessibility for all.
+        </SectionSubheading>
+
         <EventsGrid>
           {events.map((event, index) => (
             <EventCard key={index}>
-              <div
-                style={{
-                  width: "100%",
-                  aspectRatio: "16 / 9",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                  borderRadius: "16px 16px 0 0",
-                }}
-              >
+              <ImageWrapper>
                 <OptimizedImage
                   src={event.image}
                   alt={t(event.altKey)}
                   loading='lazy'
-                  sizes='(max-width: 600px) 400px, (max-width: 960px) 50vw, 33vw'
+                  sizes='(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw'
+                  className='event-image'
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
                     objectPosition: "center",
                     display: "block",
+                    transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
                 />
-              </div>
+              </ImageWrapper>
               <CardContent>
                 <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
                   <EventDate dateTime={event.date}>
@@ -322,22 +458,6 @@ export default function EventsSection() {
                   }
                   onClick={() => handleRegisterClick(event)}
                   disabled={eventStatuses[event.id]?.isFull}
-                  sx={{
-                    backgroundColor: eventStatuses[event.id]?.isFull
-                      ? "#e0e0e0"
-                      : "#004c91",
-                    color: eventStatuses[event.id]?.isFull
-                      ? "#9e9e9e"
-                      : "white",
-                    cursor: eventStatuses[event.id]?.isFull
-                      ? "not-allowed"
-                      : "pointer",
-                    "&:hover": {
-                      backgroundColor: eventStatuses[event.id]?.isFull
-                        ? "#e0e0e0"
-                        : "#003d73",
-                    },
-                  }}
                 >
                   {eventStatuses[event.id]?.isFull
                     ? "Event Full"

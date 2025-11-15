@@ -158,19 +158,23 @@ const LanguageButton = styled(Button)(({ theme }) => ({
 
 const DonateButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#f6d469",
-  color: "#333",
-  textTransform: "none",
-  fontSize: "16px",
-  fontWeight: 500,
-  padding: theme.spacing(1.5, 3),
-  borderRadius: "8px",
+  color: "#2b2b2b",
+  textTransform: "uppercase",
+  fontSize: "1rem",
+  fontWeight: 700,
+  padding: theme.spacing(1.5, 4),
+  borderRadius: "100px",
+  boxShadow: "0px 4px 12px rgba(246, 212, 105, 0.4)",
+  transition: "all 0.3s ease",
+  letterSpacing: "0.02em",
   "&:hover, &:focus": {
-    backgroundColor: "#f5ca4a",
-    fontWeight: 700,
+    backgroundColor: "#f5c943",
+    transform: "translateY(-2px)",
+    boxShadow: "0px 8px 20px rgba(246, 212, 105, 0.6)",
   },
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(1, 2),
-    fontSize: "14px",
+    padding: theme.spacing(1.25, 3),
+    fontSize: "0.875rem",
   },
 }));
 
@@ -329,6 +333,7 @@ const Header: React.FC = () => {
         top: 0,
         zIndex: 1100,
         backgroundColor: "white",
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.08)",
       }}
     >
       {/* Top Utility Bar - Logo, Language, Login, Search */}
