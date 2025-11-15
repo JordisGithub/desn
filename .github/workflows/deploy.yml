@@ -148,11 +148,34 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
 
           echo "Adding server to known hosts..."
-          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>&1 || {
+          echo "Server host: $SERVER_HOST"
+
+          # Try to scan for SSH keys with better error output
+          if ! ssh-keyscan -H -T 10 $SERVER_HOST >> ~/.ssh/known_hosts 2>&1; then
             echo "❌ Failed to add server to known hosts"
-            echo "Please verify SERVER_HOST is correct"
+            echo "Attempting to diagnose the issue..."
+            
+            # Try to ping the host
+            if ping -c 1 -W 2 $SERVER_HOST > /dev/null 2>&1; then
+              echo "✓ Host is reachable via ping"
+            else
+              echo "✗ Host is not reachable via ping"
+            fi
+            
+            # Try to check if port 22 is open
+            if timeout 5 bash -c "cat < /dev/null > /dev/tcp/$SERVER_HOST/22" 2>/dev/null; then
+              echo "✓ Port 22 is open"
+            else
+              echo "✗ Port 22 is not accessible"
+            fi
+            
+            echo ""
+            echo "Please verify:"
+            echo "  - SERVER_HOST is correct (should be IP address or hostname)"
+            echo "  - Server firewall allows SSH connections from GitHub Actions"
+            echo "  - SSH service is running on port 22"
             exit 1
-          }
+          fi
 
           echo "Testing SSH connection..."
           ssh -i ~/.ssh/deploy_key -o ConnectTimeout=10 $SERVER_USER@$SERVER_HOST "echo 'SSH connection successful'" || {
