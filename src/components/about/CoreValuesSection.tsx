@@ -55,31 +55,33 @@ const ValuesGrid = styled(Box)(({ theme }) => ({
 const ValueCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #e5e7eb",
-  borderRadius: "14px",
-  padding: theme.spacing(3),
+  borderRadius: "16px",
+  padding: theme.spacing(4.5),
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: theme.spacing(2),
+  gap: theme.spacing(2.5),
   textAlign: "center",
-  transition: "all 0.3s ease",
-  minHeight: "160px",
+  transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+  minHeight: "190px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.06)",
   "&:hover": {
     borderColor: "#00a77f",
-    boxShadow: "0 4px 12px rgba(0, 167, 127, 0.15)",
-    transform: "translateY(-4px)",
+    boxShadow: "0 12px 28px rgba(0, 167, 127, 0.22)",
+    transform: "translateY(-6px)",
   },
 }));
 
 const IconBox = styled(Box)({
-  width: "56px",
-  height: "56px",
+  width: "72px",
+  height: "72px",
   borderRadius: "50%",
-  backgroundColor: "rgba(0, 167, 127, 0.1)",
+  backgroundColor: "rgba(0, 167, 127, 0.12)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 0,
+  transition: "all 0.3s ease",
 });
 
 const ValueTitle = styled(Typography)({
@@ -94,29 +96,29 @@ export default function CoreValuesSection() {
 
   const values = [
     {
-      icon: <GroupsIcon sx={{ fontSize: 28, color: "#00a77f" }} />,
+      icon: <GroupsIcon sx={{ fontSize: 36, color: "#00a77f" }} />,
       title: t("about_value_1"),
     },
     {
-      icon: <BalanceIcon sx={{ fontSize: 28, color: "#00a77f" }} />,
+      icon: <BalanceIcon sx={{ fontSize: 36, color: "#00a77f" }} />,
       title: t("about_value_2"),
     },
     {
-      icon: <NatureIcon sx={{ fontSize: 28, color: "#00a77f" }} />,
+      icon: <NatureIcon sx={{ fontSize: 36, color: "#00a77f" }} />,
       title: t("about_value_3"),
     },
     {
-      icon: <RecyclingIcon sx={{ fontSize: 28, color: "#00a77f" }} />,
+      icon: <RecyclingIcon sx={{ fontSize: 36, color: "#00a77f" }} />,
       title: t("about_value_4"),
     },
     {
       icon: (
-        <IntegrationInstructionsIcon sx={{ fontSize: 28, color: "#00a77f" }} />
+        <IntegrationInstructionsIcon sx={{ fontSize: 36, color: "#00a77f" }} />
       ),
       title: t("about_value_5"),
     },
     {
-      icon: <VisibilityIcon sx={{ fontSize: 28, color: "#00a77f" }} />,
+      icon: <VisibilityIcon sx={{ fontSize: 36, color: "#00a77f" }} />,
       title: t("about_value_6"),
     },
   ];

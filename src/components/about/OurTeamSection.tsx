@@ -64,20 +64,17 @@ const SubsectionHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Leadership Grid (5-column, responsive)
+// Leadership Grid (4-column, responsive)
 const LeadershipGrid = styled(Box)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "repeat(5, 1fr)",
+  gridTemplateColumns: "repeat(4, 1fr)",
   gap: theme.spacing(4),
-  [theme.breakpoints.down("xl")]: {
-    gridTemplateColumns: "repeat(3, 1fr)",
-  },
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
-    gap: theme.spacing(3),
   },
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
+    gap: theme.spacing(3),
   },
 }));
 
@@ -227,115 +224,70 @@ interface BoardMember {
 export default function OurTeamSection() {
   const { t } = useTranslation();
 
+  // A. CORE LEADERSHIP (4-Up Grid with Full Cards)
   const coreLeadership: TeamMember[] = [
     {
       name: "Tek Nath Neopane",
       role: "Chairperson",
-      expertise:
-        "Disciplinary Commission Coordinator, NFDN • Visual Impairment",
-    },
-    {
-      name: "Bishnu Prasad Jaisi",
-      role: "Vice Chairperson",
-      expertise: "Secondary Level Teacher • Visual Impairment",
+      expertise: "Prime Minister's Advisor • Blind by Birth",
     },
     {
       name: "Krishna Maharjan",
       role: "Secretary General",
-      expertise: "Communication Engineer • Project Coordinator",
-    },
-    {
-      name: "Kamala Bastola",
-      role: "Secretary",
-      expertise: "Lower Secondary Teacher • Physical Disability",
+      expertise: "Computer Engineer • UNDP Project Lead",
     },
     {
       name: "Tika Bajgain",
       role: "Treasurer",
-      expertise: "Finance Head • 20+ years teaching & social service",
+      expertise: "Finance Head • 20+ Years Teaching/Finance",
+    },
+    {
+      name: "Gopal Prasad Ghimire",
+      role: "Board Member",
+      expertise: "School Principal • 36 Years Teaching Experience",
     },
   ];
 
-  const programStaff: TeamMember[] = [
+  // B. PROGRAM & TECHNICAL EXPERTS (3-Up Grid with Full Cards)
+  const programTechnicalExperts: TeamMember[] = [
     {
       name: "Roji Maharjan",
-      role: "Financial & Administrative Manager",
+      role: "Financial Manager",
       expertise: "Account Management • Operations",
     },
     {
       name: "Sankalpa Neopane",
       role: "Program Officer",
-      expertise: "Program coordination & implementation",
+      expertise: "Program Coordination & Implementation",
     },
     {
       name: "Aswin Adhikari",
-      role: "Training & Capacity Building Lead",
-      expertise: "Training programs • Capacity development",
-    },
-    {
-      name: "Manish Maharjan",
-      role: "Documentation Officer",
-      expertise: "Data Analyst • Documentation management",
-    },
-    {
-      name: "Rubi Maharjan",
-      role: "Community Engagement Coordinator",
-      expertise: "College Student • Physical Disability • Board Member",
+      role: "Training Lead",
+      expertise: "Capacity Building • Training Programs",
     },
   ];
 
-  const technicalTeam: TeamMember[] = [
-    {
-      name: "Anamika Kumari Jha",
-      role: "Technical Team Leader",
-      expertise: "Bank IT Department",
-    },
-    {
-      name: "Shree Krishna Khanal",
-      role: "Software Developer I",
-      expertise: "Software Company",
-    },
-    {
-      name: "Saman Acharya",
-      role: "Software Developer II",
-      expertise: "Software Company",
-    },
-    {
-      name: "Saurav Aryal",
-      role: "Quality Analyst",
-      expertise: "Business Analyst",
-    },
-    {
-      name: "Bipin Chaudhary",
-      role: "Technical Assistant",
-      expertise: "Software Company",
-    },
-  ];
-
-  const boardMembers: BoardMember[] = [
-    { name: "Tek Nath Neopane", role: "Chairperson" },
+  // C. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List)
+  const boardAndContributors: BoardMember[] = [
     { name: "Bishnu Prasad Jaisi", role: "Vice Chairperson" },
-    { name: "Krishna Maharjan", role: "Secretary General" },
     { name: "Kamala Bastola", role: "Secretary" },
-    { name: "Tika Bajgain", role: "Treasurer" },
     { name: "Khas Maya Gurung", role: "Board Member" },
-    { name: "Gopal Prasad Ghimire", role: "Board Member" },
     { name: "Suman Ghimire", role: "Board Member" },
     { name: "Krishna Prasad Dahal", role: "Board Member" },
     { name: "Rubi Maharjan", role: "Board Member" },
     { name: "Bidya Poudel", role: "Board Member" },
-  ];
-
-  const communityVolunteers: BoardMember[] = [
+    { name: "Manish Maharjan", role: "Documentation Officer" },
+    { name: "Anamika Kumari Jha", role: "Technical Team Leader" },
+    { name: "Shree Krishna Khanal", role: "Software Developer" },
+    { name: "Saman Acharya", role: "Software Developer" },
+    { name: "Saurav Aryal", role: "Quality Analyst" },
+    { name: "Bipin Chaudhary", role: "Technical Assistant" },
     { name: "Tej Bahadur Rokka", role: "Active Member" },
     { name: "Laxmi KC", role: "Active Member" },
     { name: "Rocky Maharjan", role: "Photographer" },
     { name: "Rajan Maharjan", role: "Social Mobilizer" },
     { name: "Sajina Maharjan", role: "Community Volunteer" },
     { name: "Bhakti Maya Karki", role: "Community Volunteer" },
-  ];
-
-  const supportStaff: BoardMember[] = [
     { name: "Kunjan Kafle", role: "Office Assistant" },
     { name: "Ram Babu Maharjan", role: "Security" },
     { name: "Sushila Diyali", role: "Office Helper" },
@@ -352,10 +304,10 @@ export default function OurTeamSection() {
           <DescriptionText>{t("about_team_description")}</DescriptionText>
         </Box>
 
-        {/* A. Core Leadership */}
+        {/* A. CORE LEADERSHIP (4-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Our Core Leadership
+            Core Leadership
           </SubsectionHeading>
           <LeadershipGrid>
             {coreLeadership.map((member, index) => (
@@ -371,11 +323,13 @@ export default function OurTeamSection() {
           </LeadershipGrid>
         </SubsectionContainer>
 
-        {/* B. Program Staff */}
+        {/* B. PROGRAM & TECHNICAL EXPERTS (3-Up Grid) */}
         <SubsectionContainer>
-          <SubsectionHeading variant='h3'>Program Staff</SubsectionHeading>
+          <SubsectionHeading variant='h3'>
+            Program & Technical Experts
+          </SubsectionHeading>
           <StaffGrid>
-            {programStaff.map((member, index) => (
+            {programTechnicalExperts.map((member, index) => (
               <TeamCard key={index}>
                 <AvatarCircle>
                   <AvatarIcon />
@@ -388,51 +342,14 @@ export default function OurTeamSection() {
           </StaffGrid>
         </SubsectionContainer>
 
-        {/* C. Technical Team */}
+        {/* C. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Technical Team (Part Time)
-          </SubsectionHeading>
-          <StaffGrid>
-            {technicalTeam.map((member, index) => (
-              <TeamCard key={index}>
-                <AvatarCircle>
-                  <AvatarIcon />
-                </AvatarCircle>
-                <MemberName>{member.name}</MemberName>
-                <MemberRole>{member.role}</MemberRole>
-                <MemberExpertise>{member.expertise}</MemberExpertise>
-              </TeamCard>
-            ))}
-          </StaffGrid>
-        </SubsectionContainer>
-
-        {/* D. Board Members */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>Board Members</SubsectionHeading>
-          <BoardListContainer>
-            <BoardGrid>
-              {boardMembers.map((member, index) => (
-                <BoardMemberItem key={index}>
-                  <BoardIcon />
-                  <Box>
-                    <BoardMemberName>{member.name}</BoardMemberName>
-                    <BoardMemberRole>{member.role}</BoardMemberRole>
-                  </Box>
-                </BoardMemberItem>
-              ))}
-            </BoardGrid>
-          </BoardListContainer>
-        </SubsectionContainer>
-
-        {/* E. Community Volunteers & Active Members */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
-            Community Volunteers & Active Members
+            Board Members & Active Contributors
           </SubsectionHeading>
           <BoardListContainer>
             <BoardGrid>
-              {communityVolunteers.map((member, index) => (
+              {boardAndContributors.map((member, index) => (
                 <BoardMemberItem key={index}>
                   <BoardIcon />
                   <Box>
@@ -443,24 +360,21 @@ export default function OurTeamSection() {
               ))}
             </BoardGrid>
           </BoardListContainer>
-        </SubsectionContainer>
-
-        {/* F. Support Staff */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>Support Staff</SubsectionHeading>
-          <BoardListContainer>
-            <BoardGrid>
-              {supportStaff.map((member, index) => (
-                <BoardMemberItem key={index}>
-                  <BoardIcon />
-                  <Box>
-                    <BoardMemberName>{member.name}</BoardMemberName>
-                    <BoardMemberRole>{member.role}</BoardMemberRole>
-                  </Box>
-                </BoardMemberItem>
-              ))}
-            </BoardGrid>
-          </BoardListContainer>
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography
+              component="a"
+              href="#teams"
+              sx={{
+                color: '#004c91',
+                fontWeight: 600,
+                fontSize: '1rem',
+                textDecoration: 'underline',
+                '&:hover': { color: '#00a77f' },
+              }}
+            >
+              View Full Staff & Technical Team
+            </Typography>
+          </Box>
         </SubsectionContainer>
       </Container>
     </SectionContainer>
