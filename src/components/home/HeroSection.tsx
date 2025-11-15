@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import DonationPaymentModal from "../payment/DonationPaymentModal";
 
 // Full-width hero container with background image
@@ -125,6 +126,7 @@ const HeroDonateButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function HeroSection() {
+  const { t } = useTranslation();
   const [donationModalOpen, setDonationModalOpen] = useState(false);
 
   return (
@@ -133,21 +135,18 @@ export default function HeroSection() {
         <HeroContent>
           {/* Massive Headline */}
           <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
-            Empowering a Future Without Barriers
+            {t("hero_heading")}
           </HeroHeading>
 
           {/* Sub-Headline */}
-          <HeroSubHeading as='p'>
-            Providing education and advocacy for 10,000+ people with
-            disabilities in Nepal.
-          </HeroSubHeading>
+          <HeroSubHeading as='p'>{t("hero_description")}</HeroSubHeading>
 
           {/* Primary CTA Button */}
           <HeroDonateButton
             onClick={() => setDonationModalOpen(true)}
             aria-label='Donate now to support people with disabilities in Nepal'
           >
-            Donate Now
+            {t("hero_button")}
           </HeroDonateButton>
         </HeroContent>
       </HeroContainer>

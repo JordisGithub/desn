@@ -1,6 +1,7 @@
 import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PublicIcon from "@mui/icons-material/Public";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -105,6 +106,8 @@ const AboutButton = styled(Link)(({ theme }) => ({
   "&:hover, &:focus": {
     backgroundColor: "#003d73",
     borderColor: "#003d73",
+    color: "#ffffff",
+    textDecoration: "none",
     transform: "translateY(-2px)",
     boxShadow: "0 6px 16px rgba(0, 76, 145, 0.4)",
   },
@@ -184,21 +187,23 @@ const FactValue = styled(Typography)(({ theme }) => ({
 }));
 
 export default function AboutSection() {
+  const { t } = useTranslation();
+
   const keyFacts = [
     {
       icon: <CalendarTodayIcon />,
-      label: "Established",
-      value: "2004 (2060 B.S.)",
+      label: t("about_fact_established_label"),
+      value: t("about_fact_established_value"),
     },
     {
       icon: <PublicIcon />,
-      label: "Service Area",
-      value: "Nationwide - Nepal",
+      label: t("about_fact_service_label"),
+      value: t("about_fact_service_value"),
     },
     {
       icon: <FlagIcon />,
-      label: "Primary Goal",
-      value: "Inclusive, Barrier-Free Society",
+      label: t("about_fact_goal_label"),
+      value: t("about_fact_goal_value"),
     },
   ];
 
@@ -209,25 +214,12 @@ export default function AboutSection() {
           {/* Left Column - Main Content */}
           <ContentColumn>
             <AboutHeading as='h2' id='about-heading'>
-              Our Mission: Empowering Nepal's Future
+              {t("about_section_heading")}
             </AboutHeading>
 
-            <Tagline>
-              Creating a rights-based, barrier-free and inclusive society
-            </Tagline>
+            <Tagline>{t("about_section_tagline")}</Tagline>
 
-            <SummaryText>
-              DESN has been consistently advocating for equal rights,
-              participation, and accessibility to ensure that persons with
-              disabilities and marginalized women can live in a barrier-free,
-              inclusive environment with improved socio-economic conditions. The
-              Disability Empowerment Society Nepal (DESN) is a non-profit,
-              non-political social organization founded and led by persons with
-              disabilities. Established under the Organization Registration Act,
-              1972, DESN works for the welfare and empowerment of persons with
-              disabilities, helpless people, and single women through advocacy,
-              education, technology, and livelihood support.
-            </SummaryText>
+            <SummaryText>{t("about_section_summary")}</SummaryText>
 
             <AboutButton to='/about' aria-label='Read our full story'>
               Read Our Full Story

@@ -1,6 +1,10 @@
-import { Box, Container, Typography, Link } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import { useTranslation } from "react-i18next";
+import testimonial1 from "../../assets/testimonials/testimonial1.png";
+import testimonial2 from "../../assets/testimonials/testimonial2.png";
+import testimonial3 from "../../assets/testimonials/testimonial3.png";
 
 // Section container
 const StoriesSectionContainer = styled("section")(({ theme }) => ({
@@ -157,61 +161,30 @@ const QuoteText = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Read more link
-const ReadMoreLink = styled(Link)(({ theme }) => ({
-  fontSize: "0.9375rem",
-  fontWeight: 600,
-  color: theme.palette.warning.main,
-  textDecoration: "none",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: theme.spacing(0.5),
-  transition: "all 0.2s ease",
-  marginTop: "auto",
-  cursor: "pointer",
-  "&:hover": {
-    color: theme.palette.warning.dark,
-    textDecoration: "underline",
-    gap: theme.spacing(1),
-  },
-  "&::after": {
-    content: '"→"',
-    fontSize: "1.125rem",
-    transition: "transform 0.2s ease",
-  },
-  "&:hover::after": {
-    transform: "translateX(4px)",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "0.875rem",
-  },
-}));
-
 export default function StoriesSection() {
+  const { t } = useTranslation();
+
   const testimonials = [
     {
       id: 1,
-      name: "Sita Sharma",
-      title: "Program Graduate, 2023",
-      image: "https://i.pravatar.cc/150?img=1",
-      quote:
-        "This program changed my life and gave me hope. I learned valuable skills that helped me become independent and support my family.",
+      name: t("stories_testimonial_1_name"),
+      title: t("stories_testimonial_1_title"),
+      image: testimonial1,
+      quote: t("stories_testimonial_1_quote"),
     },
     {
       id: 2,
-      name: "Ramesh Thapa",
-      title: "Skills Training Participant",
-      image: "https://i.pravatar.cc/150?img=12",
-      quote:
-        "The support and training I received opened doors I never thought possible. Today, I run my own small business and mentor others.",
+      name: t("stories_testimonial_2_name"),
+      title: t("stories_testimonial_2_title"),
+      image: testimonial2,
+      quote: t("stories_testimonial_2_quote"),
     },
     {
       id: 3,
-      name: "Maya Gurung",
-      title: "Education Program Beneficiary",
-      image: "https://i.pravatar.cc/150?img=5",
-      quote:
-        "DESN believed in me when others didn't. Their education program gave me the tools and confidence to pursue my dreams.",
+      name: t("stories_testimonial_3_name"),
+      title: t("stories_testimonial_3_title"),
+      image: testimonial3,
+      quote: t("stories_testimonial_3_quote"),
     },
   ];
 
@@ -219,7 +192,7 @@ export default function StoriesSection() {
     <StoriesSectionContainer aria-labelledby='stories-heading'>
       <Container maxWidth='lg'>
         <SectionTitle id='stories-heading' variant='h2' as='h2'>
-          Stories of Change
+          {t("stories_heading")}
         </SectionTitle>
 
         <TestimonialGrid>
@@ -232,7 +205,7 @@ export default function StoriesSection() {
               <ProfileSection>
                 <ProfileImage
                   src={testimonial.image}
-                  alt={`${testimonial.name} profile photo`}
+                  alt={t(`stories_testimonial_${testimonial.id}_alt`)}
                 />
                 <ProfileInfo>
                   <PersonName>{testimonial.name}</PersonName>
@@ -241,13 +214,6 @@ export default function StoriesSection() {
               </ProfileSection>
 
               <QuoteText>"{testimonial.quote}"</QuoteText>
-
-              <ReadMoreLink
-                href='#'
-                aria-label={`Read full story of ${testimonial.name}`}
-              >
-                Read Full Story
-              </ReadMoreLink>
             </TestimonialCard>
           ))}
         </TestimonialGrid>

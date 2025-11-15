@@ -49,7 +49,7 @@ const TopBar = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   width: "100%",
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(1.5, 2),
+    display: "none",
   },
 }));
 
@@ -116,7 +116,7 @@ const Logo = styled("img")({
 
 const NavLinks = styled(Box)(({ theme }) => ({
   display: "flex",
-  gap: theme.spacing(4),
+  gap: theme.spacing(2.5),
   alignItems: "center",
   flex: 1,
   justifyContent: "flex-start",
@@ -154,6 +154,15 @@ const LanguageButton = styled(Button)(({ theme }) => ({
   fontSize: "16px",
   padding: theme.spacing(1, 2),
   minWidth: "auto",
+  transition: "all 0.2s ease",
+  "&:hover, &:focus": {
+    color: "#ffffff",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+  },
 }));
 
 const DonateButton = styled(Button)(({ theme }) => ({
@@ -178,11 +187,52 @@ const DonateButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const MobileNavBar = styled(Box)(({ theme }) => ({
+  display: "none",
+  backgroundColor: "#ffffff",
+  padding: theme.spacing(1.5, 2),
+  borderBottom: "1px solid #e0e0e0",
+  alignItems: "center",
+  justifyContent: "space-between",
+  [theme.breakpoints.down("md")]: {
+    display: "flex",
+  },
+}));
+
+const MobileLogo = styled("img")(({ theme }) => ({
+  height: "50px",
+  cursor: "pointer",
+  [theme.breakpoints.down("sm")]: {
+    height: "45px",
+  },
+}));
+
 const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   display: "none",
   color: "#333",
   [theme.breakpoints.down("lg")]: {
     display: "flex",
+  },
+}));
+
+const MobileDonateButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.warning.main,
+  color: "#2b2b2b",
+  fontWeight: 700,
+  fontSize: "0.875rem",
+  textTransform: "uppercase",
+  padding: theme.spacing(1, 2.5),
+  borderRadius: "100px",
+  boxShadow: "0px 4px 12px rgba(246, 212, 105, 0.4)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: theme.palette.warning.dark,
+    transform: "translateY(-2px)",
+    boxShadow: "0px 6px 16px rgba(246, 212, 105, 0.6)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.8125rem",
+    padding: theme.spacing(0.875, 2),
   },
 }));
 
@@ -423,6 +473,16 @@ const Header: React.FC = () => {
                   textTransform: "none",
                   fontSize: "14px",
                   display: { xs: "none", md: "flex" },
+                  "&:hover": {
+                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 76, 145, 0.9)",
+                  },
+                  "&:focus": {
+                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 76, 145, 0.9)",
+                    outline: "3px solid #f6d469",
+                    outlineOffset: "2px",
+                  },
                 }}
               >
                 {t("header.login")}
@@ -511,8 +571,34 @@ const Header: React.FC = () => {
           </TopBarRight>
         </TopBar>
 
-        {/* Main Navigation Bar */}
-        <AppBar position='static' elevation={1} component='nav'>
+        {/* Mobile Navigation Bar */}
+        <MobileNavBar>
+          <MobileMenuButton
+            edge='start'
+            aria-label='menu'
+            onClick={toggleMobileMenu}
+          >
+            <MenuIcon />
+          </MobileMenuButton>
+
+          <LogoLink to='/'>
+            <MobileLogo src={desnLogo} alt='DESN Logo' />
+          </LogoLink>
+
+          <MobileDonateButton onClick={() => setDonationModalOpen(true)}>
+            {t("header.donate")}
+          </MobileDonateButton>
+        </MobileNavBar>
+
+        {/* Main Navigation Bar - Hidden on mobile/tablet */}
+        <AppBar
+          position='static'
+          elevation={1}
+          component='nav'
+          sx={{
+            display: { xs: "none", lg: "block" },
+          }}
+        >
           <NavBar>
             <NavLinks>
               {navItems.map((item) => (
