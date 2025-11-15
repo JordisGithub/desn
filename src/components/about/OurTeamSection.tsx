@@ -248,8 +248,8 @@ export default function OurTeamSection() {
     },
   ];
 
-  // B. PROGRAM & TECHNICAL EXPERTS (3-Up Grid with Full Cards)
-  const programTechnicalExperts: TeamMember[] = [
+  // B. PROGRAM STAFF (3-Up Grid with Full Cards)
+  const programStaff: TeamMember[] = [
     {
       name: "Roji Maharjan",
       role: "Financial & Administrative Manager",
@@ -270,6 +270,10 @@ export default function OurTeamSection() {
       role: "Documentation Officer",
       expertise: "Data Analyst • Documentation",
     },
+  ];
+
+  // C. TECHNICAL TEAM (Part-Time) (3-Up Grid with Full Cards)
+  const technicalTeam: TeamMember[] = [
     {
       name: "Anamika Kumari Jha",
       role: "Technical Team Leader",
@@ -280,9 +284,24 @@ export default function OurTeamSection() {
       role: "Software Developer I",
       expertise: "Software Company • Development",
     },
+    {
+      name: "Saman Acharya",
+      role: "Software Developer II",
+      expertise: "Software Company • Development",
+    },
+    {
+      name: "Saurav Aryal",
+      role: "Quality Analyst",
+      expertise: "Business Analyst • Quality Assurance",
+    },
+    {
+      name: "Bipin Chaudhary",
+      role: "Technical Assistant",
+      expertise: "Software Company • Technical Support",
+    },
   ];
 
-  // C. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List)
+  // D. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List)
   const boardAndContributors: BoardMember[] = [
     { name: "Bishnu Prasad Jaisi", role: "Vice Chairperson" },
     { name: "Kamala Bastola", role: "Secretary" },
@@ -291,9 +310,6 @@ export default function OurTeamSection() {
     { name: "Krishna Prasad Dahal", role: "Board Member" },
     { name: "Rubi Maharjan", role: "Board Member • Community Engagement Coordinator" },
     { name: "Bidya Poudel", role: "Board Member" },
-    { name: "Saman Acharya", role: "Software Developer II" },
-    { name: "Saurav Aryal", role: "Quality Analyst • Business Analyst" },
-    { name: "Bipin Chaudhary", role: "Technical Assistant" },
     { name: "Tej Bahadur Rokka", role: "Active Member • Teacher" },
     { name: "Laxmi KC", role: "Active Member • Teacher" },
     { name: "Rocky Maharjan", role: "Photographer • Videography" },
@@ -335,13 +351,13 @@ export default function OurTeamSection() {
           </LeadershipGrid>
         </SubsectionContainer>
 
-        {/* B. PROGRAM & TECHNICAL EXPERTS (3-Up Grid) */}
+        {/* B. PROGRAM STAFF (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Program & Technical Team
+            Program Staff
           </SubsectionHeading>
           <StaffGrid>
-            {programTechnicalExperts.map((member, index) => (
+            {programStaff.map((member, index) => (
               <TeamCard key={index}>
                 <AvatarCircle>
                   <AvatarIcon />
@@ -354,7 +370,26 @@ export default function OurTeamSection() {
           </StaffGrid>
         </SubsectionContainer>
 
-        {/* C. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List) */}
+        {/* C. TECHNICAL TEAM (Part-Time) (3-Up Grid) */}
+        <SubsectionContainer>
+          <SubsectionHeading variant='h3'>
+            Technical Team (Part-Time)
+          </SubsectionHeading>
+          <StaffGrid>
+            {technicalTeam.map((member, index) => (
+              <TeamCard key={index}>
+                <AvatarCircle>
+                  <AvatarIcon />
+                </AvatarCircle>
+                <MemberName>{member.name}</MemberName>
+                <MemberRole>{member.role}</MemberRole>
+                <MemberExpertise>{member.expertise}</MemberExpertise>
+              </TeamCard>
+            ))}
+          </StaffGrid>
+        </SubsectionContainer>
+
+        {/* D. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
             Board Members & Active Contributors
