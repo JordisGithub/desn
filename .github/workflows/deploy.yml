@@ -148,38 +148,17 @@ jobs:
           echo "Setting SSH key permissions..."
           chmod 600 ~/.ssh/deploy_key
 
-          echo "Adding server to known hosts..."
-          echo "Server host: $SERVER_HOST"
-
-          # Try to scan for SSH keys with better error output
-          if ! ssh-keyscan -H -T 10 $SERVER_HOST >> ~/.ssh/known_hosts 2>&1; then
-            echo "❌ Failed to add server to known hosts"
-            echo "Attempting to diagnose the issue..."
-            
-            # Try to ping the host
-            if ping -c 1 -W 2 $SERVER_HOST > /dev/null 2>&1; then
-              echo "✓ Host is reachable via ping"
-            else
-              echo "✗ Host is not reachable via ping"
-            fi
-            
-            # Try to check if port 22 is open
-            if timeout 5 bash -c "cat < /dev/null > /dev/tcp/$SERVER_HOST/22" 2>/dev/null; then
-              echo "✓ Port 22 is open"
-            else
-              echo "✗ Port 22 is not accessible"
-            fi
-            
-            echo ""
-            echo "Please verify:"
-            echo "  - SERVER_HOST is correct (should be IP address or hostname)"
-            echo "  - Server firewall allows SSH connections from GitHub Actions"
-            echo "  - SSH service is running on port 22"
-            exit 1
-          fi
+          echo "Configuring SSH client..."
+          cat >> ~/.ssh/config <<SSH_CONFIG
+          Host $SERVER_HOST
+            IdentityFile ~/.ssh/deploy_key
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+            LogLevel ERROR
+          SSH_CONFIG
 
           echo "Testing SSH connection..."
-          ssh -i ~/.ssh/deploy_key -o ConnectTimeout=10 $SERVER_USER@$SERVER_HOST "echo 'SSH connection successful'" || {
+          ssh -o ConnectTimeout=10 $SERVER_USER@$SERVER_HOST "echo 'SSH connection successful'" || {
             echo "❌ Failed to connect to server"
             echo "Please verify:"
             echo "  - SSH_PRIVATE_KEY is correct and properly formatted"
@@ -193,7 +172,7 @@ jobs:
 
           # Create deployment directory on server
           echo "📁 Creating deployment directories on server..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "mkdir -p /home/$SERVER_USER/desn-app/{frontend,backend,logs,data}" || {
+          ssh $SERVER_USER@$SERVER_HOST "mkdir -p /home/$SERVER_USER/desn-app/{frontend,backend,logs,data}" || {
             echo "❌ Failed to create directories on server"
             exit 1
           }
@@ -205,7 +184,7 @@ jobs:
             echo "❌ dist directory not found!"
             exit 1
           fi
-          scp -i ~/.ssh/deploy_key -r dist/* $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/frontend/ || {
+          scp -r dist/* $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/frontend/ || {
             echo "❌ Failed to copy frontend files"
             exit 1
           }
@@ -220,7 +199,7 @@ jobs:
             exit 1
           fi
           echo "Found JAR: $JAR_FILE"
-          scp -i ~/.ssh/deploy_key "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/backend/app.jar || {
+          scp "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/backend/app.jar || {
             echo "❌ Failed to copy backend JAR"
             exit 1
           }
@@ -228,7 +207,7 @@ jobs:
 
           # Create environment file on server with production settings
           echo "⚙️ Creating environment file..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/$SERVER_USER/desn-app/backend/.env" <<'ENVFILE'
+          ssh $SERVER_USER@$SERVER_HOST "cat > /home/$SERVER_USER/desn-app/backend/.env" <<'ENVFILE'
           DATABASE_URL=jdbc:postgresql://localhost:5432/desn
           DATABASE_USERNAME=desn_user
           DATABASE_PASSWORD=desn_password_2025
@@ -238,7 +217,7 @@ jobs:
 
           # Deploy frontend to nginx
           echo "🌐 Deploying frontend..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo cp -r /home/$SERVER_USER/desn-app/frontend/* /var/www/html/" || {
+          ssh $SERVER_USER@$SERVER_HOST "sudo cp -r /home/$SERVER_USER/desn-app/frontend/* /var/www/html/" || {
             echo "❌ Failed to deploy frontend"
             exit 1
           }
@@ -246,16 +225,16 @@ jobs:
 
           # Restart backend service
           echo "🚀 Restarting backend service..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart desn-backend" || {
+          ssh $SERVER_USER@$SERVER_HOST "sudo systemctl restart desn-backend" || {
             echo "❌ Failed to restart backend"
             echo "📋 Checking backend logs..."
-            ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo journalctl -u desn-backend -n 50 --no-pager"
+            ssh $SERVER_USER@$SERVER_HOST "sudo journalctl -u desn-backend -n 50 --no-pager"
             exit 1
           }
 
           # Reload nginx
           echo "🌐 Reloading nginx..."
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo systemctl reload nginx" || {
+          ssh $SERVER_USER@$SERVER_HOST "sudo systemctl reload nginx" || {
             echo "❌ Failed to reload nginx"
             exit 1
           }
@@ -264,18 +243,14 @@ jobs:
 
       - name: Verify deployment
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-
           # Wait for services to start
           sleep 10
 
           # Check if backend is running
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "curl -f http://localhost:8080/actuator/health || exit 1"
+          ssh $SERVER_USER@$SERVER_HOST "curl -f http://localhost:8080/actuator/health || exit 1"
 
           echo "✅ Deployment successful!"
           echo "🌐 Frontend: http://$SERVER_HOST"
