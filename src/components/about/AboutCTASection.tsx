@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CTAContainer = styled("section")({
-  background: "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
+  background: "linear-gradient(180deg, #002b52 0%, #004c91 20%, #00a77f 100%)",
   paddingTop: "80px",
   paddingBottom: "80px",
   position: "relative",
@@ -73,7 +73,8 @@ const SecondaryButton = styled(Link)(({ theme }) => ({
   gap: theme.spacing(1),
   transition: "all 0.3s ease",
   "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    borderColor: "white",
   },
   "&:focus": {
     outline: "3px solid #f6d469",
