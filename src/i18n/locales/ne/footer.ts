@@ -25,4 +25,6 @@ export default {
   footer_link_account_privacy: "खाता गोपनीयता",
   footer_copyright: "© प्रतिलिपि अधिकार २०२५ DESN। सबै अधिकार सुरक्षित",
   footer_donate_button: "दान गर्नुहोस्",
+  footer_contact_location: "ललितपुर, नेपाल",
+  footer_contact_phone: "+९७७-१५७०९२०५",
 };

@@ -194,12 +194,14 @@ if [ ! -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
 
     # Ensure certbot timer enabled for auto-renewal
     sudo systemctl enable --now certbot.timer || true
-    # Test renewal dry-run
-    sudo certbot renew --dry-run || true
     
     # Reload nginx after certbot modifies the config
     echo "♻️  Reloading Nginx with SSL configuration..."
     sudo systemctl reload nginx
+else
+    # Certificate already exists, just ensure renewal timer is active
+    echo "✅ SSL certificate already configured"
+    sudo systemctl enable --now certbot.timer 2>/dev/null || true
 fi
 
 echo "✅ Deployment completed successfully!"

@@ -21,7 +21,7 @@ export default {
     "Our mission is to build an inclusive Nepal where everyone, regardless of ability, can live independently, with dignity and equal opportunities.",
 
   // About Section
-  about_heading: "ABOUT DESN",
+  about_heading: "About DESN",
   about_description:
     "DESN has been consistently advocating for equal rights, participation, and accessibility to ensure that persons with disabilities and marginalized women can live in a barrier-free, inclusive environment with improved socio-economic conditions.",
   about_button: "more about us",

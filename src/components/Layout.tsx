@@ -40,22 +40,23 @@ export default function Layout({ children }: LayoutProps) {
         href='#main-content'
         onClick={skipToMainContent}
         style={{
-          position: "absolute",
-          left: "-9999px",
-          zIndex: 9999,
+          position: "fixed",
+          left: "8px",
+          top: "8px",
+          zIndex: 10000,
           padding: "8px 16px",
           backgroundColor: "#004c91",
           color: "white",
           textDecoration: "none",
           borderRadius: "4px",
+          transform: "translateY(-150%)",
+          transition: "transform 0.2s ease",
         }}
         onFocus={(e) => {
-          e.currentTarget.style.left = "8px";
-          e.currentTarget.style.top = "8px";
+          e.currentTarget.style.transform = "translateY(0)";
         }}
         onBlur={(e) => {
-          e.currentTarget.style.left = "-9999px";
-          e.currentTarget.style.top = "auto";
+          e.currentTarget.style.transform = "translateY(-150%)";
         }}
       >
         Skip to main content

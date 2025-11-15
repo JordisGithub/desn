@@ -1,5 +1,3 @@
-import { styled } from "@mui/material/styles";
-import { useTranslation } from "react-i18next";
 import { usePageTitle } from "../hooks/usePageTitle";
 import AboutHero from "../components/about/AboutHero";
 import IntroductionSection from "../components/about/IntroductionSection";
@@ -11,40 +9,20 @@ import OurTeamSection from "../components/about/OurTeamSection";
 import PartnersNetworksSection from "../components/about/PartnersNetworksSection";
 import AboutCTASection from "../components/about/AboutCTASection";
 
-const SkipLink = styled("a")({
-  position: "absolute",
-  top: "-40px",
-  left: 0,
-  background: "#004c91",
-  color: "white",
-  padding: "8px 16px",
-  textDecoration: "none",
-  zIndex: 9999,
-  "&:focus": {
-    top: 0,
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
-  },
-});
-
 export default function About() {
-  const { t } = useTranslation();
   usePageTitle("page_titles.about");
 
   return (
     <>
-      <SkipLink href='#main-content'>{t("skip_to_content")}</SkipLink>
-      <main id='main-content'>
-        <AboutHero />
-        <IntroductionSection />
-        <LegalStatusSection />
-        <MissionVisionSection />
-        <ObjectivesSection />
-        <ValuesSection />
-        <OurTeamSection />
-        <PartnersNetworksSection />
-        <AboutCTASection />
-      </main>
+      <AboutHero />
+      <IntroductionSection />
+      <LegalStatusSection />
+      <MissionVisionSection />
+      <ObjectivesSection />
+      <ValuesSection />
+      <OurTeamSection />
+      <PartnersNetworksSection />
+      <AboutCTASection />
     </>
   );
 }

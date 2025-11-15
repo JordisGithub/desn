@@ -48,8 +48,9 @@ const CTAButton = styled(Link)(({ theme }) => ({
   borderRadius: "100px",
   textDecoration: "none",
   display: "inline-block",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5c943",
+    fontWeight: 700,
   },
   "&:focus": {
     outline: "3px solid white",
@@ -95,9 +96,10 @@ const FooterLink = styled(Link)({
   textDecoration: "none",
   display: "block",
   marginBottom: "0.5rem",
-  "&:hover": {
+  "&:hover, &:focus": {
     color: "#004c91",
     textDecoration: "underline",
+    fontWeight: 700,
   },
   "&:focus": {
     outline: "2px solid #004c91",
@@ -111,16 +113,17 @@ const SocialIcon = styled("a")({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  backgroundColor: "#004c91",
+  color: "white",
   borderRadius: "50%",
   cursor: "pointer",
   transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: "#004c91",
-    color: "white",
+  "&:hover, &:focus": {
+    backgroundColor: "#003366",
+    transform: "scale(1.1)",
   },
   "&:focus": {
-    outline: "2px solid #004c91",
+    outline: "2px solid white",
     outlineOffset: "2px",
   },
 });
@@ -143,8 +146,9 @@ const BottomLink = styled(Link)({
   color: "white",
   fontSize: "0.875rem",
   textDecoration: "none",
-  "&:hover": {
+  "&:hover, &:focus": {
     textDecoration: "underline",
+    fontWeight: 700,
   },
   "&:focus": {
     outline: "2px solid white",
@@ -273,27 +277,36 @@ export default function Footer() {
                   <Stack direction='row' spacing={1} alignItems='flex-start'>
                     <LocationOnIcon
                       sx={{ fontSize: "1.125rem", mt: 0.25, color: "#2b2b2b" }}
+                      aria-label={t("contact_labels.location")}
                     />
-                    <FooterText>Lalitpur, Nepal</FooterText>
+                    <FooterText>{t("footer_contact_location")}</FooterText>
                   </Stack>
                   <Stack direction='row' spacing={1} alignItems='center'>
                     <PhoneIcon
                       sx={{ fontSize: "1.125rem", color: "#2b2b2b" }}
+                      aria-label={t("contact_labels.phone")}
                     />
                     <FooterLink
                       to='tel:+97715709205'
                       sx={{ display: "inline" }}
+                      aria-label={`${t("contact_labels.phone")}: ${t(
+                        "footer_contact_phone"
+                      )}`}
                     >
-                      +977-15709205
+                      {t("footer_contact_phone")}
                     </FooterLink>
                   </Stack>
                   <Stack direction='row' spacing={1} alignItems='center'>
                     <EmailIcon
                       sx={{ fontSize: "1.125rem", color: "#2b2b2b" }}
+                      aria-label={t("contact_labels.email")}
                     />
                     <FooterLink
                       to='mailto:disabilityemp@gmail.com'
                       sx={{ display: "inline" }}
+                      aria-label={`${t(
+                        "contact_labels.email"
+                      )}: disabilityemp@gmail.com`}
                     >
                       disabilityemp@gmail.com
                     </FooterLink>
@@ -312,23 +325,23 @@ export default function Footer() {
             </div>
           </Box>
         </Container>
-      </FooterContainer>
 
-      {/* Copyright Bar with Legal Links */}
-      <CopyrightBar>
-        <Container>
-          <BottomLinks>
-            <BottomLink to='/accessibility'>
-              {t("footer_link_accessibility")}
-            </BottomLink>
-            <span style={{ color: "white" }}>|</span>
-            <BottomLink to='/privacy'>
-              {t("footer_link_account_privacy")}
-            </BottomLink>
-          </BottomLinks>
-          <CopyrightText>{t("footer_copyright")}</CopyrightText>
-        </Container>
-      </CopyrightBar>
+        {/* Copyright Bar with Legal Links */}
+        <CopyrightBar>
+          <Container>
+            <BottomLinks>
+              <BottomLink to='/accessibility'>
+                {t("footer_link_accessibility")}
+              </BottomLink>
+              <span style={{ color: "white" }}>|</span>
+              <BottomLink to='/privacy'>
+                {t("footer_link_account_privacy")}
+              </BottomLink>
+            </BottomLinks>
+            <CopyrightText>{t("footer_copyright")}</CopyrightText>
+          </Container>
+        </CopyrightBar>
+      </FooterContainer>
     </>
   );
 }
