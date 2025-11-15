@@ -116,37 +116,76 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
+          set -e
+
           # Setup SSH
+          echo "📡 Setting up SSH connection..."
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+          echo "✅ SSH setup complete"
 
           # Create deployment directory on server
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "mkdir -p /home/$SERVER_USER/desn-app/{frontend,backend,logs,data}"
+          echo "📁 Creating deployment directories on server..."
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "mkdir -p /home/$SERVER_USER/desn-app/{frontend,backend,logs,data}" || {
+            echo "❌ Failed to create directories on server"
+            exit 1
+          }
+          echo "✅ Directories created"
 
           # Copy frontend build
-          scp -i ~/.ssh/deploy_key -r dist/* $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/frontend/
-
-          # Copy backend JAR (detect non-original jar)
-          JAR_FILE=$(ls backend/target/*.jar | grep -v "original" | head -n 1)
-          if [ -z "$JAR_FILE" ]; then
-            echo "No backend jar found in backend/target" >&2
+          echo "📤 Copying frontend build..."
+          if [ ! -d "dist" ]; then
+            echo "❌ dist directory not found!"
             exit 1
           fi
-          scp -i ~/.ssh/deploy_key "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/backend/app.jar
+          scp -i ~/.ssh/deploy_key -r dist/* $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/frontend/ || {
+            echo "❌ Failed to copy frontend files"
+            exit 1
+          }
+          echo "✅ Frontend copied"
+
+          # Copy backend JAR (detect non-original jar)
+          echo "📤 Copying backend JAR..."
+          JAR_FILE=$(ls backend/target/*.jar | grep -v "original" | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "❌ No backend jar found in backend/target"
+            ls -la backend/target/ || echo "backend/target directory not found"
+            exit 1
+          fi
+          echo "Found JAR: $JAR_FILE"
+          scp -i ~/.ssh/deploy_key "$JAR_FILE" $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/backend/app.jar || {
+            echo "❌ Failed to copy backend JAR"
+            exit 1
+          }
+          echo "✅ Backend JAR copied"
 
           # Create environment file on server with production settings
+          echo "⚙️ Creating environment file..."
           ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "cat > /home/$SERVER_USER/desn-app/backend/.env" <<ENVFILE
           CORS_ALLOWED_ORIGINS=https://desnepal.com,https://www.desnepal.com,http://${SERVER_HOST}
           EMAIL_NOTIFICATIONS_ENABLED=false
           ENVFILE
+          echo "✅ Environment file created"
 
           # Copy deployment script
-          scp -i ~/.ssh/deploy_key scripts/deploy-server.sh $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/
+          echo "📤 Copying deployment script..."
+          scp -i ~/.ssh/deploy_key scripts/deploy-server.sh $SERVER_USER@$SERVER_HOST:/home/$SERVER_USER/desn-app/ || {
+            echo "❌ Failed to copy deployment script"
+            exit 1
+          }
+          echo "✅ Deployment script copied"
 
           # Execute deployment script on server
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "SERVER_USER=$SERVER_USER bash /home/$SERVER_USER/desn-app/deploy-server.sh"
+          echo "🚀 Executing deployment script on server..."
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "SERVER_USER=$SERVER_USER bash /home/$SERVER_USER/desn-app/deploy-server.sh" || {
+            echo "❌ Deployment script failed on server"
+            echo "📋 Fetching server logs..."
+            ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "tail -50 /home/$SERVER_USER/desn-app/logs/backend-error.log 2>/dev/null || echo 'No error log found'"
+            exit 1
+          }
+          echo "✅ Deployment completed successfully"
 
       - name: Verify deployment
         env:
