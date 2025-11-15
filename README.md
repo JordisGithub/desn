@@ -344,6 +344,7 @@ The application is deployed on **AWS EC2** with the following architecture:
 ```
 
 This script automatically:
+
 1. Builds frontend with Vite
 2. Builds backend with Maven
 3. Uploads both to EC2 server

@@ -224,6 +224,7 @@ SELECT count(*) FROM pg_stat_activity WHERE datname='desn';
 ## Deployment Information
 
 ### Production
+
 - **Server:** AWS EC2 t3.small - Free tier eligible (15.206.210.71)
 - **Region:** ap-south-1 (Mumbai)
 - **OS:** Ubuntu 24.04.3 LTS
@@ -234,6 +235,7 @@ SELECT count(*) FROM pg_stat_activity WHERE datname='desn';
 - **Live URL:** http://15.206.210.71
 
 ### Local Development
+
 - **OS:** macOS
 - **Java:** OpenJDK 21
 - **PostgreSQL:** 16 (via Homebrew)
