@@ -119,15 +119,10 @@ export default function FoundingFactsSection() {
               {t("about_intro_heading")}
             </IntroHeading>
             <IntroText>
-              DESN was founded in 2003 by persons with disabilities to advocate
-              for equal rights, participation, and accessibility. We work to
-              ensure that persons with disabilities live in a barrier-free,
-              inclusive environment with improved socio-economic conditions.
+              {t("about_founding_intro")}
             </IntroText>
             <IntroText>
-              Registered with the District Administration Office, Lalitpur, we
-              are affiliated with the Social Welfare Council and National
-              Federation of Disabled Nepal.
+              {t("about_intro_text_1")}
             </IntroText>
           </IntroColumn>
 
@@ -138,8 +133,8 @@ export default function FoundingFactsSection() {
                 <CalendarTodayIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Founded</FactLabel>
-                <FactValue>June 9, 2003</FactValue>
+                <FactLabel>{t("about_founding_fact_year_label")}</FactLabel>
+                <FactValue>{t("about_legal_reg_date")}</FactValue>
               </FactContent>
             </FactCard>
 
@@ -148,8 +143,8 @@ export default function FoundingFactsSection() {
                 <WorkspacesIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Years of Service</FactLabel>
-                <FactValue>22+ Years</FactValue>
+                <FactLabel>{t("about_founding_fact_years_service_label")}</FactLabel>
+                <FactValue>{t("about_founding_fact_years_service")}</FactValue>
               </FactContent>
             </FactCard>
 
@@ -158,8 +153,8 @@ export default function FoundingFactsSection() {
                 <VerifiedIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Registration</FactLabel>
-                <FactValue>Reg. No. 129/1560-059/60</FactValue>
+                <FactLabel>{t("about_legal_reg_number_label")}</FactLabel>
+                <FactValue>{t("about_legal_reg_number")}</FactValue>
               </FactContent>
             </FactCard>
 
@@ -168,8 +163,8 @@ export default function FoundingFactsSection() {
                 <BusinessIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Affiliations</FactLabel>
-                <FactValue>SWC & NFDN</FactValue>
+                <FactLabel>{t("about_legal_affiliations_label")}</FactLabel>
+                <FactValue>{t("about_legal_type")}</FactValue>
               </FactContent>
             </FactCard>
           </FactsColumn>

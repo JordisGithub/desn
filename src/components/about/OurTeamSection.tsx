@@ -367,7 +367,7 @@ export default function OurTeamSection() {
         {/* A. CORE LEADERSHIP (4-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Core Leadership
+            {t("about_team_core_leadership")}
           </SubsectionHeading>
           <LeadershipGrid>
             {coreLeadership.map((member, index) => (
@@ -386,7 +386,7 @@ export default function OurTeamSection() {
         {/* B. PROGRAM STAFF (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Program Staff
+            {t("about_team_program_staff")}
           </SubsectionHeading>
           <StaffGrid>
             {programStaff.map((member, index) => (
@@ -405,7 +405,7 @@ export default function OurTeamSection() {
         {/* C. TECHNICAL TEAM (Part-Time) (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Technical Team (Part-Time)
+            {t("about_team_technical_team")}
           </SubsectionHeading>
           <StaffGrid>
             {technicalTeam.map((member, index) => (
@@ -424,7 +424,7 @@ export default function OurTeamSection() {
         {/* D. BOARD MEMBERS (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Board Members
+            {t("about_team_board_members")}
           </SubsectionHeading>
           <StaffGrid>
             {boardMembers.map((member, index) => (
@@ -443,7 +443,7 @@ export default function OurTeamSection() {
         {/* E. COMMUNITY VOLUNTEERS & SUPPORT STAFF (Condensed List) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Community Volunteers & Support Staff
+            {t("about_team_community_volunteers")}
           </SubsectionHeading>
           <BoardListContainer>
             <BoardGrid>

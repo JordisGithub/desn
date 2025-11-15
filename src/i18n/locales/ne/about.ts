@@ -72,6 +72,25 @@ export default {
   about_team_description:
     "DESN लाई समर्पित पेशेवरहरू र अपाङ्गता भएका व्यक्तिहरूले नेतृत्व गर्छन् जसले हाम्रो मिशनलाई अगाडि बढाउन विशेषज्ञता, जुनून र जीवित अनुभव ल्याउँछन्।",
   about_team_cta: "हाम्रो टोलीलाई भेट्नुहोस्",
+  about_team_core_leadership: "मुख्य नेतृत्व",
+  about_team_program_staff: "कार्यक्रम कर्मचारी",
+  about_team_technical_team: "प्राविधिक टोली (पार्ट-टाइम)",
+  about_team_board_members: "बोर्ड सदस्यहरू",
+  about_team_community_volunteers: "सामुदायिक स्वयंसेवक र सहायक कर्मचारी",
+
+  // Founding Facts Section
+  about_founding_intro:
+    "DESN को स्थापना २००३ मा अपाङ्गता भएका व्यक्तिहरूद्वारा समान अधिकार, पहुँच र अवसरहरूको लागि वकालत गर्न गरिएको थियो।",
+  about_founding_fact_year: "२००३",
+  about_founding_fact_year_label: "स्थापना",
+  about_founding_fact_years_service: "२२+ वर्ष",
+  about_founding_fact_years_service_label: "सेवाका वर्षहरू",
+  about_founding_fact_reg: "१२९/१५६०",
+  about_founding_fact_reg_label: "दर्ता नं.",
+  about_founding_fact_members: "२,०००+",
+  about_founding_fact_members_label: "सामुदायिक सदस्यहरू",
+  about_founding_fact_programs: "१५+",
+  about_founding_fact_programs_label: "सक्रिय कार्यक्रमहरू",
 
   // Partners & Networks
   about_partners_title: "साझेदार र नेटवर्कहरू",

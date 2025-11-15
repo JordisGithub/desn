@@ -71,6 +71,25 @@ export default {
   about_team_description:
     "DESN is led by dedicated professionals and persons with disabilities who bring expertise, passion, and lived experience to drive our mission forward.",
   about_team_cta: "Meet Our Team",
+  about_team_core_leadership: "Core Leadership",
+  about_team_program_staff: "Program Staff",
+  about_team_technical_team: "Technical Team (Part-Time)",
+  about_team_board_members: "Board Members",
+  about_team_community_volunteers: "Community Volunteers & Support Staff",
+
+  // Founding Facts Section
+  about_founding_intro:
+    "DESN was founded in 2003 by persons with disabilities to advocate for equal rights, accessibility, and opportunities for all.",
+  about_founding_fact_year: "2003",
+  about_founding_fact_year_label: "Founded",
+  about_founding_fact_years_service: "22+ Years",
+  about_founding_fact_years_service_label: "Years of Service",
+  about_founding_fact_reg: "129/1560",
+  about_founding_fact_reg_label: "Reg. No.",
+  about_founding_fact_members: "2,000+",
+  about_founding_fact_members_label: "Community Members",
+  about_founding_fact_programs: "15+",
+  about_founding_fact_programs_label: "Active Programs",
 
   // Partners & Networks
   about_partners_title: "Partners & Networks",
