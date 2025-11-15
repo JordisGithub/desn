@@ -6,20 +6,22 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CTAContainer = styled("section")({
   background: "linear-gradient(180deg, #002b52 0%, #004c91 20%, #00a77f 100%)",
-  paddingTop: "80px",
-  paddingBottom: "80px",
+  paddingTop: "120px",
+  paddingBottom: "120px",
   position: "relative",
   overflow: "hidden",
 });
 
 const CTATitle = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
-  fontWeight: 600,
+  fontSize: "2.75rem",
+  fontWeight: 700,
   color: "white",
-  marginBottom: theme.spacing(2),
+  letterSpacing: "0.02em",
+  marginBottom: theme.spacing(3),
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
+    fontSize: "2.125rem",
+    letterSpacing: "0.01em",
   },
 }));
 
@@ -39,19 +41,22 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
 }));
 
 const PrimaryButton = styled(Link)(({ theme }) => ({
-  backgroundColor: "#f6d469",
+  background: "linear-gradient(135deg, #f6d469 0%, #f5c943 100%)",
   color: "#2b2b2b",
-  fontWeight: 600,
+  fontWeight: 700,
   fontSize: "1.125rem",
-  padding: theme.spacing(1.5, 4),
-  borderRadius: "8px",
+  padding: theme.spacing(2, 5),
+  borderRadius: "12px",
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
   gap: theme.spacing(1),
-  transition: "all 0.3s ease",
+  boxShadow: "0 6px 12px rgba(246, 212, 105, 0.35)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#f5c943",
+    background: "linear-gradient(135deg, #f5c943 0%, #e5b833 100%)",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 24px rgba(246, 212, 105, 0.45)",
   },
   "&:focus": {
     outline: "3px solid white",
