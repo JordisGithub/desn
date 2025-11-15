@@ -16,7 +16,7 @@ import EventRegistrationModal from "../events/EventRegistrationModal";
 import EventService from "../../services/EventService";
 
 const EventsContainer = styled("section")({
-  backgroundColor: "white",
+  backgroundColor: "#f5f5f5",
 });
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
@@ -305,10 +305,7 @@ export default function EventsSection() {
                   <EventTime>{t(event.timeKey)}</EventTime>
                 </Stack>
                 <EventTitle as='h3'>
-                  <EventTitleLink
-                    to={`/events/${event.id}`}
-                    aria-label={`View details for ${t(event.titleKey)}`}
-                  >
+                  <EventTitleLink to={`/events/${event.id}`}>
                     {t(event.titleKey)}
                   </EventTitleLink>
                 </EventTitle>
@@ -317,6 +314,7 @@ export default function EventsSection() {
                   <strong>{t("event_organizer")}</strong> {event.organizer}
                 </EventOrganizer>
                 <RegisterButton
+                  aria-label={`Register for ${t(event.titleKey)}`}
                   endIcon={
                     !eventStatuses[event.id]?.isFull ? (
                       <ArrowForwardIcon />

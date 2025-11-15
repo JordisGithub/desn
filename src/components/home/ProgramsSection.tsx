@@ -184,7 +184,7 @@ export default function ProgramsSection() {
         </ProgramsGrid>
 
         <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <LearnMoreButton to='/programs' aria-label={t("programs_button")}>
+          <LearnMoreButton to='/programs'>
             {t("programs_button")}
           </LearnMoreButton>
         </div>
