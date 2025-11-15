@@ -26,6 +26,7 @@ cd /Users/jordi/git/desn
 ```
 
 This script will:
+
 - Build the frontend with Vite
 - Build the backend with Maven
 - Upload both to the EC2 server
@@ -65,8 +66,6 @@ curl http://15.206.210.71/api/resources
 # Check service status
 ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71 "sudo systemctl status desn-backend nginx"
 ```
-
-
 
 ## Environment Variables on Server
 
@@ -319,7 +318,7 @@ sudo tail -f /var/log/nginx/error.log
 
 ### 2. API Not Responding
 
-**Symptom**: 502 Bad Gateway when accessing /api/*
+**Symptom**: 502 Bad Gateway when accessing /api/\*
 
 **Common Cause**: Backend not running or not on port 8080
 
@@ -556,11 +555,13 @@ free -h && df -h
 - **Monthly Cost**: Free (first 12 months with AWS free tier), then ~$15/month
 
 ### Default Users
+
 - Owner: `owner` / `owner123`
 - Admin: `admin` / `admin123`
 - Member: `member` / `member123`
 
 ### Database
+
 - Database: `desn`
 - User: `desn_user`
 - Password: `desn_password_2025`

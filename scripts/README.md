@@ -16,11 +16,13 @@ This directory contains scripts for deploying the DESN application to AWS EC2.
 **Purpose:** Complete deployment script that builds and deploys both frontend and backend.
 
 **Usage:**
+
 ```bash
 ./scripts/deploy-simple.sh
 ```
 
 **What it does:**
+
 1. Tests SSH connection to server
 2. Builds frontend with npm/vite
 3. Builds backend with Maven
@@ -30,6 +32,7 @@ This directory contains scripts for deploying the DESN application to AWS EC2.
 7. Restarts backend service and nginx
 
 **Requirements:**
+
 - Node.js and npm installed
 - Java 21 and Maven installed
 - SSH key at ~/.ssh/desn-app-key.pem with 400 permissions
@@ -41,6 +44,7 @@ This directory contains scripts for deploying the DESN application to AWS EC2.
 **Purpose:** Initial server setup script (one-time use).
 
 **Usage:**
+
 ```bash
 # Upload to server
 scp -i ~/.ssh/desn-app-key.pem scripts/setup-single-server.sh ubuntu@15.206.210.71:/tmp/
@@ -51,6 +55,7 @@ bash /tmp/setup-single-server.sh
 ```
 
 **What it does:**
+
 1. Installs Java 21 (OpenJDK)
 2. Installs PostgreSQL 16
 3. Creates database and user (desn/desn_user)
@@ -71,11 +76,13 @@ bash /tmp/setup-single-server.sh
 **Location on server:** `/etc/nginx/sites-available/default`
 
 **Configuration:**
+
 - Serves frontend from `/home/ubuntu/desn-app/frontend/`
 - Proxies `/api/*` to `localhost:8080`
 - Proxies `/actuator/*` to `localhost:8080`
 
 **To update:**
+
 ```bash
 scp -i ~/.ssh/desn-app-key.pem scripts/nginx-simple.conf ubuntu@15.206.210.71:/tmp/
 ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71
@@ -101,6 +108,7 @@ sudo systemctl reload nginx
 **Purpose:** Image optimization for web performance.
 
 **Usage:**
+
 ```bash
 node scripts/optimize-images.cjs
 ```
@@ -112,6 +120,7 @@ node scripts/optimize-images.cjs
 **Purpose:** Sample SQL data for resources and events.
 
 **Usage:**
+
 ```bash
 # On server
 sudo -u postgres psql desn < /path/to/import-resources.sql
@@ -136,11 +145,13 @@ The following scripts were for the old server (13.204.228.199) and have been rem
 ## Quick Reference
 
 ### Deploy Application
+
 ```bash
 ./scripts/deploy-simple.sh
 ```
 
 ### Check Deployment Status
+
 ```bash
 curl http://15.206.210.71
 curl http://15.206.210.71/actuator/health
@@ -148,6 +159,7 @@ curl http://15.206.210.71/api/resources
 ```
 
 ### View Logs
+
 ```bash
 ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71
 sudo journalctl -u desn-backend -n 100 --no-pager
@@ -155,6 +167,7 @@ sudo tail -f /var/log/nginx/error.log
 ```
 
 ### Restart Services
+
 ```bash
 ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71
 sudo systemctl restart desn-backend
@@ -166,6 +179,7 @@ sudo systemctl reload nginx
 ## Troubleshooting
 
 ### SSH Connection Fails
+
 ```bash
 # Check key permissions
 chmod 400 ~/.ssh/desn-app-key.pem
@@ -177,6 +191,7 @@ ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71
 ```
 
 ### Build Fails
+
 ```bash
 # Frontend build
 npm ci && npm run build
@@ -186,6 +201,7 @@ cd backend && ./mvnw clean package -DskipTests
 ```
 
 ### Deployment Script Fails
+
 ```bash
 # Check all requirements installed
 node --version  # Should be v20+
