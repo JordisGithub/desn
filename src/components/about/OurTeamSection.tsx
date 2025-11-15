@@ -252,7 +252,7 @@ export default function OurTeamSection() {
   const programTechnicalExperts: TeamMember[] = [
     {
       name: "Roji Maharjan",
-      role: "Financial Manager",
+      role: "Financial & Administrative Manager",
       expertise: "Account Management • Operations",
     },
     {
@@ -262,8 +262,23 @@ export default function OurTeamSection() {
     },
     {
       name: "Aswin Adhikari",
-      role: "Training Lead",
+      role: "Training & Capacity Building Lead",
       expertise: "Capacity Building • Training Programs",
+    },
+    {
+      name: "Manish Maharjan",
+      role: "Documentation Officer",
+      expertise: "Data Analyst • Documentation",
+    },
+    {
+      name: "Anamika Kumari Jha",
+      role: "Technical Team Leader",
+      expertise: "Bank IT Department • Tech Leadership",
+    },
+    {
+      name: "Shree Krishna Khanal",
+      role: "Software Developer I",
+      expertise: "Software Company • Development",
     },
   ];
 
@@ -274,22 +289,19 @@ export default function OurTeamSection() {
     { name: "Khas Maya Gurung", role: "Board Member" },
     { name: "Suman Ghimire", role: "Board Member" },
     { name: "Krishna Prasad Dahal", role: "Board Member" },
-    { name: "Rubi Maharjan", role: "Board Member" },
+    { name: "Rubi Maharjan", role: "Board Member • Community Engagement Coordinator" },
     { name: "Bidya Poudel", role: "Board Member" },
-    { name: "Manish Maharjan", role: "Documentation Officer" },
-    { name: "Anamika Kumari Jha", role: "Technical Team Leader" },
-    { name: "Shree Krishna Khanal", role: "Software Developer" },
-    { name: "Saman Acharya", role: "Software Developer" },
-    { name: "Saurav Aryal", role: "Quality Analyst" },
+    { name: "Saman Acharya", role: "Software Developer II" },
+    { name: "Saurav Aryal", role: "Quality Analyst • Business Analyst" },
     { name: "Bipin Chaudhary", role: "Technical Assistant" },
-    { name: "Tej Bahadur Rokka", role: "Active Member" },
-    { name: "Laxmi KC", role: "Active Member" },
-    { name: "Rocky Maharjan", role: "Photographer" },
+    { name: "Tej Bahadur Rokka", role: "Active Member • Teacher" },
+    { name: "Laxmi KC", role: "Active Member • Teacher" },
+    { name: "Rocky Maharjan", role: "Photographer • Videography" },
     { name: "Rajan Maharjan", role: "Social Mobilizer" },
-    { name: "Sajina Maharjan", role: "Community Volunteer" },
-    { name: "Bhakti Maya Karki", role: "Community Volunteer" },
+    { name: "Sajina Maharjan", role: "Community Based Volunteer" },
+    { name: "Bhakti Maya Karki", role: "Community Based Volunteer" },
     { name: "Kunjan Kafle", role: "Office Assistant" },
-    { name: "Ram Babu Maharjan", role: "Security" },
+    { name: "Ram Babu Maharjan", role: "Security Person" },
     { name: "Sushila Diyali", role: "Office Helper" },
   ];
 
@@ -326,7 +338,7 @@ export default function OurTeamSection() {
         {/* B. PROGRAM & TECHNICAL EXPERTS (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Program & Technical Experts
+            Program & Technical Team
           </SubsectionHeading>
           <StaffGrid>
             {programTechnicalExperts.map((member, index) => (
