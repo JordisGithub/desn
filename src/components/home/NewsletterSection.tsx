@@ -10,7 +10,7 @@ import { styled } from "@mui/material/styles";
 import SendIcon from "@mui/icons-material/Send";
 import { useTranslation } from "react-i18next";
 
-const NewsletterContainer = styled(Box)({
+const NewsletterContainer = styled("section")({
   backgroundColor: "#004c91",
 });
 
@@ -73,6 +73,7 @@ export default function NewsletterSection() {
 
   return (
     <NewsletterContainer
+      role='region'
       aria-labelledby='newsletter-heading'
       style={{ paddingTop: "3rem", paddingBottom: "3rem" }}
     >
@@ -112,7 +113,6 @@ export default function NewsletterSection() {
               <SubscribeButton
                 type='submit'
                 variant='contained'
-                aria-label={t("newsletter_button")}
                 endIcon={<SendIcon />}
                 sx={{ minWidth: { xs: "100%", sm: "auto" } }}
               >
