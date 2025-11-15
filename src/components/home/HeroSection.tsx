@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import DonationPaymentModal from "../payment/DonationPaymentModal";
+import heroImage from "../../assets/home/nepal-hero-image.png";
 
 // Full-width hero container with background image
 const HeroContainer = styled("section")(({ theme }) => ({
@@ -13,7 +14,7 @@ const HeroContainer = styled("section")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   overflow: "hidden",
-  backgroundImage: `url('/src/assets/home/nepal-hero-image.png')`,
+  backgroundImage: `url(${heroImage})`,
   backgroundSize: "cover",
   backgroundPosition: "center center",
   backgroundRepeat: "no-repeat",
