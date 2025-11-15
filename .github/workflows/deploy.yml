@@ -252,14 +252,14 @@ jobs:
             ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo journalctl -u desn-backend -n 50 --no-pager"
             exit 1
           }
-          
+
           # Reload nginx
           echo "🌐 Reloading nginx..."
           ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST "sudo systemctl reload nginx" || {
             echo "❌ Failed to reload nginx"
             exit 1
           }
-          
+
           echo "✅ Deployment completed successfully"
 
       - name: Verify deployment
