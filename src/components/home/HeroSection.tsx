@@ -1,45 +1,28 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useTranslation } from "react-i18next";
-import OptimizedImage from "../OptimizedImage";
+import { useState } from "react";
+import DonationPaymentModal from "../payment/DonationPaymentModal";
 
-// Main hero container
+// Full-width hero container with background image
 const HeroContainer = styled("section")(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  paddingTop: theme.spacing(6),
-  paddingBottom: theme.spacing(8),
-  [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(6),
-  },
-  [theme.breakpoints.down("sm")]: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(4),
-  },
-}));
-
-// Wrapper for text section above image
-const HeroTextSection = styled(Box)(({ theme }) => ({
-  background:
-    "linear-gradient(180deg, #F5DEB3 0%, #F4E4C1 20%, #F3EBCE 40%, #F2F1DB 60%, rgba(245, 240, 220, 0.95) 80%, rgba(245, 240, 220, 0.7) 90%, rgba(245, 240, 220, 0) 100%)",
-  padding: theme.spacing(4, 3, 5, 3),
-  borderRadius: "24px 24px 0 0",
-  marginBottom: "-1px",
-  [theme.breakpoints.up("md")]: {
-    padding: theme.spacing(6, 6, 6, 6),
-  },
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(3, 2, 4, 2),
-  },
-}));
-
-// Wrapper for image with overlay
-const HeroImageWrapper = styled(Box)({
   position: "relative",
+  width: "100%",
+  minHeight: "85vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   overflow: "hidden",
-  borderRadius: "0 0 24px 24px",
-  boxShadow: "0px 12px 40px rgba(0, 76, 145, 0.15)",
-  marginTop: "-1px",
+  backgroundImage: `url('/src/assets/home/nepal-hero-image.png')`,
+  backgroundSize: "cover",
+  backgroundPosition: "center center",
+  backgroundRepeat: "no-repeat",
+  [theme.breakpoints.down("md")]: {
+    minHeight: "70vh",
+  },
+  [theme.breakpoints.down("sm")]: {
+    minHeight: "60vh",
+  },
+  // Dark gradient overlay for text contrast
   "&::before": {
     content: '""',
     position: "absolute",
@@ -48,161 +31,132 @@ const HeroImageWrapper = styled(Box)({
     right: 0,
     bottom: 0,
     background:
-      "linear-gradient(180deg, rgba(245, 240, 220, 0.3) 0%, rgba(245, 240, 220, 0.15) 30%, rgba(245, 240, 220, 0) 60%)",
+      "linear-gradient(135deg, rgba(0, 76, 145, 0.75) 0%, rgba(0, 61, 115, 0.85) 50%, rgba(0, 0, 0, 0.7) 100%)",
     zIndex: 1,
-    pointerEvents: "none",
   },
-});
+}));
 
-// Hero image is rendered by OptimizedImage (responsive variants)
+// Content wrapper - centered both horizontally and vertically
+const HeroContent = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 2,
+  textAlign: "center",
+  padding: theme.spacing(4),
+  maxWidth: "1200px",
+  margin: "0 auto",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(3),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(2),
+  },
+}));
 
-// Organization name heading - single line
+// Massive, bold headline
 const HeroHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.25rem",
-  fontWeight: 700,
-  color: "#1a1a1a",
-  marginBottom: theme.spacing(2),
-  lineHeight: 1.2,
-  textAlign: "center",
-  letterSpacing: "-0.02em",
-  [theme.breakpoints.up("md")]: {
-    fontSize: "3rem",
+  color: "#ffffff",
+  fontSize: "4.5rem", // Desktop: 72px
+  fontWeight: 800,
+  lineHeight: 1.1,
+  letterSpacing: "-0.03em",
+  marginBottom: theme.spacing(3),
+  textShadow: "0px 4px 12px rgba(0, 0, 0, 0.5)",
+  [theme.breakpoints.down("lg")]: {
+    fontSize: "3.5rem", // 56px
+  },
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2.75rem", // 44px
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.5rem",
+    fontSize: "2rem", // 32px - mobile
+    marginBottom: theme.spacing(2),
   },
 }));
 
-// Tagline/mission text - second line
-const HeroTagline = styled(Typography)(({ theme }) => ({
-  fontSize: "1.375rem",
-  fontWeight: 600,
-  color: "#2a2a2a",
-  textAlign: "center",
-  lineHeight: 1.3,
-  marginBottom: theme.spacing(1.5),
-  letterSpacing: "-0.01em",
-  [theme.breakpoints.up("md")]: {
-    fontSize: "1.75rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.125rem",
-  },
-}));
-
-// Additional description text - third line
-const HeroDescription = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
+// Sub-headline with strong readability
+const HeroSubHeading = styled(Typography)(({ theme }) => ({
+  color: "#ffffff",
+  fontSize: "1.75rem", // Desktop: 28px
   fontWeight: 500,
-  color: "#333333",
-  textAlign: "center",
-  lineHeight: 1.4,
-  [theme.breakpoints.up("md")]: {
-    fontSize: "1.25rem",
+  lineHeight: 1.5,
+  textShadow: "0px 2px 8px rgba(0, 0, 0, 0.4)",
+  letterSpacing: "0.01em",
+  maxWidth: "900px",
+  margin: "0 auto",
+  marginBottom: theme.spacing(5),
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.375rem", // 22px
+    marginBottom: theme.spacing(4),
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.125rem", // 18px - mobile
+    marginBottom: theme.spacing(3),
+  },
+}));
+
+// Prominent CTA button with accent color
+const HeroDonateButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.warning.main, // #f6d469
+  color: theme.palette.warning.contrastText, // #2b2b2b
+  fontSize: "1.25rem",
+  fontWeight: 700,
+  textTransform: "uppercase",
+  padding: theme.spacing(2.5, 6),
+  borderRadius: "100px",
+  boxShadow: "0px 8px 24px rgba(246, 212, 105, 0.5)",
+  letterSpacing: "0.05em",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: theme.palette.warning.dark, // #f5c943
+    transform: "translateY(-4px) scale(1.03)",
+    boxShadow: "0px 12px 32px rgba(246, 212, 105, 0.7)",
+  },
+  "&:active": {
+    transform: "translateY(-2px) scale(1.01)",
+  },
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.125rem",
+    padding: theme.spacing(2, 5),
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem",
+    padding: theme.spacing(1.75, 4),
   },
-}));
-
-// Copy block that appears under the hero image
-const HeroCopyWrapper = styled(Box)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  marginTop: theme.spacing(4),
-  [theme.breakpoints.down("sm")]: {
-    marginTop: theme.spacing(3),
-  },
-}));
-
-const HeroCopyCard = styled(Box)(({ theme }) => ({
-  maxWidth: 1100,
-  background:
-    "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.95))",
-  color: theme.palette.text.primary,
-  padding: theme.spacing(4),
-  borderRadius: 14,
-  boxShadow: "0 10px 30px rgba(2,6,23,0.08)",
-  borderLeft: `6px solid ${theme.palette.primary.main}`,
-  lineHeight: 1.6,
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(3),
-    margin: theme.spacing(0, 2),
-  },
-}));
-
-const HeroCopyHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "1rem",
-  fontWeight: 700,
-  color: theme.palette.primary.main,
-  marginBottom: theme.spacing(1),
-  textTransform: "uppercase",
-  letterSpacing: "0.08em",
-}));
-
-const HeroCopyText = styled(Typography)(({ theme }) => ({
-  fontSize: "1rem",
-  color: theme.palette.text.secondary,
 }));
 
 export default function HeroSection() {
-  const { t } = useTranslation();
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
 
   return (
-    <HeroContainer aria-labelledby='hero-heading'>
-      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        {/* Text section with gradient background */}
-        <HeroTextSection>
-          <Container maxWidth='lg'>
-            {/* Main heading - Line 1 */}
-            <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
-              {t("hero_title")}
-            </HeroHeading>
+    <>
+      <HeroContainer id='hero' aria-labelledby='hero-heading'>
+        <HeroContent>
+          {/* Massive Headline */}
+          <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
+            Empowering a Future Without Barriers
+          </HeroHeading>
 
-            {/* Mission statement - Line 2 */}
-            <HeroTagline as='p' variant='h2'>
-              {t("hero_subtitle")}
-            </HeroTagline>
+          {/* Sub-Headline */}
+          <HeroSubHeading as='p'>
+            Providing education and advocacy for 10,000+ people with
+            disabilities in Nepal.
+          </HeroSubHeading>
 
-            {/* Additional context - Line 3 */}
-            <HeroDescription as='p'>{t("hero_tagline")}</HeroDescription>
-          </Container>
-        </HeroTextSection>
+          {/* Primary CTA Button */}
+          <HeroDonateButton
+            onClick={() => setDonationModalOpen(true)}
+            aria-label='Donate now to support people with disabilities in Nepal'
+          >
+            Donate Now
+          </HeroDonateButton>
+        </HeroContent>
+      </HeroContainer>
 
-        {/* Hero image */}
-        <HeroImageWrapper>
-          <OptimizedImage
-            src={"home/nepal-hero-image.png"}
-            alt={t("hero_alt")}
-            loading='eager'
-            style={{
-              width: "100%",
-              height: "auto",
-              minHeight: 600,
-              maxHeight: 750,
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-        </HeroImageWrapper>
-
-        {/* Styled copy block under the hero image */}
-        <HeroCopyWrapper>
-          <HeroCopyCard role='region' aria-labelledby='desn-about-heading'>
-            <HeroCopyHeading id='desn-about-heading'>
-              {t("hero_copy_heading")}
-            </HeroCopyHeading>
-
-            <HeroCopyText paragraph>
-              {t("hero_copy_description_1")}
-            </HeroCopyText>
-
-            <HeroCopyText sx={{ fontWeight: 700, mt: 1 }}>
-              {t("hero_copy_description_2")}
-            </HeroCopyText>
-          </HeroCopyCard>
-        </HeroCopyWrapper>
-      </Container>
-    </HeroContainer>
+      {/* Donation Modal */}
+      <DonationPaymentModal
+        open={donationModalOpen}
+        onClose={() => setDonationModalOpen(false)}
+      />
+    </>
   );
 }

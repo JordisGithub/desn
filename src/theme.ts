@@ -56,82 +56,114 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Poppins", "Arial", sans-serif',
+    fontFamily: '"Poppins", "Open Sans", "Roboto", "Arial", sans-serif',
+    fontSize: 16, // Base font size for desktop (16px)
+    htmlFontSize: 16,
     h1: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "3.75rem",
-      fontWeight: 400,
+      fontSize: "2.5rem", // Mobile-first: 40px
+      fontWeight: 700,
       lineHeight: 1.2,
-      "@media (max-width:960px)": {
-        fontSize: "3rem",
+      letterSpacing: "-0.02em",
+      "@media (min-width:600px)": {
+        fontSize: "3rem", // 48px on tablet
       },
-      "@media (max-width:600px)": {
-        fontSize: "2.5rem",
+      "@media (min-width:960px)": {
+        fontSize: "3.75rem", // 60px on desktop
       },
     },
     h2: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "3rem",
-      fontWeight: 400,
-      lineHeight: 1.2,
-      "@media (max-width:960px)": {
-        fontSize: "2.5rem",
+      fontSize: "2rem", // Mobile-first: 32px
+      fontWeight: 600,
+      lineHeight: 1.3,
+      letterSpacing: "-0.01em",
+      "@media (min-width:600px)": {
+        fontSize: "2.5rem", // 40px on tablet
       },
-      "@media (max-width:600px)": {
-        fontSize: "2rem",
+      "@media (min-width:960px)": {
+        fontSize: "3rem", // 48px on desktop
       },
     },
     h3: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "2.5rem",
-      fontWeight: 400,
-      lineHeight: 1.2,
-      "@media (max-width:960px)": {
-        fontSize: "2rem",
+      fontSize: "1.75rem", // Mobile-first: 28px
+      fontWeight: 600,
+      lineHeight: 1.3,
+      letterSpacing: "-0.01em",
+      "@media (min-width:600px)": {
+        fontSize: "2rem", // 32px on tablet
       },
-      "@media (max-width:600px)": {
-        fontSize: "1.75rem",
+      "@media (min-width:960px)": {
+        fontSize: "2.5rem", // 40px on desktop
       },
     },
     h4: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "2rem",
-      fontWeight: 400,
-      lineHeight: 1.3,
-      "@media (max-width:600px)": {
-        fontSize: "1.5rem",
+      fontSize: "1.5rem", // Mobile-first: 24px
+      fontWeight: 600,
+      lineHeight: 1.4,
+      "@media (min-width:600px)": {
+        fontSize: "1.75rem", // 28px on tablet
+      },
+      "@media (min-width:960px)": {
+        fontSize: "2rem", // 32px on desktop
       },
     },
     h5: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "1.5rem",
-      fontWeight: 400,
+      fontSize: "1.25rem", // Mobile-first: 20px
+      fontWeight: 600,
       lineHeight: 1.4,
-      "@media (max-width:600px)": {
-        fontSize: "1.25rem",
+      "@media (min-width:600px)": {
+        fontSize: "1.375rem", // 22px on tablet
+      },
+      "@media (min-width:960px)": {
+        fontSize: "1.5rem", // 24px on desktop
       },
     },
     h6: {
       fontFamily: '"Poppins", "Roboto", sans-serif',
-      fontSize: "1.25rem",
-      fontWeight: 500,
-      lineHeight: 1.4,
+      fontSize: "1.125rem", // Mobile-first: 18px
+      fontWeight: 600,
+      lineHeight: 1.5,
+      "@media (min-width:960px)": {
+        fontSize: "1.25rem", // 20px on desktop
+      },
     },
     body1: {
-      fontSize: "1.125rem",
+      fontSize: "1.125rem", // Mobile-first: 18px
       lineHeight: 1.6,
-      "@media (max-width:600px)": {
-        fontSize: "1rem",
+      letterSpacing: "0.01em",
+      "@media (min-width:960px)": {
+        fontSize: "1rem", // 16px on desktop
       },
     },
     body2: {
-      fontSize: "1rem",
-      lineHeight: 1.5,
+      fontSize: "1rem", // 16px
+      lineHeight: 1.6,
+      letterSpacing: "0.01em",
+      "@media (min-width:960px)": {
+        fontSize: "0.875rem", // 14px on desktop
+      },
     },
     button: {
+      fontSize: "1rem", // 16px
+      fontWeight: 600,
+      textTransform: "none",
+      letterSpacing: "0.02em",
+    },
+    subtitle1: {
       fontSize: "1rem",
       fontWeight: 500,
-      textTransform: "none",
+      lineHeight: 1.5,
+      letterSpacing: "0.01em",
+    },
+    subtitle2: {
+      fontSize: "0.875rem",
+      fontWeight: 500,
+      lineHeight: 1.5,
+      letterSpacing: "0.01em",
     },
   },
   spacing: 8,
