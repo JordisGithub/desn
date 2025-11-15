@@ -58,21 +58,21 @@ const HeroContent = styled(Box)(({ theme }) => ({
 
 const MainHeading = styled(Typography)(({ theme }) => ({
   color: "#ffffff",
-  fontSize: "3.75rem",
-  fontWeight: 700,
+  fontSize: "4.25rem",
+  fontWeight: 800,
   lineHeight: 1.1,
-  letterSpacing: "-0.02em",
-  marginBottom: theme.spacing(4),
-  textShadow: "0px 4px 12px rgba(0, 0, 0, 0.5)",
+  letterSpacing: "0.01em",
+  marginBottom: theme.spacing(5),
+  textShadow: "0px 6px 16px rgba(0, 0, 0, 0.6)",
   [theme.breakpoints.down("lg")]: {
-    fontSize: "3rem",
+    fontSize: "3.5rem",
   },
   [theme.breakpoints.down("md")]: {
-    fontSize: "2.5rem",
+    fontSize: "2.75rem",
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem",
-    marginBottom: theme.spacing(3),
+    fontSize: "2.25rem",
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -86,13 +86,14 @@ const MissionVisionWrapper = styled(Box)(({ theme }) => ({
 
 const StatementBox = styled(Box)(({ theme }) => ({
   backgroundColor: "rgba(255, 255, 255, 0.15)",
-  backdropFilter: "blur(8px)",
-  border: "1px solid rgba(255, 255, 255, 0.25)",
-  borderRadius: "12px",
-  padding: theme.spacing(3, 4),
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  borderRadius: "14px",
+  padding: theme.spacing(4, 5),
   textAlign: "left",
+  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(2.5, 3),
+    padding: theme.spacing(3, 3.5),
   },
 }));
 
@@ -107,14 +108,14 @@ const StatementLabel = styled(Typography)(({ theme }) => ({
 
 const StatementText = styled(Typography)(({ theme }) => ({
   color: "#ffffff",
-  fontSize: "1.25rem",
+  fontSize: "1.35rem",
   fontWeight: 400,
-  lineHeight: 1.6,
+  lineHeight: 1.7,
   [theme.breakpoints.down("md")]: {
-    fontSize: "1.125rem",
+    fontSize: "1.2rem",
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
+    fontSize: "1.05rem",
   },
 }));
 

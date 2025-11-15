@@ -1,4 +1,5 @@
 import { usePageTitle } from "../hooks/usePageTitle";
+import { Box } from "@mui/material";
 import MissionVisionHeroSection from "../components/about/MissionVisionHeroSection";
 import FoundingFactsSection from "../components/about/FoundingFactsSection";
 import CoreValuesSection from "../components/about/CoreValuesSection";
@@ -11,7 +12,7 @@ export default function About() {
   usePageTitle("page_titles.about");
 
   return (
-    <>
+    <Box sx={{ backgroundColor: "#F9FAFB" }}>
       <MissionVisionHeroSection />
       <FoundingFactsSection />
       <CoreValuesSection />
@@ -19,6 +20,6 @@ export default function About() {
       <OurTeamSection />
       <PartnersSection />
       <AboutCTASection />
-    </>
+    </Box>
   );
 }
