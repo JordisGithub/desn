@@ -301,15 +301,47 @@ export default function OurTeamSection() {
     },
   ];
 
-  // D. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List)
-  const boardAndContributors: BoardMember[] = [
-    { name: "Bishnu Prasad Jaisi", role: "Vice Chairperson" },
-    { name: "Kamala Bastola", role: "Secretary" },
-    { name: "Khas Maya Gurung", role: "Board Member" },
-    { name: "Suman Ghimire", role: "Board Member" },
-    { name: "Krishna Prasad Dahal", role: "Board Member" },
-    { name: "Rubi Maharjan", role: "Board Member • Community Engagement Coordinator" },
-    { name: "Bidya Poudel", role: "Board Member" },
+  // D. BOARD MEMBERS (3-Up Grid with Full Cards)
+  const boardMembers: TeamMember[] = [
+    {
+      name: "Bishnu Prasad Jaisi",
+      role: "Vice Chairperson",
+      expertise: "Secondary Level Teacher • Visual Impairment",
+    },
+    {
+      name: "Kamala Bastola",
+      role: "Secretary",
+      expertise: "Lower Secondary Teacher • Physical Disability",
+    },
+    {
+      name: "Khas Maya Gurung",
+      role: "Board Member",
+      expertise: "Agriculture Entrepreneur • Physical Disability",
+    },
+    {
+      name: "Suman Ghimire",
+      role: "Board Member",
+      expertise: "Health Personnel • Visual Impairment",
+    },
+    {
+      name: "Krishna Prasad Dahal",
+      role: "Board Member",
+      expertise: "Teacher • Physical Disability",
+    },
+    {
+      name: "Rubi Maharjan",
+      role: "Board Member",
+      expertise: "Community Engagement Coordinator • Physical Disability",
+    },
+    {
+      name: "Bidya Poudel",
+      role: "Board Member",
+      expertise: "Office Clerk • Low Vision",
+    },
+  ];
+
+  // E. COMMUNITY VOLUNTEERS & SUPPORT STAFF (Condensed List)
+  const communityAndSupport: BoardMember[] = [
     { name: "Tej Bahadur Rokka", role: "Active Member • Teacher" },
     { name: "Laxmi KC", role: "Active Member • Teacher" },
     { name: "Rocky Maharjan", role: "Photographer • Videography" },
@@ -389,14 +421,33 @@ export default function OurTeamSection() {
           </StaffGrid>
         </SubsectionContainer>
 
-        {/* D. BOARD MEMBERS & ACTIVE CONTRIBUTORS (Condensed List) */}
+        {/* D. BOARD MEMBERS (3-Up Grid) */}
         <SubsectionContainer>
           <SubsectionHeading variant='h3'>
-            Board Members & Active Contributors
+            Board Members
+          </SubsectionHeading>
+          <StaffGrid>
+            {boardMembers.map((member, index) => (
+              <TeamCard key={index}>
+                <AvatarCircle>
+                  <AvatarIcon />
+                </AvatarCircle>
+                <MemberName>{member.name}</MemberName>
+                <MemberRole>{member.role}</MemberRole>
+                <MemberExpertise>{member.expertise}</MemberExpertise>
+              </TeamCard>
+            ))}
+          </StaffGrid>
+        </SubsectionContainer>
+
+        {/* E. COMMUNITY VOLUNTEERS & SUPPORT STAFF (Condensed List) */}
+        <SubsectionContainer>
+          <SubsectionHeading variant='h3'>
+            Community Volunteers & Support Staff
           </SubsectionHeading>
           <BoardListContainer>
             <BoardGrid>
-              {boardAndContributors.map((member, index) => (
+              {communityAndSupport.map((member, index) => (
                 <BoardMemberItem key={index}>
                   <BoardIcon />
                   <Box>
@@ -407,21 +458,6 @@ export default function OurTeamSection() {
               ))}
             </BoardGrid>
           </BoardListContainer>
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Typography
-              component="a"
-              href="#teams"
-              sx={{
-                color: '#004c91',
-                fontWeight: 600,
-                fontSize: '1rem',
-                textDecoration: 'underline',
-                '&:hover': { color: '#00a77f' },
-              }}
-            >
-              View Full Staff & Technical Team
-            </Typography>
-          </Box>
         </SubsectionContainer>
       </Container>
     </SectionContainer>
