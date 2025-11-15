@@ -223,13 +223,23 @@ SELECT count(*) FROM pg_stat_activity WHERE datname='desn';
 
 ## Deployment Information
 
-- **Date:** November 14, 2025
-- **Backend Version:** proxy-backend-0.0.1-SNAPSHOT.jar (142MB)
-- **Database Version:** PostgreSQL 16.10
-- **Server:** AWS EC2 (13.204.228.199, ap-south-1 Mumbai)
-- **OS:** Ubuntu 24.04 LTS
-- **Java Version:** OpenJDK 21
+### Production
+- **Server:** AWS EC2 t3.small - Free tier eligible (15.206.210.71)
+- **Region:** ap-south-1 (Mumbai)
+- **OS:** Ubuntu 24.04.3 LTS
+- **Java:** OpenJDK 21
+- **PostgreSQL:** 16.10
+- **Backend:** proxy-backend-0.0.1-SNAPSHOT.jar
+- **Deployment Date:** November 15, 2025
+- **Live URL:** http://15.206.210.71
+
+### Local Development
+- **OS:** macOS
+- **Java:** OpenJDK 21
+- **PostgreSQL:** 16 (via Homebrew)
+- **Backend:** Running via Maven (./mvnw spring-boot:run)
+- **Frontend:** Running via Vite (npm run dev)
 
 ---
 
-**Migration Status:** ✅ COMPLETE - Production ready with PostgreSQL
+**Migration Status:** ✅ COMPLETE - Both local and production using PostgreSQL
