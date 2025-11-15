@@ -25,4 +25,6 @@ export default {
   footer_link_account_privacy: "Account Privacy",
   footer_copyright: "© Copyright 2025 DESN. All Rights Reserved",
   footer_donate_button: "Donate",
+  footer_contact_location: "Lalitpur, Nepal",
+  footer_contact_phone: "+977-15709205",
 };

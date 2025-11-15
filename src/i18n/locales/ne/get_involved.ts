@@ -155,4 +155,5 @@ export default {
     get_involved: "संलग्न हुनुहोस्",
     donate: "दान गर्नुहोस्",
   },
+  donate_button: "दान गर्नुहोस्",
 };

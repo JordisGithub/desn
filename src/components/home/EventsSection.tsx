@@ -1,8 +1,19 @@
-import { Container, Typography, Card, CardContent, Stack } from "@mui/material";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  Stack,
+  Button,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import OptimizedImage from "../OptimizedImage";
+import EventRegistrationModal from "../events/EventRegistrationModal";
+import EventService from "../../services/EventService";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -77,9 +88,10 @@ const EventTitle = styled(Typography)({
 const EventTitleLink = styled(Link)({
   color: "#351c42",
   textDecoration: "none",
-  "&:hover": {
+  "&:hover, &:focus": {
     textDecoration: "underline",
     color: "#004c91",
+    fontWeight: 700,
   },
   "&:focus": {
     outline: "3px solid #f6d469",
@@ -98,12 +110,50 @@ const EventOrganizer = styled(Typography)({
   fontSize: "1rem",
 });
 
+const RegisterButton = styled(Button)({
+  backgroundColor: "#004c91",
+  color: "white",
+  width: "100%",
+  borderRadius: "8px",
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  padding: "8px 16px",
+  marginTop: "1rem",
+  textTransform: "none",
+  "&:hover, &:focus": {
+    backgroundColor: "#003d73",
+    fontWeight: 700,
+  },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+  },
+});
+
+interface EventStatus {
+  isFull: boolean;
+  currentRegistrations: number;
+  maxCapacity: number;
+  availableSpots: number;
+}
+
 export default function EventsSection() {
   const { t } = useTranslation();
+  const [selectedEvent, setSelectedEvent] = useState<{
+    id: string;
+    title: string;
+    date: string;
+    time: string;
+  } | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [eventStatuses, setEventStatuses] = useState<
+    Record<string, EventStatus>
+  >({});
 
   const events = [
     {
       id: "air-mid-point-check-in",
+      eventId: 1,
       date: "2025-10-24",
       dateLabelKey: "event_1_date",
       timeKey: "event_1_time",
@@ -112,9 +162,11 @@ export default function EventsSection() {
       organizer: "knowbility",
       image: "home/events1.jpg",
       altKey: "event_1_alt",
+      location: "Virtual Event",
     },
     {
       id: "international-day-of-persons-with-disabilities",
+      eventId: 2,
       date: "2025-12-02",
       dateLabelKey: "event_2_date",
       timeKey: "event_2_time",
@@ -123,9 +175,11 @@ export default function EventsSection() {
       organizer: "DESN",
       image: "home/events2.jpg",
       altKey: "event_2_alt",
+      location: "Lalitpur, Nepal",
     },
     {
       id: "air-award-ceremony",
+      eventId: 3,
       date: "2026-01-15",
       dateLabelKey: "event_3_date",
       timeKey: "event_3_time",
@@ -134,8 +188,78 @@ export default function EventsSection() {
       organizer: "knowbility",
       image: "home/events3.jpg",
       altKey: "event_3_alt",
+      location: "Virtual Event",
     },
   ];
+
+  // Fetch event statuses on mount
+  useEffect(() => {
+    const fetchEventStatuses = async () => {
+      const statuses: Record<string, EventStatus> = {};
+
+      for (const event of events) {
+        try {
+          const response = await EventService.getEventById(event.eventId);
+          statuses[event.id] = {
+            isFull: response.currentAttendees >= response.maxAttendees,
+            currentRegistrations: response.currentAttendees,
+            maxCapacity: response.maxAttendees,
+            availableSpots: response.maxAttendees - response.currentAttendees,
+          };
+        } catch (error) {
+          console.error(
+            `Error fetching status for event ${event.eventId}:`,
+            error
+          );
+        }
+      }
+
+      setEventStatuses(statuses);
+    };
+
+    fetchEventStatuses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleRegisterClick = (event: (typeof events)[0]) => {
+    setSelectedEvent({
+      id: event.id,
+      title: t(event.titleKey),
+      date: t(event.dateLabelKey),
+      time: t(event.timeKey),
+    });
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleRegistrationSuccess = () => {
+    // Refresh event statuses after successful registration
+    if (selectedEvent) {
+      const event = events.find((e) => e.id === selectedEvent.id);
+      if (event) {
+        EventService.getEventById(event.eventId)
+          .then((response) => {
+            setEventStatuses((prev) => ({
+              ...prev,
+              [event.id]: {
+                isFull: response.currentAttendees >= response.maxAttendees,
+                currentRegistrations: response.currentAttendees,
+                maxCapacity: response.maxAttendees,
+                availableSpots:
+                  response.maxAttendees - response.currentAttendees,
+              },
+            }));
+          })
+          .catch((error) => {
+            console.error("Error refreshing event status:", error);
+          });
+      }
+    }
+  };
 
   return (
     <EventsContainer
@@ -192,11 +316,55 @@ export default function EventsSection() {
                 <EventOrganizer>
                   <strong>{t("event_organizer")}</strong> {event.organizer}
                 </EventOrganizer>
+                <RegisterButton
+                  endIcon={
+                    !eventStatuses[event.id]?.isFull ? (
+                      <ArrowForwardIcon />
+                    ) : undefined
+                  }
+                  onClick={() => handleRegisterClick(event)}
+                  disabled={eventStatuses[event.id]?.isFull}
+                  sx={{
+                    backgroundColor: eventStatuses[event.id]?.isFull
+                      ? "#e0e0e0"
+                      : "#004c91",
+                    color: eventStatuses[event.id]?.isFull
+                      ? "#9e9e9e"
+                      : "white",
+                    cursor: eventStatuses[event.id]?.isFull
+                      ? "not-allowed"
+                      : "pointer",
+                    "&:hover": {
+                      backgroundColor: eventStatuses[event.id]?.isFull
+                        ? "#e0e0e0"
+                        : "#003d73",
+                    },
+                  }}
+                >
+                  {eventStatuses[event.id]?.isFull
+                    ? "Event Full"
+                    : "Register Now"}
+                </RegisterButton>
               </CardContent>
             </EventCard>
           ))}
         </EventsGrid>
       </Container>
+
+      {selectedEvent && (
+        <EventRegistrationModal
+          open={modalOpen}
+          onClose={handleModalClose}
+          eventId={events.find((e) => e.id === selectedEvent.id)?.eventId || 0}
+          eventTitle={selectedEvent.title}
+          eventDate={selectedEvent.date}
+          eventTime={selectedEvent.time}
+          eventLocation={
+            events.find((e) => e.id === selectedEvent.id)?.location || ""
+          }
+          onRegistrationSuccess={handleRegistrationSuccess}
+        />
+      )}
     </EventsContainer>
   );
 }

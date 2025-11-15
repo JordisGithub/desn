@@ -515,155 +515,149 @@ export default function MemberDashboard() {
 
   return (
     <PageContainer>
-      <main id='main-content'>
-        <DashboardContainer maxWidth='lg'>
-          <PageTitle>{t("member_dashboard_title")}</PageTitle>
-          <PageSubtitle>{t("member_dashboard_subtitle")}</PageSubtitle>
+      <DashboardContainer maxWidth='lg'>
+        <PageTitle>{t("member_dashboard_title")}</PageTitle>
+        <PageSubtitle>{t("member_dashboard_subtitle")}</PageSubtitle>
 
-          {error && (
-            <Alert severity='error' sx={{ marginBottom: 3 }}>
-              {error}
-            </Alert>
-          )}
+        {error && (
+          <Alert severity='error' sx={{ marginBottom: 3 }}>
+            {error}
+          </Alert>
+        )}
 
-          {registrations.length === 0 ? (
-            <EmptyState>
-              <EmptyStateIcon />
-              <EmptyStateText>
-                {t("member_dashboard_no_registrations")}
-              </EmptyStateText>
-              <BrowseEventsButton onClick={() => navigate("/events")}>
-                {t("browse_events")}
-              </BrowseEventsButton>
-            </EmptyState>
-          ) : (
-            <EventsGrid>
-              {registrations.map((registration) => {
-                const event = registration.event;
-                const eventDate = new Date(event.startDate);
-                const eventEndDate = new Date(event.endDate);
+        {registrations.length === 0 ? (
+          <EmptyState>
+            <EmptyStateIcon />
+            <EmptyStateText>
+              {t("member_dashboard_no_registrations")}
+            </EmptyStateText>
+            <BrowseEventsButton onClick={() => navigate("/events")}>
+              {t("browse_events")}
+            </BrowseEventsButton>
+          </EmptyState>
+        ) : (
+          <EventsGrid>
+            {registrations.map((registration) => {
+              const event = registration.event;
+              const eventDate = new Date(event.startDate);
+              const eventEndDate = new Date(event.endDate);
 
-                return (
-                  <EventCard key={registration.event.id}>
-                    <EventCardContent>
-                      <StatusChip
-                        label='Confirmed'
-                        color='success'
+              return (
+                <EventCard key={registration.event.id}>
+                  <EventCardContent>
+                    <StatusChip
+                      label='Confirmed'
+                      color='success'
+                      size='small'
+                    />
+                    <EventTitle>{event.title}</EventTitle>
+                    <EventMeta>
+                      <MetaItem>
+                        <CalendarTodayIcon />
+                        <MetaText>{eventDate.toLocaleDateString()}</MetaText>
+                      </MetaItem>
+                      <MetaItem>
+                        <AccessTimeIcon />
+                        <MetaText>
+                          {eventDate.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}{" "}
+                          -{" "}
+                          {eventEndDate.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </MetaText>
+                      </MetaItem>
+                      <MetaItem>
+                        <LocationOnIcon />
+                        <MetaText>{event.location}</MetaText>
+                      </MetaItem>
+                    </EventMeta>
+                    <CancelButton
+                      startIcon={<CancelIcon />}
+                      onClick={() => handleCancelClick(registration)}
+                    >
+                      {t("cancel_registration")}
+                    </CancelButton>
+                  </EventCardContent>
+                </EventCard>
+              );
+            })}
+          </EventsGrid>
+        )}
+
+        {/* Favorite Publications Section */}
+        <SectionTitle variant='h2'>{t("favorite_publications")}</SectionTitle>
+
+        {favorites.length === 0 ? (
+          <EmptyState>
+            <FavoriteIcon sx={{ fontSize: "5rem", color: "#c4c4c4", mb: 2 }} />
+            <EmptyStateText>{t("no_favorite_publications")}</EmptyStateText>
+            <BrowseEventsButton onClick={() => navigate("/resources")}>
+              {t("browse_publications")}
+            </BrowseEventsButton>
+          </EmptyState>
+        ) : (
+          <EventsGrid>
+            {favorites.map((favorite) => (
+              <ResourceCard key={favorite.favoriteId}>
+                <ResourceCardContent>
+                  <ResourceIcon>
+                    {favorite.resource.type === "video" ? (
+                      <ArticleIcon />
+                    ) : (
+                      <DescriptionIcon />
+                    )}
+                  </ResourceIcon>
+                  <ResourceInfo>
+                    <ResourceTitle>{favorite.resource.title}</ResourceTitle>
+                    <ResourceDescription>
+                      {favorite.resource.description}
+                    </ResourceDescription>
+                    <ResourceMeta>
+                      <ResourceType
+                        label={getResourceTypeLabel(favorite.resource.type)}
                         size='small'
+                        color='primary'
+                        variant='outlined'
                       />
-                      <EventTitle>{event.title}</EventTitle>
-                      <EventMeta>
-                        <MetaItem>
-                          <CalendarTodayIcon />
-                          <MetaText>{eventDate.toLocaleDateString()}</MetaText>
-                        </MetaItem>
-                        <MetaItem>
-                          <AccessTimeIcon />
-                          <MetaText>
-                            {eventDate.toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}{" "}
-                            -{" "}
-                            {eventEndDate.toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </MetaText>
-                        </MetaItem>
-                        <MetaItem>
-                          <LocationOnIcon />
-                          <MetaText>{event.location}</MetaText>
-                        </MetaItem>
-                      </EventMeta>
-                      <CancelButton
-                        startIcon={<CancelIcon />}
-                        onClick={() => handleCancelClick(registration)}
-                      >
-                        {t("cancel_registration")}
-                      </CancelButton>
-                    </EventCardContent>
-                  </EventCard>
-                );
-              })}
-            </EventsGrid>
-          )}
-
-          {/* Favorite Publications Section */}
-          <SectionTitle variant='h2'>{t("favorite_publications")}</SectionTitle>
-
-          {favorites.length === 0 ? (
-            <EmptyState>
-              <FavoriteIcon
-                sx={{ fontSize: "5rem", color: "#c4c4c4", mb: 2 }}
-              />
-              <EmptyStateText>{t("no_favorite_publications")}</EmptyStateText>
-              <BrowseEventsButton onClick={() => navigate("/resources")}>
-                {t("browse_publications")}
-              </BrowseEventsButton>
-            </EmptyState>
-          ) : (
-            <EventsGrid>
-              {favorites.map((favorite) => (
-                <ResourceCard key={favorite.favoriteId}>
-                  <ResourceCardContent>
-                    <ResourceIcon>
-                      {favorite.resource.type === "video" ? (
-                        <ArticleIcon />
-                      ) : (
-                        <DescriptionIcon />
-                      )}
-                    </ResourceIcon>
-                    <ResourceInfo>
-                      <ResourceTitle>{favorite.resource.title}</ResourceTitle>
-                      <ResourceDescription>
-                        {favorite.resource.description}
-                      </ResourceDescription>
-                      <ResourceMeta>
-                        <ResourceType
-                          label={getResourceTypeLabel(favorite.resource.type)}
-                          size='small'
-                          color='primary'
-                          variant='outlined'
-                        />
-                        {favorite.resource.pages && (
-                          <ResourceDate>
-                            {favorite.resource.pages} pages
-                          </ResourceDate>
-                        )}
+                      {favorite.resource.pages && (
                         <ResourceDate>
-                          {formatDate(favorite.resource.publishDate)}
+                          {favorite.resource.pages} pages
                         </ResourceDate>
-                      </ResourceMeta>
-                    </ResourceInfo>
-                    <ResourceActions>
-                      <DownloadButton
-                        startIcon={<DownloadIcon />}
-                        onClick={() =>
-                          handleDownload(
-                            favorite.resource.fileUrl,
-                            favorite.resource.title
-                          )
-                        }
-                      >
-                        Download
-                      </DownloadButton>
-                      <RemoveFavoriteButton
-                        startIcon={<CancelIcon />}
-                        onClick={() =>
-                          handleRemoveFavorite(favorite.resource.id)
-                        }
-                      >
-                        Remove
-                      </RemoveFavoriteButton>
-                    </ResourceActions>
-                  </ResourceCardContent>
-                </ResourceCard>
-              ))}
-            </EventsGrid>
-          )}
-        </DashboardContainer>
-      </main>
+                      )}
+                      <ResourceDate>
+                        {formatDate(favorite.resource.publishDate)}
+                      </ResourceDate>
+                    </ResourceMeta>
+                  </ResourceInfo>
+                  <ResourceActions>
+                    <DownloadButton
+                      startIcon={<DownloadIcon />}
+                      onClick={() =>
+                        handleDownload(
+                          favorite.resource.fileUrl,
+                          favorite.resource.title
+                        )
+                      }
+                    >
+                      Download
+                    </DownloadButton>
+                    <RemoveFavoriteButton
+                      startIcon={<CancelIcon />}
+                      onClick={() => handleRemoveFavorite(favorite.resource.id)}
+                    >
+                      Remove
+                    </RemoveFavoriteButton>
+                  </ResourceActions>
+                </ResourceCardContent>
+              </ResourceCard>
+            ))}
+          </EventsGrid>
+        )}
+      </DashboardContainer>
 
       {/* Cancel Confirmation Dialog */}
       <Dialog open={cancelDialogOpen} onClose={handleCancelClose}>

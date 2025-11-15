@@ -48,6 +48,19 @@ export default {
   header: {
     search_placeholder: "खोज्नुहोस्...",
     donate: "दान गर्नुहोस्",
+    language_english: "English",
+    language_nepali: "नेपाली",
+    login: "लगइन",
+    logout: "लगआउट",
+    my_events: "मेरा कार्यक्रमहरू",
+    admin_dashboard: "प्रशासक ड्यासबोर्ड",
+  },
+
+  // Contact Labels
+  contact_labels: {
+    phone: "फोन",
+    email: "इमेल",
+    location: "स्थान",
   },
 
   // Event Registration Modal

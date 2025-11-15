@@ -71,25 +71,6 @@ const ProgramDescription = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const CardLearnMoreButton = styled(Link)(({ theme }) => ({
-  backgroundColor: "#004c91",
-  color: "white",
-  fontWeight: 600,
-  fontSize: "0.875rem",
-  padding: theme.spacing(1, 2),
-  borderRadius: "6px",
-  textDecoration: "none",
-  display: "inline-block",
-  textTransform: "uppercase",
-  "&:hover": {
-    backgroundColor: "#003d73",
-  },
-  "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
-  },
-}));
-
 const LearnMoreButton = styled(Link)(({ theme }) => ({
   backgroundColor: "#f6d469",
   color: "#2b2b2b",
@@ -99,8 +80,9 @@ const LearnMoreButton = styled(Link)(({ theme }) => ({
   borderRadius: "10px",
   textDecoration: "none",
   display: "inline-block",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5c943",
+    fontWeight: 800,
   },
   "&:focus": {
     outline: "3px solid #004c91",
@@ -191,24 +173,11 @@ export default function ProgramsSection() {
                   flexGrow: 1,
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
                   p: 2,
                 }}
               >
-                <div>
-                  <ProgramTitle as='h3'>{t(program.titleKey)}</ProgramTitle>
-                  <ProgramDescription>{t(program.descKey)}</ProgramDescription>
-                </div>
-                <div>
-                  <CardLearnMoreButton
-                    to='/programs'
-                    aria-label={`${t("program_learn_more")} - ${t(
-                      program.titleKey
-                    )}`}
-                  >
-                    {t("program_learn_more")}
-                  </CardLearnMoreButton>
-                </div>
+                <ProgramTitle as='h3'>{t(program.titleKey)}</ProgramTitle>
+                <ProgramDescription>{t(program.descKey)}</ProgramDescription>
               </CardContent>
             </ProgramCard>
           ))}

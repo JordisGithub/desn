@@ -60,10 +60,11 @@ const GetInvolvedButton = styled(Link)(({ theme }) => ({
   borderRadius: "100px",
   textDecoration: "none",
   display: "inline-block",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5c943",
     transform: "translateY(-2px)",
     boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+    fontWeight: 800,
   },
   "&:focus": {
     outline: "3px solid white",
@@ -84,10 +85,11 @@ const DonateBtn = styled(Button)(({ theme }) => ({
   textTransform: "capitalize",
   padding: theme.spacing(1.5, 3),
   borderRadius: "100px",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5c943",
     transform: "translateY(-2px)",
     boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+    fontWeight: 700,
   },
   "&:focus": {
     outline: "3px solid white",
@@ -101,6 +103,7 @@ const DonateBtn = styled(Button)(({ theme }) => ({
 
 export default function GetInvolvedSection() {
   const { t } = useTranslation();
+  const { t: tGetInvolved } = useTranslation("get_involved");
   const [donationModalOpen, setDonationModalOpen] = useState(false);
 
   return (
@@ -147,9 +150,9 @@ export default function GetInvolvedSection() {
               </GetInvolvedButton>
               <DonateBtn
                 onClick={() => setDonationModalOpen(true)}
-                aria-label='Donate Now'
+                aria-label={tGetInvolved("donate_button")}
               >
-                Donate
+                {tGetInvolved("donate_button")}
               </DonateBtn>
             </Stack>
           </div>

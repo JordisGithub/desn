@@ -48,6 +48,19 @@ export default {
   header: {
     search_placeholder: "Search...",
     donate: "Donate Now",
+    language_english: "English",
+    language_nepali: "नेपाली",
+    login: "Login",
+    logout: "Logout",
+    my_events: "My Events",
+    admin_dashboard: "Admin Dashboard",
+  },
+
+  // Contact Labels
+  contact_labels: {
+    phone: "Phone",
+    email: "Email",
+    location: "Location",
   },
 
   // Event Registration Modal

@@ -131,8 +131,20 @@ const NavLink = styled(RouterLink)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: 400,
   padding: theme.spacing(1, 2),
-  "&:hover": {
+  position: "relative",
+  "&::after": {
+    content: "attr(data-text)",
+    fontWeight: 700,
+    height: 0,
+    visibility: "hidden",
+    overflow: "hidden",
+    userSelect: "none",
+    pointerEvents: "none",
+    display: "block",
+  },
+  "&:hover, &:focus": {
     color: "#004c91",
+    fontWeight: 700,
   },
 }));
 
@@ -152,8 +164,9 @@ const DonateButton = styled(Button)(({ theme }) => ({
   fontWeight: 500,
   padding: theme.spacing(1.5, 3),
   borderRadius: "8px",
-  "&:hover": {
+  "&:hover, &:focus": {
     backgroundColor: "#f5ca4a",
+    fontWeight: 700,
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(1, 2),
@@ -309,16 +322,17 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <>
+    <Box
+      component='header'
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1100,
+        backgroundColor: "white",
+      }}
+    >
       {/* Top Utility Bar - Logo, Language, Login, Search */}
-      <Box
-        sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1100,
-          backgroundColor: "white",
-        }}
-      >
+      <Box>
         <TopBar>
           <TopBarLeft>
             <LogoLink to='/'>
@@ -332,7 +346,7 @@ const Header: React.FC = () => {
               endIcon={<KeyboardArrowDownIcon />}
               sx={{ display: { xs: "none", md: "flex" } }}
             >
-              {lang.toUpperCase()}
+              {lang === "en" ? "English" : "नेपाली"}
             </LanguageButton>
             <Menu
               anchorEl={langAnchorEl}
@@ -340,10 +354,10 @@ const Header: React.FC = () => {
               onClose={() => handleLanguageClose()}
             >
               <MenuItem onClick={() => handleLanguageClose("en")}>
-                English
+                {t("header.language_english")}
               </MenuItem>
               <MenuItem onClick={() => handleLanguageClose("ne")}>
-                नेपाली
+                {t("header.language_nepali")}
               </MenuItem>
             </Menu>
 
@@ -375,7 +389,7 @@ const Header: React.FC = () => {
                       }}
                     >
                       <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                      My Events
+                      {t("header.my_events")}
                     </MenuItem>
                   )}
                   {isAdmin && (
@@ -386,12 +400,12 @@ const Header: React.FC = () => {
                       }}
                     >
                       <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
-                      Admin Dashboard
+                      {t("header.admin_dashboard")}
                     </MenuItem>
                   )}
                   <MenuItem onClick={handleLogout}>
                     <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
-                    Logout
+                    {t("header.logout")}
                   </MenuItem>
                 </Menu>
               </>
@@ -406,7 +420,7 @@ const Header: React.FC = () => {
                   display: { xs: "none", md: "flex" },
                 }}
               >
-                Login
+                {t("header.login")}
               </Button>
             )}
 
@@ -493,11 +507,11 @@ const Header: React.FC = () => {
         </TopBar>
 
         {/* Main Navigation Bar */}
-        <AppBar position='static' elevation={1}>
+        <AppBar position='static' elevation={1} component='nav'>
           <NavBar>
             <NavLinks>
               {navItems.map((item) => (
-                <NavLink key={item.path} to={item.path}>
+                <NavLink key={item.path} to={item.path} data-text={item.label}>
                   {item.label}
                 </NavLink>
               ))}
@@ -554,7 +568,7 @@ const Header: React.FC = () => {
             <ListItem disablePadding>
               <ListItemButton onClick={handleLanguageClick}>
                 <PublicIcon sx={{ mr: 2 }} />
-                <ListItemText primary={lang.toUpperCase()} />
+                <ListItemText primary={lang === "en" ? "English" : "नेपाली"} />
                 <KeyboardArrowDownIcon />
               </ListItemButton>
             </ListItem>
@@ -569,7 +583,7 @@ const Header: React.FC = () => {
                       }}
                     >
                       <DashboardIcon sx={{ mr: 2 }} />
-                      <ListItemText primary='My Events' />
+                      <ListItemText primary={t("header.my_events")} />
                     </ListItemButton>
                   </ListItem>
                 )}
@@ -582,7 +596,7 @@ const Header: React.FC = () => {
                       }}
                     >
                       <DashboardIcon sx={{ mr: 2 }} />
-                      <ListItemText primary='Admin Dashboard' />
+                      <ListItemText primary={t("header.admin_dashboard")} />
                     </ListItemButton>
                   </ListItem>
                 )}
@@ -594,7 +608,7 @@ const Header: React.FC = () => {
                     }}
                   >
                     <LogoutIcon sx={{ mr: 2 }} />
-                    <ListItemText primary='Logout' />
+                    <ListItemText primary={t("header.logout")} />
                   </ListItemButton>
                 </ListItem>
               </>
@@ -607,7 +621,7 @@ const Header: React.FC = () => {
                   }}
                 >
                   <LoginIcon sx={{ mr: 2 }} />
-                  <ListItemText primary='Login' />
+                  <ListItemText primary={t("header.login")} />
                 </ListItemButton>
               </ListItem>
             )}
@@ -630,7 +644,7 @@ const Header: React.FC = () => {
         open={donationModalOpen}
         onClose={() => setDonationModalOpen(false)}
       />
-    </>
+    </Box>
   );
 };
 
