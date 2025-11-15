@@ -9,23 +9,25 @@ import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstruct
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "white",
-  paddingTop: theme.spacing(10),
-  paddingBottom: theme.spacing(10),
+  backgroundColor: "#FFFFFF",
+  paddingTop: theme.spacing(14),
+  paddingBottom: theme.spacing(14),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
   },
 }));
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
-  fontWeight: 600,
+  fontSize: "2.75rem",
+  fontWeight: 700,
   color: "#004c91",
   textAlign: "center",
-  marginBottom: theme.spacing(1),
+  letterSpacing: "0.02em",
+  marginBottom: theme.spacing(1.5),
   [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
+    fontSize: "2.125rem",
+    letterSpacing: "0.01em",
   },
 }));
 

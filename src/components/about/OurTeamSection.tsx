@@ -5,23 +5,25 @@ import PersonIcon from "@mui/icons-material/Person";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#f8f9fa",
-  paddingTop: theme.spacing(10),
-  paddingBottom: theme.spacing(10),
+  backgroundColor: "#FFFFFF",
+  paddingTop: theme.spacing(14),
+  paddingBottom: theme.spacing(14),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
   },
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
-  fontWeight: 600,
+  fontSize: "2.75rem",
+  fontWeight: 700,
   color: "#004c91",
-  marginBottom: theme.spacing(1),
+  letterSpacing: "0.02em",
+  marginBottom: theme.spacing(1.5),
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
+    fontSize: "2.125rem",
+    letterSpacing: "0.01em",
   },
 }));
 
@@ -97,17 +99,18 @@ const StaffGrid = styled(Box)(({ theme }) => ({
 const TeamCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "12px",
-  padding: theme.spacing(4),
+  padding: theme.spacing(5),
   textAlign: "center",
   border: "1px solid #e5e7eb",
-  transition: "all 0.3s ease",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   height: "100%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   "&:hover": {
-    transform: "translateY(-4px)",
-    boxShadow: "0 12px 24px rgba(0, 76, 145, 0.15)",
+    transform: "translateY(-5px)",
+    boxShadow: "0 16px 32px rgba(0, 76, 145, 0.2)",
     borderColor: "#00a77f",
   },
 }));

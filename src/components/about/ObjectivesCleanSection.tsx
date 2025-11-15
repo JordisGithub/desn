@@ -3,23 +3,25 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#f9fafb",
-  paddingTop: theme.spacing(10),
-  paddingBottom: theme.spacing(10),
+  backgroundColor: "#F9FAFB",
+  paddingTop: theme.spacing(14),
+  paddingBottom: theme.spacing(14),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
   },
 }));
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.5rem",
-  fontWeight: 600,
+  fontSize: "2.75rem",
+  fontWeight: 700,
   color: "#004c91",
   textAlign: "center",
-  marginBottom: theme.spacing(1),
+  letterSpacing: "0.02em",
+  marginBottom: theme.spacing(1.5),
   [theme.breakpoints.down("md")]: {
-    fontSize: "2rem",
+    fontSize: "2.125rem",
+    letterSpacing: "0.01em",
   },
 }));
 
@@ -44,15 +46,17 @@ const ObjectivesGrid = styled(Box)(({ theme }) => ({
 const ObjectiveItem = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #e5e7eb",
-  borderRadius: "10px",
-  padding: theme.spacing(2.5),
+  borderRadius: "12px",
+  padding: theme.spacing(3.5),
   display: "flex",
-  gap: theme.spacing(2),
+  gap: theme.spacing(2.5),
   alignItems: "flex-start",
-  transition: "all 0.2s ease",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     borderColor: "#00a77f",
-    boxShadow: "0 2px 8px rgba(0, 167, 127, 0.1)",
+    boxShadow: "0 8px 16px rgba(0, 167, 127, 0.15)",
+    transform: "translateY(-2px)",
   },
 }));
 
@@ -73,7 +77,7 @@ const NumberBadge = styled(Box)({
 const ObjectiveText = styled(Typography)({
   fontSize: "1.063rem",
   color: "#374151",
-  lineHeight: 1.5,
+  lineHeight: 1.7,
   fontWeight: 400,
 });
 
