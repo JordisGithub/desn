@@ -167,7 +167,7 @@ export default function AboutSection() {
               {t("about_heading")}
             </AboutHeading>
             <AboutDescription>{t("about_description")}</AboutDescription>
-            <AboutButton to='/about' aria-label={t("about_button")}>
+            <AboutButton to='/about'>
               {t("about_button")}
               <span aria-hidden='true'>→</span>
             </AboutButton>
