@@ -85,7 +85,7 @@ if [ -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
     echo "🔐 Found existing Let's Encrypt certificate for desnepal.com — preserving Certbot-managed nginx config."
 else
     echo "⚠️ No certificate found for desnepal.com — installing HTTP-only nginx site and requesting certbot certificate."
-    sudo tee /etc/nginx/sites-available/desn > /dev/null <<EOF
+    sudo tee /etc/nginx/sites-available/desn > /dev/null <<NGINXCONF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -135,7 +135,7 @@ server {
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Referrer-Policy "no-referrer-when-downgrade" always;
 }
-EOF
+NGINXCONF
 
     # Enable Nginx site
     sudo ln -sf /etc/nginx/sites-available/desn /etc/nginx/sites-enabled/desn
