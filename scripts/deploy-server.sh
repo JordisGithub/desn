@@ -144,20 +144,6 @@ fi
 echo "🔍 Testing Nginx configuration..."
 sudo nginx -t
 
-# If no cert exists, try to obtain one with certbot (non-interactive). Use ADMIN_EMAIL env var if provided.
-if [ ! -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
-    ADMIN_EMAIL=${ADMIN_EMAIL:-admin@desnepal.com}
-    echo "🛡️ Attempting to obtain Let's Encrypt certificate for desnepal.com (admin: $ADMIN_EMAIL)"
-    sudo certbot --nginx -d desnepal.com --non-interactive --agree-tos --email "$ADMIN_EMAIL" || {
-        echo "⚠️ Certbot failed to obtain certificate automatically. You may need to run certbot manually on the server."
-    }
-
-    # Ensure certbot timer enabled for auto-renewal
-    sudo systemctl enable --now certbot.timer || true
-    # Test renewal dry-run
-    sudo certbot renew --dry-run || true
-fi
-
 # Reload systemd and start services
 echo "🔄 Starting services..."
 sudo systemctl daemon-reload
@@ -187,13 +173,33 @@ for i in {1..30}; do
     sleep 2
 done
 
-# Start Nginx
-sudo systemctl start nginx
+# Start or reload Nginx (certbot may have already started it)
+echo "🌐 Starting Nginx..."
 sudo systemctl enable nginx
+if sudo systemctl is-active --quiet nginx; then
+    echo "♻️  Nginx is already running, reloading configuration..."
+    sudo systemctl reload nginx
+else
+    echo "▶️  Starting Nginx..."
+    sudo systemctl start nginx
+fi
 
-# If certificates are present, make sure nginx picks up latest config
-if [ -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
-    sudo systemctl reload nginx || true
+# If no cert exists, try to obtain one with certbot (non-interactive). Use ADMIN_EMAIL env var if provided.
+if [ ! -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
+    ADMIN_EMAIL=${ADMIN_EMAIL:-admin@desnepal.com}
+    echo "🛡️ Attempting to obtain Let's Encrypt certificate for desnepal.com (admin: $ADMIN_EMAIL)"
+    sudo certbot --nginx -d desnepal.com --non-interactive --agree-tos --email "$ADMIN_EMAIL" || {
+        echo "⚠️ Certbot failed to obtain certificate automatically. You may need to run certbot manually on the server."
+    }
+
+    # Ensure certbot timer enabled for auto-renewal
+    sudo systemctl enable --now certbot.timer || true
+    # Test renewal dry-run
+    sudo certbot renew --dry-run || true
+    
+    # Reload nginx after certbot modifies the config
+    echo "♻️  Reloading Nginx with SSL configuration..."
+    sudo systemctl reload nginx
 fi
 
 echo "✅ Deployment completed successfully!"
