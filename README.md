@@ -4,8 +4,9 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 
 ## 🌐 Live Application
 
-- **Production Website**: https://desnepal.com http://13.204.228.199/
-- **Production API**: https://desnepal.com/api
+- **Production Website**: http://15.206.210.71
+- **Production API**: http://15.206.210.71/api
+- **Health Check**: http://15.206.210.71/actuator/health
 
 ## 🚀 Quick Start for New Developers
 
@@ -35,29 +36,47 @@ npm run dev
 
 Frontend will be available at: **http://localhost:5173**
 
-### 3. Backend Setup
+### 3. PostgreSQL Setup
+
+```bash
+# Install PostgreSQL 16 (macOS)
+brew install postgresql@16
+brew services start postgresql@16
+
+# Create database and user
+createdb desn
+psql desn -c "CREATE USER desn_user WITH PASSWORD 'desn_password';"
+psql desn -c "GRANT ALL PRIVILEGES ON DATABASE desn TO desn_user;"
+psql desn -c "GRANT ALL ON SCHEMA public TO desn_user;"
+```
+
+### 4. Backend Setup
 
 ```bash
 # Navigate to backend directory
 cd backend
 
+# Create .env file with database credentials
+cat > .env << EOF
+DATABASE_URL=jdbc:postgresql://localhost:5432/desn
+DATABASE_USERNAME=desn_user
+DATABASE_PASSWORD=desn_password
+EOF
+
 # Make mvnw executable (on Mac/Linux)
 chmod +x ./mvnw
 
-# Start Spring Boot application with development profile
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+# Start Spring Boot application
+./mvnw spring-boot:run
 ```
 
 Backend API will be available at: **http://localhost:8080**
 
-### 4. Access the Application
+### 5. Access the Application
 
-- **Website**: http://localhost:5173
-- **API**: http://localhost:8080
-- **H2 Database Console**: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:testdb`
-  - Username: `sa`
-  - Password: `password`
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8080/api
+- **Health Check**: http://localhost:8080/actuator/health
 
 ## 🏗️ Project Structure- For Create React App style environments the fallback `REACT_APP_API_KEY` will also be read if present.
 
@@ -205,62 +224,52 @@ VITE_API_BASE_URL=https://desnepal.com
 # VITE_API_BASE_URL=https://desnepal.com npm run build
 ```
 
-### Backend (Application Profiles)
+### Backend (Environment Variables)
 
-The backend uses Spring profiles for different environments:
+The backend uses environment variables from a `.env` file:
 
-- **Development**: `dev` (H2 in-memory database, file storage)
-- **Production**: `prod` (production database, secure settings)
-
-#### Development (application-dev.properties)
+#### Development (backend/.env)
 
 ```bash
-# H2 Database (in-memory)
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.h2.console.enabled=true
+# PostgreSQL Database
+DATABASE_URL=jdbc:postgresql://localhost:5432/desn
+DATABASE_USERNAME=desn_user
+DATABASE_PASSWORD=desn_password
 
-# CORS for local development
-app.cors.allowed-origins=http://localhost:5173,http://localhost:5174
+# JWT Configuration
+JWT_SECRET=your-secure-secret-here
+JWT_EXPIRATION=86400000
 
-# File storage mode
-storage.mode=file
-storage.file.base-path=./data
+# Optional: Email notifications (set to false for development)
+EMAIL_NOTIFICATIONS_ENABLED=false
 ```
 
-#### Production (Environment Variables)
+#### Production (/home/ubuntu/desn-app/backend/.env)
 
 Set these on your production server:
 
 ```bash
-# Spring Profile
-SPRING_PROFILES_ACTIVE=prod
-
-# Database (PostgreSQL recommended)
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn_prod
-SPRING_DATASOURCE_USERNAME=desn_user
-SPRING_DATASOURCE_PASSWORD=secure_password
-
-# CORS Configuration
-CORS_ALLOWED_ORIGINS=https://desnepal.com,https://www.desnepal.com
+# PostgreSQL Database
+DATABASE_URL=jdbc:postgresql://localhost:5432/desn
+DATABASE_USERNAME=desn_user
+DATABASE_PASSWORD=desn_password_2025
 
 # JWT Security
-JWT_SECRET=your-secure-secret-key-min-256-bits
+JWT_SECRET=<secure-base64-secret>
 JWT_EXPIRATION=86400000
 
-# Khalti Payment Gateway
-KHALTI_PUBLIC_KEY=live_public_key_xxx
-KHALTI_SECRET_KEY=live_secret_key_xxx
-KHALTI_API_URL=https://khalti.com/api/v2
+# Khalti Payment Gateway (update with production keys)
+KHALTI_PUBLIC_KEY=test_public_key
+KHALTI_SECRET_KEY=test_secret_key
 
-# Email Notifications (Optional)
+# Email Notifications (currently disabled)
+EMAIL_NOTIFICATIONS_ENABLED=false
+
+# Optional: Email Configuration
 SPRING_MAIL_HOST=smtp.gmail.com
 SPRING_MAIL_PORT=587
 SPRING_MAIL_USERNAME=your-email@gmail.com
 SPRING_MAIL_PASSWORD=your-app-password
-ADMIN_EMAIL=admin@desnepal.com
-FROM_EMAIL=noreply@desnepal.com
-
-# Storage Mode
 STORAGE_MODE=database  # or "file" for file-based storage
 ```
 
@@ -317,103 +326,75 @@ STORAGE_MODE=database  # or "file" for file-based storage
 
 The application is deployed on **AWS EC2** with the following architecture:
 
-- **Server**: Ubuntu 22.04 on AWS EC2 (13.204.228.199)
-- **Web Server**: Nginx 1.24.0 (reverse proxy + SSL termination)
-- **SSL Certificate**: Let's Encrypt (auto-renewal enabled, expires Feb 12, 2026)
-- **Domain**: desnepal.com
-- **Frontend**: Built React app served by Nginx from `/home/ubuntu/desn-app/frontend/dist`
+- **Server**: Ubuntu 24.04.3 LTS on AWS EC2 t3.small (15.206.210.71)
+- **Region**: ap-south-1 (Mumbai)
+- **Instance**: Free tier eligible (750 hours/month free for 12 months)
+- **Web Server**: Nginx 1.24.0 (reverse proxy)
+- **Frontend**: React app served by Nginx from `/home/ubuntu/desn-app/frontend/`
 - **Backend**: Spring Boot JAR running on port 8080
-- **Database**: H2 (development) / PostgreSQL (recommended for production)
+- **Database**: PostgreSQL 16 (localhost:5432/desn)
+- **Cost**: Free (first year), then ~$15/month
+- **SSH Access**: `ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71`
 
-### Nginx Configuration
-
-Nginx serves as a reverse proxy:
-
-- Serves frontend static files at root (`/`)
-- Proxies API requests (`/api/*`) to backend on `localhost:8080`
-- Handles SSL/TLS termination
-- Redirects HTTP to HTTPS
-
-Configuration file: `/etc/nginx/sites-available/desn`
-
-### Deployment Steps
-
-#### 1. Build Frontend
+### Quick Deploy (Recommended)
 
 ```bash
-# Set production API URL and build
-VITE_API_BASE_URL=https://desnepal.com npm run build
-
-# Output will be in dist/ directory
+# One-command deployment
+./scripts/deploy-simple.sh
 ```
 
-#### 2. Deploy Frontend to Server
+This script automatically:
+1. Builds frontend with Vite
+2. Builds backend with Maven
+3. Uploads both to EC2 server
+4. Restarts services
+
+### Manual Deployment
+
+See [scripts/README.md](scripts/README.md) for detailed deployment instructions.
+
+#### Quick Manual Steps
 
 ```bash
-# Copy built files to server
-scp -r dist/* ubuntu@13.204.228.199:/home/ubuntu/desn-app/frontend/dist/
+# Build frontend
+npm ci && npm run build
 
-# Or on the server, pull and rebuild:
-cd /home/ubuntu/desn-app/frontend
-git pull
-VITE_API_BASE_URL=https://desnepal.com npm run build
+# Build backend
+cd backend && ./mvnw clean package -DskipTests && cd ..
 
-# Ensure proper permissions
-sudo chmod -R 755 /home/ubuntu/desn-app/frontend
+# Upload to server
+scp -i ~/.ssh/desn-app-key.pem -r dist/* ubuntu@15.206.210.71:/home/ubuntu/desn-app/frontend/
+scp -i ~/.ssh/desn-app-key.pem backend/target/proxy-backend-*.jar ubuntu@15.206.210.71:/home/ubuntu/desn-app/backend/app.jar
+
+# Restart services
+ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71 "sudo systemctl restart desn-backend && sudo systemctl reload nginx"
 ```
 
-#### 3. Build and Deploy Backend
-
-```bash
-# Build JAR file
-cd backend
-./mvnw clean package -DskipTests
-
-# Copy to server
-scp target/proxy-backend-*.jar ubuntu@13.204.228.199:/home/ubuntu/desn-app/backend/
-
-# On server, restart the backend service
-sudo systemctl restart desn-backend
-# Or if running manually:
-# java -jar /home/ubuntu/desn-app/backend/proxy-backend-*.jar
-```
-
-#### 4. Verify Deployment
+### Verify Deployment
 
 ```bash
 # Check frontend
-curl -I https://desnepal.com
+curl -I http://15.206.210.71
 
-# Check backend API
-curl https://desnepal.com/api/resources
+# Check backend health
+curl http://15.206.210.71/actuator/health
 
-# Check SSL certificate
-curl -vI https://desnepal.com 2>&1 | grep -i 'expire'
+# Check API
+curl http://15.206.210.71/api/resources
 ```
 
 ### Production Checklist
 
-- [x] SSL certificate installed (Let's Encrypt)
-- [x] HTTPS enabled and enforced
-- [x] CORS configured for production domain
-- [x] Environment variables set correctly
-- [x] Frontend built with production API URL
+- [x] PostgreSQL database configured and running
+- [x] JWT secret set to secure base64 value
+- [x] Environment variables configured
+- [x] Automated daily backups (2 AM UTC)
+- [x] Firewall configured (UFW)
+- [x] SSH key-based authentication
+- [ ] SSL certificate (pending domain setup)
 - [ ] Khalti credentials updated to production keys
-- [ ] PostgreSQL database configured (currently using H2)
-- [ ] JWT secret set to secure random value
-- [ ] Default admin password changed
-- [ ] Email notifications configured
-- [ ] Monitoring and logging set up
-- [ ] Automated backups configured
-
-### SSL Certificate Renewal
-
-The Let's Encrypt certificate auto-renews via Certbot. To manually renew:
-
-```bash
-sudo certbot renew
-sudo systemctl reload nginx
-```
+- [ ] Default user passwords changed
+- [ ] Email notifications configured (currently disabled)
 
 ### Troubleshooting Production Issues
 
