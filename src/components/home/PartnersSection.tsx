@@ -160,11 +160,8 @@ export default function PartnersSection() {
         <SectionHeading as='h2' id='partners-heading'>
           {t("partners_heading")}
         </SectionHeading>
-        
-        <SectionSubheading>
-          Working together with international organizations and government bodies to create lasting
-          impact for persons with disabilities in Nepal.
-        </SectionSubheading>
+
+        <SectionSubheading>{t("partners_subheading")}</SectionSubheading>
 
         <PartnersGrid>
           {partners.map((partner, index) => (

@@ -5,6 +5,7 @@ import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import WorkIcon from "@mui/icons-material/Work";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import GroupsIcon from "@mui/icons-material/Groups";
+import { useTranslation } from "react-i18next";
 
 const ValueSection = styled("section")(({ theme }) => ({
   background: "linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0fdf4 100%)",
@@ -102,11 +103,13 @@ const ServiceTitle = styled(Typography)(({ theme }) => ({
 const Divider = styled(Box)(({ theme }) => ({
   width: "2px",
   height: "180px",
-  background: "linear-gradient(180deg, transparent 0%, #00a77f 50%, transparent 100%)",
+  background:
+    "linear-gradient(180deg, transparent 0%, #00a77f 50%, transparent 100%)",
   [theme.breakpoints.down("md")]: {
     width: "100%",
     height: "2px",
-    background: "linear-gradient(90deg, transparent 0%, #00a77f 50%, transparent 100%)",
+    background:
+      "linear-gradient(90deg, transparent 0%, #00a77f 50%, transparent 100%)",
   },
 }));
 
@@ -162,30 +165,32 @@ const MetricLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export default function ValuePropositionSection() {
+  const { t } = useTranslation();
+
   const services = [
     {
       icon: <SchoolIcon />,
-      title: "Education & Literacy Programs",
+      title: t("value_prop_service_education"),
     },
     {
       icon: <HealthAndSafetyIcon />,
-      title: "Health & Rights Advocacy",
+      title: t("value_prop_service_health"),
     },
     {
       icon: <WorkIcon />,
-      title: "Livelihood & Skills Support",
+      title: t("value_prop_service_livelihood"),
     },
   ];
 
   const metrics = [
     {
-      number: "10,000+",
-      label: "People Reached Annually",
+      number: t("value_prop_metric_people_number"),
+      label: t("value_prop_metric_people_label"),
       icon: <GroupsIcon />,
     },
     {
-      number: "90%",
-      label: "Program Success Rate",
+      number: t("value_prop_metric_success_number"),
+      label: t("value_prop_metric_success_label"),
       icon: <TrendingUpIcon />,
     },
   ];
@@ -197,7 +202,7 @@ export default function ValuePropositionSection() {
           {/* What We Do Section */}
           <ServicesColumn>
             <SectionHeading variant='h2' as='h2'>
-              What We Do
+              {t("value_prop_what_we_do")}
             </SectionHeading>
             {services.map((service, index) => (
               <ServiceItem key={index}>
@@ -213,7 +218,7 @@ export default function ValuePropositionSection() {
           {/* Our Impact Section */}
           <ImpactColumn>
             <SectionHeading variant='h2' as='h2'>
-              Our Impact
+              {t("value_prop_our_impact")}
             </SectionHeading>
             {metrics.map((metric, index) => (
               <MetricCard key={index}>

@@ -2,6 +2,7 @@ import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useTranslation } from "react-i18next";
 import OptimizedImage from "../OptimizedImage";
 
 const ProgramsSectionContainer = styled("section")(({ theme }) => ({
@@ -194,7 +195,7 @@ const ViewAllButton = styled(Link)(({ theme }) => ({
   justifyContent: "center",
   gap: theme.spacing(1.5),
   backgroundColor: theme.palette.secondary.main,
-  color: "white",
+  color: "#ffffff",
   fontWeight: 700,
   fontSize: "1.125rem",
   padding: theme.spacing(2, 5),
@@ -211,6 +212,7 @@ const ViewAllButton = styled(Link)(({ theme }) => ({
   },
   "&:hover": {
     backgroundColor: "#006d54",
+    color: "#ffffff",
     transform: "translateY(-2px)",
     boxShadow: "0 8px 24px rgba(0, 167, 127, 0.4)",
     "& .MuiSvgIcon-root": {
@@ -218,6 +220,7 @@ const ViewAllButton = styled(Link)(({ theme }) => ({
     },
   },
   "&:focus": {
+    color: "#ffffff",
     outline: `3px solid ${theme.palette.primary.main}`,
     outlineOffset: "4px",
   },
@@ -239,48 +242,44 @@ const CTAContainer = styled("div")(({ theme }) => ({
 }));
 
 export default function ProgramsSection() {
+  const { t } = useTranslation();
+
   const programs = [
     {
-      title: "Disability Rights & Advocacy",
-      benefit:
-        "Persons with disabilities gain equal rights, full participation, and barrier-free access to services.",
+      title: t("program_disability_title"),
+      benefit: t("program_disability_desc"),
       image: "home/program2.jpg",
-      alt: "People with disabilities participating in advocacy and awareness programs",
+      alt: t("program_disability_alt"),
     },
     {
-      title: "Accessible Technology",
-      benefit:
-        "Communities access digital tools and assistive technology that enable independence and connectivity.",
+      title: t("program_ict_title"),
+      benefit: t("program_ict_desc"),
       image: "home/program1.jpg",
-      alt: "Person using assistive technology and accessible digital tools",
+      alt: t("program_ict_alt"),
     },
     {
-      title: "Economic Empowerment",
-      benefit:
-        "Individuals build sustainable livelihoods through vocational training and entrepreneurship support.",
+      title: t("program_livelihood_title"),
+      benefit: t("program_livelihood_desc"),
       image: "home/program3.jpg",
-      alt: "Persons with disabilities participating in vocational training",
+      alt: t("program_livelihood_alt"),
     },
     {
-      title: "Education & Life Skills",
-      benefit:
-        "Youth develop confidence and self-reliance through practical education and essential life skills.",
+      title: t("program_life_skills_title"),
+      benefit: t("program_life_skills_desc"),
       image: "home/program4.jpg",
-      alt: "Youth with disabilities learning practical life skills and education",
+      alt: t("program_life_skills_alt"),
     },
     {
-      title: "Women's Empowerment",
-      benefit:
-        "Vulnerable women gain skills, income opportunities, and community inclusion for a better future.",
+      title: t("program_women_title"),
+      benefit: t("program_women_desc"),
       image: "home/program5.jpg",
-      alt: "Women participating in empowerment programs",
+      alt: t("program_women_alt"),
     },
     {
-      title: "Community Inclusion",
-      benefit:
-        "Communities become more inclusive through awareness programs and accessibility initiatives.",
+      title: t("program_community_title"),
+      benefit: t("program_community_desc"),
       image: "home/program6.jpg",
-      alt: "Community members participating in accessibility and awareness initiatives",
+      alt: t("program_community_alt"),
     },
   ];
 
@@ -288,12 +287,11 @@ export default function ProgramsSection() {
     <ProgramsSectionContainer aria-labelledby='programs-heading'>
       <Container maxWidth='xl' sx={{ px: { xs: 2.5, sm: 3, md: 6, lg: 8 } }}>
         <SectionHeading as='h2' id='programs-heading'>
-          Our Programs: How We Create Change
+          {t("programs_section_heading")}
         </SectionHeading>
 
         <SectionSubheading>
-          We focus on six key areas to ensure comprehensive empowerment and
-          lasting impact for persons with disabilities across Nepal.
+          {t("programs_section_subheading")}
         </SectionSubheading>
 
         <ProgramsGrid>
@@ -337,7 +335,7 @@ export default function ProgramsSection() {
             to='/programs'
             aria-label='View all programs and services'
           >
-            View All Programs
+            {t("programs_view_all")}
             <ArrowForwardIcon />
           </ViewAllButton>
         </CTAContainer>

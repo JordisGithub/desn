@@ -46,17 +46,18 @@ const SocialHeading = styled(Typography)(({ theme }) => ({
 
 const FooterGrid = styled(Box)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "repeat(4, 1fr)",
-  gap: theme.spacing(4),
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gap: theme.spacing(5),
   paddingTop: theme.spacing(4),
   borderTop: "2px solid rgba(0, 0, 0, 0.1)",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
-    gap: theme.spacing(3),
+    gap: theme.spacing(4),
   },
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
     gap: theme.spacing(4),
+    textAlign: "center",
   },
 }));
 
@@ -264,14 +265,26 @@ export default function Footer() {
             <FooterColumn>
               <FooterHeading>{t("footer_quick_links")}</FooterHeading>
               <FooterLink to='/about'>{t("footer_link_about")}</FooterLink>
-              <FooterLink to='/programs'>{t("footer_link_programs")}</FooterLink>
+              <FooterLink to='/programs'>
+                {t("footer_link_programs")}
+              </FooterLink>
               <FooterLink to='/events'>{t("footer_link_events")}</FooterLink>
-              <FooterLink to='/resources'>{t("footer_link_resources")}</FooterLink>
-              <FooterLink to='/get-involved'>{t("footer_link_get_involved")}</FooterLink>
+              <FooterLink to='/resources'>
+                {t("footer_link_resources")}
+              </FooterLink>
+              <FooterLink to='/get-involved'>
+                {t("footer_link_get_involved")}
+              </FooterLink>
             </FooterColumn>
 
             {/* Contact Us */}
-            <FooterColumn>
+            <FooterColumn
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: { xs: "center", sm: "flex-start" },
+              }}
+            >
               <FooterHeading>{t("footer_contact_heading")}</FooterHeading>
               <ContactItem>
                 <LocationOnIcon
@@ -288,7 +301,9 @@ export default function Footer() {
                 <FooterLink
                   to='tel:+97715709205'
                   sx={{ display: "inline", marginBottom: 0 }}
-                  aria-label={`${t("contact_labels.phone")}: ${t("footer_contact_phone")}`}
+                  aria-label={`${t("contact_labels.phone")}: ${t(
+                    "footer_contact_phone"
+                  )}`}
                 >
                   {t("footer_contact_phone")}
                 </FooterLink>
@@ -301,19 +316,13 @@ export default function Footer() {
                 <FooterLink
                   to='mailto:disabilityemp@gmail.com'
                   sx={{ display: "inline", marginBottom: 0 }}
-                  aria-label={`${t("contact_labels.email")}: disabilityemp@gmail.com`}
+                  aria-label={`${t(
+                    "contact_labels.email"
+                  )}: disabilityemp@gmail.com`}
                 >
                   disabilityemp@gmail.com
                 </FooterLink>
               </ContactItem>
-            </FooterColumn>
-
-            {/* Legal */}
-            <FooterColumn>
-              <FooterHeading>{t("footer_legal_heading")}</FooterHeading>
-              <FooterLink to='/privacy'>{t("footer_link_privacy")}</FooterLink>
-              <FooterLink to='/terms'>{t("footer_link_terms")}</FooterLink>
-              <FooterLink to='/accessibility'>{t("footer_link_accessibility")}</FooterLink>
             </FooterColumn>
           </FooterGrid>
         </Container>
@@ -323,9 +332,9 @@ export default function Footer() {
       <CopyrightBar>
         <Container sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
           <BottomLinks>
-            <BottomLink to='/privacy'>{t("footer_link_account_privacy")}</BottomLink>
-            <Box component='span' sx={{ color: "#ffffff" }}>•</Box>
-            <BottomLink to='/terms'>{t("footer_link_terms")}</BottomLink>
+            <BottomLink to='/accessibility'>
+              {t("footer_link_accessibility")}
+            </BottomLink>
           </BottomLinks>
           <CopyrightText>{t("footer_copyright")}</CopyrightText>
         </Container>
