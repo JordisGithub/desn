@@ -120,10 +120,51 @@ jobs:
 
           # Setup SSH
           echo "📡 Setting up SSH connection..."
+
+          # Verify secrets are set
+          if [ -z "$SSH_PRIVATE_KEY" ]; then
+            echo "❌ SSH_PRIVATE_KEY secret is not set"
+            exit 1
+          fi
+          if [ -z "$SERVER_HOST" ]; then
+            echo "❌ SERVER_HOST secret is not set"
+            exit 1
+          fi
+          if [ -z "$SERVER_USER" ]; then
+            echo "❌ SERVER_USER secret is not set"
+            exit 1
+          fi
+
+          echo "Creating SSH directory..."
           mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+
+          echo "Writing SSH key..."
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key || {
+            echo "❌ Failed to write SSH key"
+            exit 1
+          }
+
+          echo "Setting SSH key permissions..."
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+
+          echo "Adding server to known hosts..."
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>&1 || {
+            echo "❌ Failed to add server to known hosts"
+            echo "Please verify SERVER_HOST is correct"
+            exit 1
+          }
+
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/deploy_key -o ConnectTimeout=10 $SERVER_USER@$SERVER_HOST "echo 'SSH connection successful'" || {
+            echo "❌ Failed to connect to server"
+            echo "Please verify:"
+            echo "  - SSH_PRIVATE_KEY is correct and properly formatted"
+            echo "  - SERVER_USER has access to the server"
+            echo "  - SERVER_HOST is reachable"
+            echo "  - The SSH key is authorized on the server"
+            exit 1
+          }
+
           echo "✅ SSH setup complete"
 
           # Create deployment directory on server
