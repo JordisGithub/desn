@@ -5,7 +5,9 @@
 
 set -e
 
-APP_DIR="/home/ubuntu/desn-app"
+# Use SERVER_USER from environment or default to ubuntu
+SERVER_USER=${SERVER_USER:-ubuntu}
+APP_DIR="/home/$SERVER_USER/desn-app"
 BACKEND_DIR="$APP_DIR/backend"
 FRONTEND_DIR="$APP_DIR/frontend"
 LOG_DIR="$APP_DIR/logs"
@@ -60,7 +62,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=ubuntu
+User=$SERVER_USER
 WorkingDirectory=$BACKEND_DIR
 EnvironmentFile=$BACKEND_DIR/.env
 ExecStart=/usr/lib/jvm/java-21-openjdk-amd64/bin/java -Xmx512m -Xms256m -jar $BACKEND_DIR/app.jar --spring.profiles.active=prod
@@ -83,7 +85,7 @@ if [ -f "/etc/letsencrypt/live/desnepal.com/fullchain.pem" ]; then
     echo "🔐 Found existing Let's Encrypt certificate for desnepal.com — preserving Certbot-managed nginx config."
 else
     echo "⚠️ No certificate found for desnepal.com — installing HTTP-only nginx site and requesting certbot certificate."
-    sudo tee /etc/nginx/sites-available/desn > /dev/null <<'EOF'
+    sudo tee /etc/nginx/sites-available/desn > /dev/null <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -91,7 +93,7 @@ server {
     server_name _;
     
     # Frontend - Serve React app
-    root /home/ubuntu/desn-app/frontend;
+    root $FRONTEND_DIR;
     index index.html;
     
     # Gzip compression
