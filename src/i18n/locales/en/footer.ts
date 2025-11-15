@@ -10,7 +10,7 @@ export default {
   footer_stay_connected: "Stay Connected",
   footer_about_heading: "About DESN",
   footer_about_text:
-    "Established in 2004, DESN advocates for equal rights and accessibility for persons with disabilities in Nepal.",
+    "Established in 2003, DESN advocates for equal rights and accessibility for persons with disabilities in Nepal.",
   footer_quick_links: "Quick Links",
   footer_link_about: "About Us",
   footer_link_programs: "Programs",
