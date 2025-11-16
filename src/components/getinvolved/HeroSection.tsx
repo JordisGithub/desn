@@ -6,11 +6,17 @@ import useLazyBackground from "../../hooks/useLazyBackground";
 import type { MutableRefObject } from "react";
 import getInvolvedHero from "../../assets/GetInvolved/get-involved-hero.png";
 
-const HeroContainer = styled("section")({
+const HeroContainer = styled("section")(({ theme }) => ({
   position: "relative",
   height: "500px",
   overflow: "hidden",
-});
+  [theme.breakpoints.down("md")]: {
+    height: "400px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    height: "350px",
+  },
+}));
 
 const ContentWrapper = styled(Box)({
   position: "relative",
@@ -22,7 +28,7 @@ const ContentWrapper = styled(Box)({
   alignItems: "center",
 });
 
-const Title = styled(Typography)({
+const Title = styled(Typography)(({ theme }) => ({
   fontSize: "68px",
   fontWeight: 800,
   color: "rgb(255, 255, 255)",
@@ -35,9 +41,18 @@ const Title = styled(Typography)({
   marginBottom: "16px",
   WebkitFontSmoothing: "antialiased",
   textRendering: "optimizeLegibility",
-});
+  [theme.breakpoints.down("md")]: {
+    fontSize: "48px",
+    lineHeight: "56px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "32px",
+    lineHeight: "40px",
+    marginBottom: "12px",
+  },
+}));
 
-const Tagline = styled(Typography)({
+const Tagline = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: 600,
   color: "rgb(246, 212, 105)",
@@ -53,7 +68,19 @@ const Tagline = styled(Typography)({
   maxWidth: "700px",
   WebkitFontSmoothing: "antialiased",
   textRendering: "optimizeLegibility",
-});
+  [theme.breakpoints.down("md")]: {
+    marginLeft: "40px",
+    marginRight: "40px",
+    fontSize: "14px",
+    lineHeight: "20px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: "16px",
+    marginRight: "16px",
+    fontSize: "13px",
+    lineHeight: "18px",
+  },
+}));
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
