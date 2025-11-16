@@ -64,7 +64,7 @@ class SearchService {
             } as SearchItem;
           });
 
-          const eventItems: SearchItem[] = events.map((e) => {
+          eventItems = events.map((e) => {
             const ee = e as Record<string, unknown>;
             const id = String(ee["id"] ?? "");
             return {
@@ -220,7 +220,7 @@ class SearchService {
     const results = this.fuse.search(query, { limit });
     return results.map((r) => {
       const item = { ...r.item };
-      
+
       // Extract matching text for context
       if (r.matches && r.matches.length > 0) {
         const match = r.matches[0];
@@ -233,11 +233,11 @@ class SearchService {
             const contextStart = Math.max(0, start - 40);
             const contextEnd = Math.min(matchValue.length, end + 80);
             let excerpt = matchValue.substring(contextStart, contextEnd);
-            
+
             // Add ellipsis if truncated
             if (contextStart > 0) excerpt = "..." + excerpt;
             if (contextEnd < matchValue.length) excerpt = excerpt + "...";
-            
+
             item.matchText = excerpt;
           } else {
             // Fallback to excerpt if no indices
@@ -245,7 +245,7 @@ class SearchService {
           }
         }
       }
-      
+
       return item;
     });
   }

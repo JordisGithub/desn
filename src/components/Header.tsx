@@ -539,8 +539,8 @@ const Header: React.FC = () => {
                 <Paper
                   elevation={3}
                   sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
-                  role="region"
-                  aria-label="Search results"
+                  role='region'
+                  aria-label='Search results'
                 >
                   <Box
                     sx={{
@@ -554,11 +554,12 @@ const Header: React.FC = () => {
                       whiteSpace: "nowrap",
                       border: 0,
                     }}
-                    role="status"
-                    aria-live="polite"
-                    aria-atomic="true"
+                    role='status'
+                    aria-live='polite'
+                    aria-atomic='true'
                   >
-                    {searchResults.length} result{searchResults.length !== 1 ? "s" : ""} found
+                    {searchResults.length} result
+                    {searchResults.length !== 1 ? "s" : ""} found
                   </Box>
                   <List dense>
                     {searchResults.map((r, idx) => (
@@ -571,7 +572,9 @@ const Header: React.FC = () => {
                             setSearchQuery("");
                             navigate(r.url);
                           }}
-                          aria-label={`${r.title}, ${r.type}, ${r.matchText || r.excerpt || ""}`}
+                          aria-label={`${r.title}, ${r.type}, ${
+                            r.matchText || r.excerpt || ""
+                          }`}
                         >
                           <ListItemIcon>
                             {r.type === "event" ? (
@@ -587,7 +590,7 @@ const Header: React.FC = () => {
                             secondary={
                               <>
                                 <Box
-                                  component="span"
+                                  component='span'
                                   sx={{
                                     display: "block",
                                     fontSize: "0.75rem",
@@ -605,7 +608,7 @@ const Header: React.FC = () => {
                                 </Box>
                                 {r.matchText && (
                                   <Box
-                                    component="span"
+                                    component='span'
                                     sx={{
                                       display: "block",
                                       fontSize: "0.875rem",
