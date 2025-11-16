@@ -232,7 +232,6 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
   return (
     <FormContainer
       id='volunteer-form'
-      role='form'
       aria-labelledby={dialogTitleId}
       aria-describedby={dialogDescId}
     >
@@ -316,13 +315,15 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             error={!!validationErrors.fullName}
             helperText={validationErrors.fullName}
             inputRef={firstInputRef}
-            inputProps={{
-              "aria-label": "Full Name",
-              "aria-required": "true",
-              "aria-invalid": !!validationErrors.fullName,
-              "aria-describedby": validationErrors.fullName
-                ? "volunteer-fullName-error"
-                : undefined,
+            slotProps={{
+              input: {
+                "aria-label": "Full Name",
+                "aria-required": "true",
+                "aria-invalid": !!validationErrors.fullName,
+                "aria-describedby": validationErrors.fullName
+                  ? "volunteer-fullName-error"
+                  : undefined,
+              },
             }}
             FormHelperTextProps={{
               id: "volunteer-fullName-error",
@@ -341,13 +342,15 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             disabled={isSubmitting}
             error={!!validationErrors.email}
             helperText={validationErrors.email}
-            inputProps={{
-              "aria-label": "Email Address",
-              "aria-required": "true",
-              "aria-invalid": !!validationErrors.email,
-              "aria-describedby": validationErrors.email
-                ? "volunteer-email-error"
-                : undefined,
+            slotProps={{
+              input: {
+                "aria-label": "Email Address",
+                "aria-required": "true",
+                "aria-invalid": !!validationErrors.email,
+                "aria-describedby": validationErrors.email
+                  ? "volunteer-email-error"
+                  : undefined,
+              },
             }}
             FormHelperTextProps={{
               id: "volunteer-email-error",

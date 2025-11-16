@@ -573,13 +573,15 @@ const MembershipSection: React.FC = () => {
                   disabled={isSubmitting}
                   error={!!validationErrors.fullName}
                   helperText={validationErrors.fullName}
-                  inputProps={{
-                    "aria-label": "Full Name",
-                    "aria-required": "true",
-                    "aria-invalid": !!validationErrors.fullName,
-                    "aria-describedby": validationErrors.fullName
-                      ? "membership-fullName-error"
-                      : undefined,
+                  slotProps={{
+                    input: {
+                      "aria-label": "Full Name",
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.fullName,
+                      "aria-describedby": validationErrors.fullName
+                        ? "membership-fullName-error"
+                        : undefined,
+                    },
                   }}
                   FormHelperTextProps={{
                     id: "membership-fullName-error",
@@ -598,13 +600,15 @@ const MembershipSection: React.FC = () => {
                   disabled={isSubmitting}
                   error={!!validationErrors.email}
                   helperText={validationErrors.email}
-                  inputProps={{
-                    "aria-label": "Email Address",
-                    "aria-required": "true",
-                    "aria-invalid": !!validationErrors.email,
-                    "aria-describedby": validationErrors.email
-                      ? "membership-email-error"
-                      : undefined,
+                  slotProps={{
+                    input: {
+                      "aria-label": "Email Address",
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.email,
+                      "aria-describedby": validationErrors.email
+                        ? "membership-email-error"
+                        : undefined,
+                    },
                   }}
                   FormHelperTextProps={{
                     id: "membership-email-error",
@@ -624,13 +628,15 @@ const MembershipSection: React.FC = () => {
                 disabled={isSubmitting}
                 error={!!validationErrors.phone}
                 helperText={validationErrors.phone}
-                inputProps={{
-                  "aria-label": "Phone Number",
-                  "aria-required": "true",
-                  "aria-invalid": !!validationErrors.phone,
-                  "aria-describedby": validationErrors.phone
-                    ? "membership-phone-error"
-                    : undefined,
+                slotProps={{
+                  input: {
+                    "aria-label": "Phone Number",
+                    "aria-required": "true",
+                    "aria-invalid": !!validationErrors.phone,
+                    "aria-describedby": validationErrors.phone
+                      ? "membership-phone-error"
+                      : undefined,
+                  },
                 }}
                 FormHelperTextProps={{
                   id: "membership-phone-error",
