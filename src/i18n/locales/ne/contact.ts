@@ -12,10 +12,6 @@ export default {
   // Contact Cards
   cards: {
     heading: "सम्पर्क विधिहरू",
-    email: {
-      title: "इमेल गर्नुहोस्",
-      description: "जुनसुकै बेला हामीलाई इमेल पठाउनुहोस्",
-    },
     phone: {
       title: "फोन गर्नुहोस्",
       description: "सोम-शुक्र बिहान ३ बजेदेखि बेलुका ५ बजेसम्म",

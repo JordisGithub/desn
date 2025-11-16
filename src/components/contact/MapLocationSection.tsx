@@ -1,14 +1,6 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Button,
-} from "@mui/material";
+import { Container, Typography, Box, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 
@@ -82,51 +74,6 @@ const MapFrame = styled(Box)(({ theme }) => ({
     height: "350px",
   },
 }));
-
-const InfoCard = styled(Card)(({ theme }) => ({
-  border: "2px solid #e5e7eb",
-  borderRadius: theme.spacing(2),
-  boxShadow: "none",
-  padding: theme.spacing(5),
-  marginBottom: theme.spacing(4),
-  "&:focus-within": {
-    outline: "3px solid #004c91",
-    outlineOffset: "2px",
-  },
-}));
-
-const CardHeader = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(3),
-  marginBottom: theme.spacing(2),
-}));
-
-const IconBg = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "bgColor",
-})<{ bgColor: string }>(({ bgColor, theme }) => ({
-  width: "64px",
-  height: "64px",
-  borderRadius: theme.spacing(2),
-  backgroundColor: bgColor,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const CardTitle = styled(Typography)({
-  fontSize: "1.5rem",
-  fontWeight: 400,
-  color: "#004c91",
-  fontFamily: '"Poppins", "Roboto", sans-serif',
-});
-
-const AddressText = styled(Typography)({
-  fontSize: "1.125rem",
-  color: "#364153",
-  lineHeight: 1.625,
-  marginBottom: "0.5rem",
-});
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#004c91",
@@ -300,6 +247,7 @@ export default function MapLocationSection() {
                   {t("contact.map.guided_directions_label")}
                 </Typography>
                 <DirectionsButton
+                  component='a'
                   href={directionsUrl}
                   target='_blank'
                   rel='noopener noreferrer'

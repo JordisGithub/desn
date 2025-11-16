@@ -121,9 +121,7 @@ export default function ContactCards() {
                 >
                   <EmailIcon sx={{ fontSize: 40, color: "#004c91" }} />
                 </IconContainer>
-                <CardTitle component='h3'>
-                  {t("contact.cards.email.title")}
-                </CardTitle>
+                <CardTitle>{t("contact.cards.email.title")}</CardTitle>
                 <CardDescription>
                   {t("contact.cards.email.description")}
                 </CardDescription>
@@ -195,9 +193,7 @@ export default function ContactCards() {
                 >
                   <PhoneIcon sx={{ fontSize: 40, color: "#00a77f" }} />
                 </IconContainer>
-                <CardTitle component='h3'>
-                  {t("contact.cards.phone.title")}
-                </CardTitle>
+                <CardTitle>{t("contact.cards.phone.title")}</CardTitle>
                 <CardDescription>
                   {t("contact.cards.phone.description")}
                 </CardDescription>
@@ -269,9 +265,7 @@ export default function ContactCards() {
                 >
                   <LocationOnIcon sx={{ fontSize: 40, color: "#965595" }} />
                 </IconContainer>
-                <CardTitle component='h3'>
-                  {t("contact.cards.location.title")}
-                </CardTitle>
+                <CardTitle>{t("contact.cards.location.title")}</CardTitle>
                 <CardDescription>
                   {t("contact.cards.location.description")}
                 </CardDescription>

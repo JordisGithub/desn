@@ -309,6 +309,8 @@ export default function IntegratedContactSection() {
     email: "",
     message: "",
   });
+  const [formStatus, setFormStatus] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -319,9 +321,21 @@ export default function IntegratedContactSection() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    setFormStatus("Submitting your message...");
+
+    // Simulate form submission
+    setTimeout(() => {
+      console.log("Form submitted:", formData);
+      setFormStatus(
+        "Message sent successfully! We will respond within 24 hours."
+      );
+      setIsSubmitting(false);
+      // Reset form
+      setFormData({ fullName: "", email: "", message: "" });
+    }, 1000);
   };
 
   const directionsUrl =
@@ -330,13 +344,17 @@ export default function IntegratedContactSection() {
   return (
     <>
       {/* Main Contact Section: [MAP | FORM] */}
-      <ContactSection id='contact-section' aria-labelledby='contact-heading'>
+      <ContactSection
+        id='contact-section'
+        aria-labelledby='contact-heading'
+        role='main'
+      >
         <Container maxWidth='xl'>
           <TwoColumnLayout>
             {/* LEFT COLUMN: MAP & Location Details */}
             <LeftColumn>
               {/* Map Container with MAXIMUM Shadow */}
-              <MapContainer>
+              <MapContainer aria-hidden='true'>
                 <iframe
                   src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1234567890!2d85.3240!3d27.6710!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzE1LjYiTiA4NcKwMTknMjYuNCJF!5e0!3m2!1sen!2snp!4v1234567890'
                   width='100%'
@@ -346,12 +364,13 @@ export default function IntegratedContactSection() {
                   loading='lazy'
                   referrerPolicy='no-referrer-when-downgrade'
                   title={t("contact.map.iframe_title")}
-                  role='application'
+                  tabIndex={-1}
+                  aria-label='Decorative map showing DESN office location. Full location details provided in text below.'
                 />
               </MapContainer>
 
               {/* Condensed Location Details */}
-              <Box sx={{ marginTop: 3 }}>
+              <Box sx={{ marginTop: 3 }} id='location-details'>
                 <Typography
                   component='h2'
                   sx={{
@@ -364,24 +383,32 @@ export default function IntegratedContactSection() {
                   {t("contact.map.location_details_heading")}
                 </Typography>
 
-                <LocationText>
-                  <strong>{t("contact.map.office_name")}</strong>
-                  <br />
-                  {t("contact.cards.location.address1")},{" "}
-                  {t("contact.cards.location.address2")}
-                  <br />
-                  <strong>Landmark:</strong>{" "}
-                  {t("contact.map.landmark_description")}
-                  <br />
-                  <strong>Transit:</strong>{" "}
-                  {t("contact.map.transit_description")}
-                </LocationText>
+                <Box component='address' sx={{ fontStyle: "normal" }}>
+                  <LocationText>
+                    <strong>{t("contact.map.office_name")}</strong>
+                    <br />
+                    {t("contact.cards.location.address1")},{" "}
+                    {t("contact.cards.location.address2")}
+                  </LocationText>
+                  <LocationText>
+                    <strong>Landmark:</strong>{" "}
+                    {t("contact.map.landmark_description")}
+                  </LocationText>
+                  <LocationText>
+                    <strong>Transit:</strong>{" "}
+                    {t("contact.map.transit_description")}
+                  </LocationText>
+                </Box>
 
                 <DirectionsButton
+                  component='a'
                   href={directionsUrl}
                   target='_blank'
                   rel='noopener noreferrer'
                   startIcon={<DirectionsIcon />}
+                  aria-label={`${t(
+                    "contact.map.get_directions"
+                  )} - Opens in new window`}
                 >
                   {t("contact.map.get_directions")}
                 </DirectionsButton>
@@ -393,10 +420,41 @@ export default function IntegratedContactSection() {
               <FormTitle component='h2' id='contact-heading'>
                 {t("contact.form.title")}
               </FormTitle>
-              <FormDescription>{t("contact.form.description")}</FormDescription>
+              <FormDescription id='form-description'>
+                {t("contact.form.description")}
+              </FormDescription>
 
-              <form onSubmit={handleSubmit}>
-                <Stack spacing={3}>
+              {/* Live region for screen reader announcements */}
+              <Box
+                role='status'
+                aria-live='polite'
+                aria-atomic='true'
+                sx={{
+                  position: "absolute",
+                  left: "-10000px",
+                  width: "1px",
+                  height: "1px",
+                  overflow: "hidden",
+                }}
+              >
+                {formStatus}
+              </Box>
+
+              <form
+                onSubmit={handleSubmit}
+                aria-labelledby='contact-heading'
+                aria-describedby='form-description'
+                noValidate
+              >
+                <Stack
+                  spacing={3}
+                  component='fieldset'
+                  sx={{ border: "none", padding: 0, margin: 0 }}
+                >
+                  <legend style={{ position: "absolute", left: "-10000px" }}>
+                    Contact form with 3 required fields
+                  </legend>
+
                   <MinimalistTextField
                     fullWidth
                     required
@@ -406,8 +464,17 @@ export default function IntegratedContactSection() {
                     onChange={handleChange}
                     inputProps={{
                       "aria-required": "true",
+                      "aria-describedby": "fullName-hint",
                     }}
                     autoComplete='name'
+                    helperText={
+                      <span
+                        id='fullName-hint'
+                        style={{ position: "absolute", left: "-10000px" }}
+                      >
+                        Enter your full name as you would like us to address you
+                      </span>
+                    }
                   />
 
                   <MinimalistTextField
@@ -420,8 +487,17 @@ export default function IntegratedContactSection() {
                     onChange={handleChange}
                     inputProps={{
                       "aria-required": "true",
+                      "aria-describedby": "email-hint",
                     }}
                     autoComplete='email'
+                    helperText={
+                      <span
+                        id='email-hint'
+                        style={{ position: "absolute", left: "-10000px" }}
+                      >
+                        Enter a valid email address where we can reply to you
+                      </span>
+                    }
                   />
 
                   <MinimalistTextField
@@ -435,15 +511,31 @@ export default function IntegratedContactSection() {
                     onChange={handleChange}
                     inputProps={{
                       "aria-required": "true",
+                      "aria-describedby": "message-hint",
                     }}
+                    helperText={
+                      <span
+                        id='message-hint'
+                        style={{ position: "absolute", left: "-10000px" }}
+                      >
+                        Describe your inquiry or message in detail
+                      </span>
+                    }
                   />
 
                   <SubmitButton
                     type='submit'
                     startIcon={<SendIcon />}
-                    aria-label={t("contact.form.submit")}
+                    disabled={isSubmitting}
+                    aria-label={
+                      isSubmitting
+                        ? "Sending message, please wait"
+                        : `${t("contact.form.submit")} - Submit contact form`
+                    }
                   >
-                    {t("contact.form.submit").toUpperCase()}
+                    {isSubmitting
+                      ? "SENDING..."
+                      : t("contact.form.submit").toUpperCase()}
                   </SubmitButton>
                 </Stack>
               </form>
@@ -455,8 +547,24 @@ export default function IntegratedContactSection() {
       {/* Contact Info Cards Section */}
       <ContactSection
         sx={{ backgroundColor: "white", paddingTop: 8, paddingBottom: 8 }}
+        aria-label='Contact information'
+        role='region'
       >
         <Container maxWidth='xl'>
+          <Typography
+            component='h2'
+            sx={{
+              fontSize: "2rem",
+              fontWeight: 600,
+              color: "#004c91",
+              textAlign: "center",
+              marginBottom: 4,
+              position: "absolute",
+              left: "-10000px",
+            }}
+          >
+            Quick Contact Methods
+          </Typography>
           <Box
             sx={{
               display: "grid",
@@ -467,23 +575,39 @@ export default function IntegratedContactSection() {
             }}
           >
             {/* Phone Card */}
-            <InfoCard>
+            <InfoCard role='article' aria-labelledby='phone-card-title'>
               <CardContent sx={{ padding: 0 }}>
                 <InfoCardHeader>
-                  <IconWrapper bgColor='rgba(0, 167, 127, 0.15)'>
+                  <IconWrapper
+                    bgColor='rgba(0, 167, 127, 0.15)'
+                    aria-hidden='true'
+                  >
                     <PhoneIcon
                       sx={{ fontSize: "32px !important", color: "#00a77f" }}
+                      aria-hidden='true'
                     />
                   </IconWrapper>
-                  <InfoTitle>{t("contact.cards.phone.title")}</InfoTitle>
+                  <InfoTitle id='phone-card-title'>
+                    {t("contact.cards.phone.title")}
+                  </InfoTitle>
                 </InfoCardHeader>
                 <InfoText>
-                  <InfoLink href='tel:+977-15709205'>
+                  <InfoLink
+                    href='tel:+977-15709205'
+                    aria-label={`Primary phone number: ${t(
+                      "contact.cards.phone.primary"
+                    )}`}
+                  >
                     {t("contact.cards.phone.primary")}
                   </InfoLink>
                 </InfoText>
                 <InfoText>
-                  <InfoLink href='tel:+977-9849873868'>
+                  <InfoLink
+                    href='tel:+977-9849873868'
+                    aria-label={`Secondary phone number: ${t(
+                      "contact.cards.phone.secondary"
+                    )}`}
+                  >
                     {t("contact.cards.phone.secondary")}
                   </InfoLink>
                 </InfoText>
@@ -491,23 +615,39 @@ export default function IntegratedContactSection() {
             </InfoCard>
 
             {/* Email Card */}
-            <InfoCard>
+            <InfoCard role='article' aria-labelledby='email-card-title'>
               <CardContent sx={{ padding: 0 }}>
                 <InfoCardHeader>
-                  <IconWrapper bgColor='rgba(0, 76, 145, 0.15)'>
+                  <IconWrapper
+                    bgColor='rgba(0, 76, 145, 0.15)'
+                    aria-hidden='true'
+                  >
                     <EmailIcon
                       sx={{ fontSize: "32px !important", color: "#004c91" }}
+                      aria-hidden='true'
                     />
                   </IconWrapper>
-                  <InfoTitle>{t("contact.cards.email.title")}</InfoTitle>
+                  <InfoTitle id='email-card-title'>
+                    {t("contact.cards.email.title")}
+                  </InfoTitle>
                 </InfoCardHeader>
                 <InfoText>
-                  <InfoLink href='mailto:disabilityemp@gmail.com'>
+                  <InfoLink
+                    href='mailto:disabilityemp@gmail.com'
+                    aria-label={`Primary email address: ${t(
+                      "contact.cards.email.primary"
+                    )}`}
+                  >
                     {t("contact.cards.email.primary")}
                   </InfoLink>
                 </InfoText>
                 <InfoText>
-                  <InfoLink href='mailto:thekopkrish@gmail.com'>
+                  <InfoLink
+                    href='mailto:thekopkrish@gmail.com'
+                    aria-label={`Secondary email address: ${t(
+                      "contact.cards.email.secondary"
+                    )}`}
+                  >
                     {t("contact.cards.email.secondary")}
                   </InfoLink>
                 </InfoText>

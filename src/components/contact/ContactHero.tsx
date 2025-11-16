@@ -110,7 +110,7 @@ export default function ContactHero() {
   const { t } = useTranslation();
 
   return (
-    <HeroSection aria-labelledby='contact-hero-heading'>
+    <HeroSection aria-labelledby='contact-hero-heading' role='banner'>
       <GradientOverlay1 />
       <GradientOverlay2 />
       <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
@@ -136,14 +136,21 @@ export default function ContactHero() {
 
           <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
             <HeroButton
-              component='a'
-              href='#contact-form'
+              href='#contact-section'
               startIcon={<SendIcon />}
-              role='link'
+              aria-label={`${t(
+                "contact.hero.send_message"
+              )} - Skip to contact form`}
             >
               {t("contact.hero.send_message")}
             </HeroButton>
-            <OutlineButton component='a' href='#map-section' role='link'>
+            <OutlineButton
+              component='a'
+              href='#location-details'
+              aria-label={`${t(
+                "contact.hero.view_location"
+              )} - Skip to location information`}
+            >
               {t("contact.hero.view_location")}
             </OutlineButton>
           </Stack>

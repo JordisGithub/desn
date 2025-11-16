@@ -294,9 +294,7 @@ export default function ContactFormSection() {
                   <IconBg bgColor='rgba(0, 167, 127, 0.1)' aria-hidden='true'>
                     <AccessTimeIcon sx={{ fontSize: 32, color: "#00a77f" }} />
                   </IconBg>
-                  <CardTitle component='h3'>
-                    {t("contact.office_hours.title")}
-                  </CardTitle>
+                  <CardTitle>{t("contact.office_hours.title")}</CardTitle>
                 </CardIconContainer>
 
                 <Stack spacing={2.5}>
