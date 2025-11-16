@@ -401,7 +401,13 @@ const Header: React.FC = () => {
               endIcon={<KeyboardArrowDownIcon />}
               sx={{ display: { xs: "none", md: "flex" } }}
             >
-              {lang === "en" ? "English" : lang === "ne" ? "नेपाली" : lang === "new" ? "नेवारी" : "मैथिली"}
+              {lang === "en"
+                ? "English"
+                : lang === "ne"
+                ? "नेपाली"
+                : lang === "new"
+                ? "नेवारी"
+                : "मैथिली"}
             </LanguageButton>
             <Menu
               anchorEl={langAnchorEl}

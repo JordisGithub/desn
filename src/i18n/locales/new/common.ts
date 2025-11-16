@@ -21,7 +21,8 @@ export default {
     hero_about: "DESN संगठन भवन व टोली सहयोग",
     hero_programs: "DESN कार्यक्रमफुय भाग लिये समुदायया सदस्यफु",
     hero_events: "सहभागीफु व स्वयंसेवकफु सहित DESN कार्यक्रम सभा",
-    hero_get_involved: "अपाङ्गता अधिकारतः समर्थन यायेत थौं काम याये स्वयंसेवकफु",
+    hero_get_involved:
+      "अपाङ्गता अधिकारतः समर्थन यायेत थौं काम याये स्वयंसेवकफु",
     hero_contact: "DESN कार्यालय स्थान व सम्पर्क जानकारी",
     logo: "DESN - अपाङ्गता उन्मूलन सेवा नेटवर्क नेपाल",
     partner_logo: "साझेदार संस्थाया लोगो",
@@ -96,8 +97,7 @@ export default {
   member_dashboard_title: "जिगु ड्यासबोर्ड",
   member_dashboard_subtitle:
     "छिगु कार्यक्रम दर्ताफु व मन परे प्रकाशनफु च्वन व व्यवस्थापन यायेगु",
-  member_dashboard_no_registrations:
-    "छिं अलेलिकं थ्व कार्यक्रमय दर्ता मयात।",
+  member_dashboard_no_registrations: "छिं अलेलिकं थ्व कार्यक्रमय दर्ता मयात।",
   favorite_publications: "मन परे प्रकाशनफु",
   no_favorite_publications: "छिं अलेलिकं थ्व प्रकाशन मन मपरात।",
   browse_publications: "प्रकाशनफु च्वयेगु",
