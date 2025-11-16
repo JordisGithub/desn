@@ -27,7 +27,7 @@ const CTATitle = styled(Typography)(({ theme }) => ({
 
 const CTADescription = styled(Typography)(({ theme }) => ({
   fontSize: "1.25rem",
-  color: "rgba(255, 255, 255, 0.9)",
+  color: "rgba(255, 255, 255, 0.95)",
   textAlign: "center",
   maxWidth: "700px",
   margin: `0 auto ${theme.spacing(5)}`,
@@ -70,6 +70,7 @@ const SecondaryButton = styled(Link)(({ theme }) => ({
   fontWeight: 600,
   fontSize: "1.125rem",
   padding: theme.spacing(1.5, 4),
+  minHeight: "44px",
   borderRadius: "8px",
   border: "2px solid white",
   textDecoration: "none",
@@ -81,9 +82,9 @@ const SecondaryButton = styled(Link)(({ theme }) => ({
     backgroundColor: "rgba(255, 255, 255, 0.25)",
     borderColor: "white",
   },
-  "&:focus": {
+  "&:focus-visible": {
     outline: "3px solid #f6d469",
-    outlineOffset: "2px",
+    outlineOffset: "3px",
   },
 }));
 

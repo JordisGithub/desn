@@ -324,7 +324,7 @@ const Header: React.FC = () => {
     setLangAnchorEl(event.currentTarget);
   };
 
-  const handleLanguageClose = (newLang?: "en" | "ne") => {
+  const handleLanguageClose = (newLang?: "en" | "ne" | "new" | "mai") => {
     if (newLang) {
       setLang(newLang);
       // Ensure i18n fully changes before closing menu
@@ -401,7 +401,13 @@ const Header: React.FC = () => {
               endIcon={<KeyboardArrowDownIcon />}
               sx={{ display: { xs: "none", md: "flex" } }}
             >
-              {lang === "en" ? "English" : "नेपाली"}
+              {lang === "en"
+                ? "English"
+                : lang === "ne"
+                ? "नेपाली"
+                : lang === "new"
+                ? "नेवारी"
+                : "मैथिली"}
             </LanguageButton>
             <Menu
               anchorEl={langAnchorEl}
@@ -413,6 +419,12 @@ const Header: React.FC = () => {
               </MenuItem>
               <MenuItem onClick={() => handleLanguageClose("ne")}>
                 {t("header.language_nepali")}
+              </MenuItem>
+              <MenuItem onClick={() => handleLanguageClose("new")}>
+                {t("header.language_newari")}
+              </MenuItem>
+              <MenuItem onClick={() => handleLanguageClose("mai")}>
+                {t("header.language_maithili")}
               </MenuItem>
             </Menu>
 
@@ -635,11 +647,7 @@ const Header: React.FC = () => {
       >
         <DrawerContent>
           <DrawerHeader>
-            <Logo
-              src='https://www.figma.com/api/mcp/asset/ccc1b5e8-ef62-4fef-ae8f-f8e654b30036'
-              alt='DESN Logo'
-              style={{ height: "40px" }}
-            />
+            <Logo src={desnLogo} alt='DESN Logo' style={{ height: "40px" }} />
             <IconButton onClick={toggleMobileMenu} sx={{ color: "white" }}>
               <CloseIcon />
             </IconButton>

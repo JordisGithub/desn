@@ -50,6 +50,8 @@ export default {
     donate: "दान गर्नुहोस्",
     language_english: "English",
     language_nepali: "नेपाली",
+    language_newari: "नेवारी",
+    language_maithili: "मैथिली",
     login: "लगइन",
     logout: "लगआउट",
     my_events: "मेरा कार्यक्रमहरू",

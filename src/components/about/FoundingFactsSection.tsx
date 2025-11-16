@@ -7,9 +7,9 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import BusinessIcon from "@mui/icons-material/Business";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#F9FAFB",
-  paddingTop: theme.spacing(14),
-  paddingBottom: theme.spacing(14),
+  backgroundColor: "#F0F4F8",
+  paddingTop: theme.spacing(5),
+  paddingBottom: theme.spacing(5),
   [theme.breakpoints.down("md")]: {
     paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(10),
@@ -33,19 +33,20 @@ const IntroColumn = styled(Box)({
 });
 
 const IntroHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.25rem",
-  fontWeight: 600,
+  fontSize: "3rem",
+  fontWeight: 700,
   color: "#004c91",
   lineHeight: 1.2,
+  letterSpacing: "0.02em",
   marginBottom: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
-    fontSize: "1.875rem",
+    fontSize: "2.25rem",
   },
 }));
 
 const IntroText = styled(Typography)({
   fontSize: "1.125rem",
-  color: "#4b5563",
+  color: "#374151",
   lineHeight: 1.7,
   fontWeight: 400,
 });
@@ -60,16 +61,22 @@ const FactCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #e5e7eb",
   borderLeft: "4px solid #00a77f",
-  borderRadius: "12px",
+  borderRadius: "16px",
   padding: theme.spacing(2.5, 3),
+  minHeight: "44px",
   display: "flex",
   gap: theme.spacing(2),
   alignItems: "center",
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
   transition: "all 0.2s ease",
   "&:hover": {
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
     transform: "translateY(-2px)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   },
 }));
 
@@ -92,7 +99,7 @@ const FactContent = styled(Box)({
 
 const FactLabel = styled(Typography)({
   fontSize: "0.875rem",
-  color: "#6b7280",
+  color: "#4b5563",
   fontWeight: 500,
   textTransform: "uppercase",
   letterSpacing: "0.05em",
@@ -110,66 +117,87 @@ export default function FoundingFactsSection() {
   const { t } = useTranslation();
 
   return (
-    <SectionContainer aria-labelledby='founding-facts-heading'>
+    <SectionContainer
+      role='region'
+      aria-labelledby='founding-facts-heading'
+      aria-label='Organization Founding History'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <TwoColumnGrid>
           {/* Left Column: Condensed Introduction */}
           <IntroColumn>
-            <IntroHeading as='h2' id='founding-facts-heading'>
+            <IntroHeading as='h2' id='founding-facts-heading' tabIndex={-1}>
               {t("about_intro_heading")}
             </IntroHeading>
-            <IntroText>
-              DESN was founded in 2003 by persons with disabilities to advocate
-              for equal rights, participation, and accessibility. We work to
-              ensure that persons with disabilities live in a barrier-free,
-              inclusive environment with improved socio-economic conditions.
-            </IntroText>
-            <IntroText>
-              Registered with the District Administration Office, Lalitpur, we
-              are affiliated with the Social Welfare Council and National
-              Federation of Disabled Nepal.
-            </IntroText>
+            <IntroText>{t("about_founding_intro")}</IntroText>
+            <IntroText>{t("about_intro_text_1")}</IntroText>
           </IntroColumn>
 
           {/* Right Column: Key Facts as Cards */}
-          <FactsColumn>
-            <FactCard>
-              <IconWrapper>
+          <FactsColumn role='list' aria-label='Organization founding facts'>
+            <FactCard
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${t("about_founding_fact_year_label")}: ${t(
+                "about_legal_reg_date"
+              )}`}
+            >
+              <IconWrapper aria-hidden='true'>
                 <CalendarTodayIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Founded</FactLabel>
-                <FactValue>June 9, 2003</FactValue>
+                <FactLabel>{t("about_founding_fact_year_label")}</FactLabel>
+                <FactValue>{t("about_legal_reg_date")}</FactValue>
               </FactContent>
             </FactCard>
 
-            <FactCard>
-              <IconWrapper>
+            <FactCard
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${t("about_founding_fact_years_service_label")}: ${t(
+                "about_founding_fact_years_service"
+              )}`}
+            >
+              <IconWrapper aria-hidden='true'>
                 <WorkspacesIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Years of Service</FactLabel>
-                <FactValue>22+ Years</FactValue>
+                <FactLabel>
+                  {t("about_founding_fact_years_service_label")}
+                </FactLabel>
+                <FactValue>{t("about_founding_fact_years_service")}</FactValue>
               </FactContent>
             </FactCard>
 
-            <FactCard>
-              <IconWrapper>
+            <FactCard
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${t("about_legal_reg_number_label")}: ${t(
+                "about_legal_reg_number"
+              )}`}
+            >
+              <IconWrapper aria-hidden='true'>
                 <VerifiedIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Registration</FactLabel>
-                <FactValue>Reg. No. 129/1560-059/60</FactValue>
+                <FactLabel>{t("about_legal_reg_number_label")}</FactLabel>
+                <FactValue>{t("about_legal_reg_number")}</FactValue>
               </FactContent>
             </FactCard>
 
-            <FactCard>
-              <IconWrapper>
+            <FactCard
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${t("about_legal_affiliations_label")}: ${t(
+                "about_legal_type"
+              )}`}
+            >
+              <IconWrapper aria-hidden='true'>
                 <BusinessIcon sx={{ fontSize: 24, color: "#00a77f" }} />
               </IconWrapper>
               <FactContent>
-                <FactLabel>Affiliations</FactLabel>
-                <FactValue>SWC & NFDN</FactValue>
+                <FactLabel>{t("about_legal_affiliations_label")}</FactLabel>
+                <FactValue>{t("about_legal_type")}</FactValue>
               </FactContent>
             </FactCard>
           </FactsColumn>

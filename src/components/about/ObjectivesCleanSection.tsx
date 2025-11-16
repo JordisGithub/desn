@@ -3,21 +3,22 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#F9FAFB",
-  paddingTop: theme.spacing(14),
-  paddingBottom: theme.spacing(14),
+  backgroundColor: "#F0F4F8",
+  paddingTop: theme.spacing(5),
+  paddingBottom: theme.spacing(5),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(10),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.75rem",
+  fontSize: "3rem",
   fontWeight: 700,
   color: "#004c91",
   textAlign: "center",
   letterSpacing: "0.02em",
+  lineHeight: 1.2,
   marginBottom: theme.spacing(1.5),
   [theme.breakpoints.down("md")]: {
     fontSize: "2.125rem",
@@ -37,48 +38,51 @@ const UnderlineBar = styled(Box)(({ theme }) => ({
 const ObjectivesGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
-  gap: theme.spacing(2.5),
+  gap: 0,
+  columnGap: theme.spacing(12),
+  rowGap: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
+    columnGap: 0,
   },
 }));
 
 const ObjectiveItem = styled(Box)(({ theme }) => ({
-  backgroundColor: "white",
-  border: "1px solid #e5e7eb",
-  borderRadius: "12px",
-  padding: theme.spacing(3.5),
   display: "flex",
-  gap: theme.spacing(2.5),
+  gap: theme.spacing(1),
   alignItems: "flex-start",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-  "&:hover": {
-    borderColor: "#00a77f",
-    boxShadow: "0 8px 16px rgba(0, 167, 127, 0.15)",
-    transform: "translateY(-2px)",
+  marginBottom: "6px !important",
+  padding: "2px 0 !important",
+  minHeight: "20px",
+  transition: "all 0.2s ease",
+  "&:focus-visible": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    borderRadius: "4px",
   },
 }));
 
 const NumberBadge = styled(Box)({
-  width: "32px",
-  height: "32px",
+  minWidth: "20px !important",
+  height: "20px !important",
   borderRadius: "50%",
-  backgroundColor: "#004c91",
-  color: "white",
+  backgroundColor: "#e5f3ff",
+  color: "#004c91",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "1rem",
-  fontWeight: 600,
+  fontSize: "0.625rem",
+  fontWeight: 700,
   flexShrink: 0,
+  marginTop: "1px",
 });
 
 const ObjectiveText = styled(Typography)({
-  fontSize: "1.063rem",
-  color: "#374151",
-  lineHeight: 1.7,
+  fontSize: "0.938rem",
+  color: "#1f2937",
+  lineHeight: 1.35,
   fontWeight: 400,
+  paddingTop: 0,
 });
 
 export default function ObjectivesCleanSection() {
@@ -97,17 +101,24 @@ export default function ObjectivesCleanSection() {
   ];
 
   return (
-    <SectionContainer aria-labelledby='objectives-heading'>
+    <SectionContainer
+      role='region'
+      aria-labelledby='objectives-heading'
+      aria-label='Organizational Goals and Objectives'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <SectionHeading as='h2' id='objectives-heading'>
+        <SectionHeading as='h2' id='objectives-heading' tabIndex={-1}>
           {t("about_objectives_title")}
         </SectionHeading>
-        <UnderlineBar />
+        <UnderlineBar aria-hidden='true' />
 
-        <ObjectivesGrid>
+        <ObjectivesGrid
+          role='list'
+          aria-label='List of organizational objectives'
+        >
           {objectives.map((objective, index) => (
-            <ObjectiveItem key={index}>
-              <NumberBadge>{index + 1}</NumberBadge>
+            <ObjectiveItem key={index} role='listitem'>
+              <NumberBadge aria-hidden='true'>{index + 1}</NumberBadge>
               <ObjectiveText>{objective}</ObjectiveText>
             </ObjectiveItem>
           ))}

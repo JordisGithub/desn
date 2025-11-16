@@ -1,6 +1,7 @@
 import { usePageTitle } from "../hooks/usePageTitle";
 import { Box } from "@mui/material";
 import MissionVisionHeroSection from "../components/about/MissionVisionHeroSection";
+import IntegratedMissionVisionSection from "../components/about/IntegratedMissionVisionSection";
 import FoundingFactsSection from "../components/about/FoundingFactsSection";
 import CoreValuesSection from "../components/about/CoreValuesSection";
 import ObjectivesCleanSection from "../components/about/ObjectivesCleanSection";
@@ -12,8 +13,14 @@ export default function About() {
   usePageTitle("page_titles.about");
 
   return (
-    <Box sx={{ backgroundColor: "#F9FAFB" }}>
+    <Box
+      component='main'
+      sx={{ backgroundColor: "#F0F4F8" }}
+      role='main'
+      aria-label='About DESN'
+    >
       <MissionVisionHeroSection />
+      <IntegratedMissionVisionSection />
       <FoundingFactsSection />
       <CoreValuesSection />
       <ObjectivesCleanSection />
