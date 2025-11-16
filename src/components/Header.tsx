@@ -129,7 +129,7 @@ const NavLink = styled(RouterLink)(({ theme }) => ({
   textDecoration: "none",
   fontSize: "16px",
   fontWeight: 400,
-  padding: theme.spacing(1, 2),
+  padding: "2px",
   position: "relative",
   "&::after": {
     content: "attr(data-text)",

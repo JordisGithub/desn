@@ -124,9 +124,18 @@ const ImpactSection: React.FC = () => {
   const { t } = useTranslation();
 
   const stats = [
-    { number: "2000+", label: t("get_involved.impact.lives_impacted") },
-    { number: "45+", label: t("get_involved.impact.programs") },
-    { number: "20", label: t("get_involved.impact.years_of_service") },
+    {
+      number: t("get_involved.impact.lives_impacted_number"),
+      label: t("get_involved.impact.lives_impacted"),
+    },
+    {
+      number: t("get_involved.impact.volunteers_number"),
+      label: t("get_involved.impact.volunteers"),
+    },
+    {
+      number: t("get_involved.impact.programs_number"),
+      label: t("get_involved.impact.programs"),
+    },
   ];
 
   return (

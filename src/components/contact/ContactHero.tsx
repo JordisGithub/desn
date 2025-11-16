@@ -9,6 +9,10 @@ const HeroSection = styled("section")(({ theme }) => ({
   overflow: "hidden",
   paddingTop: theme.spacing(16),
   paddingBottom: theme.spacing(10),
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(6),
+  },
 }));
 
 const GradientOverlay1 = styled(Box)({
@@ -87,6 +91,11 @@ const HeroButton = styled(Button)(({ theme }) => ({
     outline: "3px solid white",
     outlineOffset: "2px",
   },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    padding: theme.spacing(1.5, 4),
+    width: "100%",
+  },
 }));
 
 const OutlineButton = styled(HeroButton)({
@@ -127,16 +136,14 @@ export default function ContactHero() {
 
           <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
             <HeroButton
+              component='a'
               href='#contact-form'
               startIcon={<SendIcon />}
-              aria-label={t("contact.hero.send_message")}
+              role='link'
             >
               {t("contact.hero.send_message")}
             </HeroButton>
-            <OutlineButton
-              href='#map-section'
-              aria-label={t("contact.hero.view_location")}
-            >
+            <OutlineButton component='a' href='#map-section' role='link'>
               {t("contact.hero.view_location")}
             </OutlineButton>
           </Stack>

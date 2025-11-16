@@ -10,8 +10,11 @@ export default {
     description:
       "तपाईंको समय, स्रोत र वकालतले अपाङ्गता भएका व्यक्तिहरू, असहाय व्यक्तिहरू र एकल महिलाहरूको जीवनमा वास्तविक फरक ल्याउन सक्छ।",
     lives_impacted: "जीवन प्रभावित",
+    lives_impacted_number: "२०००+",
     volunteers: "स्वयंसेवकहरू",
+    volunteers_number: "४५+",
     programs: "कार्यक्रमहरू",
+    programs_number: "२०",
     years_of_service: "सेवा वर्ष",
   },
   volunteer: {
@@ -165,6 +168,7 @@ export default {
       },
     },
     become_member_aria_label: "सदस्य बन्नुहोस् — सदस्यता आवेदन फारम खुल्छ",
+    become_member: "सदस्य बन्नुहोस्",
   },
   form: {
     title: "हाम्रो अभियानमा सामेल हुनुहोस्",

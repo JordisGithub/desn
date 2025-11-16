@@ -130,6 +130,27 @@ export default function HeroSection() {
 
   return (
     <>
+      {/* Skip to main content link for keyboard users */}
+      <Box
+        component='a'
+        href='#main-content'
+        sx={{
+          position: "absolute",
+          left: "-9999px",
+          zIndex: 999,
+          padding: "1rem",
+          backgroundColor: "#f6d469",
+          color: "#2b2b2b",
+          textDecoration: "none",
+          fontWeight: 600,
+          "&:focus": {
+            left: "1rem",
+            top: "1rem",
+          },
+        }}
+      >
+        {t("skip_to_content")}
+      </Box>
       <HeroContainer id='hero' aria-labelledby='hero-heading'>
         <HeroContent>
           {/* Massive Headline */}
