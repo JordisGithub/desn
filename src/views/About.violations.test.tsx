@@ -12,7 +12,7 @@ describe("About Violations", () => {
     if (results.violations.length === 0) {
       console.log("✅ No accessibility violations found in About page!");
     } else {
-      results.violations.forEach((violation, index) => {
+      results.violations.forEach((violation) => {
         console.log(`Rule: ${violation.id}`);
         console.log(`Impact: ${violation.impact}`);
         console.log(`Description: ${violation.description}`);
