@@ -10,6 +10,7 @@ export interface SearchItem {
   excerpt?: string;
   url: string;
   date?: string;
+  matchText?: string;
 }
 
 class SearchService {
@@ -37,39 +38,47 @@ class SearchService {
           events?: Array<Record<string, unknown>>;
         }
 
-        const [resourcesRes, eventsRes] = await Promise.all([
-          ApiService.get<ResourcesResponse>("/api/resources"),
-          ApiService.get<EventsResponse>("/api/events"),
-        ]);
+        let resourceItems: SearchItem[] = [];
+        let eventItems: SearchItem[] = [];
 
-        const resources: Array<Record<string, unknown>> =
-          resourcesRes?.resources || [];
-        const events: Array<Record<string, unknown>> = eventsRes?.events || [];
+        try {
+          const [resourcesRes, eventsRes] = await Promise.all([
+            ApiService.get<ResourcesResponse>("/api/resources"),
+            ApiService.get<EventsResponse>("/api/events"),
+          ]);
 
-        const resourceItems: SearchItem[] = resources.map((r) => {
-          const rr = r as Record<string, unknown>;
-          return {
-            id: `resource-${String(rr["id"])}`,
-            type: "resource",
-            title: String(rr["title"] ?? "Untitled Resource"),
-            excerpt: String(rr["description"] ?? ""),
-            url: `/resources/${String(rr["id"])}`,
-            date: String(rr["publishDate"] ?? ""),
-          } as SearchItem;
-        });
+          const resources: Array<Record<string, unknown>> =
+            resourcesRes?.resources || [];
+          const events: Array<Record<string, unknown>> =
+            eventsRes?.events || [];
 
-        const eventItems: SearchItem[] = events.map((e) => {
-          const ee = e as Record<string, unknown>;
-          const id = String(ee["id"] ?? "");
-          return {
-            id: `event-${id}`,
-            type: "event",
-            title: String(ee["title"] ?? ee["name"] ?? `Event ${id}`),
-            excerpt: String(ee["description"] ?? ""),
-            url: `/events/${id}`,
-            date: String(ee["startDate"] ?? ee["date"] ?? ""),
-          } as SearchItem;
-        });
+          resourceItems = resources.map((r) => {
+            const rr = r as Record<string, unknown>;
+            return {
+              id: `resource-${String(rr["id"])}`,
+              type: "resource",
+              title: String(rr["title"] ?? "Untitled Resource"),
+              excerpt: String(rr["description"] ?? ""),
+              url: `/resources/${String(rr["id"])}`,
+              date: String(rr["publishDate"] ?? ""),
+            } as SearchItem;
+          });
+
+          const eventItems: SearchItem[] = events.map((e) => {
+            const ee = e as Record<string, unknown>;
+            const id = String(ee["id"] ?? "");
+            return {
+              id: `event-${id}`,
+              type: "event",
+              title: String(ee["title"] ?? ee["name"] ?? `Event ${id}`),
+              excerpt: String(ee["description"] ?? ""),
+              url: `/events/${id}`,
+              date: String(ee["startDate"] ?? ee["date"] ?? ""),
+            } as SearchItem;
+          });
+        } catch (apiError) {
+          console.warn("API calls failed, using page items only:", apiError);
+        }
 
         const pageItems: SearchItem[] = [
           {
@@ -77,49 +86,96 @@ class SearchService {
             type: "page",
             title: "Home",
             url: "/",
-            excerpt: "",
+            excerpt:
+              "DESN homepage - Empowering persons with disabilities in Nepal",
           },
           {
             id: "page-about",
             type: "page",
-            title: "About",
+            title: "About Us",
             url: "/about",
-            excerpt: "",
-          },
-          {
-            id: "page-get-involved",
-            type: "page",
-            title: "Get Involved",
-            url: "/get-involved",
-            excerpt: "",
-          },
-          {
-            id: "page-events",
-            type: "page",
-            title: "Events",
-            url: "/events",
-            excerpt: "",
-          },
-          {
-            id: "page-resources",
-            type: "page",
-            title: "Resources",
-            url: "/resources",
-            excerpt: "",
+            excerpt:
+              "Learn about DESN's mission, vision, and our work with persons with disabilities",
           },
           {
             id: "page-programs",
             type: "page",
             title: "Programs",
             url: "/programs",
-            excerpt: "",
+            excerpt:
+              "Education, Livelihood, and Advocacy programs for persons with disabilities",
+          },
+          {
+            id: "page-programs-education",
+            type: "page",
+            title: "Education Programs",
+            url: "/programs#pillar-education",
+            excerpt: "ICT Training, Braille & Sign Language, Scholarship Fund",
+          },
+          {
+            id: "page-programs-livelihood",
+            type: "page",
+            title: "Livelihood Programs",
+            url: "/programs#pillar-livelihood",
+            excerpt: "Microfinance, Skill Development, Job Placement Support",
+          },
+          {
+            id: "page-programs-advocacy",
+            type: "page",
+            title: "Advocacy Programs",
+            url: "/programs#pillar-advocacy",
+            excerpt:
+              "UNCRPD Monitoring, Policy Dialogue, Barrier-Free Environment Campaign",
+          },
+          {
+            id: "page-get-involved",
+            type: "page",
+            title: "Get Involved",
+            url: "/get-involved",
+            excerpt:
+              "Volunteer, donate, or become a member to support our cause",
+          },
+          {
+            id: "page-volunteer",
+            type: "page",
+            title: "Volunteer",
+            url: "/get-involved#volunteer",
+            excerpt: "Join our team of volunteers making a difference",
+          },
+          {
+            id: "page-donate",
+            type: "page",
+            title: "Donate",
+            url: "/get-involved#donate",
+            excerpt: "Support our programs with your generous donation",
+          },
+          {
+            id: "page-membership",
+            type: "page",
+            title: "Membership",
+            url: "/get-involved#membership",
+            excerpt: "Become a DESN member and join our community",
+          },
+          {
+            id: "page-events",
+            type: "page",
+            title: "Events",
+            url: "/events",
+            excerpt: "Upcoming events, workshops, and activities",
+          },
+          {
+            id: "page-resources",
+            type: "page",
+            title: "Resources",
+            url: "/resources",
+            excerpt: "Documents, publications, and helpful resources",
           },
           {
             id: "page-contact",
             type: "page",
             title: "Contact",
             url: "/contact",
-            excerpt: "",
+            excerpt: "Get in touch with DESN - Location, phone, email",
           },
         ];
 
@@ -142,7 +198,7 @@ class SearchService {
         keys: ["title", "excerpt", "type"],
         threshold: 0.35,
         includeMatches: true,
-        minMatchCharLength: 2,
+        minMatchCharLength: 3,
       });
     } catch (error) {
       console.error("Error building search index", error);
@@ -156,61 +212,42 @@ class SearchService {
   async search(query: string, limit = 8): Promise<SearchItem[]> {
     if (!query || query.trim().length === 0) return [];
 
-    // If query is long enough, prefer server-side search (faster for large datasets)
-    if (query.trim().length >= 4) {
-      try {
-        interface SearchResponse {
-          resources?: Array<Record<string, unknown>>;
-          events?: Array<Record<string, unknown>>;
-        }
-
-        const res = await ApiService.get<SearchResponse>(
-          `/api/search?q=${encodeURIComponent(query)}&limit=${limit}`
-        );
-        const resources = (res?.resources || []) as Array<
-          Record<string, unknown>
-        >;
-        const events = (res?.events || []) as Array<Record<string, unknown>>;
-
-        const items: SearchItem[] = [
-          ...resources.map((r) => {
-            const rr = r as Record<string, unknown>;
-            const id = String(rr["id"] ?? "");
-            return {
-              id: `resource-${id}`,
-              type: "resource",
-              title: String(rr["title"] ?? "Untitled Resource"),
-              excerpt: String(rr["description"] ?? ""),
-              url: `/resources/${id}`,
-              date: String(rr["publishDate"] ?? ""),
-            } as SearchItem;
-          }),
-          ...events.map((e) => {
-            const ee = e as Record<string, unknown>;
-            const id = String(ee["id"] ?? "");
-            return {
-              id: `event-${id}`,
-              type: "event",
-              title: String(ee["title"] ?? ee["name"] ?? `Event ${id}`),
-              excerpt: String(ee["description"] ?? ""),
-              url: `/events/${id}`,
-              date: String(ee["startDate"] ?? ee["date"] ?? ""),
-            } as SearchItem;
-          }),
-        ];
-
-        return items.slice(0, limit);
-      } catch {
-        // fallback to client index
-        console.warn("Server search failed, falling back to client index");
-      }
-    }
-
+    // Build index if not already built
     if (!this.fuse) await this.buildIndex();
     if (!this.fuse) return [];
 
+    // Use client-side Fuse.js search for all queries
     const results = this.fuse.search(query, { limit });
-    return results.map((r) => r.item);
+    return results.map((r) => {
+      const item = { ...r.item };
+      
+      // Extract matching text for context
+      if (r.matches && r.matches.length > 0) {
+        const match = r.matches[0];
+        if (match.value) {
+          // Get text around the match for context
+          const matchValue = match.value;
+          const indices = match.indices?.[0];
+          if (indices) {
+            const [start, end] = indices;
+            const contextStart = Math.max(0, start - 40);
+            const contextEnd = Math.min(matchValue.length, end + 80);
+            let excerpt = matchValue.substring(contextStart, contextEnd);
+            
+            // Add ellipsis if truncated
+            if (contextStart > 0) excerpt = "..." + excerpt;
+            if (contextEnd < matchValue.length) excerpt = excerpt + "...";
+            
+            item.matchText = excerpt;
+          } else {
+            // Fallback to excerpt if no indices
+            item.matchText = item.excerpt;
+          }
+        }
+      }
+      
+      return item;
+    });
   }
 
   // Force refresh (clear cache and rebuild)

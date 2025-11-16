@@ -265,6 +265,13 @@ const Header: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   useEffect(() => {
+    // Initialize search index on mount
+    SearchService.buildIndex().catch((err) => {
+      console.error("Failed to build search index", err);
+    });
+  }, []);
+
+  useEffect(() => {
     // Close results when clicking outside
     const onDocClick = (e: MouseEvent) => {
       if (!searchRef.current) return;
@@ -277,7 +284,7 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!searchQuery || searchQuery.trim().length < 2) {
+    if (!searchQuery || searchQuery.trim().length < 3) {
       setSearchResults([]);
       return;
     }
@@ -532,7 +539,27 @@ const Header: React.FC = () => {
                 <Paper
                   elevation={3}
                   sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
+                  role="region"
+                  aria-label="Search results"
                 >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "1px",
+                      height: "1px",
+                      padding: 0,
+                      margin: "-1px",
+                      overflow: "hidden",
+                      clip: "rect(0, 0, 0, 0)",
+                      whiteSpace: "nowrap",
+                      border: 0,
+                    }}
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    {searchResults.length} result{searchResults.length !== 1 ? "s" : ""} found
+                  </Box>
                   <List dense>
                     {searchResults.map((r, idx) => (
                       <ListItem key={r.id} disablePadding>
@@ -544,6 +571,7 @@ const Header: React.FC = () => {
                             setSearchQuery("");
                             navigate(r.url);
                           }}
+                          aria-label={`${r.title}, ${r.type}, ${r.matchText || r.excerpt || ""}`}
                         >
                           <ListItemIcon>
                             {r.type === "event" ? (
@@ -557,12 +585,45 @@ const Header: React.FC = () => {
                           <ListItemText
                             primary={r.title}
                             secondary={
-                              r.type === "page"
-                                ? "Page"
-                                : r.type === "resource"
-                                ? "Resource"
-                                : "Event"
+                              <>
+                                <Box
+                                  component="span"
+                                  sx={{
+                                    display: "block",
+                                    fontSize: "0.75rem",
+                                    color: "text.secondary",
+                                    textTransform: "uppercase",
+                                    fontWeight: 600,
+                                    mb: 0.5,
+                                  }}
+                                >
+                                  {r.type === "page"
+                                    ? "Page"
+                                    : r.type === "resource"
+                                    ? "Resource"
+                                    : "Event"}
+                                </Box>
+                                {r.matchText && (
+                                  <Box
+                                    component="span"
+                                    sx={{
+                                      display: "block",
+                                      fontSize: "0.875rem",
+                                      color: "text.primary",
+                                      lineHeight: 1.5,
+                                    }}
+                                  >
+                                    {r.matchText}
+                                  </Box>
+                                )}
+                              </>
                             }
+                            primaryTypographyProps={{
+                              sx: { fontWeight: 600, mb: 0.5 },
+                            }}
+                            secondaryTypographyProps={{
+                              component: "div",
+                            }}
                           />
                         </ListItemButton>
                       </ListItem>
