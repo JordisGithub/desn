@@ -88,7 +88,7 @@ const ImpactMetric = styled(Typography)({
   textAlign: "center",
 });
 
-const OutcomeText = styled(Typography)(({ theme }) => ({
+const OutcomeText = styled(Typography)({
   color: "#374151",
   fontSize: "0.9875rem",
   lineHeight: 1.5,
@@ -97,7 +97,7 @@ const OutcomeText = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: "vertical" as const,
   overflow: "hidden",
   textOverflow: "ellipsis",
-}));
+});
 
 const LearnMoreButton = styled(Button)(({ theme }) => ({
   backgroundColor: "var(--color-primary)",

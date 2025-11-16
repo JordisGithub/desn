@@ -21,12 +21,12 @@ import communityOutreachImg from "../../assets/GetInvolved/communityOutreach.jpg
 import techSupportImg from "../../assets/GetInvolved/techSupport.jpg";
 import eventSupportImg from "../../assets/GetInvolved/eventSupport.JPG";
 
-const Section = styled(Box)(({ theme }) => ({
+const Section = styled(Box)({
   padding: "40px",
   backgroundColor: "white",
   borderRadius: "16px",
   boxShadow: "0px 4px 20px rgba(0, 76, 145, 0.08)",
-}));
+});
 
 const CTAButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#00a77f",
