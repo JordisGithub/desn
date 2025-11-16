@@ -9,24 +9,25 @@ import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstruct
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const SectionContainer = styled("section")(({ theme }) => ({
-  backgroundColor: "#FFFFFF",
-  paddingTop: theme.spacing(14),
-  paddingBottom: theme.spacing(14),
+  backgroundColor: "#F0F4F8",
+  paddingTop: theme.spacing(5),
+  paddingBottom: theme.spacing(5),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(10),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
 }));
 
 const SectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "2.75rem",
+  fontSize: "3rem",
   fontWeight: 700,
   color: "#004c91",
   textAlign: "center",
   letterSpacing: "0.02em",
   marginBottom: theme.spacing(1.5),
+  lineHeight: 1.2,
   [theme.breakpoints.down("md")]: {
-    fontSize: "2.125rem",
+    fontSize: "2.25rem",
     letterSpacing: "0.01em",
   },
 }));
@@ -64,11 +65,16 @@ const ValueCard = styled(Box)(({ theme }) => ({
   textAlign: "center",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   minHeight: "190px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.06)",
+  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
   "&:hover": {
     borderColor: "#00a77f",
     boxShadow: "0 12px 28px rgba(0, 167, 127, 0.22)",
     transform: "translateY(-6px)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "3px",
+    borderColor: "#004c91",
   },
 }));
 
@@ -124,17 +130,26 @@ export default function CoreValuesSection() {
   ];
 
   return (
-    <SectionContainer aria-labelledby='core-values-heading'>
+    <SectionContainer
+      role='region'
+      aria-labelledby='core-values-heading'
+      aria-label='Our Core Values and Principles'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <SectionHeading as='h2' id='core-values-heading'>
+        <SectionHeading as='h2' id='core-values-heading' tabIndex={-1}>
           {t("about_values_title")}
         </SectionHeading>
-        <UnderlineBar />
+        <UnderlineBar aria-hidden='true' />
 
         <ValuesGrid>
           {values.map((value, index) => (
-            <ValueCard key={index}>
-              <IconBox>{value.icon}</IconBox>
+            <ValueCard
+              key={index}
+              tabIndex={0}
+              role='article'
+              aria-label={`Core value: ${value.title}`}
+            >
+              <IconBox aria-hidden='true'>{value.icon}</IconBox>
               <ValueTitle>{value.title}</ValueTitle>
             </ValueCard>
           ))}

@@ -647,11 +647,7 @@ const Header: React.FC = () => {
       >
         <DrawerContent>
           <DrawerHeader>
-            <Logo
-              src='https://www.figma.com/api/mcp/asset/ccc1b5e8-ef62-4fef-ae8f-f8e654b30036'
-              alt='DESN Logo'
-              style={{ height: "40px" }}
-            />
+            <Logo src={desnLogo} alt='DESN Logo' style={{ height: "40px" }} />
             <IconButton onClick={toggleMobileMenu} sx={{ color: "white" }}>
               <CloseIcon />
             </IconButton>

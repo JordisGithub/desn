@@ -114,20 +114,20 @@ jobs:
       - name: Package deployment artifacts
         run: |
           set -e
-          
+
           echo "📦 Creating deployment package..."
           mkdir -p deployment-package
-          
+
           # Copy frontend build
           echo "Packaging frontend..."
           cp -r dist deployment-package/frontend
-          
+
           # Copy backend JAR
           echo "Packaging backend..."
           mkdir -p deployment-package/backend
           JAR_FILE=$(ls backend/target/*.jar | grep -v "original" | head -n 1)
           cp "$JAR_FILE" deployment-package/backend/app.jar
-          
+
           # Create deployment metadata
           cat > deployment-package/metadata.json <<METADATA
           {
@@ -140,13 +140,13 @@ jobs:
             "backend_jar": "app.jar"
           }
           METADATA
-          
+
           # Create deployment instructions
           cat > deployment-package/DEPLOY.md <<'DEPLOY'
           # Deployment Instructions
 
           ## Automated Deployment (Recommended)
-          
+
           1. Download the latest `deployment-package.tar.gz` from GitHub Actions artifacts
           2. Extract on your server: `tar -xzf deployment-package.tar.gz`
           3. Run the deployment script: `sudo ./deploy.sh`
@@ -169,7 +169,7 @@ jobs:
           sudo systemctl reload nginx
           ```
           DEPLOY
-          
+
           # Create deployment script
           cat > deployment-package/deploy.sh <<'DEPLOY_SCRIPT'
           #!/bin/bash
@@ -223,12 +223,12 @@ jobs:
           echo "🌐 Frontend: http://15.206.210.71"
           echo "🔧 Backend: http://15.206.210.71/api"
           DEPLOY_SCRIPT
-          
+
           chmod +x deployment-package/deploy.sh
-          
+
           # Create tarball
           tar -czf deployment-package.tar.gz deployment-package/
-          
+
           echo "✅ Deployment package created: deployment-package.tar.gz"
           ls -lh deployment-package.tar.gz
 

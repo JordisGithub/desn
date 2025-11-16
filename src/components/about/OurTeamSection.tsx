@@ -1,16 +1,18 @@
 import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import PersonIcon from "@mui/icons-material/Person";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import krishnaMaharjanImg from "../../assets/AboutUs/Krishna_Maharjan.png";
+import shreeKrishnaKhanalImg from "../../assets/AboutUs/Shree_Krishna_Khanal.png";
+import tikaBajgainImg from "../../assets/AboutUs/Tika_Bajgain.png";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "#FFFFFF",
-  paddingTop: theme.spacing(14),
-  paddingBottom: theme.spacing(14),
+  paddingTop: theme.spacing(8),
+  paddingBottom: theme.spacing(8),
   [theme.breakpoints.down("md")]: {
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(10),
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(6),
   },
 }));
 
@@ -38,7 +40,7 @@ const UnderlineBar = styled(Box)({
 
 const DescriptionText = styled(Typography)({
   fontSize: "1.125rem",
-  color: "#4b5563",
+  color: "#1f2937",
   lineHeight: 1.6,
   maxWidth: "800px",
   margin: "0 auto 64px",
@@ -53,11 +55,12 @@ const SubsectionContainer = styled(Box)(({ theme }) => ({
 }));
 
 const SubsectionHeading = styled(Typography)(({ theme }) => ({
-  fontSize: "1.875rem",
-  fontWeight: 600,
+  fontSize: "2rem",
+  fontWeight: 700,
   color: "#004c91",
-  marginBottom: theme.spacing(5),
+  marginBottom: theme.spacing(3),
   textAlign: "center",
+  letterSpacing: "0.01em",
   [theme.breakpoints.down("md")]: {
     fontSize: "1.5rem",
     marginBottom: theme.spacing(4),
@@ -92,23 +95,29 @@ const StaffGrid = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Team Member Card
+// Team Member Card with Premium Styling and WCAG 2.2 Accessibility
 const TeamCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  borderRadius: "12px",
+  borderRadius: "16px",
   padding: theme.spacing(5),
   textAlign: "center",
   border: "1px solid #e5e7eb",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   height: "100%",
+  minHeight: "280px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   "&:hover": {
     transform: "translateY(-5px)",
-    boxShadow: "0 16px 32px rgba(0, 76, 145, 0.2)",
+    boxShadow: "0 16px 40px rgba(0, 76, 145, 0.25)",
     borderColor: "#00a77f",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "3px",
+    borderColor: "#004c91",
   },
 }));
 
@@ -128,9 +137,11 @@ const AvatarCircle = styled(Box)(({ theme }) => ({
   },
 }));
 
-const AvatarIcon = styled(PersonIcon)({
-  fontSize: "4rem",
-  color: "#004c91",
+const AvatarImage = styled("img")({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  borderRadius: "50%",
 });
 
 const MemberName = styled(Typography)(({ theme }) => ({
@@ -154,9 +165,9 @@ const MemberRole = styled(Typography)({
 
 const MemberExpertise = styled(Typography)({
   fontSize: "0.938rem",
-  color: "#6b7280",
+  color: "#4b5563",
   lineHeight: 1.5,
-  fontStyle: "italic",
+  fontStyle: "normal",
 });
 
 // Board List Section
@@ -214,6 +225,7 @@ interface TeamMember {
   name: string;
   role: string;
   expertise: string;
+  image?: string;
 }
 
 interface BoardMember {
@@ -224,27 +236,118 @@ interface BoardMember {
 export default function OurTeamSection() {
   const { t } = useTranslation();
 
-  // A. CORE LEADERSHIP (4-Up Grid with Full Cards)
-  const coreLeadership: TeamMember[] = [
+  // Helper function to get team member photo
+  const getTeamMemberImage = (name: string): string | undefined => {
+    const imageMap: Record<string, string> = {
+      "Krishna Maharjan": krishnaMaharjanImg,
+      "Shree Krishna Khanal": shreeKrishnaKhanalImg,
+      "Tika Bajgain": tikaBajgainImg,
+    };
+    return imageMap[name];
+  };
+
+  // Helper function to get placeholder image based on name
+  const getPlaceholderImage = (name: string): string => {
+    // Infer gender from common Nepali female names
+    const femaleIndicators = [
+      "Kamala",
+      "Khas Maya",
+      "Rubi",
+      "Laxmi",
+      "Sajina",
+      "Bhakti",
+      "Sushila",
+    ];
+    const isFemale = femaleIndicators.some((indicator) =>
+      name.includes(indicator)
+    );
+
+    // Use UI Avatars API for high-quality placeholder images
+    const bgColor = isFemale ? "e91e63" : "004c91";
+    const textColor = "ffffff";
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      name
+    )}&size=200&background=${bgColor}&color=${textColor}&bold=true&format=png`;
+  };
+
+  // A. OUR BOARD & LEADERSHIP (All 11 members - consolidated)
+  const boardAndLeadership: TeamMember[] = [
     {
       name: "Tek Nath Neopane",
-      role: "Chairperson",
-      expertise: "Prime Minister's Advisor • Blind by Birth",
+      role: t("role_chairperson"),
+      expertise: `${t("expertise_pm_advisor")} • ${t(
+        "expertise_blind_by_birth"
+      )}`,
+    },
+    {
+      name: "Bishnu Prasad Jaisi",
+      role: t("role_vice_chairperson"),
+      expertise: `${t("expertise_secondary_teacher")} • ${t(
+        "expertise_visual_impairment"
+      )}`,
+    },
+    {
+      name: "Kamala Bastola",
+      role: t("role_secretary"),
+      expertise: `${t("expertise_lower_secondary_teacher")} • ${t(
+        "expertise_physical_disability"
+      )}`,
     },
     {
       name: "Krishna Maharjan",
-      role: "Secretary General",
-      expertise: "Computer Engineer • UNDP Project Lead",
+      role: t("role_secretary_general"),
+      expertise: `${t("expertise_computer_engineer")} • ${t(
+        "expertise_undp_project_lead"
+      )}`,
     },
     {
       name: "Tika Bajgain",
-      role: "Treasurer",
-      expertise: "Finance Head • 20+ Years Teaching/Finance",
+      role: t("role_treasurer"),
+      expertise: `${t("expertise_finance_head")} • 20+ ${t(
+        "expertise_years_experience"
+      )} ${t("expertise_teaching_finance")}`,
     },
     {
       name: "Gopal Prasad Ghimire",
-      role: "Board Member",
-      expertise: "School Principal • 36 Years Teaching Experience",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_school_principal")} • 36 ${t(
+        "expertise_years_experience"
+      )} ${t("expertise_teaching_experience")}`,
+    },
+    {
+      name: "Khas Maya Gurung",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_agriculture_entrepreneur")} • ${t(
+        "expertise_physical_disability"
+      )}`,
+    },
+    {
+      name: "Suman Ghimire",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_health_personnel")} • ${t(
+        "expertise_visual_impairment"
+      )}`,
+    },
+    {
+      name: "Krishna Prasad Dahal",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_teacher")} • ${t(
+        "expertise_physical_disability"
+      )}`,
+    },
+    {
+      name: "Rubi Maharjan",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_community_engagement")} • ${t(
+        "expertise_physical_disability"
+      )}`,
+    },
+    {
+      name: "Bidya Poudel",
+      role: t("role_board_member"),
+      expertise: `${t("expertise_office_clerk")} • ${t(
+        "expertise_low_vision"
+      )}`,
     },
   ];
 
@@ -252,23 +355,29 @@ export default function OurTeamSection() {
   const programStaff: TeamMember[] = [
     {
       name: "Roji Maharjan",
-      role: "Financial & Administrative Manager",
-      expertise: "Account Management • Operations",
+      role: t("role_financial_admin_manager"),
+      expertise: `${t("expertise_account_management")} • ${t(
+        "expertise_operations"
+      )}`,
     },
     {
       name: "Sankalpa Neopane",
-      role: "Program Officer",
-      expertise: "Program Coordination & Implementation",
+      role: t("role_program_officer"),
+      expertise: t("expertise_program_coordination"),
     },
     {
       name: "Aswin Adhikari",
-      role: "Training & Capacity Building Lead",
-      expertise: "Capacity Building • Training Programs",
+      role: t("role_training_lead"),
+      expertise: `${t("expertise_capacity_building")} • ${t(
+        "expertise_training_programs"
+      )}`,
     },
     {
       name: "Manish Maharjan",
-      role: "Documentation Officer",
-      expertise: "Data Analyst • Documentation",
+      role: t("role_documentation_officer"),
+      expertise: `${t("expertise_data_analyst")} • ${t(
+        "expertise_documentation"
+      )}`,
     },
   ];
 
@@ -276,173 +385,189 @@ export default function OurTeamSection() {
   const technicalTeam: TeamMember[] = [
     {
       name: "Anamika Kumari Jha",
-      role: "Technical Team Leader",
-      expertise: "Bank IT Department • Tech Leadership",
+      role: t("role_technical_team_leader"),
+      expertise: `${t("expertise_bank_it")} • ${t(
+        "expertise_tech_leadership"
+      )}`,
     },
     {
       name: "Shree Krishna Khanal",
-      role: "Software Developer I",
-      expertise: "Software Company • Development",
+      role: t("role_software_developer_1"),
+      expertise: `${t("expertise_software_company")} • ${t(
+        "expertise_development"
+      )}`,
     },
     {
       name: "Saman Acharya",
-      role: "Software Developer II",
-      expertise: "Software Company • Development",
+      role: t("role_software_developer_2"),
+      expertise: `${t("expertise_software_company")} • ${t(
+        "expertise_development"
+      )}`,
     },
     {
       name: "Saurav Aryal",
-      role: "Quality Analyst",
-      expertise: "Business Analyst • Quality Assurance",
+      role: t("role_quality_analyst"),
+      expertise: `${t("expertise_business_analyst")} • ${t(
+        "expertise_quality_assurance"
+      )}`,
     },
     {
       name: "Bipin Chaudhary",
-      role: "Technical Assistant",
-      expertise: "Software Company • Technical Support",
-    },
-  ];
-
-  // D. BOARD MEMBERS (3-Up Grid with Full Cards)
-  const boardMembers: TeamMember[] = [
-    {
-      name: "Bishnu Prasad Jaisi",
-      role: "Vice Chairperson",
-      expertise: "Secondary Level Teacher • Visual Impairment",
-    },
-    {
-      name: "Kamala Bastola",
-      role: "Secretary",
-      expertise: "Lower Secondary Teacher • Physical Disability",
-    },
-    {
-      name: "Khas Maya Gurung",
-      role: "Board Member",
-      expertise: "Agriculture Entrepreneur • Physical Disability",
-    },
-    {
-      name: "Suman Ghimire",
-      role: "Board Member",
-      expertise: "Health Personnel • Visual Impairment",
-    },
-    {
-      name: "Krishna Prasad Dahal",
-      role: "Board Member",
-      expertise: "Teacher • Physical Disability",
-    },
-    {
-      name: "Rubi Maharjan",
-      role: "Board Member",
-      expertise: "Community Engagement Coordinator • Physical Disability",
-    },
-    {
-      name: "Bidya Poudel",
-      role: "Board Member",
-      expertise: "Office Clerk • Low Vision",
+      role: t("role_technical_assistant"),
+      expertise: `${t("expertise_software_company")} • ${t(
+        "expertise_technical_support"
+      )}`,
     },
   ];
 
   // E. COMMUNITY VOLUNTEERS & SUPPORT STAFF (Condensed List)
   const communityAndSupport: BoardMember[] = [
-    { name: "Tej Bahadur Rokka", role: "Active Member • Teacher" },
-    { name: "Laxmi KC", role: "Active Member • Teacher" },
-    { name: "Rocky Maharjan", role: "Photographer • Videography" },
-    { name: "Rajan Maharjan", role: "Social Mobilizer" },
-    { name: "Sajina Maharjan", role: "Community Based Volunteer" },
-    { name: "Bhakti Maya Karki", role: "Community Based Volunteer" },
-    { name: "Kunjan Kafle", role: "Office Assistant" },
-    { name: "Ram Babu Maharjan", role: "Security Person" },
-    { name: "Sushila Diyali", role: "Office Helper" },
+    {
+      name: "Tej Bahadur Rokka",
+      role: `${t("role_active_member")} • ${t("expertise_teacher")}`,
+    },
+    {
+      name: "Laxmi KC",
+      role: `${t("role_active_member")} • ${t("expertise_teacher")}`,
+    },
+    {
+      name: "Rocky Maharjan",
+      role: `${t("role_photographer")} • ${t("expertise_videography")}`,
+    },
+    { name: "Rajan Maharjan", role: t("role_social_mobilizer") },
+    { name: "Sajina Maharjan", role: t("role_community_volunteer") },
+    { name: "Bhakti Maya Karki", role: t("role_community_volunteer") },
+    { name: "Kunjan Kafle", role: t("role_office_assistant") },
+    { name: "Ram Babu Maharjan", role: t("role_security_person") },
+    { name: "Sushila Diyali", role: t("role_office_helper") },
   ];
 
   return (
-    <SectionContainer aria-labelledby='team-heading' id='teams'>
+    <SectionContainer
+      aria-labelledby='team-heading'
+      id='teams'
+      role='region'
+      aria-label='Team Members'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <Box textAlign='center'>
-          <SectionTitle variant='h2' id='team-heading'>
+          <SectionTitle variant='h2' id='team-heading' tabIndex={-1}>
             {t("about_team_title")}
           </SectionTitle>
-          <UnderlineBar />
+          <UnderlineBar aria-hidden='true' />
           <DescriptionText>{t("about_team_description")}</DescriptionText>
         </Box>
 
-        {/* A. CORE LEADERSHIP (4-Up Grid) */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
-            {t("about_team_core_leadership")}
+        {/* A. OUR BOARD & LEADERSHIP - Consolidated (All 11 members) */}
+        <SubsectionContainer
+          role='region'
+          aria-labelledby='board-leadership-heading'
+        >
+          <SubsectionHeading variant='h3' id='board-leadership-heading'>
+            Our Board & Leadership
           </SubsectionHeading>
           <LeadershipGrid>
-            {coreLeadership.map((member, index) => (
-              <TeamCard key={index}>
-                <AvatarCircle>
-                  <AvatarIcon />
-                </AvatarCircle>
-                <MemberName>{member.name}</MemberName>
-                <MemberRole>{member.role}</MemberRole>
-                <MemberExpertise>{member.expertise}</MemberExpertise>
-              </TeamCard>
-            ))}
+            {boardAndLeadership.map((member, index) => {
+              const memberImage = getTeamMemberImage(member.name);
+              const placeholderImage = getPlaceholderImage(member.name);
+              return (
+                <TeamCard
+                  key={index}
+                  role='article'
+                  aria-label={`Board member: ${member.name}, ${member.role}`}
+                >
+                  <AvatarCircle>
+                    <AvatarImage
+                      src={memberImage || placeholderImage}
+                      alt={`Photo of ${member.name}, ${member.role}`}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = placeholderImage;
+                      }}
+                    />
+                  </AvatarCircle>
+                  <MemberName>{member.name}</MemberName>
+                  <MemberRole>{member.role}</MemberRole>
+                  <MemberExpertise>{member.expertise}</MemberExpertise>
+                </TeamCard>
+              );
+            })}
           </LeadershipGrid>
         </SubsectionContainer>
 
         {/* B. PROGRAM STAFF (3-Up Grid) */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
+        <SubsectionContainer
+          role='region'
+          aria-labelledby='program-staff-heading'
+        >
+          <SubsectionHeading variant='h3' id='program-staff-heading'>
             {t("about_team_program_staff")}
           </SubsectionHeading>
           <StaffGrid>
-            {programStaff.map((member, index) => (
-              <TeamCard key={index}>
-                <AvatarCircle>
-                  <AvatarIcon />
-                </AvatarCircle>
-                <MemberName>{member.name}</MemberName>
-                <MemberRole>{member.role}</MemberRole>
-                <MemberExpertise>{member.expertise}</MemberExpertise>
-              </TeamCard>
-            ))}
+            {programStaff.map((member, index) => {
+              const placeholderImage = getPlaceholderImage(member.name);
+              return (
+                <TeamCard
+                  key={index}
+                  role='article'
+                  aria-label={`Staff member: ${member.name}, ${member.role}`}
+                >
+                  <AvatarCircle>
+                    <AvatarImage
+                      src={placeholderImage}
+                      alt={`Photo of ${member.name}, ${member.role}`}
+                    />
+                  </AvatarCircle>
+                  <MemberName>{member.name}</MemberName>
+                  <MemberRole>{member.role}</MemberRole>
+                  <MemberExpertise>{member.expertise}</MemberExpertise>
+                </TeamCard>
+              );
+            })}
           </StaffGrid>
         </SubsectionContainer>
 
         {/* C. TECHNICAL TEAM (Part-Time) (3-Up Grid) */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
+        <SubsectionContainer
+          role='region'
+          aria-labelledby='technical-team-heading'
+        >
+          <SubsectionHeading variant='h3' id='technical-team-heading'>
             {t("about_team_technical_team")}
           </SubsectionHeading>
           <StaffGrid>
-            {technicalTeam.map((member, index) => (
-              <TeamCard key={index}>
-                <AvatarCircle>
-                  <AvatarIcon />
-                </AvatarCircle>
-                <MemberName>{member.name}</MemberName>
-                <MemberRole>{member.role}</MemberRole>
-                <MemberExpertise>{member.expertise}</MemberExpertise>
-              </TeamCard>
-            ))}
-          </StaffGrid>
-        </SubsectionContainer>
-
-        {/* D. BOARD MEMBERS (3-Up Grid) */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
-            {t("about_team_board_members")}
-          </SubsectionHeading>
-          <StaffGrid>
-            {boardMembers.map((member, index) => (
-              <TeamCard key={index}>
-                <AvatarCircle>
-                  <AvatarIcon />
-                </AvatarCircle>
-                <MemberName>{member.name}</MemberName>
-                <MemberRole>{member.role}</MemberRole>
-                <MemberExpertise>{member.expertise}</MemberExpertise>
-              </TeamCard>
-            ))}
+            {technicalTeam.map((member, index) => {
+              const memberImage = getTeamMemberImage(member.name);
+              const placeholderImage = getPlaceholderImage(member.name);
+              return (
+                <TeamCard
+                  key={index}
+                  role='article'
+                  aria-label={`Technical team: ${member.name}, ${member.role}`}
+                >
+                  <AvatarCircle>
+                    <AvatarImage
+                      src={memberImage || placeholderImage}
+                      alt={`Photo of ${member.name}, ${member.role}`}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = placeholderImage;
+                      }}
+                    />
+                  </AvatarCircle>
+                  <MemberName>{member.name}</MemberName>
+                  <MemberRole>{member.role}</MemberRole>
+                  <MemberExpertise>{member.expertise}</MemberExpertise>
+                </TeamCard>
+              );
+            })}
           </StaffGrid>
         </SubsectionContainer>
 
         {/* E. COMMUNITY VOLUNTEERS & SUPPORT STAFF (Condensed List) */}
-        <SubsectionContainer>
-          <SubsectionHeading variant='h3'>
+        <SubsectionContainer
+          role='region'
+          aria-labelledby='community-volunteers-heading'
+        >
+          <SubsectionHeading variant='h3' id='community-volunteers-heading'>
             {t("about_team_community_volunteers")}
           </SubsectionHeading>
           <BoardListContainer>
