@@ -129,11 +129,7 @@ export default function IntegratedMissionVisionSection() {
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ThreeColumnGrid>
           {/* Column 1: Vision */}
-          <StatementBox
-            role='article'
-            aria-labelledby='vision-heading'
-            tabIndex={0}
-          >
+          <StatementBox role='article' aria-labelledby='vision-heading'>
             <StatementLabel as='h2' id='vision-heading'>
               {t("about_vision_title")}
             </StatementLabel>
@@ -143,7 +139,6 @@ export default function IntegratedMissionVisionSection() {
           {/* Column 2: Image (Center) */}
           <ImageColumn
             role='img'
-            tabIndex={0}
             aria-label='Community members participating in empowerment programs'
           >
             <StyledImage
@@ -154,11 +149,7 @@ export default function IntegratedMissionVisionSection() {
           </ImageColumn>
 
           {/* Column 3: Mission */}
-          <StatementBox
-            role='article'
-            aria-labelledby='mission-heading'
-            tabIndex={0}
-          >
+          <StatementBox role='article' aria-labelledby='mission-heading'>
             <StatementLabel as='h2' id='mission-heading'>
               {t("about_mission_title")}
             </StatementLabel>
