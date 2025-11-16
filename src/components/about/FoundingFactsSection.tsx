@@ -137,7 +137,6 @@ export default function FoundingFactsSection() {
           <FactsColumn role='list' aria-label='Organization founding facts'>
             <FactCard
               role='listitem'
-              tabIndex={0}
               aria-label={`${t("about_founding_fact_year_label")}: ${t(
                 "about_legal_reg_date"
               )}`}
@@ -153,7 +152,6 @@ export default function FoundingFactsSection() {
 
             <FactCard
               role='listitem'
-              tabIndex={0}
               aria-label={`${t("about_founding_fact_years_service_label")}: ${t(
                 "about_founding_fact_years_service"
               )}`}
@@ -171,7 +169,6 @@ export default function FoundingFactsSection() {
 
             <FactCard
               role='listitem'
-              tabIndex={0}
               aria-label={`${t("about_legal_reg_number_label")}: ${t(
                 "about_legal_reg_number"
               )}`}
@@ -187,7 +184,6 @@ export default function FoundingFactsSection() {
 
             <FactCard
               role='listitem'
-              tabIndex={0}
               aria-label={`${t("about_legal_affiliations_label")}: ${t(
                 "about_legal_type"
               )}`}
