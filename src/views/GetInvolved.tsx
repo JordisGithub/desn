@@ -34,7 +34,7 @@ const GetInvolved: React.FC = () => {
   return (
     <Box component='div'>
       <SkipLink href='#main-content'>Skip to content</SkipLink>
-      <Box component='main' id='main-content'>
+      <Box component='div'>
         <HeroSection />
         <ImpactSection />
         <VolunteerSection />
