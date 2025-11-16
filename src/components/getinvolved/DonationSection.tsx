@@ -13,9 +13,10 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 12),
-  backgroundColor: "white",
+  backgroundColor: "#e6f4f1",
   borderRadius: "16px",
   boxShadow: "0px 4px 20px rgba(0, 76, 145, 0.08)",
+  border: "1px solid #b8e6d5",
   [theme.breakpoints.down("lg")]: {
     padding: theme.spacing(8, 4),
   },
@@ -106,9 +107,8 @@ const BenefitText = styled(Typography)({
 });
 
 const ImpactBox = styled(Box)(({ theme }) => ({
-  backgroundColor: "#f9fafb",
   borderRadius: "16px",
-  padding: theme.spacing(6),
+  padding: theme.spacing(6, 0),
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(5),
@@ -274,7 +274,7 @@ const DonationSection: React.FC = () => {
 
       {/* Secure Payment via PayPal section intentionally removed per request */}
 
-      <ImpactBox role='complementary' aria-labelledby='donation-impact-title'>
+      <ImpactBox aria-labelledby='donation-impact-title'>
         <ImpactTitle as='h3' id='donation-impact-title'>
           {t("get_involved.donation.impact.title")}
         </ImpactTitle>
@@ -283,7 +283,6 @@ const DonationSection: React.FC = () => {
             <ImpactItem
               key={index}
               role='listitem'
-              tabIndex={0}
               aria-label={`${example.amount}: ${example.description}`}
             >
               <ImpactIconCircle aria-hidden='true'>

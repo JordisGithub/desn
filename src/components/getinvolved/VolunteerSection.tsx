@@ -52,6 +52,8 @@ const IntroContainer = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "608px 608px",
   gap: theme.spacing(8),
   marginBottom: theme.spacing(8),
+  justifyContent: "center",
+  alignItems: "center",
 }));
 
 const TextContent = styled(Box)(({ theme }) => ({
@@ -119,6 +121,7 @@ const OpportunitiesGrid = styled(Box)({
   gridTemplateColumns: "repeat(4, 1fr)",
   gap: "24px",
   marginBottom: "64px",
+  justifyContent: "center",
 });
 
 const OpportunityCard = styled(Box)(({ theme }) => ({
@@ -301,7 +304,7 @@ const VolunteerSection: React.FC = () => {
 
       <OpportunitiesGrid role='list' aria-label='Volunteer opportunities'>
         {opportunities.map((opportunity, index) => (
-          <OpportunityCard key={index} role='listitem' tabIndex={0}>
+          <OpportunityCard key={index} role='listitem'>
             <CardImage>
               <img src={opportunity.image} alt={opportunity.alt} />
             </CardImage>

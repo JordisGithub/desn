@@ -3,13 +3,13 @@ export default {
     title: "Change a Life. Start Today.",
     subtitle:
       "Your time and passion can transform the future for thousands of people with disabilities in Nepal.",
-    description:
-      "Join our volunteer community and become part of a movement that's breaking barriers, building skills, and creating real opportunities for independence and dignity.",
     cta: "Become a Volunteer",
   },
   impact: {
     title: "Your Impact Multiplies",
     subtitle: "See what volunteers like you have already achieved",
+    description:
+      "Join our volunteer community and become part of a movement that's breaking barriers, building skills, and creating real opportunities for independence and dignity.",
     lives_impacted: "Lives Changed",
     volunteers: "Active Volunteers",
     programs: "Community Programs",
@@ -77,15 +77,15 @@ export default {
     impact: {
       title: "Your Donation Impact",
       education: {
-        amount: "NPR 5,000",
+        amount: "NPR 20,000",
         description: "Sponsors one child's education for a month",
       },
       training: {
-        amount: "NPR 15,000",
+        amount: "NPR 60,000",
         description: "Provides skills training for 5 women",
       },
       accessibility: {
-        amount: "NPR 50,000",
+        amount: "NPR 150,000",
         description: "Supports a full accessibility program",
       },
     },

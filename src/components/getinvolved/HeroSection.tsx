@@ -1,113 +1,81 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Container, Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import useLazyBackground from "../../hooks/useLazyBackground";
+import type { MutableRefObject } from "react";
 import getInvolvedHero from "../../assets/GetInvolved/get-involved-hero.png";
 
-const HeroContainer = styled(Box)({
+const HeroContainer = styled("section")({
   position: "relative",
-  height: "600px",
+  height: "500px",
   overflow: "hidden",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    inset: 0,
-    backgroundImage: `url(${getInvolvedHero})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center 70%",
-    animation: "kenBurnsZoom 20s ease-in-out infinite alternate",
-  },
-  "@keyframes kenBurnsZoom": {
-    "0%": {
-      transform: "scale(1)",
-    },
-    "100%": {
-      transform: "scale(1.1)",
-    },
-  },
 });
 
-const Overlay = styled(Box)({
-  position: "absolute",
-  inset: 0,
-  background:
-    "linear-gradient(135deg, rgba(0, 76, 145, 0.92) 0%, rgba(0, 76, 145, 0.82) 50%, rgba(0, 76, 145, 0.62) 100%)",
-  zIndex: 1,
-});
-
-const Content = styled(Box)(({ theme }) => ({
+const ContentWrapper = styled(Box)({
   position: "relative",
-  zIndex: 2,
+  zIndex: 1,
   height: "100%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  padding: theme.spacing(0, 12),
-  maxWidth: "1200px",
+  alignItems: "center",
+});
+
+const Title = styled(Typography)(({ theme }) => ({
+  fontSize: "68px",
+  fontWeight: 800,
+  color: "rgb(255, 255, 255)",
+  fontFamily: "'Poppins', 'Roboto', sans-serif",
+  letterSpacing: "0.68px",
+  lineHeight: "74.8px",
+  textAlign: "center",
+  textShadow: "rgba(0, 0, 0, 0.85) 0px 10px 20px",
+  marginTop: 0,
+  marginBottom: "16px",
+  WebkitFontSmoothing: "antialiased",
+  textRendering: "optimizeLegibility",
 }));
 
-const IconCircle = styled(Box)({
-  width: "80px",
-  height: "80px",
-  borderRadius: "50%",
-  backgroundColor: "#f6d469",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  marginBottom: "24px",
-});
-
-const Title = styled("h1")({
-  fontSize: "48px",
-  fontWeight: 400,
-  color: "white",
-  fontFamily: "'Open Sans', sans-serif",
-  margin: 0,
-  marginBottom: "16px",
-  textShadow: "0px 8px 16px rgba(0, 0, 0, 0.75)",
-});
-
-const Subtitle = styled(Typography)({
-  fontSize: "36px",
-  fontWeight: 400,
-  color: "rgba(255, 255, 255, 0.9)",
-  marginBottom: "16px",
-  maxWidth: "1200px",
-  lineHeight: 1.4,
-  textShadow: "0px 8px 16px rgba(0, 0, 0, 0.75)",
-});
-
-const Description = styled(Typography)(({ theme }) => ({
-  fontSize: "20px",
-  fontWeight: 400,
-  color: "#ffffff",
-  maxWidth: "1000px",
-  lineHeight: 1.5,
-  textShadow: "0px 4px 12px rgba(0, 0, 0, 0.6)",
+const Tagline = styled(Typography)(({ theme }) => ({
+  fontSize: "16px",
+  fontWeight: 600,
+  color: "rgb(246, 212, 105)",
+  fontFamily: "'Poppins', 'Open Sans', 'Roboto', 'Arial', sans-serif",
+  letterSpacing: "0.16px",
+  lineHeight: "22.4px",
+  textAlign: "center",
+  textShadow: "rgba(0, 0, 0, 0.75) 0px 8px 16px",
+  marginTop: 0,
+  marginBottom: 0,
+  marginLeft: "118px",
+  marginRight: "118px",
+  maxWidth: "700px",
+  WebkitFontSmoothing: "antialiased",
+  textRendering: "optimizeLegibility",
 }));
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
+  const bgRef = useLazyBackground() as MutableRefObject<HTMLElement | null>;
 
   return (
     <HeroContainer
-      role='banner'
-      aria-label='Get Involved Hero Section'
-      aria-describedby='hero-description'
+      aria-labelledby='get-involved-hero-heading'
+      data-bg={getInvolvedHero}
+      ref={bgRef}
     >
-      <Overlay />
-      <Content>
-        <IconCircle>
-          <VolunteerActivismIcon sx={{ fontSize: 48, color: "#004c91" }} />
-        </IconCircle>
-        <Title>{t("get_involved.hero.title")}</Title>
-        <Subtitle>{t("get_involved.hero.subtitle")}</Subtitle>
-        <Description id='hero-description'>
-          {t("get_involved.hero.description")}
-        </Description>
-      </Content>
+      <Container
+        maxWidth='xl'
+        sx={{ px: { xs: 2, sm: 3, md: 6 }, height: "100%" }}
+      >
+        <ContentWrapper>
+          <Title as='h1' id='get-involved-hero-heading'>
+            {t("get_involved.hero.title")}
+          </Title>
+          <Tagline>{t("get_involved.hero.subtitle")}</Tagline>
+        </ContentWrapper>
+      </Container>
     </HeroContainer>
   );
 };

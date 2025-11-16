@@ -354,7 +354,7 @@ const MembershipSection: React.FC = () => {
         </BenefitsTitle>
         <BenefitsGrid role='list' aria-label='Membership benefits'>
           {benefits.map((benefit, index) => (
-            <BenefitCard key={index} role='listitem' tabIndex={0}>
+            <BenefitCard key={index} role='listitem'>
               <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 24 }} />
               <BenefitText>{benefit}</BenefitText>
             </BenefitCard>

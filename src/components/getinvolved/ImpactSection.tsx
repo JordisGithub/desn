@@ -25,15 +25,18 @@ const SectionTitle = styled(Typography)({
   fontSize: "32px",
   fontWeight: 400,
   color: "#004c91",
-  marginBottom: "12px",
+  marginBottom: "20px",
   fontFamily: "'Open Sans', sans-serif",
 });
 
-const SectionSubtitle = styled(Typography)({
+const Description = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: 400,
   color: "#374151",
-});
+  lineHeight: 1.6,
+  maxWidth: "900px",
+  textAlign: "center",
+}));
 
 const StatsGrid = styled(Box)({
   display: "grid",
@@ -107,14 +110,16 @@ const ImpactSection: React.FC = () => {
           <SectionTitle as='h2' id='impact-section-title'>
             {t("get_involved.impact.title")}
           </SectionTitle>
-          <SectionSubtitle>{t("get_involved.impact.subtitle")}</SectionSubtitle>
+          <Description>
+            {t("get_involved.impact.subtitle")}{" "}
+            {t("get_involved.impact.description")}
+          </Description>
         </Header>
         <StatsGrid role='list' aria-label='Impact statistics'>
           {stats.map((stat, index) => (
             <StatCard
               key={index}
               role='listitem'
-              tabIndex={0}
               aria-label={`${stat.number} ${stat.label}`}
             >
               <StatNumber aria-hidden='true'>{stat.number}</StatNumber>

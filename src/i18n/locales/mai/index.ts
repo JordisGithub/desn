@@ -1,8 +1,26 @@
-// Maithili translations - currently using Nepali as base with Maithili common
+// Maithili translations
 import common from "./common";
-import neTranslations from "../ne";
+import home from "./home";
+import about from "./about";
+import footer from "./footer";
+import get_involved from "./get_involved";
+import auth from "./auth";
+import payment from "./payment";
+import accessibility from "./accessibility";
+import contact from "./contact";
+import programs from "./programs";
+import events from "./events";
 
 export default {
-  ...neTranslations,
   ...common,
+  ...home,
+  ...about,
+  ...footer,
+  ...auth,
+  ...payment,
+  ...accessibility,
+  ...events,
+  get_involved,
+  contact,
+  programs,
 };

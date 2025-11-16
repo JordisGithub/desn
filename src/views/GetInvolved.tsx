@@ -38,10 +38,8 @@ const GetInvolved: React.FC = () => {
         <HeroSection />
         <ImpactSection />
         <VolunteerSection />
-        <Box sx={{ backgroundColor: "#f9fafb", py: 8 }}>
-          <DonationSection />
-          <MembershipSection />
-        </Box>
+        <DonationSection />
+        <MembershipSection />
         <AboutCTASection />
       </Box>
     </Box>
