@@ -39,8 +39,8 @@ const ObjectivesGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: 0,
-  columnGap: theme.spacing(10),
-  rowGap: theme.spacing(0.75),
+  columnGap: theme.spacing(12),
+  rowGap: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     columnGap: 0,
@@ -51,9 +51,9 @@ const ObjectiveItem = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(1),
   alignItems: "flex-start",
-  marginBottom: 0,
-  padding: theme.spacing(0.25, 0),
-  minHeight: "24px",
+  marginBottom: "6px !important",
+  padding: "2px 0 !important",
+  minHeight: "20px",
   transition: "all 0.2s ease",
   "&:focus-visible": {
     outline: "3px solid #f6d469",
@@ -63,15 +63,15 @@ const ObjectiveItem = styled(Box)(({ theme }) => ({
 }));
 
 const NumberBadge = styled(Box)({
-  minWidth: "22px",
-  height: "22px",
+  minWidth: "20px !important",
+  height: "20px !important",
   borderRadius: "50%",
   backgroundColor: "#e5f3ff",
   color: "#004c91",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "0.688rem",
+  fontSize: "0.625rem",
   fontWeight: 700,
   flexShrink: 0,
   marginTop: "1px",

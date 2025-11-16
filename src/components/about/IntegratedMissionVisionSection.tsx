@@ -32,9 +32,11 @@ const ThreeColumnGrid = styled(Box)(({ theme }) => ({
 const StatementBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "16px",
-  padding: theme.spacing(5),
+  padding: theme.spacing(6),
   minHeight: "280px",
-  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
+  maxWidth: "450px",
+  margin: "0 auto",
   border: "1px solid #e5e7eb",
   transition: "all 0.3s ease",
   display: "flex",
@@ -59,12 +61,13 @@ const StatementBox = styled(Box)(({ theme }) => ({
 
 const StatementLabel = styled(Typography)(({ theme }) => ({
   color: "#004c91",
-  fontSize: "1.75rem",
+  fontSize: "2.5rem",
   fontWeight: 700,
   marginBottom: theme.spacing(2.5),
   letterSpacing: "0.01em",
+  lineHeight: 1.2,
   [theme.breakpoints.down("md")]: {
-    fontSize: "1.5rem",
+    fontSize: "1.875rem",
   },
 }));
 
@@ -78,17 +81,20 @@ const StatementText = styled(Typography)({
 const ImageColumn = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "16px",
-  padding: theme.spacing(2),
-  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
-  border: "2px solid var(--color-background-alt)",
+  padding: theme.spacing(2.5),
+  boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
+  border: "4px solid var(--color-accent) !important",
   transition: "all 0.3s ease",
   overflow: "hidden",
   display: "flex",
   alignItems: "center",
   minHeight: "280px",
   "&:hover": {
-    boxShadow: "0 12px 35px rgba(0, 76, 145, 0.2)",
+    boxShadow: "0 16px 50px rgba(0, 76, 145, 0.3)",
     transform: "translateY(-4px)",
+    "& img": {
+      transform: "scale(1.02)",
+    },
   },
   "&:focus-visible": {
     outline: "3px solid #f6d469",
@@ -108,6 +114,7 @@ const StyledImage = styled("img")({
   objectFit: "cover",
   borderRadius: "12px",
   display: "block",
+  transition: "transform 0.3s ease",
 });
 
 export default function IntegratedMissionVisionSection() {

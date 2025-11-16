@@ -102,7 +102,7 @@ const TeamCard = styled(Box)(({ theme }) => ({
   padding: theme.spacing(5),
   textAlign: "center",
   border: "1px solid #e5e7eb",
-  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   height: "100%",
   minHeight: "280px",

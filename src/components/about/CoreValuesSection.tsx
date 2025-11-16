@@ -65,7 +65,7 @@ const ValueCard = styled(Box)(({ theme }) => ({
   textAlign: "center",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   minHeight: "190px",
-  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
   "&:hover": {
     borderColor: "#00a77f",
     boxShadow: "0 12px 28px rgba(0, 167, 127, 0.22)",
