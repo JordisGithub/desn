@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import desnLogo from "../../assets/DESN_logo_500x500.jpg";
-import useLazyBackground from "../../hooks/useLazyBackground";
+import useLazyBackgroundLight from "../../hooks/useLazyBackgroundLight";
 import type { MutableRefObject } from "react";
 const heroImageUrl = new URL(
   "../../assets/home/home-aboutus.jpg",
@@ -18,7 +18,7 @@ const HeroContainer = styled("section")({
 
 const ContentWrapper = styled(Box)({
   position: "relative",
-  zIndex: 1,
+  zIndex: 2,
   height: "100%",
   display: "flex",
   flexDirection: "column",
@@ -91,7 +91,8 @@ const EstablishedBadge = styled(Box)(({ theme }) => ({
 
 export default function AboutHero() {
   const { t } = useTranslation();
-  const bgRef = useLazyBackground() as MutableRefObject<HTMLElement | null>;
+  const bgRef =
+    useLazyBackgroundLight() as MutableRefObject<HTMLElement | null>;
 
   return (
     <HeroContainer

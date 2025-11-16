@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,14 +13,14 @@ import { postWithAuth } from "../../services/ApiService";
 
 const FormContainer = styled(Box)(({ theme }) => ({
   borderRadius: "16px",
-  padding: theme.spacing(6, 0),
+  padding: theme.spacing(8, 0),
   maxWidth: "768px",
   margin: "0 auto",
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(4, 0),
+    padding: theme.spacing(6, 0),
   },
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(3, 0),
+    padding: theme.spacing(4, 0),
   },
 }));
 
@@ -54,26 +54,39 @@ const StyledTextField = styled(TextField)({
     borderRadius: "10px",
     "& fieldset": {
       borderColor: "#d1d5dc",
+      borderWidth: "1px",
     },
     "&:hover fieldset": {
       borderColor: "#004c91",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#004c91",
+      borderColor: "#f6d469",
+      borderWidth: "3px",
     },
+  },
+  "& .MuiInputBase-input": {
+    color: "#1f2937",
   },
 });
 
 const SubmitButton = styled(Button)({
   backgroundColor: "#f6d469",
-  color: "#2b2b2b",
+  color: "#004c91",
   fontSize: "20px",
-  fontWeight: 400,
-  padding: "12px 24px",
-  borderRadius: "10px",
+  fontWeight: 700,
+  padding: "14px 32px",
+  borderRadius: "12px",
   textTransform: "none",
+  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     backgroundColor: "#f5ca4a",
+    transform: "translateY(-3px)",
+    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+  },
+  "&:disabled": {
+    backgroundColor: "#d1d5db",
+    color: "#6b7280",
   },
 });
 
@@ -84,18 +97,27 @@ const RequiredNote = styled(Typography)({
   marginTop: "-16px",
 });
 
-const VolunteerForm: React.FC = () => {
+interface VolunteerFormProps {
+  onSuccess?: () => void;
+  dialogTitleId?: string;
+  dialogDescId?: string;
+}
+
+const VolunteerForm: React.FC<VolunteerFormProps> = ({
+  onSuccess,
+  dialogTitleId,
+  dialogDescId,
+}) => {
   const { t } = useTranslation();
   const { lang } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phone: "",
-    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const firstInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -135,11 +157,14 @@ const VolunteerForm: React.FC = () => {
         setFormData({
           fullName: "",
           email: "",
-          phone: "",
-          message: "",
         });
-        // Scroll to success message
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Announce success to SR via aria-live (Alert role=status below)
+        // Call onSuccess callback after a short delay to show success message
+        if (onSuccess) {
+          setTimeout(() => {
+            onSuccess();
+          }, 2000);
+        }
       } else {
         setSubmitError(response.message || "Failed to submit application");
       }
@@ -154,10 +179,26 @@ const VolunteerForm: React.FC = () => {
     }
   };
 
+  // focus the first input when dialog opens
+  useEffect(() => {
+    if (firstInputRef.current) {
+      firstInputRef.current.focus();
+    }
+  }, []);
+
   return (
-    <FormContainer>
-      <FormTitle>{t("get_involved.volunteer.form.title")}</FormTitle>
-      <RequiredNote>{t("get_involved.volunteer.form.required")}</RequiredNote>
+    <FormContainer
+      id='volunteer-form'
+      role='form'
+      aria-labelledby={dialogTitleId}
+      aria-describedby={dialogDescId}
+    >
+      <FormTitle id={dialogTitleId || "volunteer-dialog-title"}>
+        {t("get_involved.volunteer.form.title")}
+      </FormTitle>
+      <RequiredNote id={dialogDescId || "volunteer-dialog-desc"}>
+        {t("get_involved.volunteer.form.required")}
+      </RequiredNote>
 
       {submitSuccess && (
         <Alert severity='success' sx={{ mb: 3 }}>
@@ -182,6 +223,11 @@ const VolunteerForm: React.FC = () => {
             required
             fullWidth
             disabled={isSubmitting}
+            inputRef={firstInputRef}
+            inputProps={{
+              "aria-label": "Full Name",
+              "aria-required": "true",
+            }}
           />
           <StyledTextField
             name='email'
@@ -192,36 +238,19 @@ const VolunteerForm: React.FC = () => {
             required
             fullWidth
             disabled={isSubmitting}
+            inputProps={{
+              "aria-label": "Email Address",
+              "aria-required": "true",
+            }}
           />
         </InputRow>
-        <StyledTextField
-          name='phone'
-          label={t("get_involved.volunteer.form.phone")}
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          fullWidth
-          sx={{ maxWidth: "376px" }}
-          disabled={isSubmitting}
-        />
-        <StyledTextField
-          name='message'
-          label={t("get_involved.volunteer.form.message")}
-          value={formData.message}
-          onChange={handleChange}
-          multiline
-          rows={5}
-          fullWidth
-          disabled={isSubmitting}
-        />
         <SubmitButton
           type='submit'
           endIcon={isSubmitting ? <CircularProgress size={20} /> : <SendIcon />}
           disabled={isSubmitting}
+          aria-label='Submit volunteer inquiry'
         >
-          {isSubmitting
-            ? t("get_involved.volunteer.form.submitting") || "Submitting..."
-            : t("get_involved.volunteer.form.submit")}
+          {isSubmitting ? "Submitting..." : "SUBMIT VOLUNTEER INQUIRY"}
         </SubmitButton>
       </Form>
     </FormContainer>

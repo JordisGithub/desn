@@ -6,6 +6,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../contexts/LanguageContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -16,6 +20,27 @@ import { postWithAuth } from "../../services/ApiService";
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 12),
   backgroundColor: "white",
+  borderRadius: "16px",
+  boxShadow: "0px 4px 20px rgba(0, 76, 145, 0.08)",
+}));
+
+const BecomeaMemberButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "#f6d469",
+  color: "#004c91",
+  fontSize: "18px",
+  fontWeight: 700,
+  padding: theme.spacing(2, 5),
+  borderRadius: "12px",
+  textTransform: "none",
+  marginTop: theme.spacing(3),
+  maxWidth: "280px",
+  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  "&:hover": {
+    backgroundColor: "#f5ca4a",
+    transform: "translateY(-3px) scale(1.02)",
+    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+  },
 }));
 
 const IntroContainer = styled(Box)(({ theme }) => ({
@@ -71,7 +96,7 @@ const ImageContainer = styled(Box)({
 
 const BenefitsSection = styled(Box)({
   maxWidth: "1280px",
-  margin: "0 auto 64px auto",
+  margin: "0 auto",
 });
 
 const BenefitsTitle = styled(Typography)({
@@ -110,6 +135,7 @@ const FormSection = styled(Box)({
   borderRadius: "16px",
   background: "linear-gradient(to bottom, #004c91, #00a77f)",
   padding: "64px",
+  boxShadow: "0 12px 32px rgba(0, 76, 145, 0.3)",
 });
 
 const FormTitle = styled(Typography)({
@@ -146,42 +172,54 @@ const StyledTextField = styled(TextField)({
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     borderRadius: "10px",
     "& fieldset": {
-      borderColor: "transparent",
+      borderColor: "rgba(255, 255, 255, 0.3)",
+      borderWidth: "1px",
     },
     "&:hover fieldset": {
-      borderColor: "rgba(0, 76, 145, 0.3)",
+      borderColor: "rgba(0, 76, 145, 0.5)",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#004c91",
+      borderColor: "#f6d469",
+      borderWidth: "3px",
     },
   },
   "& .MuiInputLabel-root": {
-    color: "rgba(16, 24, 40, 0.5)",
+    color: "rgba(16, 24, 40, 0.7)",
+  },
+  "& .MuiInputBase-input": {
+    color: "#1f2937",
   },
 });
 
 const SubmitButton = styled(Button)({
   backgroundColor: "#f6d469",
-  color: "#351c42",
-  fontSize: "16px",
-  fontWeight: 400,
-  padding: "12px 24px",
-  borderRadius: "10px",
+  color: "#004c91",
+  fontSize: "20px",
+  fontWeight: 700,
+  padding: "14px 32px",
+  borderRadius: "12px",
   textTransform: "none",
+  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     backgroundColor: "#f5ca4a",
+    transform: "translateY(-3px)",
+    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+  },
+  "&:disabled": {
+    backgroundColor: "#d1d5db",
+    color: "#6b7280",
   },
 });
 
 const MembershipSection: React.FC = () => {
   const { t } = useTranslation();
   const { lang } = useLanguage();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
-    address: "",
-    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -235,11 +273,11 @@ const MembershipSection: React.FC = () => {
           fullName: "",
           email: "",
           phone: "",
-          address: "",
-          message: "",
         });
-        // Scroll to success message
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Close modal after showing success message
+        setTimeout(() => {
+          handleCloseModal();
+        }, 2000);
       } else {
         setSubmitError(response.message || "Failed to submit application");
       }
@@ -254,8 +292,23 @@ const MembershipSection: React.FC = () => {
     }
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Reset form state when closing
+    setSubmitSuccess(false);
+    setSubmitError(null);
+  };
+
   return (
-    <Section>
+    <Section
+      id='membership-section'
+      role='region'
+      aria-labelledby='membership-section-title'
+    >
       <IntroContainer>
         <TextContent>
           <Box sx={{ position: "relative" }}>
@@ -264,7 +317,9 @@ const MembershipSection: React.FC = () => {
             />
             <TitleBar />
           </Box>
-          <SectionTitle>{t("get_involved.membership.title")}</SectionTitle>
+          <SectionTitle as='h2' id='membership-section-title'>
+            {t("get_involved.membership.title")}
+          </SectionTitle>
           <Description
             sx={{
               fontSize: "18px",
@@ -276,135 +331,174 @@ const MembershipSection: React.FC = () => {
             {t("get_involved.membership.intro")}
           </Description>
           <Description>{t("get_involved.membership.description")}</Description>
+          <BecomeaMemberButton
+            onClick={handleOpenModal}
+            aria-haspopup='dialog'
+            aria-controls='membership-dialog'
+            aria-label='Become a member - opens membership application form'
+          >
+            Become a Member
+          </BecomeaMemberButton>
         </TextContent>
         <ImageContainer>
           <img
             src='https://www.figma.com/api/mcp/asset/4ebd3bdc-190f-4548-931e-7082e1bdcd3e'
-            alt='Membership'
+            alt='Community members gathering for DESN membership meeting'
           />
         </ImageContainer>
       </IntroContainer>
 
       <BenefitsSection>
-        <BenefitsTitle>
+        <BenefitsTitle as='h3'>
           {t("get_involved.membership.benefits.title")}
         </BenefitsTitle>
-        <BenefitsGrid>
+        <BenefitsGrid role='list' aria-label='Membership benefits'>
           {benefits.map((benefit, index) => (
-            <BenefitCard key={index}>
-              <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 20 }} />
+            <BenefitCard key={index} role='listitem'>
+              <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 24 }} />
               <BenefitText>{benefit}</BenefitText>
             </BenefitCard>
           ))}
         </BenefitsGrid>
       </BenefitsSection>
 
-      <FormSection>
-        <FormTitle>{t("get_involved.membership.form.title")}</FormTitle>
-        <RequiredNote>
-          {t("get_involved.membership.form.required")}
-        </RequiredNote>
-        <Box
+      <Dialog
+        id='membership-dialog'
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby='membership-dialog-title'
+        aria-describedby='membership-dialog-desc'
+        maxWidth='md'
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "16px",
+            maxWidth: "900px",
+          },
+        }}
+      >
+        <IconButton
+          onClick={handleCloseModal}
           sx={{
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            borderRadius: "10px",
-            padding: "16px",
-            marginBottom: "24px",
-            maxWidth: "768px",
-            margin: "0 auto 24px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
+            position: "absolute",
+            right: 16,
+            top: 16,
+            color: "#6b7280",
+            zIndex: 1,
           }}
+          aria-label='close'
         >
-          <CheckCircleIcon sx={{ color: "#f6d469", fontSize: 20 }} />
-          <Typography sx={{ fontSize: "14px", color: "white" }}>
-            {t("get_involved.membership.security_note")}
-          </Typography>
-        </Box>
+          <CloseIcon />
+        </IconButton>
+        <DialogContent sx={{ p: 0 }}>
+          <FormSection>
+            <FormTitle id='membership-dialog-title'>
+              {t("get_involved.membership.form.title")}
+            </FormTitle>
+            <RequiredNote id='membership-dialog-desc'>
+              {t("get_involved.membership.form.required")}
+            </RequiredNote>
+            <Box
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                borderRadius: "10px",
+                padding: "16px",
+                marginBottom: "24px",
+                maxWidth: "768px",
+                margin: "0 auto 24px",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <CheckCircleIcon
+                sx={{ color: "#f6d469", fontSize: 20 }}
+                aria-hidden='true'
+              />
+              <Typography sx={{ fontSize: "14px", color: "white" }}>
+                {t("get_involved.membership.security_note")}
+              </Typography>
+            </Box>
 
-        {submitSuccess && (
-          <Alert
-            severity='success'
-            sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
-          >
-            {t("get_involved.membership.form.success_message") ||
-              "Thank you for your application! We will contact you soon."}
-          </Alert>
-        )}
+            {submitSuccess && (
+              <Alert
+                severity='success'
+                role='status'
+                aria-live='polite'
+                sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
+              >
+                {t("get_involved.membership.form.success_message") ||
+                  "Thank you for your application! We will contact you soon."}
+              </Alert>
+            )}
 
-        {submitError && (
-          <Alert
-            severity='error'
-            sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
-          >
-            {submitError}
-          </Alert>
-        )}
+            {submitError && (
+              <Alert
+                severity='error'
+                sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
+              >
+                {submitError}
+              </Alert>
+            )}
 
-        <Form onSubmit={handleSubmit}>
-          <InputRow>
-            <StyledTextField
-              name='fullName'
-              label={t("get_involved.membership.form.full_name")}
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              fullWidth
-              disabled={isSubmitting}
-            />
-            <StyledTextField
-              name='email'
-              type='email'
-              label={t("get_involved.membership.form.email")}
-              value={formData.email}
-              onChange={handleChange}
-              required
-              fullWidth
-              disabled={isSubmitting}
-            />
-          </InputRow>
-          <StyledTextField
-            name='phone'
-            label={t("get_involved.membership.form.phone")}
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            fullWidth
-            sx={{ maxWidth: "376px" }}
-            disabled={isSubmitting}
-          />
-          <StyledTextField
-            name='address'
-            label={t("get_involved.membership.form.address")}
-            value={formData.address}
-            onChange={handleChange}
-            fullWidth
-            disabled={isSubmitting}
-          />
-          <StyledTextField
-            name='message'
-            label={t("get_involved.membership.form.message")}
-            value={formData.message}
-            onChange={handleChange}
-            multiline
-            rows={5}
-            fullWidth
-            disabled={isSubmitting}
-          />
-          <SubmitButton
-            type='submit'
-            endIcon={
-              isSubmitting ? <CircularProgress size={20} /> : <SendIcon />
-            }
-            disabled={isSubmitting}
-          >
-            {isSubmitting
-              ? t("get_involved.membership.form.submitting") || "Submitting..."
-              : t("get_involved.membership.form.submit")}
-          </SubmitButton>
-        </Form>
-      </FormSection>
+            <Form onSubmit={handleSubmit}>
+              <InputRow>
+                <StyledTextField
+                  name='fullName'
+                  label={t("get_involved.membership.form.full_name")}
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  disabled={isSubmitting}
+                  inputProps={{
+                    "aria-label": "Full Name",
+                    "aria-required": "true",
+                  }}
+                />
+                <StyledTextField
+                  name='email'
+                  type='email'
+                  label={t("get_involved.membership.form.email")}
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  disabled={isSubmitting}
+                  inputProps={{
+                    "aria-label": "Email Address",
+                    "aria-required": "true",
+                  }}
+                />
+              </InputRow>
+              <StyledTextField
+                name='phone'
+                label={t("get_involved.membership.form.phone")}
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                fullWidth
+                sx={{ maxWidth: "376px" }}
+                disabled={isSubmitting}
+                inputProps={{
+                  "aria-label": "Phone Number",
+                  "aria-required": "true",
+                }}
+              />
+              <SubmitButton
+                type='submit'
+                endIcon={
+                  isSubmitting ? <CircularProgress size={20} /> : <SendIcon />
+                }
+                disabled={isSubmitting}
+                aria-label='Apply for membership'
+              >
+                {isSubmitting ? "Submitting..." : "APPLY FOR MEMBERSHIP"}
+              </SubmitButton>
+            </Form>
+          </FormSection>
+        </DialogContent>
+      </Dialog>
     </Section>
   );
 };

@@ -14,9 +14,8 @@ export default function About() {
 
   return (
     <Box
-      component='main'
+      component='div'
       sx={{ backgroundColor: "#F0F4F8" }}
-      role='main'
       aria-label='About DESN'
     >
       <MissionVisionHeroSection />
