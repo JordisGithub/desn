@@ -29,10 +29,11 @@ const ContactSection = styled("section")(({ theme }) => ({
 const TwoColumnLayout = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
-  gap: theme.spacing(8),
+  gap: theme.spacing(6),
+  alignItems: "start",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
-    gap: theme.spacing(6),
+    gap: theme.spacing(4),
   },
 }));
 
@@ -46,19 +47,19 @@ const LeftColumn = styled(Box)({
 
 const InfoCard = styled(Card)(({ theme }) => ({
   borderRadius: "16px",
-  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.45) !important",
   padding: theme.spacing(4),
   border: "2px solid transparent",
   backgroundColor: "#ffffff",
   transition: "all 0.3s ease",
   "&:hover": {
     transform: "translateY(-2px)",
-    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.18)",
+    boxShadow: "0 28px 70px rgba(0, 0, 0, 0.5) !important",
   },
   "&:focus-within": {
     borderColor: "#f6d469",
     boxShadow:
-      "0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(246, 212, 105, 0.3)",
+      "0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 3px rgba(246, 212, 105, 0.3) !important",
   },
 }));
 
@@ -137,10 +138,10 @@ const InfoLink = styled("a")({
 
 const MapContainer = styled(Box)(({ theme }) => ({
   width: "100%",
-  height: "450px",
+  height: "500px",
   borderRadius: "16px",
   overflow: "hidden",
-  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.45)",
+  boxShadow: "0 30px 80px rgba(0, 0, 0, 0.75) !important",
   border: "none",
   backgroundColor: "#f3f4f6",
   [theme.breakpoints.down("md")]: {
@@ -200,6 +201,7 @@ const FormTitle = styled(Typography)(({ theme }) => ({
   color: "#004c91",
   fontFamily: '"Poppins", "Roboto", sans-serif',
   marginBottom: theme.spacing(3),
+  textShadow: "0px 12px 24px rgba(0, 0, 0, 0.9) !important",
   [theme.breakpoints.down("sm")]: {
     fontSize: "2rem",
   },
@@ -227,12 +229,12 @@ const MinimalistTextField = styled(TextField)(({ theme }) => ({
       borderWidth: "2px",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#004c91 !important",
+      borderColor: "var(--color-accent) !important",
       borderWidth: "3px !important",
-      boxShadow: "0 0 0 3px rgba(246, 212, 105, 0.4) !important",
+      boxShadow: "0 0 0 4px rgba(246, 212, 105, 0.6) !important",
     },
     "&.Mui-focused:hover fieldset": {
-      borderColor: "#004c91 !important",
+      borderColor: "var(--color-accent) !important",
     },
   },
   "& .MuiInputLabel-root": {
@@ -293,6 +295,13 @@ const SubmitButton = styled(Button)({
   },
 });
 
+const LocationText = styled(Typography)({
+  fontSize: "1rem",
+  color: "#364153",
+  lineHeight: 1.8,
+  marginBottom: "16px",
+});
+
 export default function IntegratedContactSection() {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
@@ -320,55 +329,63 @@ export default function IntegratedContactSection() {
 
   return (
     <>
-      {/* Main Contact Section with Form and Info Cards */}
+      {/* Main Contact Section: [MAP | FORM] */}
       <ContactSection id='contact-section' aria-labelledby='contact-heading'>
         <Container maxWidth='xl'>
           <TwoColumnLayout>
-            {/* LEFT COLUMN: Contact Info Cards */}
+            {/* LEFT COLUMN: MAP & Location Details */}
             <LeftColumn>
-              {/* Phone Card */}
-              <InfoCard>
-                <CardContent sx={{ padding: 0 }}>
-                  <InfoCardHeader>
-                    <IconWrapper bgColor='rgba(0, 167, 127, 0.15)'>
-                      <PhoneIcon sx={{ fontSize: 28, color: "#00a77f" }} />
-                    </IconWrapper>
-                    <InfoTitle>{t("contact.cards.phone.title")}</InfoTitle>
-                  </InfoCardHeader>
-                  <InfoText>
-                    <InfoLink href='tel:+977-15709205'>
-                      {t("contact.cards.phone.primary")}
-                    </InfoLink>
-                  </InfoText>
-                  <InfoText>
-                    <InfoLink href='tel:+977-9849873868'>
-                      {t("contact.cards.phone.secondary")}
-                    </InfoLink>
-                  </InfoText>
-                </CardContent>
-              </InfoCard>
+              {/* Map Container with MAXIMUM Shadow */}
+              <MapContainer>
+                <iframe
+                  src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1234567890!2d85.3240!3d27.6710!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzE1LjYiTiA4NcKwMTknMjYuNCJF!5e0!3m2!1sen!2snp!4v1234567890'
+                  width='100%'
+                  height='100%'
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading='lazy'
+                  referrerPolicy='no-referrer-when-downgrade'
+                  title={t("contact.map.iframe_title")}
+                  role='application'
+                />
+              </MapContainer>
 
-              {/* Email Card */}
-              <InfoCard>
-                <CardContent sx={{ padding: 0 }}>
-                  <InfoCardHeader>
-                    <IconWrapper bgColor='rgba(0, 76, 145, 0.15)'>
-                      <EmailIcon sx={{ fontSize: 28, color: "#004c91" }} />
-                    </IconWrapper>
-                    <InfoTitle>{t("contact.cards.email.title")}</InfoTitle>
-                  </InfoCardHeader>
-                  <InfoText>
-                    <InfoLink href='mailto:disabilityemp@gmail.com'>
-                      {t("contact.cards.email.primary")}
-                    </InfoLink>
-                  </InfoText>
-                  <InfoText>
-                    <InfoLink href='mailto:thekopkrish@gmail.com'>
-                      {t("contact.cards.email.secondary")}
-                    </InfoLink>
-                  </InfoText>
-                </CardContent>
-              </InfoCard>
+              {/* Condensed Location Details */}
+              <Box sx={{ marginTop: 3 }}>
+                <Typography
+                  component='h2'
+                  sx={{
+                    fontSize: "1.5rem",
+                    fontWeight: 600,
+                    color: "#004c91",
+                    marginBottom: 2,
+                  }}
+                >
+                  {t("contact.map.location_details_heading")}
+                </Typography>
+
+                <LocationText>
+                  <strong>{t("contact.map.office_name")}</strong>
+                  <br />
+                  {t("contact.cards.location.address1")},{" "}
+                  {t("contact.cards.location.address2")}
+                  <br />
+                  <strong>Landmark:</strong>{" "}
+                  {t("contact.map.landmark_description")}
+                  <br />
+                  <strong>Transit:</strong>{" "}
+                  {t("contact.map.transit_description")}
+                </LocationText>
+
+                <DirectionsButton
+                  href={directionsUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  startIcon={<DirectionsIcon />}
+                >
+                  {t("contact.map.get_directions")}
+                </DirectionsButton>
+              </Box>
             </LeftColumn>
 
             {/* RIGHT COLUMN: Minimalist Contact Form */}
@@ -435,163 +452,67 @@ export default function IntegratedContactSection() {
         </Container>
       </ContactSection>
 
-      {/* Location Details Section - Full Width Two Column Layout */}
+      {/* Contact Info Cards Section */}
       <ContactSection
-        sx={{ backgroundColor: "white", paddingTop: 10, paddingBottom: 10 }}
-        aria-labelledby='location-heading'
+        sx={{ backgroundColor: "white", paddingTop: 8, paddingBottom: 8 }}
       >
         <Container maxWidth='xl'>
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: { xs: 4, md: 6 },
+              gap: { xs: 3, md: 4 },
+              maxWidth: "900px",
+              margin: "0 auto",
             }}
           >
-            {/* NON-VISUAL COMPONENT (NVC) - Text-First Location Details */}
-            <Box>
-              <Typography
-                component='h2'
-                id='location-heading'
-                sx={{
-                  fontSize: { xs: "1.75rem", sm: "2rem" },
-                  fontWeight: 600,
-                  color: "#004c91",
-                  fontFamily: '"Poppins", "Roboto", sans-serif',
-                  marginBottom: 3,
-                }}
-              >
-                {t("contact.map.location_details_heading")}
-              </Typography>
+            {/* Phone Card */}
+            <InfoCard>
+              <CardContent sx={{ padding: 0 }}>
+                <InfoCardHeader>
+                  <IconWrapper bgColor='rgba(0, 167, 127, 0.15)'>
+                    <PhoneIcon
+                      sx={{ fontSize: "32px !important", color: "#00a77f" }}
+                    />
+                  </IconWrapper>
+                  <InfoTitle>{t("contact.cards.phone.title")}</InfoTitle>
+                </InfoCardHeader>
+                <InfoText>
+                  <InfoLink href='tel:+977-15709205'>
+                    {t("contact.cards.phone.primary")}
+                  </InfoLink>
+                </InfoText>
+                <InfoText>
+                  <InfoLink href='tel:+977-9849873868'>
+                    {t("contact.cards.phone.secondary")}
+                  </InfoLink>
+                </InfoText>
+              </CardContent>
+            </InfoCard>
 
-              <Box
-                component='ul'
-                sx={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 3,
-                  marginBottom: 4,
-                }}
-              >
-                {/* Full Address */}
-                <Box component='li'>
-                  <Typography
-                    component='strong'
-                    sx={{
-                      fontSize: "1.125rem",
-                      fontWeight: 600,
-                      color: "#004c91",
-                      display: "block",
-                      marginBottom: 0.75,
-                    }}
-                  >
-                    {t("contact.map.full_address_label")}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "1rem",
-                      color: "#364153",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {t("contact.map.office_name")}
-                    <br />
-                    {t("contact.cards.location.address1")}
-                    <br />
-                    {t("contact.cards.location.address2")}
-                  </Typography>
-                </Box>
-
-                {/* Key Landmark */}
-                <Box component='li'>
-                  <Typography
-                    component='strong'
-                    sx={{
-                      fontSize: "1.125rem",
-                      fontWeight: 600,
-                      color: "#004c91",
-                      display: "block",
-                      marginBottom: 0.75,
-                    }}
-                  >
-                    {t("contact.map.landmark_label")}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "1rem",
-                      color: "#364153",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {t("contact.map.landmark_description")}
-                  </Typography>
-                </Box>
-
-                {/* Transit Details */}
-                <Box component='li'>
-                  <Typography
-                    component='strong'
-                    sx={{
-                      fontSize: "1.125rem",
-                      fontWeight: 600,
-                      color: "#004c91",
-                      display: "block",
-                      marginBottom: 0.75,
-                    }}
-                  >
-                    {t("contact.map.transit_label")}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "1rem",
-                      color: "#364153",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {t("contact.map.transit_description")}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <DirectionsButton
-                href={directionsUrl}
-                target='_blank'
-                rel='noopener noreferrer'
-                startIcon={<DirectionsIcon />}
-              >
-                {t("contact.map.get_directions")}
-              </DirectionsButton>
-
-              <Typography
-                sx={{
-                  fontSize: "0.9rem",
-                  color: "#6b7280",
-                  lineHeight: 1.6,
-                  marginTop: 3,
-                  fontStyle: "italic",
-                }}
-              >
-                {t("contact.map.visual_reference")}
-              </Typography>
-            </Box>
-
-            {/* OPTIONAL VISUAL COMPONENT (OVC) - Map for Sighted Users */}
-            <MapContainer>
-              <iframe
-                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1234567890!2d85.3240!3d27.6710!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzE1LjYiTiA4NcKwMTknMjYuNCJF!5e0!3m2!1sen!2snp!4v1234567890'
-                width='100%'
-                height='100%'
-                style={{ border: 0 }}
-                allowFullScreen
-                loading='lazy'
-                referrerPolicy='no-referrer-when-downgrade'
-                title={t("contact.map.iframe_title")}
-                role='application'
-              />
-            </MapContainer>
+            {/* Email Card */}
+            <InfoCard>
+              <CardContent sx={{ padding: 0 }}>
+                <InfoCardHeader>
+                  <IconWrapper bgColor='rgba(0, 76, 145, 0.15)'>
+                    <EmailIcon
+                      sx={{ fontSize: "32px !important", color: "#004c91" }}
+                    />
+                  </IconWrapper>
+                  <InfoTitle>{t("contact.cards.email.title")}</InfoTitle>
+                </InfoCardHeader>
+                <InfoText>
+                  <InfoLink href='mailto:disabilityemp@gmail.com'>
+                    {t("contact.cards.email.primary")}
+                  </InfoLink>
+                </InfoText>
+                <InfoText>
+                  <InfoLink href='mailto:thekopkrish@gmail.com'>
+                    {t("contact.cards.email.secondary")}
+                  </InfoLink>
+                </InfoText>
+              </CardContent>
+            </InfoCard>
           </Box>
         </Container>
       </ContactSection>
