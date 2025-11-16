@@ -183,3 +183,277 @@ select:focus-visible,
   white-space: nowrap;
   border-width: 0;
 }
+
+/* CRO Overrides: Premium polish and conversion-focused tweaks */
+
+/* A. Metric Card Enhancement (aggressive lift + hover) */
+.css-e0fiqu {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  will-change: transform, box-shadow;
+}
+.css-e0fiqu:hover,
+.css-e0fiqu:focus-within {
+  transform: scale(1.05) translateY(-4px) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* A. Hero/Header Contrast: stronger text shadow on hero headings */
+.css-1fy2toq,
+.css-lxsbi5-MuiTypography-root {
+  text-shadow: 0px 8px 16px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* A. Hero Ken Burns animation enforcement */
+@keyframes kenBurnsZoom {
+  0% {
+    transform: scale(1) translateZ(0);
+  }
+  100% {
+    transform: scale(1.15) translateZ(0);
+  }
+}
+.css-1996xa9::before {
+  animation: kenBurnsZoom 18s ease-in-out infinite alternate !important;
+  transform-origin: center center;
+}
+
+/* C. Focus Style Override for inputs (WCAG visible) */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-width: 3px !important;
+  border-color: var(--color-accent) !important; /* #f6d469 */
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--color-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* C. Donate Button highest contrast */
+.css-1vnbnna-MuiButtonBase-root-MuiButton-root {
+  background-color: var(--color-accent) !important;
+  color: var(--color-primary-dark) !important;
+  box-shadow: 0px 8px 24px rgba(246, 212, 105, 0.5) !important;
+}
+.css-1vnbnna-MuiButtonBase-root-MuiButton-root:hover,
+.css-1vnbnna-MuiButtonBase-root-MuiButton-root:focus-visible {
+  background-color: var(--color-accent-dark) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* B. FINAL CRO OVERRIDES: Maximum depth & conversion polish */
+
+/* A. HERO SECTION: Ken Burns animation & text contrast enforcement */
+
+/* Ken Burns Animation Override: aggressive timing for dynamic background */
+.css-185w363::before,
+[class*="HeroContainer"]::before {
+  animation: kenBurnsZoom 20s ease-in-out infinite alternate !important;
+}
+
+/* Hero Text: Maximum contrast and depth */
+.css-1fy2toq,
+.css-lxsbi5-MuiTypography-root {
+  text-shadow: 0px 10px 20px rgba(0, 0, 0, 0.85) !important;
+}
+
+/* B. IMPACT METRICS: Aggressive depth & premium elevation */
+
+/* Metric Card Enhancement: Maximum shadow and visual depth */
+.css-e0fiqu {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48) !important;
+  border-radius: 16px !important;
+  border-top: 5px solid var(--color-accent) !important;
+  border-bottom: none !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  will-change: transform, box-shadow;
+}
+.css-e0fiqu:hover,
+.css-e0fiqu:focus-within {
+  transform: scale(1.06) translateY(-6px) !important;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.58) !important;
+}
+
+/* Metric Numbers: Deep primary color for contrast */
+.css-1rsq37i-MuiTypography-root {
+  color: var(--color-primary-dark) !important;
+}
+
+/* C. DONATION IMPACT CARDS: Visual consistency & icon contrast */
+
+/* Donation Impact Cards: Strong elevation */
+.css-wy3qms {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Icon Contrast: Accent background with primary dark icon */
+.css-wy3qms .MuiSvgIcon-root {
+  color: var(--color-primary-dark) !important;
+}
+.css-wy3qms [class*="IconCircle"],
+.css-wy3qms > div:first-child {
+  background-color: #f6d469 !important;
+}
+
+/* Input Focus: High-contrast 3px accent outline enforcement */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-width: 3px !important;
+  border-color: #f6d469 !important;
+}
+
+/* Volunteer & Membership button text alignment fix */
+button[aria-label*="volunteer"],
+button[aria-label*="membership"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* =================================================================
+   GET INVOLVED PAGE: BUTTON & MODAL CONVERSION FIX
+   ================================================================= */
+
+/* B. BUTTON STYLE UNIFICATION (CRITICAL) */
+
+/* Volunteer & Member buttons: Match Donate button high-contrast style */
+.css-179yh0w-MuiButtonBase-root-MuiButton-root {
+  background-color: var(--color-accent-dark) !important;
+  color: var(--color-primary-dark) !important;
+  box-shadow: 0px 8px 24px rgba(246, 212, 105, 0.5) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.css-179yh0w-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: #f5c943 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0px 12px 32px rgba(246, 212, 105, 0.6) !important;
+}
+
+/* Form Input Polish: Rounded corners */
+.css-nbxc11-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 12px !important;
+}
+
+/* C. MEMBERSHIP BENEFITS CLARITY */
+
+/* Checkmark icon enhancement: Larger and darker for prominence */
+.css-13mp54t-MuiSvgIcon-root {
+  font-size: 32px !important;
+  color: var(--color-secondary-dark) !important;
+}
+
+/* =================================================================
+   ABOUT PAGE AGGRESSIVE VISUAL OVERRIDES
+   ================================================================= */
+
+/* 1. ABOUT HERO: Ken Burns Animation + Text Dominance */
+
+/* Target MissionVisionHeroSection container - enhance Ken Burns */
+section[aria-labelledby="mission-vision-hero-heading"]::before {
+  animation: kenBurnsZoom 20s ease-in-out infinite alternate !important;
+  transform-origin: center center !important;
+}
+
+/* About Hero MainHeading: Maximum text shadow for punch-through contrast */
+#mission-vision-hero-heading {
+  text-shadow: 0px 10px 20px rgba(0, 0, 0, 0.85) !important;
+  font-weight: 800 !important;
+}
+
+/* About Hero Subheading: Strong text shadow for accent color visibility */
+#hero-subheading {
+  text-shadow: 0px 8px 16px rgba(0, 0, 0, 0.75) !important;
+  font-weight: 600 !important;
+}
+
+/* 2. FOUNDING FACTS METRIC CARDS: Premium Badge Elevation */
+
+/* FactCard enhancement: pronounced shadow + accent top border */
+section[aria-labelledby="founding-facts-heading"]
+  > div
+  > div
+  > div
+  > div[role="listitem"] {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48) !important;
+  border-top: 5px solid var(--color-accent) !important;
+  border-left: none !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+section[aria-labelledby="founding-facts-heading"]
+  > div
+  > div
+  > div
+  > div[role="listitem"]:hover {
+  transform: scale(1.06) translateY(-6px) !important;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.58) !important;
+}
+
+/* 3. CORE VALUES ICONS: Large, High-Contrast Prominence */
+
+/* ValueCard: Maximum shadow depth for premium look */
+section[aria-labelledby="core-values-heading"]
+  > div
+  > div
+  > div[role="article"] {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+section[aria-labelledby="core-values-heading"]
+  > div
+  > div
+  > div[role="article"]:hover {
+  transform: scale(1.06) translateY(-6px) !important;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.58) !important;
+}
+
+/* IconBox: Accent background with high contrast */
+section[aria-labelledby="core-values-heading"]
+  > div
+  > div
+  > div[role="article"]
+  > div:first-child {
+  background-color: #f6d469 !important;
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* Icon size increase for prominence */
+section[aria-labelledby="core-values-heading"] .MuiSvgIcon-root {
+  font-size: 48px !important;
+  color: var(--color-primary-dark) !important;
+}
+
+/* 4. ABOUT CTA BUTTONS: Consistent High-Contrast Styling */
+
+/* PrimaryButton: Ensure maximum contrast and elevation */
+section[aria-labelledby="cta-heading"] a[href="/programs"] {
+  background: linear-gradient(135deg, #f6d469 0%, #f5c943 100%) !important;
+  color: #2b2b2b !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 12px 32px rgba(246, 212, 105, 0.5) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+section[aria-labelledby="cta-heading"] a[href="/programs"]:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 48px rgba(246, 212, 105, 0.6) !important;
+}
+section[aria-labelledby="cta-heading"] a[href="/programs"]:focus-visible {
+  outline: 3px solid white !important;
+  outline-offset: 3px !important;
+}
+
+/* SecondaryButton: Ensure consistent focus state */
+section[aria-labelledby="cta-heading"] a[href="/about#team"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-width: 2px !important;
+  transition: all 0.3s ease !important;
+}
+section[aria-labelledby="cta-heading"] a[href="/about#team"]:focus-visible {
+  outline: 3px solid #f6d469 !important;
+  outline-offset: 3px !important;
+}

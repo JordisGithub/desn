@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
+import i18n from "../i18n";
 
 type Language = "en" | "ne" | "new" | "mai";
 
@@ -18,6 +19,29 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Update the HTML lang attribute whenever language changes
     document.documentElement.lang = lang;
+
+    // Sync with i18next
+    if (i18n.language !== lang) {
+      void i18n.changeLanguage(lang);
+    }
+  }, [lang]);
+
+  // Listen to i18next language changes and sync with context
+  useEffect(() => {
+    const handleLanguageChange = (lng: string) => {
+      if (
+        lng !== lang &&
+        (lng === "en" || lng === "ne" || lng === "new" || lng === "mai")
+      ) {
+        setLang(lng as Language);
+      }
+    };
+
+    i18n.on("languageChanged", handleLanguageChange);
+
+    return () => {
+      i18n.off("languageChanged", handleLanguageChange);
+    };
   }, [lang]);
 
   return (

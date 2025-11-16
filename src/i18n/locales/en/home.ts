@@ -2,7 +2,7 @@ export default {
   // Hero Section
   hero_heading: "Empowering a Future Without Barriers",
   hero_description:
-    "Empowering Persons with Disabilities Through Accessibility, Inclusion, and Innovation.",
+    "Empowering Persons with Disabilities through Accessibility, Inclusion, and Innovation.",
   hero_button: "Donate Now",
   hero_title: "The Disability Empowerment Society Nepal (DESN)",
   hero_subtitle:

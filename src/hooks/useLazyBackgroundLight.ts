@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export default function useLazyBackground() {
+export default function useLazyBackgroundLight() {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function useLazyBackground() {
           if (entry.isIntersecting) {
             const bg = el.getAttribute("data-bg");
             if (bg) {
-              el.style.backgroundImage = `linear-gradient(135deg, rgba(0, 76, 145, 0.75) 0%, rgba(0, 61, 115, 0.85) 50%, rgba(0, 0, 0, 0.7) 100%), url(${bg})`;
+              el.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${bg})`;
               el.style.backgroundSize = "cover";
               el.style.backgroundPosition = "center";
               el.style.backgroundRepeat = "no-repeat";

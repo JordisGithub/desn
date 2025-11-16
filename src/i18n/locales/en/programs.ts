@@ -1,9 +1,9 @@
 export default {
   hero: {
-    badge: "Main Program Areas",
-    title: "Programs & Services",
+    badge: "Solutions",
+    title: "Solutions You Can Use",
     description:
-      "Comprehensive programs designed to empower persons with disabilities, vulnerable women, and marginalized communities through education, advocacy, and sustainable development initiatives.",
+      "Practical programs that help you learn, work, and lead with dignity — focused on Education, Livelihood, and Advocacy.",
     explore_button: "Explore Programs",
     get_involved_button: "Get Involved",
   },

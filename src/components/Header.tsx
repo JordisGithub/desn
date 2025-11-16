@@ -33,7 +33,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import DonationPaymentModal from "./payment/DonationPaymentModal";
 import desnLogo from "../assets/DESN_logo_500x500.jpg";
 import SearchService from "../services/SearchService";
 import type { SearchItem } from "../services/SearchService";
@@ -257,7 +256,7 @@ const Header: React.FC = () => {
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
     null
   );
-  const [donationModalOpen, setDonationModalOpen] = useState(false);
+  // Donations route directly to PayPal; modal removed
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
@@ -597,7 +596,14 @@ const Header: React.FC = () => {
             <MobileLogo src={desnLogo} alt='DESN Logo' />
           </LogoLink>
 
-          <MobileDonateButton onClick={() => setDonationModalOpen(true)}>
+          <MobileDonateButton
+            onClick={() =>
+              window.open(
+                "https://www.paypal.com/paypalme/thekopkrish",
+                "_blank"
+              )
+            }
+          >
             {t("header.donate")}
           </MobileDonateButton>
         </MobileNavBar>
@@ -626,7 +632,14 @@ const Header: React.FC = () => {
                 right: "32px",
               }}
             >
-              <DonateButton onClick={() => setDonationModalOpen(true)}>
+              <DonateButton
+                onClick={() =>
+                  window.open(
+                    "https://www.paypal.com/paypalme/thekopkrish",
+                    "_blank"
+                  )
+                }
+              >
                 {t("header.donate")}
               </DonateButton>
             </Box>
@@ -729,7 +742,10 @@ const Header: React.FC = () => {
             <DonateButton
               fullWidth
               onClick={() => {
-                setDonationModalOpen(true);
+                window.open(
+                  "https://www.paypal.com/paypalme/thekopkrish",
+                  "_blank"
+                );
                 setMobileMenuOpen(false);
               }}
             >
@@ -739,10 +755,7 @@ const Header: React.FC = () => {
         </DrawerContent>
       </Drawer>
 
-      <DonationPaymentModal
-        open={donationModalOpen}
-        onClose={() => setDonationModalOpen(false)}
-      />
+      {/* Donation modal removed; header donate buttons open PayPal directly */}
     </Box>
   );
 };

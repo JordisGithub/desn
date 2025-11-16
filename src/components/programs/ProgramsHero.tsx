@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const HeroSection = styled("section")({
+const HeroSection = styled("div")({
   position: "relative",
   minHeight: "686px",
   background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",

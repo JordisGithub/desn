@@ -1,9 +1,8 @@
 import { usePageTitle } from "../hooks/usePageTitle";
 import ProgramsHero from "../components/programs/ProgramsHero";
-import ProgramStats from "../components/programs/ProgramStats";
-import CorePrograms from "../components/programs/CorePrograms";
-import OurApproach from "../components/programs/OurApproach";
-import ProgramsCTA from "../components/programs/ProgramsCTA";
+import ProgramIntro from "../components/programs/ProgramIntro";
+import ProgramCards from "../components/programs/ProgramCards";
+import ProgramSuccessStories from "../components/programs/ProgramSuccessStories";
 
 export default function Programs() {
   usePageTitle("page_titles.programs");
@@ -11,10 +10,9 @@ export default function Programs() {
   return (
     <>
       <ProgramsHero />
-      <ProgramStats />
-      <CorePrograms />
-      <OurApproach />
-      <ProgramsCTA />
+      <ProgramIntro />
+      <ProgramCards />
+      <ProgramSuccessStories />
     </>
   );
 }
