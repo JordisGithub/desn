@@ -1,12 +1,120 @@
 export default {
   hero: {
     badge: "Solutions",
-    title: "Solutions You Can Use",
+    title: "Our Programs: Solutions for Empowerment",
     description:
-      "Practical programs that help you learn, work, and lead with dignity — focused on Education, Livelihood, and Advocacy.",
+      "Our work is divided into three pillars: Education, Livelihood, and Advocacy.",
     explore_button: "Explore Programs",
     get_involved_button: "Get Involved",
   },
+  pillars: {
+    title: "The Program Pillars",
+    subtitle:
+      "Our comprehensive approach addresses the diverse needs of persons with disabilities through three interconnected focus areas.",
+    education: {
+      title: "Education",
+      description:
+        "Accessible learning, digital skills, and inclusive education that empowers individuals to thrive academically and professionally.",
+    },
+    livelihood: {
+      title: "Livelihood",
+      description:
+        "Economic empowerment through vocational training, entrepreneurship support, and sustainable income generation opportunities.",
+    },
+    advocacy: {
+      title: "Advocacy",
+      description:
+        "Rights-based advocacy, policy influence, and community mobilization for inclusive societies and barrier-free environments.",
+    },
+  },
+  categories: {
+    education: {
+      title: "Education Programs (Pillar I)",
+      subtitle:
+        "Building knowledge, skills, and confidence through accessible and inclusive education initiatives.",
+    },
+    livelihood: {
+      title: "Livelihood Programs (Pillar II)",
+      subtitle:
+        "Creating pathways to economic independence through skill development and entrepreneurship.",
+    },
+    advocacy: {
+      title: "Advocacy Programs (Pillar III)",
+      subtitle:
+        "Advancing rights, removing barriers, and fostering inclusive communities through policy and action.",
+    },
+  },
+  education_programs: {
+    ict_training: {
+      title: "Accessible ICT Training",
+      impact: "500+ Youth Trained",
+      outcome:
+        "Master accessible technology tools, digital literacy, and inclusive ICT skills that open doors to education and employment.",
+      alt: "ICT expert training project beneficiaries on computer skills",
+    },
+    braille_sign: {
+      title: "Braille & Sign Language Classes",
+      impact: "300+ Students Enrolled",
+      outcome:
+        "Learn communication skills through Braille literacy and sign language training for deaf and blind communities.",
+      alt: "Students learning Braille and sign language in a classroom setting",
+    },
+    scholarship: {
+      title: "Scholarship Fund",
+      impact: "200+ Scholarships Awarded",
+      outcome:
+        "Access financial support for education expenses, ensuring no student is left behind due to economic barriers.",
+      alt: "Students receiving scholarship support for their education",
+    },
+  },
+  livelihood_programs: {
+    microfinance: {
+      title: "Microfinance & Entrepreneurship",
+      impact: "400+ Businesses Started",
+      outcome:
+        "Launch or grow your business with seed funding, mentorship, and business development training for sustainable income.",
+      alt: "Beneficiaries engaged in microfinance and entrepreneurship activities",
+    },
+    skill_development: {
+      title: "Skill Development Workshops",
+      impact: "1,000+ Skills Certified",
+      outcome:
+        "Gain market-ready vocational skills in trades, crafts, and services that lead directly to employment opportunities.",
+      alt: "Participants learning vocational skills in a workshop environment",
+    },
+    job_placement: {
+      title: "Job Placement Support",
+      impact: "600+ Jobs Secured",
+      outcome:
+        "Connect with inclusive employers through our network, resume support, interview prep, and ongoing career guidance.",
+      alt: "Job seekers receiving placement support and career guidance",
+    },
+  },
+  advocacy_programs: {
+    uncrpd_monitoring: {
+      title: "UNCRPD Monitoring",
+      impact: "50+ Policy Reviews",
+      outcome:
+        "Track implementation of disability rights conventions and hold institutions accountable for inclusive practices.",
+      alt: "UNCRPD monitoring session with disability rights advocates",
+    },
+    policy_dialogue: {
+      title: "Policy Dialogue",
+      impact: "30+ Dialogues Conducted",
+      outcome:
+        "Engage with policymakers, advocate for legislative change, and amplify the voices of persons with disabilities.",
+      alt: "Policy dialogue session between stakeholders and policymakers",
+    },
+    barrier_free: {
+      title: "Barrier-Free Environment Campaign",
+      impact: "100+ Buildings Audited",
+      outcome:
+        "Promote accessible infrastructure, conduct accessibility audits, and advocate for universal design in public spaces.",
+      alt: "Barrier-free environment campaign promoting accessible infrastructure",
+    },
+  },
+  learn_more: "Learn More",
+  impact_label: "Impact",
   stats: {
     section_title: "Program Statistics and Impact",
     lives_impacted: "Lives Impacted",
@@ -102,10 +210,10 @@ export default {
     },
   },
   cta: {
-    title: "Join Our Programs Today",
+    title: "Ready to Make an Impact?",
     description:
-      "Whether you're seeking support, want to volunteer, or partner with us, there are many ways to get involved in our transformative programs.",
+      "Join us in creating opportunities for persons with disabilities. Whether through volunteering, donating, or partnering, your support drives real change.",
     get_involved_button: "Get Involved",
-    contact_button: "Contact Us",
+    donate_button: "Donate Now",
   },
 };
