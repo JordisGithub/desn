@@ -247,7 +247,6 @@ export default function MapLocationSection() {
                   {t("contact.map.guided_directions_label")}
                 </Typography>
                 <DirectionsButton
-                  component='a'
                   href={directionsUrl}
                   target='_blank'
                   rel='noopener noreferrer'
