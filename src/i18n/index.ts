@@ -7,12 +7,16 @@ const savedLanguage = localStorage.getItem("language") || "en";
 // Import translations directly instead of dynamic imports
 import enTranslations from "./locales/en";
 import neTranslations from "./locales/ne";
+import newTranslations from "./locales/new";
+import maiTranslations from "./locales/mai";
 
 // Load translations synchronously
 const loadResources = () => {
   const resources = {
     en: { translation: enTranslations },
     ne: { translation: neTranslations },
+    new: { translation: newTranslations },
+    mai: { translation: maiTranslations },
   };
 
   return resources;
