@@ -145,7 +145,6 @@ export default function ContactHero() {
               {t("contact.hero.send_message")}
             </HeroButton>
             <OutlineButton
-              component='a'
               href='#location-details'
               aria-label={`${t(
                 "contact.hero.view_location"
