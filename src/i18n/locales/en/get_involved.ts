@@ -50,6 +50,8 @@ export default {
         time: "Project-based",
       },
     },
+    security_note:
+      "Your information is secure and will only be used to contact you about volunteer opportunities.",
     form: {
       title: "Apply to Volunteer",
       required: "Fields marked with an asterisk are required *",
@@ -58,6 +60,7 @@ export default {
       phone: "Phone Number *",
       message: "Tell us about your interests and relevant experience",
       submit: "Submit Application",
+      submit_aria_label: "Submit volunteer inquiry",
       submitting: "Submitting...",
       success_message:
         "Thank you for your volunteer application! We're excited about your interest in supporting our mission. We'll review your application and get in touch with you soon about next steps.",

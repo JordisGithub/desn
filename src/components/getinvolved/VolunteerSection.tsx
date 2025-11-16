@@ -21,12 +21,18 @@ import communityOutreachImg from "../../assets/GetInvolved/communityOutreach.jpg
 import techSupportImg from "../../assets/GetInvolved/techSupport.jpg";
 import eventSupportImg from "../../assets/GetInvolved/eventSupport.JPG";
 
-const Section = styled(Box)({
+const Section = styled(Box)(({ theme }) => ({
   padding: "40px",
   backgroundColor: "white",
   borderRadius: "16px",
   boxShadow: "0px 4px 20px rgba(0, 76, 145, 0.08)",
-});
+  [theme.breakpoints.down("md")]: {
+    padding: "32px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: "24px 16px",
+  },
+}));
 
 const CTAButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#00a77f",
@@ -54,6 +60,14 @@ const IntroContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(8),
   justifyContent: "center",
   alignItems: "center",
+  [theme.breakpoints.down("lg")]: {
+    gridTemplateColumns: "1fr 1fr",
+    gap: theme.spacing(6),
+  },
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gap: theme.spacing(4),
+  },
 }));
 
 const TextContent = styled(Box)(({ theme }) => ({
@@ -69,20 +83,26 @@ const TitleBar = styled(Box)({
   borderRadius: "100px",
 });
 
-const SectionTitle = styled(Typography)({
+const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "32px",
   fontWeight: 400,
   color: "#004c91",
   marginTop: "20px",
   fontFamily: "'Open Sans', sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "24px",
+  },
+}));
 
-const Description = styled(Typography)({
+const Description = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: 400,
   color: "#364153",
   lineHeight: 1.5,
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+  },
+}));
 
 const BenefitsList = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -102,7 +122,7 @@ const BenefitText = styled(Typography)({
   color: "#364153",
 });
 
-const ImageContainer = styled(Box)({
+const ImageContainer = styled(Box)(({ theme }) => ({
   width: "608px",
   height: "384px",
   borderRadius: "14px",
@@ -114,15 +134,32 @@ const ImageContainer = styled(Box)({
     height: "100%",
     objectFit: "cover",
   },
-});
+  [theme.breakpoints.down("lg")]: {
+    width: "100%",
+    maxWidth: "608px",
+    height: "auto",
+    aspectRatio: "608/384",
+  },
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "100%",
+  },
+}));
 
-const OpportunitiesGrid = styled(Box)({
+const OpportunitiesGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(4, 1fr)",
   gap: "24px",
   marginBottom: "64px",
   justifyContent: "center",
-});
+  [theme.breakpoints.down("lg")]: {
+    gridTemplateColumns: "repeat(2, 1fr)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+    gap: "20px",
+    marginBottom: "48px",
+  },
+}));
 
 const OpportunityCard = styled(Box)(({ theme }) => ({
   border: "1px solid #e5e7eb",
