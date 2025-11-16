@@ -75,7 +75,7 @@ const MapFrame = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DirectionsButton = styled(Button)(({ theme }) => ({
+const DirectionsButton = styled(Button)<{ href?: string; component?: React.ElementType }>(({ theme }) => ({
   backgroundColor: "#004c91",
   color: "white",
   fontWeight: 500,
@@ -248,6 +248,7 @@ export default function MapLocationSection() {
                 </Typography>
                 <DirectionsButton
                   href={directionsUrl}
+                  component='a'
                   target='_blank'
                   rel='noopener noreferrer'
                   startIcon={<DirectionsIcon />}
