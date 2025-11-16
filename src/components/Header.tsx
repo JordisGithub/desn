@@ -324,7 +324,7 @@ const Header: React.FC = () => {
     setLangAnchorEl(event.currentTarget);
   };
 
-  const handleLanguageClose = (newLang?: "en" | "ne") => {
+  const handleLanguageClose = (newLang?: "en" | "ne" | "new" | "mai") => {
     if (newLang) {
       setLang(newLang);
       // Ensure i18n fully changes before closing menu

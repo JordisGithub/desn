@@ -52,7 +52,6 @@ export default {
     language_nepali: "Nepali",
     language_newari: "Newari",
     language_maithili: "Maithili",
-    language_nepali: "नेपाली",
     login: "Login",
     logout: "Logout",
     my_events: "My Events",
