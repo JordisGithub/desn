@@ -134,7 +134,7 @@ export default function HeroSection() {
         <HeroContent>
           {/* Massive Headline */}
           <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
-            Disability Empowerment Society Nepal
+            {t("hero_heading")}
           </HeroHeading>
 
           {/* Sub-Headline */}
@@ -148,7 +148,7 @@ export default function HeroSection() {
                 "_blank"
               )
             }
-            aria-label='Donate now to support people with disabilities in Nepal'
+            aria-label={t("hero_donate_aria_label")}
           >
             {t("hero_button")}
           </HeroDonateButton>

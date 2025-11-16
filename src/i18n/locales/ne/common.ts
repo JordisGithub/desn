@@ -44,6 +44,13 @@ export default {
     get_involved: "संलग्न हुनुहोस्",
     contact: "सम्पर्क गर्नुहोस्",
   },
+  // ARIA Labels
+  aria: {
+    close: "बन्द गर्नुहोस्",
+    menu: "मेनु",
+    previous_month: "अघिल्लो महिना",
+    next_month: "अर्को महिना",
+  },
   // Header
   header: {
     search_placeholder: "खोज्नुहोस्...",

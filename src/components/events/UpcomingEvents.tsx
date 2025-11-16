@@ -466,11 +466,11 @@ export default function UpcomingEvents() {
             <CalendarHeader>Event Calendar</CalendarHeader>
             <Calendar>
               <CalendarNav>
-                <NavButton aria-label='Previous month'>
+                <NavButton aria-label={t("aria.previous_month")}>
                   <ChevronLeftIcon />
                 </NavButton>
                 <MonthYear>{monthYear}</MonthYear>
-                <NavButton aria-label='Next month'>
+                <NavButton aria-label={t("aria.next_month")}>
                   <ChevronRightIcon />
                 </NavButton>
               </CalendarNav>

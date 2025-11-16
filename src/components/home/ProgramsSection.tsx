@@ -331,10 +331,7 @@ export default function ProgramsSection() {
         </ProgramsGrid>
 
         <CTAContainer>
-          <ViewAllButton
-            to='/programs'
-            aria-label='View all programs and services'
-          >
+          <ViewAllButton to='/programs' aria-label={t("programs_view_all")}>
             {t("programs_view_all")}
             <ArrowForwardIcon />
           </ViewAllButton>

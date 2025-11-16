@@ -33,6 +33,8 @@ export default function Layout({ children }: LayoutProps) {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        overflowX: "hidden",
+        width: "100%",
       }}
     >
       {/* Skip to main content link - First in DOM for keyboard users */}
@@ -78,7 +80,11 @@ export default function Layout({ children }: LayoutProps) {
       />
 
       <Header />
-      <Box component='main' id='main-content' sx={{ flex: 1 }}>
+      <Box
+        component='main'
+        id='main-content'
+        sx={{ flex: 1, overflowX: "hidden", width: "100%" }}
+      >
         {children}
       </Box>
       <Footer />

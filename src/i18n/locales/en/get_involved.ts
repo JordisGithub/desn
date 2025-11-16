@@ -7,7 +7,7 @@ export default {
   },
   impact: {
     title: "Your Impact Multiplies",
-    subtitle: "See what volunteers like you have already achieved",
+    subtitle: "See what volunteers like you have already achieved.",
     description:
       "Join our volunteer community and become part of a movement that's breaking barriers, building skills, and creating real opportunities for independence and dignity.",
     lives_impacted: "Lives Changed",
@@ -61,6 +61,12 @@ export default {
       submitting: "Submitting...",
       success_message:
         "Thank you for your volunteer application! We're excited about your interest in supporting our mission. We'll review your application and get in touch with you soon about next steps.",
+      errors: {
+        summary_title: "Please correct the following errors:",
+        full_name_required: "Full name is required",
+        email_required: "Email address is required",
+        email_invalid: "Please enter a valid email address",
+      },
     },
   },
   donation: {
@@ -115,12 +121,22 @@ export default {
       address: "Address",
       message: "Why do you want to become a member?",
       submit: "Submit Application",
+      submit_aria_label: "Apply for membership",
       submitting: "Submitting...",
       success_message:
         "Thank you for your membership application! We appreciate your support and will get in touch soon with next steps. Together, we're building a more inclusive Nepal.",
+      errors: {
+        summary_title: "Please correct the following errors:",
+        full_name_required: "Full name is required",
+        email_required: "Email address is required",
+        email_invalid: "Please enter a valid email address",
+        phone_required: "Phone number is required",
+      },
     },
+    become_member_aria_label:
+      "Become a member — opens membership application form",
   },
-  cta: {
+  form: {
     title: "Join Our Mission",
     subtitle:
       "Together, we can create a more inclusive and equitable society for all.",
@@ -128,4 +144,5 @@ export default {
     donate: "Donate",
   },
   donate_button: "Donate",
+  submit_aria_label: "Submit volunteer inquiry",
 };

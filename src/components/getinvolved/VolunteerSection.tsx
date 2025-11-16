@@ -289,9 +289,9 @@ const VolunteerSection: React.FC = () => {
           </BenefitsList>
           <CTAButton
             onClick={handleOpenModal}
-            aria-label='Apply to volunteer - opens application form'
+            aria-label={t("get_involved.volunteer.open_form_aria_label")}
           >
-            Apply to Volunteer
+            {t("get_involved.volunteer.form.submit")}
           </CTAButton>
         </TextContent>
         <ImageContainer>
@@ -302,7 +302,10 @@ const VolunteerSection: React.FC = () => {
         </ImageContainer>
       </IntroContainer>
 
-      <OpportunitiesGrid role='list' aria-label='Volunteer opportunities'>
+      <OpportunitiesGrid
+        role='list'
+        aria-label={t("get_involved.volunteer.opportunities_list_aria_label")}
+      >
         {opportunities.map((opportunity, index) => (
           <OpportunityCard key={index} role='listitem'>
             <CardImage>
@@ -346,7 +349,7 @@ const VolunteerSection: React.FC = () => {
             color: "#6b7280",
             zIndex: 1,
           }}
-          aria-label='close'
+          aria-label={t("aria.close")}
         >
           <CloseIcon />
         </IconButton>

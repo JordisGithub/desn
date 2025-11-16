@@ -221,8 +221,8 @@ export default function AboutSection() {
 
             <SummaryText>{t("about_section_summary")}</SummaryText>
 
-            <AboutButton to='/about' aria-label='Read our full story'>
-              Read Our Full Story
+            <AboutButton to='/about' aria-label={t("about_button")}>
+              {t("about_button")}
               <span aria-hidden='true'>→</span>
             </AboutButton>
           </ContentColumn>

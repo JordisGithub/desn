@@ -265,9 +265,9 @@ const DonationSection: React.FC = () => {
           <DonateNowButton
             startIcon={<PaymentIcon />}
             onClick={handlePayPalDonate}
-            aria-label='Donate now via PayPal - opens PayPal donation page in new window'
+            aria-label={t("get_involved.donation.paypal_aria_label")}
           >
-            Donate Now
+            {t("footer_donate_button")}
           </DonateNowButton>
         </TextContent>
       </IntroContainer>
@@ -278,7 +278,10 @@ const DonationSection: React.FC = () => {
         <ImpactTitle as='h3' id='donation-impact-title'>
           {t("get_involved.donation.impact.title")}
         </ImpactTitle>
-        <ImpactGrid role='list' aria-label='Donation impact examples'>
+        <ImpactGrid
+          role='list'
+          aria-label={t("get_involved.donation.impact_list_aria_label")}
+        >
           {impactExamples.map((example, index) => (
             <ImpactItem
               key={index}

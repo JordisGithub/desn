@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -224,6 +224,12 @@ const MembershipSection: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    phone?: string;
+  }>({});
+  const errorSummaryRef = useRef<HTMLDivElement | null>(null);
 
   const benefits = [
     t("get_involved.membership.benefits.updates"),
@@ -234,23 +240,65 @@ const MembershipSection: React.FC = () => {
     t("get_involved.membership.benefits.certificate"),
   ];
 
+  const validateForm = (): boolean => {
+    const errors: { fullName?: string; email?: string; phone?: string } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = t(
+        "get_involved.membership.form.errors.full_name_required"
+      );
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = t("get_involved.membership.form.errors.email_required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = t("get_involved.membership.form.errors.email_invalid");
+    }
+
+    if (!formData.phone.trim()) {
+      errors.phone = t("get_involved.membership.form.errors.phone_required");
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-    // Clear errors when user starts typing
+    // Clear field-specific validation error when user starts typing
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name as keyof typeof validationErrors];
+        return updated;
+      });
+    }
+    // Clear general errors when user starts typing
     if (submitError) setSubmitError(null);
     if (submitSuccess) setSubmitSuccess(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
+
+    // Client-side validation
+    if (!validateForm()) {
+      // Focus the error summary for screen readers
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 100);
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       interface SubmissionResponse {
@@ -335,7 +383,7 @@ const MembershipSection: React.FC = () => {
             onClick={handleOpenModal}
             aria-haspopup='dialog'
             aria-controls='membership-dialog'
-            aria-label='Become a member - opens membership application form'
+            aria-label={t("get_involved.membership.become_member_aria_label")}
           >
             Become a Member
           </BecomeaMemberButton>
@@ -352,7 +400,10 @@ const MembershipSection: React.FC = () => {
         <BenefitsTitle as='h3'>
           {t("get_involved.membership.benefits.title")}
         </BenefitsTitle>
-        <BenefitsGrid role='list' aria-label='Membership benefits'>
+        <BenefitsGrid
+          role='list'
+          aria-label={t("get_involved.membership.benefits.title")}
+        >
           {benefits.map((benefit, index) => (
             <BenefitCard key={index} role='listitem'>
               <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 24 }} />
@@ -386,7 +437,7 @@ const MembershipSection: React.FC = () => {
             color: "#6b7280",
             zIndex: 1,
           }}
-          aria-label='close'
+          aria-label={t("aria.close")}
         >
           <CloseIcon />
         </IconButton>
@@ -420,6 +471,74 @@ const MembershipSection: React.FC = () => {
               </Typography>
             </Box>
 
+            {Object.keys(validationErrors).length > 0 && (
+              <Alert
+                severity='error'
+                role='alert'
+                aria-live='assertive'
+                aria-atomic='true'
+                sx={{
+                  mb: 3,
+                  maxWidth: "768px",
+                  margin: "0 auto 24px",
+                  backgroundColor: "#fee",
+                  border: "2px solid #c00",
+                }}
+                ref={errorSummaryRef}
+                tabIndex={-1}
+              >
+                <Box component='div' sx={{ fontWeight: 700, mb: 1 }}>
+                  {t("get_involved.membership.form.errors.summary_title")}
+                </Box>
+                <Box component='ul' sx={{ m: 0, pl: 2 }}>
+                  {validationErrors.fullName && (
+                    <li>
+                      <a
+                        href='#membership-fullName'
+                        style={{ color: "#c00", textDecoration: "underline" }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document
+                            .getElementById("membership-fullName")
+                            ?.focus();
+                        }}
+                      >
+                        {validationErrors.fullName}
+                      </a>
+                    </li>
+                  )}
+                  {validationErrors.email && (
+                    <li>
+                      <a
+                        href='#membership-email'
+                        style={{ color: "#c00", textDecoration: "underline" }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById("membership-email")?.focus();
+                        }}
+                      >
+                        {validationErrors.email}
+                      </a>
+                    </li>
+                  )}
+                  {validationErrors.phone && (
+                    <li>
+                      <a
+                        href='#membership-phone'
+                        style={{ color: "#c00", textDecoration: "underline" }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById("membership-phone")?.focus();
+                        }}
+                      >
+                        {validationErrors.phone}
+                      </a>
+                    </li>
+                  )}
+                </Box>
+              </Alert>
+            )}
+
             {submitSuccess && (
               <Alert
                 severity='success'
@@ -444,6 +563,7 @@ const MembershipSection: React.FC = () => {
             <Form onSubmit={handleSubmit}>
               <InputRow>
                 <StyledTextField
+                  id='membership-fullName'
                   name='fullName'
                   label={t("get_involved.membership.form.full_name")}
                   value={formData.fullName}
@@ -451,12 +571,23 @@ const MembershipSection: React.FC = () => {
                   required
                   fullWidth
                   disabled={isSubmitting}
+                  error={!!validationErrors.fullName}
+                  helperText={validationErrors.fullName}
                   inputProps={{
                     "aria-label": "Full Name",
                     "aria-required": "true",
+                    "aria-invalid": !!validationErrors.fullName,
+                    "aria-describedby": validationErrors.fullName
+                      ? "membership-fullName-error"
+                      : undefined,
+                  }}
+                  FormHelperTextProps={{
+                    id: "membership-fullName-error",
+                    role: "alert",
                   }}
                 />
                 <StyledTextField
+                  id='membership-email'
                   name='email'
                   type='email'
                   label={t("get_involved.membership.form.email")}
@@ -465,13 +596,24 @@ const MembershipSection: React.FC = () => {
                   required
                   fullWidth
                   disabled={isSubmitting}
+                  error={!!validationErrors.email}
+                  helperText={validationErrors.email}
                   inputProps={{
                     "aria-label": "Email Address",
                     "aria-required": "true",
+                    "aria-invalid": !!validationErrors.email,
+                    "aria-describedby": validationErrors.email
+                      ? "membership-email-error"
+                      : undefined,
+                  }}
+                  FormHelperTextProps={{
+                    id: "membership-email-error",
+                    role: "alert",
                   }}
                 />
               </InputRow>
               <StyledTextField
+                id='membership-phone'
                 name='phone'
                 label={t("get_involved.membership.form.phone")}
                 value={formData.phone}
@@ -480,9 +622,19 @@ const MembershipSection: React.FC = () => {
                 fullWidth
                 sx={{ maxWidth: "376px" }}
                 disabled={isSubmitting}
+                error={!!validationErrors.phone}
+                helperText={validationErrors.phone}
                 inputProps={{
                   "aria-label": "Phone Number",
                   "aria-required": "true",
+                  "aria-invalid": !!validationErrors.phone,
+                  "aria-describedby": validationErrors.phone
+                    ? "membership-phone-error"
+                    : undefined,
+                }}
+                FormHelperTextProps={{
+                  id: "membership-phone-error",
+                  role: "alert",
                 }}
               />
               <SubmitButton
@@ -491,7 +643,7 @@ const MembershipSection: React.FC = () => {
                   isSubmitting ? <CircularProgress size={20} /> : <SendIcon />
                 }
                 disabled={isSubmitting}
-                aria-label='Apply for membership'
+                aria-label={t("get_involved.membership.form.submit_aria_label")}
               >
                 {isSubmitting ? "Submitting..." : "APPLY FOR MEMBERSHIP"}
               </SubmitButton>

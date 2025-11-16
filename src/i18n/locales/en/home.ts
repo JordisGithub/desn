@@ -4,6 +4,8 @@ export default {
   hero_description:
     "Empowering Persons with Disabilities through Accessibility, Inclusion, and Innovation.",
   hero_button: "Donate Now",
+  hero_donate_aria_label:
+    "Donate now to support people with disabilities in Nepal",
   hero_title: "The Disability Empowerment Society Nepal (DESN)",
   hero_subtitle:
     "Empowering Persons with Disabilities Through Accessibility, Inclusion, and Innovation",
