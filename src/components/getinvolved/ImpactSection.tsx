@@ -7,6 +7,12 @@ import { useTranslation } from "react-i18next";
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(10, 12),
   backgroundColor: "white",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(8, 6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(6, 3),
+  },
 }));
 
 const Container = styled(Box)(({ theme }) => ({
@@ -21,31 +27,45 @@ const Header = styled(Box)({
   marginBottom: "16px",
 });
 
-const SectionTitle = styled(Typography)({
+const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "32px",
   fontWeight: 400,
   color: "#004c91",
   marginBottom: "20px",
   fontFamily: "'Open Sans', sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "24px",
+    marginBottom: "16px",
+  },
+}));
 
-const Description = styled(Typography)({
+const Description = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: 400,
   color: "#374151",
   lineHeight: 1.6,
   maxWidth: "900px",
   textAlign: "center",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+  },
+}));
 
-const StatsGrid = styled(Box)({
+const StatsGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "32px",
   width: "100%",
-});
+  [theme.breakpoints.down("md")]: {
+    gap: "24px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+    gap: "20px",
+  },
+}));
 
-const StatCard = styled(Box)({
+const StatCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   background: "linear-gradient(135deg, #e5f3ff, #ffffff)",
   borderTop: "5px solid #f6d469",
@@ -76,16 +96,22 @@ const StatCard = styled(Box)({
   "&:hover::before": {
     opacity: 1,
   },
-});
+  [theme.breakpoints.down("sm")]: {
+    padding: "32px 24px",
+  },
+}));
 
-const StatNumber = styled(Typography)({
+const StatNumber = styled(Typography)(({ theme }) => ({
   fontSize: "48px",
   fontWeight: 800,
   color: "var(--color-primary-dark)",
   textAlign: "center",
   transition: "all 0.3s ease",
   lineHeight: 1.1,
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "36px",
+  },
+}));
 
 const StatLabel = styled(Typography)({
   fontSize: "16px",

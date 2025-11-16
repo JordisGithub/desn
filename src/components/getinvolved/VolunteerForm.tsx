@@ -8,35 +8,44 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
 import SendIcon from "@mui/icons-material/Send";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { postWithAuth } from "../../services/ApiService";
 
 const FormContainer = styled(Box)(({ theme }) => ({
-  borderRadius: "16px",
-  padding: theme.spacing(8, 0),
-  maxWidth: "768px",
+  maxWidth: "1280px",
   margin: "0 auto",
+  borderRadius: "16px",
+  background: "linear-gradient(to bottom, #004c91, #00a77f)",
+  padding: "64px",
+  boxShadow: "0 12px 32px rgba(0, 76, 145, 0.3)",
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(6, 0),
+    padding: theme.spacing(6),
   },
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(4, 0),
+    padding: theme.spacing(4),
   },
 }));
 
-const FormTitle = styled(Typography)({
+const FormTitle = styled(Typography)(({ theme }) => ({
   fontSize: "24px",
   fontWeight: 400,
-  color: "#004c91",
+  color: "white",
   textAlign: "center",
-  marginBottom: "48px",
+  marginBottom: "32px",
   fontFamily: "'Open Sans', sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "20px",
+    marginBottom: "24px",
+  },
+}));
 
 const Form = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(4),
+  maxWidth: "768px",
+  margin: "0 auto",
 }));
 
 const InputRow = styled(Box)(({ theme }) => ({
@@ -50,18 +59,26 @@ const InputRow = styled(Box)(({ theme }) => ({
 
 const StyledTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    backgroundColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     borderRadius: "10px",
     "& fieldset": {
-      borderColor: "#d1d5dc",
+      borderColor: "rgba(255, 255, 255, 0.3)",
       borderWidth: "1px",
     },
     "&:hover fieldset": {
-      borderColor: "#004c91",
+      borderColor: "rgba(0, 76, 145, 0.5)",
     },
     "&.Mui-focused fieldset": {
       borderColor: "#f6d469",
       borderWidth: "3px",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: "rgba(16, 24, 40, 0.7)",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    padding: "0 4px",
+    "&.Mui-focused": {
+      color: "#004c91",
     },
   },
   "& .MuiInputBase-input": {
@@ -69,7 +86,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const SubmitButton = styled(Button)({
+const SubmitButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#f6d469",
   color: "#004c91",
   fontSize: "20px",
@@ -88,14 +105,21 @@ const SubmitButton = styled(Button)({
     backgroundColor: "#d1d5db",
     color: "#6b7280",
   },
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+    padding: "12px 24px",
+  },
+}));
 
-const RequiredNote = styled(Typography)({
-  fontSize: "16px",
-  color: "black",
-  textAlign: "right",
-  marginTop: "-16px",
-});
+const RequiredNote = styled(Typography)(({ theme }) => ({
+  fontSize: "20px",
+  color: "white",
+  marginBottom: "32px",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+    marginBottom: "24px",
+  },
+}));
 
 interface VolunteerFormProps {
   onSuccess?: () => void;
@@ -235,12 +259,34 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
       aria-labelledby={dialogTitleId}
       aria-describedby={dialogDescId}
     >
-      <FormTitle id={dialogTitleId || "volunteer-dialog-title"}>
+      <FormTitle as='h3' id={dialogTitleId || "volunteer-dialog-title"}>
         {t("get_involved.volunteer.form.title")}
       </FormTitle>
       <RequiredNote id={dialogDescId || "volunteer-dialog-desc"}>
         {t("get_involved.volunteer.form.required")}
       </RequiredNote>
+      <Box
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          borderRadius: "10px",
+          padding: "16px",
+          marginBottom: "24px",
+          maxWidth: "768px",
+          margin: "0 auto 24px",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+        }}
+      >
+        <CheckCircleIcon
+          sx={{ color: "#f6d469", fontSize: 20 }}
+          aria-hidden='true'
+        />
+        <Typography sx={{ fontSize: "14px", color: "white" }}>
+          {t("get_involved.volunteer.security_note") ||
+            "Your information is secure and will only be used to contact you about volunteer opportunities."}
+        </Typography>
+      </Box>
 
       {Object.keys(validationErrors).length > 0 && (
         <Alert
@@ -248,7 +294,13 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
           role='alert'
           aria-live='assertive'
           aria-atomic='true'
-          sx={{ mb: 3, backgroundColor: "#fee", border: "2px solid #c00" }}
+          sx={{
+            mb: 3,
+            maxWidth: "768px",
+            margin: "0 auto 24px",
+            backgroundColor: "#fee",
+            border: "2px solid #c00",
+          }}
           ref={errorSummaryRef}
           tabIndex={-1}
         >
@@ -289,14 +341,22 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
       )}
 
       {submitSuccess && (
-        <Alert severity='success' sx={{ mb: 3 }}>
+        <Alert
+          severity='success'
+          role='status'
+          aria-live='polite'
+          sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
+        >
           {t("get_involved.volunteer.form.success_message") ||
             "Thank you for your application! We will contact you soon."}
         </Alert>
       )}
 
       {submitError && (
-        <Alert severity='error' sx={{ mb: 3 }}>
+        <Alert
+          severity='error'
+          sx={{ mb: 3, maxWidth: "768px", margin: "0 auto 24px" }}
+        >
           {submitError}
         </Alert>
       )}
@@ -309,7 +369,6 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             label={t("get_involved.volunteer.form.full_name")}
             value={formData.fullName}
             onChange={handleChange}
-            required
             fullWidth
             disabled={isSubmitting}
             error={!!validationErrors.fullName}
@@ -337,7 +396,6 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             label={t("get_involved.volunteer.form.email")}
             value={formData.email}
             onChange={handleChange}
-            required
             fullWidth
             disabled={isSubmitting}
             error={!!validationErrors.email}

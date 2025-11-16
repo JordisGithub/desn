@@ -22,6 +22,12 @@ const Section = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "16px",
   boxShadow: "0px 4px 20px rgba(0, 76, 145, 0.08)",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(8, 6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(6, 3),
+  },
 }));
 
 const BecomeaMemberButton = styled(Button)(({ theme }) => ({
@@ -50,6 +56,15 @@ const IntroContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(8),
   maxWidth: "1280px",
   margin: "0 auto 64px auto",
+  [theme.breakpoints.down("lg")]: {
+    gridTemplateColumns: "1fr 1fr",
+    gap: theme.spacing(6),
+  },
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "1fr",
+    gap: theme.spacing(4),
+    marginBottom: theme.spacing(6),
+  },
 }));
 
 const TextContent = styled(Box)(({ theme }) => ({
@@ -65,22 +80,28 @@ const TitleBar = styled(Box)({
   borderRadius: "100px",
 });
 
-const SectionTitle = styled(Typography)({
+const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: "32px",
   fontWeight: 400,
   color: "#004c91",
   marginTop: "20px",
   fontFamily: "'Open Sans', sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "24px",
+  },
+}));
 
-const Description = styled(Typography)({
+const Description = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: 400,
   color: "#364153",
   lineHeight: 1.5,
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "14px",
+  },
+}));
 
-const ImageContainer = styled(Box)({
+const ImageContainer = styled(Box)(({ theme }) => ({
   width: "608px",
   height: "384px",
   borderRadius: "14px",
@@ -92,7 +113,16 @@ const ImageContainer = styled(Box)({
     height: "100%",
     objectFit: "cover",
   },
-});
+  [theme.breakpoints.down("lg")]: {
+    width: "100%",
+    maxWidth: "608px",
+    height: "auto",
+    aspectRatio: "608/384",
+  },
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "100%",
+  },
+}));
 
 const BenefitsSection = styled(Box)({
   maxWidth: "1280px",
@@ -108,11 +138,15 @@ const BenefitsTitle = styled(Typography)({
   fontFamily: "'Open Sans', sans-serif",
 });
 
-const BenefitsGrid = styled(Box)({
+const BenefitsGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: "24px",
-});
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+    gap: "16px",
+  },
+}));
 
 const BenefitCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -129,29 +163,44 @@ const BenefitText = styled(Typography)({
   color: "#364153",
 });
 
-const FormSection = styled(Box)({
+const FormSection = styled(Box)(({ theme }) => ({
   maxWidth: "1280px",
   margin: "0 auto",
   borderRadius: "16px",
   background: "linear-gradient(to bottom, #004c91, #00a77f)",
   padding: "64px",
   boxShadow: "0 12px 32px rgba(0, 76, 145, 0.3)",
-});
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4),
+    borderRadius: "12px",
+  },
+}));
 
-const FormTitle = styled(Typography)({
+const FormTitle = styled(Typography)(({ theme }) => ({
   fontSize: "24px",
   fontWeight: 400,
   color: "white",
   textAlign: "center",
   marginBottom: "32px",
   fontFamily: "'Open Sans', sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "20px",
+    marginBottom: "24px",
+  },
+}));
 
-const RequiredNote = styled(Typography)({
+const RequiredNote = styled(Typography)(({ theme }) => ({
   fontSize: "20px",
   color: "white",
   marginBottom: "32px",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+    marginBottom: "24px",
+  },
+}));
 
 const Form = styled("form")(({ theme }) => ({
   display: "flex",
@@ -185,13 +234,18 @@ const StyledTextField = styled(TextField)({
   },
   "& .MuiInputLabel-root": {
     color: "rgba(16, 24, 40, 0.7)",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    padding: "0 4px",
+    "&.Mui-focused": {
+      color: "#004c91",
+    },
   },
   "& .MuiInputBase-input": {
     color: "#1f2937",
   },
 });
 
-const SubmitButton = styled(Button)({
+const SubmitButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#f6d469",
   color: "#004c91",
   fontSize: "20px",
@@ -210,7 +264,11 @@ const SubmitButton = styled(Button)({
     backgroundColor: "#d1d5db",
     color: "#6b7280",
   },
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "16px",
+    padding: "12px 24px",
+  },
+}));
 
 const MembershipSection: React.FC = () => {
   const { t } = useTranslation();
@@ -443,7 +501,7 @@ const MembershipSection: React.FC = () => {
         </IconButton>
         <DialogContent sx={{ p: 0 }}>
           <FormSection>
-            <FormTitle id='membership-dialog-title'>
+            <FormTitle as='h3' id='membership-dialog-title'>
               {t("get_involved.membership.form.title")}
             </FormTitle>
             <RequiredNote id='membership-dialog-desc'>
@@ -568,7 +626,6 @@ const MembershipSection: React.FC = () => {
                   label={t("get_involved.membership.form.full_name")}
                   value={formData.fullName}
                   onChange={handleChange}
-                  required
                   fullWidth
                   disabled={isSubmitting}
                   error={!!validationErrors.fullName}
@@ -595,7 +652,6 @@ const MembershipSection: React.FC = () => {
                   label={t("get_involved.membership.form.email")}
                   value={formData.email}
                   onChange={handleChange}
-                  required
                   fullWidth
                   disabled={isSubmitting}
                   error={!!validationErrors.email}
@@ -622,7 +678,6 @@ const MembershipSection: React.FC = () => {
                 label={t("get_involved.membership.form.phone")}
                 value={formData.phone}
                 onChange={handleChange}
-                required
                 fullWidth
                 sx={{ maxWidth: "376px" }}
                 disabled={isSubmitting}
