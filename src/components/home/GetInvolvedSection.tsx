@@ -1,9 +1,8 @@
-import { useState } from "react";
+import React from "react";
 import { Container, Typography, Stack, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import DonationPaymentModal from "../payment/DonationPaymentModal";
 import getinvolved1 from "../../assets/home/getinvolved1.jpg";
 import getinvolved2 from "../../assets/home/getinvolved2.jpg";
 
@@ -104,7 +103,6 @@ const DonateBtn = styled(Button)(({ theme }) => ({
 export default function GetInvolvedSection() {
   const { t } = useTranslation();
   const { t: tGetInvolved } = useTranslation("get_involved");
-  const [donationModalOpen, setDonationModalOpen] = useState(false);
 
   return (
     <GetInvolvedContainer
@@ -149,7 +147,12 @@ export default function GetInvolvedSection() {
                 {t("get_involved_button")}
               </GetInvolvedButton>
               <DonateBtn
-                onClick={() => setDonationModalOpen(true)}
+                onClick={() =>
+                  window.open(
+                    "https://www.paypal.com/paypalme/thekopkrish",
+                    "_blank"
+                  )
+                }
                 aria-label={tGetInvolved("donate_button")}
               >
                 {tGetInvolved("donate_button")}
@@ -159,10 +162,7 @@ export default function GetInvolvedSection() {
         </Stack>
       </Container>
 
-      <DonationPaymentModal
-        open={donationModalOpen}
-        onClose={() => setDonationModalOpen(false)}
-      />
+      {/* Donations open PayPal directly */}
     </GetInvolvedContainer>
   );
 }

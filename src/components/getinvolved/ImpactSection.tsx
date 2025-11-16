@@ -32,38 +32,62 @@ const SectionTitle = styled(Typography)({
 const SectionSubtitle = styled(Typography)({
   fontSize: "18px",
   fontWeight: 400,
-  color: "#4a5565",
+  color: "#374151",
 });
 
 const StatsGrid = styled(Box)({
   display: "grid",
-  gridTemplateColumns: "repeat(4, 1fr)",
+  gridTemplateColumns: "repeat(3, 1fr)",
   gap: "32px",
   width: "100%",
 });
 
 const StatCard = styled(Box)({
   backgroundColor: "white",
-  borderBottom: "4px solid #00a77f",
+  background: "linear-gradient(135deg, #e5f3ff, #ffffff)",
+  borderTop: "5px solid #f6d469",
   borderRadius: "16px",
-  padding: "32px 32px 4px 32px",
+  padding: "40px 32px",
   display: "flex",
   flexDirection: "column",
-  gap: "12px",
+  gap: "16px",
   alignItems: "center",
+  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.48)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  cursor: "default",
+  position: "relative",
+  overflow: "hidden",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    background:
+      "linear-gradient(135deg, rgba(246, 212, 105, 0.05), transparent)",
+    opacity: 0,
+    transition: "opacity 0.3s ease",
+  },
+  "&:hover": {
+    transform: "scale(1.06) translateY(-6px)",
+    boxShadow: "0 32px 80px rgba(0, 0, 0, 0.58)",
+  },
+  "&:hover::before": {
+    opacity: 1,
+  },
 });
 
 const StatNumber = styled(Typography)({
-  fontSize: "32px",
-  fontWeight: 600,
-  color: "#004c91",
+  fontSize: "48px",
+  fontWeight: 800,
+  color: "var(--color-primary-dark)",
   textAlign: "center",
+  transition: "all 0.3s ease",
+  lineHeight: 1.1,
 });
 
 const StatLabel = styled(Typography)({
   fontSize: "16px",
   fontWeight: 400,
-  color: "#4a5565",
+  color: "#374151",
   textAlign: "center",
 });
 
@@ -72,23 +96,29 @@ const ImpactSection: React.FC = () => {
 
   const stats = [
     { number: "2000+", label: t("get_involved.impact.lives_impacted") },
-    { number: "150+", label: t("get_involved.impact.volunteers") },
     { number: "45+", label: t("get_involved.impact.programs") },
     { number: "20", label: t("get_involved.impact.years_of_service") },
   ];
 
   return (
-    <Section>
+    <Section role='region' aria-labelledby='impact-section-title'>
       <Container>
         <Header>
-          <SectionTitle>{t("get_involved.impact.title")}</SectionTitle>
+          <SectionTitle as='h2' id='impact-section-title'>
+            {t("get_involved.impact.title")}
+          </SectionTitle>
           <SectionSubtitle>{t("get_involved.impact.subtitle")}</SectionSubtitle>
         </Header>
-        <StatsGrid>
+        <StatsGrid role='list' aria-label='Impact statistics'>
           {stats.map((stat, index) => (
-            <StatCard key={index}>
-              <StatNumber>{stat.number}</StatNumber>
-              <StatLabel>{stat.label}</StatLabel>
+            <StatCard
+              key={index}
+              role='listitem'
+              tabIndex={0}
+              aria-label={`${stat.number} ${stat.label}`}
+            >
+              <StatNumber aria-hidden='true'>{stat.number}</StatNumber>
+              <StatLabel aria-hidden='true'>{stat.label}</StatLabel>
             </StatCard>
           ))}
         </StatsGrid>

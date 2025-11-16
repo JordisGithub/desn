@@ -142,35 +142,16 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
       return;
     }
 
+    // Instead of initiating Khalti, route all donations to PayPal.me
     setLoading(true);
-
     try {
-      const response = await fetch("/api/payment/initiate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: selectedAmount,
-          donorName: donorName.trim(),
-          donorEmail: donorEmail.trim(),
-          donorPhone: donorPhone.trim(),
-          donorMessage: donorMessage.trim(),
-          returnUrl: `${window.location.origin}/payment/verify`,
-          websiteUrl: window.location.origin,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.paymentUrl) {
-        // Redirect to Khalti payment page
-        window.location.href = data.paymentUrl;
-      } else {
-        setError(data.message || t("payment_error_failed_initiate"));
-      }
+      const payPalUrl = "https://www.paypal.com/paypalme/thekopkrish";
+      // Open PayPal in a new tab so the user can complete payment there
+      window.open(payPalUrl, "_blank");
+      // Optionally close the modal after opening PayPal
+      onClose();
     } catch (err) {
-      console.error("Payment error:", err);
+      console.error("Payment redirect error:", err);
       setError(t("payment_error_generic"));
     } finally {
       setLoading(false);
@@ -192,11 +173,23 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
   };
 
   return (
-    <DialogContainer open={open} onClose={handleClose} maxWidth='sm' fullWidth>
+    <DialogContainer
+      open={open}
+      onClose={handleClose}
+      maxWidth='sm'
+      fullWidth
+      aria-labelledby='donation-dialog-title'
+      aria-describedby='donation-dialog-desc'
+    >
       <DialogTitle>
         <Box display='flex' alignItems='center' gap={1}>
-          <PaymentIcon sx={{ color: "#00a77f" }} />
-          <Typography variant='h6' fontWeight={600} color='#004c91'>
+          <PaymentIcon sx={{ color: "#00a77f" }} aria-hidden='true' />
+          <Typography
+            id='donation-dialog-title'
+            variant='h6'
+            fontWeight={600}
+            color='#004c91'
+          >
             {t("donation_modal_title")}
           </Typography>
         </Box>
@@ -209,7 +202,7 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
             </Alert>
           )}
 
-          <Box>
+          <Box id='donation-dialog-desc'>
             <Typography variant='subtitle1' fontWeight={600} mb={1}>
               {t("donation_select_amount")}
             </Typography>

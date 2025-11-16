@@ -1,8 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import DonationPaymentModal from "../payment/DonationPaymentModal";
 import heroImage from "../../assets/home/nepal-hero-image.png";
 
 // Full-width hero container with background image
@@ -128,7 +126,7 @@ const HeroDonateButton = styled(Button)(({ theme }) => ({
 
 export default function HeroSection() {
   const { t } = useTranslation();
-  const [donationModalOpen, setDonationModalOpen] = useState(false);
+  // Donations now open PayPal directly
 
   return (
     <>
@@ -136,7 +134,7 @@ export default function HeroSection() {
         <HeroContent>
           {/* Massive Headline */}
           <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
-            {t("hero_heading")}
+            Disability Empowerment Society Nepal
           </HeroHeading>
 
           {/* Sub-Headline */}
@@ -144,7 +142,12 @@ export default function HeroSection() {
 
           {/* Primary CTA Button */}
           <HeroDonateButton
-            onClick={() => setDonationModalOpen(true)}
+            onClick={() =>
+              window.open(
+                "https://www.paypal.com/paypalme/thekopkrish",
+                "_blank"
+              )
+            }
             aria-label='Donate now to support people with disabilities in Nepal'
           >
             {t("hero_button")}
@@ -152,11 +155,7 @@ export default function HeroSection() {
         </HeroContent>
       </HeroContainer>
 
-      {/* Donation Modal */}
-      <DonationPaymentModal
-        open={donationModalOpen}
-        onClose={() => setDonationModalOpen(false)}
-      />
+      {/* Donations open PayPal directly (no modal) */}
     </>
   );
 }
