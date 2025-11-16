@@ -464,7 +464,7 @@ export default function OurTeamSection() {
           aria-labelledby='board-leadership-heading'
         >
           <SubsectionHeading variant='h3' id='board-leadership-heading'>
-            Our Board & Leadership
+            {t("about_board_leadership_heading")}
           </SubsectionHeading>
           <LeadershipGrid>
             {boardAndLeadership.map((member, index) => {

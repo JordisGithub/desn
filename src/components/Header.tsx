@@ -124,12 +124,12 @@ const NavLinks = styled(Box)(({ theme }) => ({
   },
 }));
 
-const NavLink = styled(RouterLink)(({ theme }) => ({
+const NavLink = styled(RouterLink)(() => ({
   color: "#333",
   textDecoration: "none",
   fontSize: "16px",
   fontWeight: 400,
-  padding: theme.spacing(1, 2),
+  padding: "2px",
   position: "relative",
   "&::after": {
     content: "attr(data-text)",

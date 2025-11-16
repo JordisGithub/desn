@@ -169,4 +169,9 @@ export default {
   events_upcoming_title: "Upcoming Events",
   events_upcoming_subtitle:
     "Mark your calendars for these important events and join us in making a difference.",
+
+  // Accessibility & UI
+  skip_to_content: "Skip to main content",
+  register_now: "Register Now",
+  event_full: "Event Full",
 };

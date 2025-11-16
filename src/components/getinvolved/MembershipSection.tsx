@@ -443,7 +443,7 @@ const MembershipSection: React.FC = () => {
             aria-controls='membership-dialog'
             aria-label={t("get_involved.membership.become_member_aria_label")}
           >
-            Become a Member
+            {t("get_involved.membership.become_member")}
           </BecomeaMemberButton>
         </TextContent>
         <ImageContainer>

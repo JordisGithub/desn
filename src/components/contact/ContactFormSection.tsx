@@ -18,6 +18,10 @@ const FormSection = styled("section")(({ theme }) => ({
   backgroundColor: "#f9fafb",
   paddingTop: theme.spacing(10),
   paddingBottom: theme.spacing(10),
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(6),
+  },
 }));
 
 const FormContainer = styled(Box)(({ theme }) => ({
@@ -26,6 +30,10 @@ const FormContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(8),
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
+    gap: theme.spacing(6),
+  },
+  [theme.breakpoints.down("sm")]: {
+    gap: theme.spacing(4),
   },
 }));
 
@@ -38,7 +46,7 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     fontSize: "2.5rem",
   },
-}));
+})) as typeof Typography;
 
 const SectionDescription = styled(Typography)({
   fontSize: "1.25rem",
@@ -106,6 +114,9 @@ const InfoCard = styled(Card)(({ theme }) => ({
   "&:focus-within": {
     outline: "3px solid #004c91",
     outlineOffset: "2px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4),
   },
 }));
 
@@ -191,7 +202,7 @@ export default function ContactFormSection() {
         <FormContainer>
           {/* Form Column */}
           <Box>
-            <SectionTitle id='contact-form-heading'>
+            <SectionTitle component='h2' variant='h2' id='contact-form-heading'>
               {t("contact.form.title")}
             </SectionTitle>
             <SectionDescription>
@@ -208,6 +219,10 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.full_name_placeholder")}
                   value={formData.fullName}
                   onChange={handleChange}
+                  inputProps={{
+                    "aria-required": "true",
+                  }}
+                  autoComplete='name'
                 />
 
                 <StyledTextField
@@ -219,6 +234,10 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.email_placeholder")}
                   value={formData.email}
                   onChange={handleChange}
+                  inputProps={{
+                    "aria-required": "true",
+                  }}
+                  autoComplete='email'
                 />
 
                 <StyledTextField
@@ -228,6 +247,7 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.phone_placeholder")}
                   value={formData.phone}
                   onChange={handleChange}
+                  autoComplete='tel'
                 />
 
                 <StyledTextField
@@ -238,6 +258,9 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.subject_placeholder")}
                   value={formData.subject}
                   onChange={handleChange}
+                  inputProps={{
+                    "aria-required": "true",
+                  }}
                 />
 
                 <StyledTextField
@@ -250,6 +273,9 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.message_placeholder")}
                   value={formData.message}
                   onChange={handleChange}
+                  inputProps={{
+                    "aria-required": "true",
+                  }}
                 />
 
                 <SubmitButton type='submit' startIcon={<SendIcon />}>
@@ -265,7 +291,7 @@ export default function ContactFormSection() {
             <InfoCard>
               <CardContent sx={{ padding: 0 }}>
                 <CardIconContainer>
-                  <IconBg bgColor='rgba(0, 167, 127, 0.1)'>
+                  <IconBg bgColor='rgba(0, 167, 127, 0.1)' aria-hidden='true'>
                     <AccessTimeIcon sx={{ fontSize: 32, color: "#00a77f" }} />
                   </IconBg>
                   <CardTitle>{t("contact.office_hours.title")}</CardTitle>
@@ -300,7 +326,7 @@ export default function ContactFormSection() {
             <Box
               sx={{
                 width: "100%",
-                height: "400px",
+                height: { xs: "300px", sm: "350px", md: "400px" },
                 borderRadius: 2,
                 overflow: "hidden",
                 boxShadow:

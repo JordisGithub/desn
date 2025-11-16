@@ -78,6 +78,9 @@ export default {
   about_team_community_volunteers: "Community Volunteers & Support Staff",
 
   // Team Member Roles
+  // Board & Leadership
+  about_board_leadership_heading: "Our Board & Leadership",
+
   role_chairperson: "Chairperson",
   role_vice_chairperson: "Vice Chairperson",
   role_secretary_general: "Secretary General",

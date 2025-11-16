@@ -460,8 +460,8 @@ export default function EventsSection() {
                   disabled={eventStatuses[event.id]?.isFull}
                 >
                   {eventStatuses[event.id]?.isFull
-                    ? "Event Full"
-                    : "Register Now"}
+                    ? t("event_full")
+                    : t("register_now")}
                 </RegisterButton>
               </CardContent>
             </EventCard>

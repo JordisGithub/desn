@@ -163,4 +163,9 @@ export default {
   events_upcoming_title: "आबै वला कार्यक्रम सभ",
   events_upcoming_subtitle:
     "ई महत्वपूर्ण कार्यक्रम सभक लेल अपन कैलेंडर चिह्नित करी आ फर्क बनाबै में हमरऽ सहयोग करी।",
+
+  // Accessibility & UI
+  skip_to_content: "मुख्य सामग्री पर जाई",
+  register_now: "आय दर्ता करी",
+  event_full: "कार्यक्रम भरि गेल",
 };
