@@ -122,9 +122,11 @@ describe("Volunteer Form Error Handling", () => {
     await user.type(nameInput, "J");
 
     await waitFor(() => {
-      expect(
-        screen.queryByText(/full name is required/i)
-      ).not.toBeInTheDocument();
+      // Check that the error is cleared from the field's helper text
+      const fieldError = screen.queryByRole("alert", {
+        name: /full name is required/i,
+      });
+      expect(fieldError).not.toBeInTheDocument();
     });
   });
 

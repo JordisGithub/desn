@@ -76,6 +76,9 @@ export default {
   about_team_board_members: "बोर्ड सदस्यहरू",
   about_team_community_volunteers: "समुदाय स्वयंसेवक व् सहयोगी कर्मचारी",
 
+  // Board & Leadership
+  about_board_leadership_heading: "झीगु बोर्ड व् नेतृत्व",
+
   // Team Member Roles
   role_chairperson: "अध्यक्ष",
   role_vice_chairperson: "उपाध्यक्ष",

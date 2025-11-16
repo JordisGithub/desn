@@ -168,4 +168,9 @@ export default {
   events_upcoming_title: "आगामी कार्यक्रमहरू",
   events_upcoming_subtitle:
     "यी महत्त्वपूर्ण कार्यक्रमहरूको लागि आफ्नो पात्रोमा चिन्ह लगाउनुहोस् र परिवर्तन ल्याउनमा हामीसँग सामेल हुनुहोस्।",
+
+  // Accessibility & UI
+  skip_to_content: "मुख्य सामग्रीमा जानुहोस्",
+  register_now: "अहिले दर्ता गर्नुहोस्",
+  event_full: "कार्यक्रम भरियो",
 };

@@ -110,8 +110,7 @@ export default function MissionVisionHeroSection() {
               {t("about_hero_org_name")}
             </MainHeading>
             <HeroSubheading id='hero-subheading'>
-              Advocating for equal rights, participation, and accessibility
-              since 2003.
+              {t("about_hero_tagline")}
             </HeroSubheading>
           </HeroContent>
         </Container>

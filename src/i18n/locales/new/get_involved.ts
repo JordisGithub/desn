@@ -11,8 +11,11 @@ export default {
     description:
       "छिगु स्वयंसेवक समुदायनाप जुइगु व् बाधाहरू बिगारीं, सीपहरू निर्माण यानादिसँ, स्वतन्त्रता व् मर्यादाया लागि वास्तविक अवसरहरू निर्माण यानादिगु आन्दोलनया भाग बनू।",
     lives_impacted: "जीवन परिवर्तन",
+    lives_impacted_number: "२०००+",
     volunteers: "सक्रिय स्वयंसेवकहरू",
+    volunteers_number: "४५+",
     programs: "समुदाय कार्यक्रमहरू",
+    programs_number: "२०",
     years_of_service: "प्रभावया वर्षहरू",
   },
   volunteer: {
@@ -137,6 +140,7 @@ export default {
       },
     },
     become_member_aria_label: "सदस्य बनू — सदस्यता आवेदन फाराम खोलिगु",
+    become_member: "सदस्य बनू",
   },
   form: {
     title: "झीगु मिशननाप जुइगु",

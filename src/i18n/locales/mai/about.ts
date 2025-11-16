@@ -74,6 +74,9 @@ export default {
   about_team_board_members: "बोर्ड सदस्य सभ",
   about_team_community_volunteers: "समुदाय स्वयंसेवक आ सहयोगी कर्मचारी",
 
+  // Board & Leadership
+  about_board_leadership_heading: "हमर बोर्ड आ नेतृत्व",
+
   // Team Member Roles
   role_chairperson: "अध्यक्ष",
   role_vice_chairperson: "उपाध्यक्ष",

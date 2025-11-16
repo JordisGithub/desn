@@ -11,8 +11,11 @@ export default {
     description:
       "Join our volunteer community and become part of a movement that's breaking barriers, building skills, and creating real opportunities for independence and dignity.",
     lives_impacted: "Lives Changed",
+    lives_impacted_number: "2000+",
     volunteers: "Active Volunteers",
+    volunteers_number: "45+",
     programs: "Community Programs",
+    programs_number: "20",
     years_of_service: "Years of Impact",
   },
   volunteer: {
@@ -138,6 +141,7 @@ export default {
     },
     become_member_aria_label:
       "Become a member — opens membership application form",
+    become_member: "Become a Member",
   },
   form: {
     title: "Join Our Mission",

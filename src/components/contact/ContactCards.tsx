@@ -38,6 +38,9 @@ const ContactCard = styled(Card)(({ theme }) => ({
     outline: "3px solid #004c91",
     outlineOffset: "2px",
   },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4),
+  },
 }));
 
 const IconContainer = styled(Box, {
@@ -112,7 +115,10 @@ export default function ContactCards() {
           <Box>
             <ContactCard>
               <CardContent sx={{ padding: 0 }}>
-                <IconContainer bgColor='rgba(0, 76, 145, 0.1)'>
+                <IconContainer
+                  bgColor='rgba(0, 76, 145, 0.1)'
+                  aria-hidden='true'
+                >
                   <EmailIcon sx={{ fontSize: 40, color: "#004c91" }} />
                 </IconContainer>
                 <CardTitle>{t("contact.cards.email.title")}</CardTitle>
@@ -124,8 +130,24 @@ export default function ContactCards() {
                     href='mailto:disabilityemp@gmail.com'
                     style={{
                       color: "#101828",
-                      textDecoration: "none",
+                      textDecoration: "underline",
+                      textDecorationColor: "transparent",
                     }}
+                    aria-label='Email disabilityemp@gmail.com'
+                    onFocus={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#101828")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#101828")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
                   >
                     disabilityemp@gmail.com
                   </a>
@@ -135,8 +157,24 @@ export default function ContactCards() {
                     href='mailto:thekopkrish@gmail.com'
                     style={{
                       color: "#4a5565",
-                      textDecoration: "none",
+                      textDecoration: "underline",
+                      textDecorationColor: "transparent",
                     }}
+                    aria-label='Email thekopkrish@gmail.com'
+                    onFocus={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#4a5565")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#4a5565")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
                   >
                     thekopkrish@gmail.com
                   </a>
@@ -149,7 +187,10 @@ export default function ContactCards() {
           <Box>
             <ContactCard>
               <CardContent sx={{ padding: 0 }}>
-                <IconContainer bgColor='rgba(0, 167, 127, 0.1)'>
+                <IconContainer
+                  bgColor='rgba(0, 167, 127, 0.1)'
+                  aria-hidden='true'
+                >
                   <PhoneIcon sx={{ fontSize: 40, color: "#00a77f" }} />
                 </IconContainer>
                 <CardTitle>{t("contact.cards.phone.title")}</CardTitle>
@@ -161,8 +202,24 @@ export default function ContactCards() {
                     href='tel:+977-15709205'
                     style={{
                       color: "#101828",
-                      textDecoration: "none",
+                      textDecoration: "underline",
+                      textDecorationColor: "transparent",
                     }}
+                    aria-label='Call +977-15709205'
+                    onFocus={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#101828")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#101828")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
                   >
                     +977-15709205
                   </a>
@@ -172,8 +229,24 @@ export default function ContactCards() {
                     href='tel:+977-9849873868'
                     style={{
                       color: "#4a5565",
-                      textDecoration: "none",
+                      textDecoration: "underline",
+                      textDecorationColor: "transparent",
                     }}
+                    aria-label='Call +977-9849873868'
+                    onFocus={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#4a5565")
+                    }
+                    onBlur={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.textDecorationColor = "#4a5565")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.textDecorationColor =
+                        "transparent")
+                    }
                   >
                     +977-9849873868
                   </a>
@@ -186,7 +259,10 @@ export default function ContactCards() {
           <Box>
             <ContactCard>
               <CardContent sx={{ padding: 0 }}>
-                <IconContainer bgColor='rgba(150, 85, 149, 0.1)'>
+                <IconContainer
+                  bgColor='rgba(150, 85, 149, 0.1)'
+                  aria-hidden='true'
+                >
                   <LocationOnIcon sx={{ fontSize: 40, color: "#965595" }} />
                 </IconContainer>
                 <CardTitle>{t("contact.cards.location.title")}</CardTitle>

@@ -167,4 +167,9 @@ export default {
   events_upcoming_title: "आनादिगु कार्यक्रमहरू",
   events_upcoming_subtitle:
     "थ्व महत्त्वपूर्ण कार्यक्रमहरूया लागि आपूगु पात्रो चिन्ह बियानू व् फरक बनाउनाया लागि झीन् हे जुइगु।",
+
+  // Accessibility & UI
+  skip_to_content: "मुख्य सामग्रीनाप वनू",
+  register_now: "आजे दर्ता यानू",
+  event_full: "कार्यक्रम भरि ज्या",
 };
