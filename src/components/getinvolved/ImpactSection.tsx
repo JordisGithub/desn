@@ -29,14 +29,14 @@ const SectionTitle = styled(Typography)({
   fontFamily: "'Open Sans', sans-serif",
 });
 
-const Description = styled(Typography)(({ theme }) => ({
+const Description = styled(Typography)({
   fontSize: "18px",
   fontWeight: 400,
   color: "#374151",
   lineHeight: 1.6,
   maxWidth: "900px",
   textAlign: "center",
-}));
+});
 
 const StatsGrid = styled(Box)({
   display: "grid",

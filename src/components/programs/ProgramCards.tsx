@@ -74,19 +74,19 @@ const CardBody = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-const CardTitle = styled(Typography)(({ theme }) => ({
+const CardTitle = styled(Typography)({
   fontSize: "1.25rem",
   fontWeight: 800,
   color: "#0f172a",
   textAlign: "center",
-}));
+});
 
-const ImpactMetric = styled(Typography)(({ theme }) => ({
+const ImpactMetric = styled(Typography)({
   fontSize: "1.125rem",
   fontWeight: 700,
   color: "#004c91",
   textAlign: "center",
-}));
+});
 
 const OutcomeText = styled(Typography)(({ theme }) => ({
   color: "#374151",
@@ -210,7 +210,6 @@ export default function ProgramCards() {
                 </ImpactMetric>
                 <OutcomeText>{p.outcome}</OutcomeText>
                 <LearnMoreButton
-                  component='a'
                   href={p.link}
                   aria-label={`Learn more about ${p.title}`}
                 >

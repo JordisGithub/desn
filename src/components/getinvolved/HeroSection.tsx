@@ -22,7 +22,7 @@ const ContentWrapper = styled(Box)({
   alignItems: "center",
 });
 
-const Title = styled(Typography)(({ theme }) => ({
+const Title = styled(Typography)({
   fontSize: "68px",
   fontWeight: 800,
   color: "rgb(255, 255, 255)",
@@ -35,9 +35,9 @@ const Title = styled(Typography)(({ theme }) => ({
   marginBottom: "16px",
   WebkitFontSmoothing: "antialiased",
   textRendering: "optimizeLegibility",
-}));
+});
 
-const Tagline = styled(Typography)(({ theme }) => ({
+const Tagline = styled(Typography)({
   fontSize: "16px",
   fontWeight: 600,
   color: "rgb(246, 212, 105)",
@@ -53,7 +53,7 @@ const Tagline = styled(Typography)(({ theme }) => ({
   maxWidth: "700px",
   WebkitFontSmoothing: "antialiased",
   textRendering: "optimizeLegibility",
-}));
+});
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();

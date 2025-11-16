@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const IntroSection = styled("section")(({ theme }) => ({
@@ -18,13 +18,13 @@ const IntroHeading = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const IntroText = styled(Typography)(({ theme }) => ({
+const IntroText = styled(Typography)({
   fontSize: "1.125rem",
   color: "#364153",
   textAlign: "center",
   maxWidth: 960,
   margin: "0 auto",
-}));
+});
 
 export default function ProgramIntro() {
   return (

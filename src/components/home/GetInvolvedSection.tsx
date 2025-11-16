@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Typography, Stack, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";

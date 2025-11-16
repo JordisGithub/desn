@@ -7,13 +7,13 @@ const SuccessSection = styled("section")(({ theme }) => ({
   color: "#ffffff",
 }));
 
-const Quote = styled(Typography)(({ theme }) => ({
+const Quote = styled(Typography)({
   fontSize: "1.375rem",
   lineHeight: 1.7,
   textAlign: "center",
   maxWidth: 920,
   margin: "0 auto",
-}));
+});
 
 const Author = styled(Typography)(({ theme }) => ({
   textAlign: "center",
