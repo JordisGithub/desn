@@ -1,0 +1,108 @@
+name: Deploy to Personal AWS
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test -- --run
+
+      - name: Build frontend
+        env:
+          VITE_API_BASE_URL: "http://98.81.50.37"
+        run: npm run build
+
+      - name: Build backend
+        working-directory: ./backend
+        run: mvn clean package -DskipTests
+
+      - name: Package deployment
+        run: |
+          mkdir -p deployment
+          cp -r dist deployment/frontend
+          mkdir -p deployment/backend
+          cp backend/target/*.jar deployment/backend/app.jar
+          tar -czf deployment.tar.gz deployment/
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "deployment.tar.gz"
+          target: "/home/ubuntu/"
+
+      - name: Execute deployment on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu
+            tar -xzf deployment.tar.gz
+            
+            # Deploy frontend
+            sudo cp -r deployment/frontend/* /var/www/html/
+            echo "✅ Frontend deployed"
+            
+            # Deploy backend
+            mkdir -p ~/desn-app/backend
+            cp deployment/backend/app.jar ~/desn-app/backend/
+            echo "✅ Backend deployed"
+            
+            # Restart backend service
+            sudo systemctl restart desn-backend
+            echo "✅ Backend restarted"
+            
+            # Clean up
+            rm -rf deployment deployment.tar.gz
+            
+            # Verify deployment
+            sleep 5
+            if sudo systemctl is-active --quiet desn-backend; then
+              echo "✅ Deployment successful!"
+            else
+              echo "❌ Backend failed to start"
+              exit 1
+            fi
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "## 🎉 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 Website: http://98.81.50.37" >> $GITHUB_STEP_SUMMARY
+          echo "🔧 API: http://98.81.50.37/api" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changes Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)" >> $GITHUB_STEP_SUMMARY
