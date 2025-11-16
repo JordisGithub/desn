@@ -75,7 +75,10 @@ const MapFrame = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DirectionsButton = styled(Button)<{ href?: string; component?: React.ElementType }>(({ theme }) => ({
+const DirectionsButton = styled(Button)<{
+  href?: string;
+  component?: React.ElementType;
+}>(({ theme }) => ({
   backgroundColor: "#004c91",
   color: "white",
   fontWeight: 500,
