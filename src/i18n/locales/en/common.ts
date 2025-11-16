@@ -44,6 +44,13 @@ export default {
     projects: "Projects",
     contact: "Contact Us",
   },
+  // ARIA Labels
+  aria: {
+    close: "Close",
+    menu: "Menu",
+    previous_month: "Previous month",
+    next_month: "Next month",
+  },
   // Header
   header: {
     search_placeholder: "Search...",

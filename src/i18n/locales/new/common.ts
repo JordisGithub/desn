@@ -43,6 +43,13 @@ export default {
     get_involved: "संलग्न जुइगु",
     contact: "सम्पर्क यायेगु",
   },
+  // ARIA Labels
+  aria: {
+    close: "बन्द यायेगु",
+    menu: "मेनु",
+    previous_month: "अघिल्लो महिना",
+    next_month: "अर्को महिना",
+  },
   // Header
   header: {
     search_placeholder: "न्हापा यायेगु...",

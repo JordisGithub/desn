@@ -6,8 +6,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CTAContainer = styled("section")({
   background: "linear-gradient(180deg, #002b52 0%, #004c91 20%, #00a77f 100%)",
-  paddingTop: "120px",
-  paddingBottom: "120px",
+  padding: "20px",
   position: "relative",
   overflow: "hidden",
 });
@@ -38,6 +37,12 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
   justifyContent: "center",
   flexWrap: "wrap",
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column",
+    width: "100%",
+    maxWidth: "400px",
+    margin: "0 auto",
+  },
 }));
 
 const PrimaryButton = styled(Link)(({ theme }) => ({
@@ -50,6 +55,7 @@ const PrimaryButton = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: theme.spacing(1),
   boxShadow: "0 6px 12px rgba(246, 212, 105, 0.35)",
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -61,6 +67,11 @@ const PrimaryButton = styled(Link)(({ theme }) => ({
   "&:focus": {
     outline: "3px solid white",
     outlineOffset: "2px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    padding: theme.spacing(2, 3),
+    fontSize: "1rem",
   },
 }));
 
@@ -76,6 +87,7 @@ const SecondaryButton = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: theme.spacing(1),
   transition: "all 0.3s ease",
   "&:hover": {
@@ -85,6 +97,11 @@ const SecondaryButton = styled(Link)(({ theme }) => ({
   "&:focus-visible": {
     outline: "3px solid #f6d469",
     outlineOffset: "3px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    padding: theme.spacing(1.5, 3),
+    fontSize: "1rem",
   },
 }));
 

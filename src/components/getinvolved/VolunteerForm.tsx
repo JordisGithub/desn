@@ -117,25 +117,68 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{
+    fullName?: string;
+    email?: string;
+  }>({});
   const firstInputRef = useRef<HTMLInputElement | null>(null);
+  const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+
+  const validateForm = (): boolean => {
+    const errors: { fullName?: string; email?: string } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = t(
+        "get_involved.volunteer.form.errors.full_name_required"
+      );
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = t("get_involved.volunteer.form.errors.email_required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = t("get_involved.volunteer.form.errors.email_invalid");
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-    // Clear errors when user starts typing
+    // Clear field-specific validation error when user starts typing
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name as keyof typeof validationErrors];
+        return updated;
+      });
+    }
+    // Clear general errors when user starts typing
     if (submitError) setSubmitError(null);
     if (submitSuccess) setSubmitSuccess(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
+
+    // Client-side validation
+    if (!validateForm()) {
+      // Focus the error summary for screen readers
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 100);
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
       interface SubmissionResponse {
@@ -189,7 +232,6 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
   return (
     <FormContainer
       id='volunteer-form'
-      role='form'
       aria-labelledby={dialogTitleId}
       aria-describedby={dialogDescId}
     >
@@ -199,6 +241,52 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
       <RequiredNote id={dialogDescId || "volunteer-dialog-desc"}>
         {t("get_involved.volunteer.form.required")}
       </RequiredNote>
+
+      {Object.keys(validationErrors).length > 0 && (
+        <Alert
+          severity='error'
+          role='alert'
+          aria-live='assertive'
+          aria-atomic='true'
+          sx={{ mb: 3, backgroundColor: "#fee", border: "2px solid #c00" }}
+          ref={errorSummaryRef}
+          tabIndex={-1}
+        >
+          <Box component='div' sx={{ fontWeight: 700, mb: 1 }}>
+            {t("get_involved.volunteer.form.errors.summary_title")}
+          </Box>
+          <Box component='ul' sx={{ m: 0, pl: 2 }}>
+            {validationErrors.fullName && (
+              <li>
+                <a
+                  href='#volunteer-fullName'
+                  style={{ color: "#c00", textDecoration: "underline" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("volunteer-fullName")?.focus();
+                  }}
+                >
+                  {validationErrors.fullName}
+                </a>
+              </li>
+            )}
+            {validationErrors.email && (
+              <li>
+                <a
+                  href='#volunteer-email'
+                  style={{ color: "#c00", textDecoration: "underline" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("volunteer-email")?.focus();
+                  }}
+                >
+                  {validationErrors.email}
+                </a>
+              </li>
+            )}
+          </Box>
+        </Alert>
+      )}
 
       {submitSuccess && (
         <Alert severity='success' sx={{ mb: 3 }}>
@@ -216,6 +304,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
       <Form onSubmit={handleSubmit}>
         <InputRow>
           <StyledTextField
+            id='volunteer-fullName'
             name='fullName'
             label={t("get_involved.volunteer.form.full_name")}
             value={formData.fullName}
@@ -223,13 +312,26 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             required
             fullWidth
             disabled={isSubmitting}
+            error={!!validationErrors.fullName}
+            helperText={validationErrors.fullName}
             inputRef={firstInputRef}
-            inputProps={{
-              "aria-label": "Full Name",
-              "aria-required": "true",
+            slotProps={{
+              input: {
+                "aria-label": "Full Name",
+                "aria-required": "true",
+                "aria-invalid": !!validationErrors.fullName,
+                "aria-describedby": validationErrors.fullName
+                  ? "volunteer-fullName-error"
+                  : undefined,
+              },
+            }}
+            FormHelperTextProps={{
+              id: "volunteer-fullName-error",
+              role: "alert",
             }}
           />
           <StyledTextField
+            id='volunteer-email'
             name='email'
             type='email'
             label={t("get_involved.volunteer.form.email")}
@@ -238,9 +340,21 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             required
             fullWidth
             disabled={isSubmitting}
-            inputProps={{
-              "aria-label": "Email Address",
-              "aria-required": "true",
+            error={!!validationErrors.email}
+            helperText={validationErrors.email}
+            slotProps={{
+              input: {
+                "aria-label": "Email Address",
+                "aria-required": "true",
+                "aria-invalid": !!validationErrors.email,
+                "aria-describedby": validationErrors.email
+                  ? "volunteer-email-error"
+                  : undefined,
+              },
+            }}
+            FormHelperTextProps={{
+              id: "volunteer-email-error",
+              role: "alert",
             }}
           />
         </InputRow>
@@ -248,7 +362,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
           type='submit'
           endIcon={isSubmitting ? <CircularProgress size={20} /> : <SendIcon />}
           disabled={isSubmitting}
-          aria-label='Submit volunteer inquiry'
+          aria-label={t("get_involved.volunteer.form.submit_aria_label")}
         >
           {isSubmitting ? "Submitting..." : "SUBMIT VOLUNTEER INQUIRY"}
         </SubmitButton>

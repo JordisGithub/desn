@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Paper,
@@ -125,6 +126,7 @@ interface EventCalendarProps {
 }
 
 export default function EventCalendar({ events }: EventCalendarProps) {
+  const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
@@ -245,13 +247,19 @@ export default function EventCalendar({ events }: EventCalendarProps) {
       {/* Calendar */}
       <CalendarContainer sx={{ flex: { xs: "1 1 100%", md: "0 0 60%" } }}>
         <CalendarHeader>
-          <IconButton onClick={handlePreviousMonth} aria-label='Previous month'>
+          <IconButton
+            onClick={handlePreviousMonth}
+            aria-label={t("aria.previous_month")}
+          >
             <ChevronLeft />
           </IconButton>
           <MonthTitle>
             {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
           </MonthTitle>
-          <IconButton onClick={handleNextMonth} aria-label='Next month'>
+          <IconButton
+            onClick={handleNextMonth}
+            aria-label={t("aria.next_month")}
+          >
             <ChevronRight />
           </IconButton>
         </CalendarHeader>

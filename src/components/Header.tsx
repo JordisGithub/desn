@@ -574,7 +574,7 @@ const Header: React.FC = () => {
 
             <MobileMenuButton
               edge='end'
-              aria-label='menu'
+              aria-label={t("aria.menu")}
               onClick={toggleMobileMenu}
             >
               <MenuIcon />
@@ -586,7 +586,7 @@ const Header: React.FC = () => {
         <MobileNavBar>
           <MobileMenuButton
             edge='start'
-            aria-label='menu'
+            aria-label={t("aria.menu")}
             onClick={toggleMobileMenu}
           >
             <MenuIcon />
@@ -661,7 +661,11 @@ const Header: React.FC = () => {
         <DrawerContent>
           <DrawerHeader>
             <Logo src={desnLogo} alt='DESN Logo' style={{ height: "40px" }} />
-            <IconButton onClick={toggleMobileMenu} sx={{ color: "white" }}>
+            <IconButton
+              onClick={toggleMobileMenu}
+              sx={{ color: "white" }}
+              aria-label={t("aria.close")}
+            >
               <CloseIcon />
             </IconButton>
           </DrawerHeader>

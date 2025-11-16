@@ -43,6 +43,13 @@ export default {
     get_involved: "संलग्न होउ",
     contact: "सम्पर्क करू",
   },
+  // ARIA Labels
+  aria: {
+    close: "बन्द करू",
+    menu: "मेनु",
+    previous_month: "पिछला महीना",
+    next_month: "अगिला महीना",
+  },
   // Header
   header: {
     search_placeholder: "खोजू...",
