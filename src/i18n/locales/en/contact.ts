@@ -52,6 +52,17 @@ export default {
     message: "Message",
     message_placeholder: "Tell us more about your inquiry...",
     submit: "Send Message",
+    submitting: "Sending...",
+    success_message:
+      "Thank you for your message! We will get back to you soon.",
+    errors: {
+      summary_title: "Please fix the following errors:",
+      full_name_required: "Full name is required",
+      email_required: "Email address is required",
+      email_invalid: "Please enter a valid email address",
+      subject_required: "Subject is required",
+      message_required: "Message is required",
+    },
   },
 
   // Office Hours

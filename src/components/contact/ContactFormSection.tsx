@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -8,9 +8,13 @@ import {
   Card,
   CardContent,
   Stack,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../contexts/LanguageContext";
+import { postWithAuth } from "../../services/ApiService";
 import SendIcon from "@mui/icons-material/Send";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
@@ -103,6 +107,10 @@ const SubmitButton = styled(Button)(({ theme }) => ({
     outline: "3px solid #f6d469",
     outlineOffset: "2px",
   },
+  "&:disabled": {
+    backgroundColor: "#d1d5db",
+    color: "#6b7280",
+  },
 }));
 
 const InfoCard = styled(Card)(({ theme }) => ({
@@ -173,6 +181,7 @@ const TimeLabel = styled(Typography)({
 
 export default function ContactFormSection() {
   const { t } = useTranslation();
+  const { lang } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -180,20 +189,122 @@ export default function ContactFormSection() {
     subject: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    phone?: string;
+    subject?: string;
+    message?: string;
+  }>({});
+  const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+
+  const validateForm = (): boolean => {
+    const errors: {
+      fullName?: string;
+      email?: string;
+      phone?: string;
+      subject?: string;
+      message?: string;
+    } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = t("contact.form.errors.full_name_required");
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = t("contact.form.errors.email_required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = t("contact.form.errors.email_invalid");
+    }
+
+    if (!formData.subject.trim()) {
+      errors.subject = t("contact.form.errors.subject_required");
+    }
+
+    if (!formData.message.trim()) {
+      errors.message = t("contact.form.errors.message_required");
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    // Clear field-specific validation error when user starts typing
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name as keyof typeof validationErrors];
+        return updated;
+      });
+    }
+    // Clear general errors when user starts typing
+    if (submitError) setSubmitError(null);
+    if (submitSuccess) setSubmitSuccess(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    // Client-side validation
+    if (!validateForm()) {
+      // Focus the error summary for screen readers
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 100);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      interface SubmissionResponse {
+        success: boolean;
+        message?: string;
+      }
+
+      const response = await postWithAuth<SubmissionResponse>(
+        "/api/forms/contact",
+        {
+          ...formData,
+          language: lang,
+        }
+      );
+
+      if (response.success) {
+        setSubmitSuccess(true);
+        // Reset form
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        setSubmitError(response.message || "Failed to submit message");
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      const err = error as { data?: { message?: string } };
+      setSubmitError(
+        err.data?.message || "Failed to submit message. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -211,7 +322,116 @@ export default function ContactFormSection() {
 
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
+                {/* Error Summary */}
+                {Object.keys(validationErrors).length > 0 && (
+                  <Alert
+                    severity='error'
+                    role='alert'
+                    aria-live='assertive'
+                    ref={errorSummaryRef}
+                    tabIndex={-1}
+                    sx={{ mb: 2 }}
+                  >
+                    <Box sx={{ fontWeight: "bold", mb: 1 }}>
+                      {t("contact.form.errors.summary_title") ||
+                        "Please fix the following errors:"}
+                    </Box>
+                    <Box component='ul' sx={{ m: 0, pl: 2 }}>
+                      {validationErrors.fullName && (
+                        <li>
+                          <a
+                            href='#contact-fullName'
+                            style={{
+                              color: "#c00",
+                              textDecoration: "underline",
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document
+                                .getElementById("contact-fullName")
+                                ?.focus();
+                            }}
+                          >
+                            {validationErrors.fullName}
+                          </a>
+                        </li>
+                      )}
+                      {validationErrors.email && (
+                        <li>
+                          <a
+                            href='#contact-email'
+                            style={{
+                              color: "#c00",
+                              textDecoration: "underline",
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document.getElementById("contact-email")?.focus();
+                            }}
+                          >
+                            {validationErrors.email}
+                          </a>
+                        </li>
+                      )}
+                      {validationErrors.subject && (
+                        <li>
+                          <a
+                            href='#contact-subject'
+                            style={{
+                              color: "#c00",
+                              textDecoration: "underline",
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document
+                                .getElementById("contact-subject")
+                                ?.focus();
+                            }}
+                          >
+                            {validationErrors.subject}
+                          </a>
+                        </li>
+                      )}
+                      {validationErrors.message && (
+                        <li>
+                          <a
+                            href='#contact-message'
+                            style={{
+                              color: "#c00",
+                              textDecoration: "underline",
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document
+                                .getElementById("contact-message")
+                                ?.focus();
+                            }}
+                          >
+                            {validationErrors.message}
+                          </a>
+                        </li>
+                      )}
+                    </Box>
+                  </Alert>
+                )}
+
+                {/* Success Message */}
+                {submitSuccess && (
+                  <Alert severity='success' role='status' aria-live='polite'>
+                    {t("contact.form.success_message") ||
+                      "Thank you for your message! We will get back to you soon."}
+                  </Alert>
+                )}
+
+                {/* Error Message */}
+                {submitError && (
+                  <Alert severity='error' role='alert'>
+                    {submitError}
+                  </Alert>
+                )}
+
                 <StyledTextField
+                  id='contact-fullName'
                   fullWidth
                   required
                   name='fullName'
@@ -219,13 +439,28 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.full_name_placeholder")}
                   value={formData.fullName}
                   onChange={handleChange}
-                  inputProps={{
-                    "aria-required": "true",
+                  disabled={isSubmitting}
+                  error={!!validationErrors.fullName}
+                  helperText={validationErrors.fullName}
+                  slotProps={{
+                    input: {
+                      "aria-label": t("contact.form.full_name"),
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.fullName,
+                      "aria-describedby": validationErrors.fullName
+                        ? "contact-fullName-error"
+                        : undefined,
+                    },
+                  }}
+                  FormHelperTextProps={{
+                    id: "contact-fullName-error",
+                    role: "alert",
                   }}
                   autoComplete='name'
                 />
 
                 <StyledTextField
+                  id='contact-email'
                   fullWidth
                   required
                   type='email'
@@ -234,23 +469,45 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.email_placeholder")}
                   value={formData.email}
                   onChange={handleChange}
-                  inputProps={{
-                    "aria-required": "true",
+                  disabled={isSubmitting}
+                  error={!!validationErrors.email}
+                  helperText={validationErrors.email}
+                  slotProps={{
+                    input: {
+                      "aria-label": t("contact.form.email"),
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.email,
+                      "aria-describedby": validationErrors.email
+                        ? "contact-email-error"
+                        : undefined,
+                    },
+                  }}
+                  FormHelperTextProps={{
+                    id: "contact-email-error",
+                    role: "alert",
                   }}
                   autoComplete='email'
                 />
 
                 <StyledTextField
+                  id='contact-phone'
                   fullWidth
                   name='phone'
                   label={t("contact.form.phone")}
                   placeholder={t("contact.form.phone_placeholder")}
                   value={formData.phone}
                   onChange={handleChange}
+                  disabled={isSubmitting}
+                  slotProps={{
+                    input: {
+                      "aria-label": t("contact.form.phone"),
+                    },
+                  }}
                   autoComplete='tel'
                 />
 
                 <StyledTextField
+                  id='contact-subject'
                   fullWidth
                   required
                   name='subject'
@@ -258,12 +515,27 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.subject_placeholder")}
                   value={formData.subject}
                   onChange={handleChange}
-                  inputProps={{
-                    "aria-required": "true",
+                  disabled={isSubmitting}
+                  error={!!validationErrors.subject}
+                  helperText={validationErrors.subject}
+                  slotProps={{
+                    input: {
+                      "aria-label": t("contact.form.subject"),
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.subject,
+                      "aria-describedby": validationErrors.subject
+                        ? "contact-subject-error"
+                        : undefined,
+                    },
+                  }}
+                  FormHelperTextProps={{
+                    id: "contact-subject-error",
+                    role: "alert",
                   }}
                 />
 
                 <StyledTextField
+                  id='contact-message'
                   fullWidth
                   required
                   multiline
@@ -273,13 +545,39 @@ export default function ContactFormSection() {
                   placeholder={t("contact.form.message_placeholder")}
                   value={formData.message}
                   onChange={handleChange}
-                  inputProps={{
-                    "aria-required": "true",
+                  disabled={isSubmitting}
+                  error={!!validationErrors.message}
+                  helperText={validationErrors.message}
+                  slotProps={{
+                    input: {
+                      "aria-label": t("contact.form.message"),
+                      "aria-required": "true",
+                      "aria-invalid": !!validationErrors.message,
+                      "aria-describedby": validationErrors.message
+                        ? "contact-message-error"
+                        : undefined,
+                    },
+                  }}
+                  FormHelperTextProps={{
+                    id: "contact-message-error",
+                    role: "alert",
                   }}
                 />
 
-                <SubmitButton type='submit' startIcon={<SendIcon />}>
-                  {t("contact.form.submit")}
+                <SubmitButton
+                  type='submit'
+                  startIcon={
+                    isSubmitting ? (
+                      <CircularProgress size={20} color='inherit' />
+                    ) : (
+                      <SendIcon />
+                    )
+                  }
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? t("contact.form.submitting") || "Sending..."
+                    : t("contact.form.submit")}
                 </SubmitButton>
               </Stack>
             </form>

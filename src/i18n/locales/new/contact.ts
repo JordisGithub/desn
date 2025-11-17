@@ -79,6 +79,14 @@ export default {
       sending: "पठेइगु...",
       success: "छिगु सन्देश सफलतापूर्वक पठाइना!",
       error: "सन्देश पठेनाया म्ये गलति जुइना। फेरि खन्ह या लागि सद्या यानू।",
+      errors: {
+        summary_title: "कृपया छ्व त्रुटिफु सुधार यानादिसँ:",
+        full_name_required: "पूरा नां आवश्यक ख",
+        email_required: "इमेल ठेगाना आवश्यक ख",
+        email_invalid: "कृपया मान्य इमेल ठेगाना हलादिसँ",
+        subject_required: "विषय आवश्यक ख",
+        message_required: "सन्देश आवश्यक ख",
+      },
     },
   },
   office_hours: {

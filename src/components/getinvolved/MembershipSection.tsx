@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../contexts/LanguageContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SendIcon from "@mui/icons-material/Send";
+import membershipImg from "../../assets/GetInvolved/GetInvolvedMember.jpg";
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import { postWithAuth } from "../../services/ApiService";
 
@@ -448,7 +449,7 @@ const MembershipSection: React.FC = () => {
         </TextContent>
         <ImageContainer>
           <img
-            src='https://www.figma.com/api/mcp/asset/4ebd3bdc-190f-4548-931e-7082e1bdcd3e'
+            src={membershipImg}
             alt='Community members gathering for DESN membership meeting'
           />
         </ImageContainer>
