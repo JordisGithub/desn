@@ -54,24 +54,33 @@ const ContentGrid = styled(Box)(({ theme }) => ({
 
 const CalendarCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  border: "2px solid #e5e7eb",
-  borderRadius: "14px",
-  padding: theme.spacing(3),
+  border: "none",
+  borderRadius: "16px",
+  padding: theme.spacing(2.5),
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  maxWidth: "380px",
+  margin: "0 auto",
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "100%",
+  },
 }));
 
 const CalendarHeader = styled(Typography)({
-  fontSize: "1rem",
-  fontWeight: 400,
+  fontSize: "0.875rem",
+  fontWeight: 600,
   color: "#004c91",
   textAlign: "center",
-  marginBottom: "1.5rem",
+  marginBottom: "1rem",
   fontFamily: "'Poppins', sans-serif",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
 });
 
 const Calendar = styled(Box)(({ theme }) => ({
-  border: "1px solid rgba(0, 0, 0, 0.1)",
-  borderRadius: "8px",
-  padding: theme.spacing(2),
+  border: "none",
+  borderRadius: "12px",
+  padding: theme.spacing(1.5),
+  backgroundColor: "#fafafa",
 }));
 
 const CalendarNav = styled(Box)({
@@ -128,29 +137,34 @@ const DayCell = styled(Button, {
   padding: "0",
   fontSize: "0.875rem",
   color: isOtherMonth ? "#717182" : "#2b2b2b",
-  backgroundColor: hasEvent ? "#00a77f" : isToday ? "#030213" : "transparent",
+  backgroundColor: hasEvent ? "#00a77f" : isToday ? "#004c91" : "transparent",
   borderRadius: "8px",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: hasEvent ? "#008866" : isToday ? "#030213" : "#f3f4f6",
+    backgroundColor: hasEvent ? "#008866" : isToday ? "#004c91" : "#e3f2fd",
+    transform: !isOtherMonth ? "scale(1.15)" : "none",
+    boxShadow: hasEvent || isToday ? "0 4px 12px rgba(0, 0, 0, 0.25)" : "none",
   },
   ...(hasEvent && {
     color: "white",
     fontWeight: 700,
+    boxShadow: "0 2px 8px rgba(0, 167, 127, 0.4)",
   }),
   ...(isToday && {
     color: "white",
+    fontWeight: 600,
   }),
 }));
 
 const Note = styled(Box)({
-  backgroundColor: "rgba(246, 212, 105, 0.2)",
+  backgroundColor: "rgba(246, 212, 105, 0.15)",
   borderRadius: "10px",
-  padding: "1rem",
-  marginTop: "1.5rem",
+  padding: "0.75rem",
+  marginTop: "1rem",
 });
 
 const NoteText = styled(Typography)({
-  fontSize: "0.875rem",
+  fontSize: "0.75rem",
   color: "#364153",
   lineHeight: 1.4,
   "& strong": {
@@ -174,13 +188,14 @@ const EventsHeader = styled(Typography)({
 
 const EventCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
-  borderRadius: "14px",
+  border: "none",
+  borderRadius: "16px",
   padding: theme.spacing(3),
-  transition: "all 0.3s ease",
+  boxShadow: "0 18px 48px rgba(0, 0, 0, 0.45)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
-    transform: "translateY(-2px)",
+    boxShadow: "0 24px 60px rgba(0, 0, 0, 0.65)",
+    transform: "translateY(-6px) scale(1.02)",
   },
 }));
 
@@ -244,12 +259,17 @@ const RegisterButton = styled(Button)({
   backgroundColor: "#004c91",
   color: "white",
   width: "100%",
-  height: "48px",
-  borderRadius: "10px",
+  height: "52px",
+  borderRadius: "12px",
   fontSize: "1rem",
+  fontWeight: 600,
   textTransform: "none",
+  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.35)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003d73",
+    backgroundColor: "#003366",
+    boxShadow: "0 12px 32px rgba(0, 76, 145, 0.5)",
+    transform: "translateY(-2px)",
   },
 });
 
@@ -413,6 +433,16 @@ export default function UpcomingEvents() {
       0
     ).getDate();
 
+    // Get all event dates for the current month
+    const eventDates = new Set(
+      events.map((event) => event.calendarDate).filter((date) => date !== null)
+    );
+
+    const today = new Date();
+    const isCurrentMonth =
+      currentDate.getMonth() === today.getMonth() &&
+      currentDate.getFullYear() === today.getFullYear();
+
     // Previous month days
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       days.push({
@@ -428,8 +458,8 @@ export default function UpcomingEvents() {
       days.push({
         day: i,
         isOtherMonth: false,
-        isToday: i === 2, // November 2nd is today
-        hasEvent: i === 2, // December 2nd has event
+        isToday: isCurrentMonth && i === today.getDate(),
+        hasEvent: eventDates.has(i),
       });
     }
 
@@ -440,7 +470,7 @@ export default function UpcomingEvents() {
         day: i,
         isOtherMonth: true,
         isToday: false,
-        hasEvent: i === 2,
+        hasEvent: false,
       });
     }
 
@@ -463,7 +493,7 @@ export default function UpcomingEvents() {
         <ContentGrid>
           {/* Calendar */}
           <CalendarCard>
-            <CalendarHeader>Event Calendar</CalendarHeader>
+            <CalendarHeader>{t("event_calendar_title")}</CalendarHeader>
             <Calendar>
               <CalendarNav>
                 <NavButton aria-label={t("aria.previous_month")}>
@@ -504,19 +534,49 @@ export default function UpcomingEvents() {
 
             <Note>
               <NoteText>
-                <strong>Note:</strong> Highlighted dates indicate scheduled
-                events. Click on an event below for more details.
+                <strong>Note:</strong> {t("calendar_note")}
               </NoteText>
             </Note>
           </CalendarCard>
 
           {/* Event Details */}
           <EventsColumn>
-            <EventsHeader>
-              {selectedDate
-                ? `Events on November ${selectedDate}`
-                : "Event Details"}
-            </EventsHeader>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
+              <EventsHeader sx={{ mb: 0 }}>
+                {selectedDate
+                  ? `${t("events_on")} ${monthYear.split(" ")[0]} ${selectedDate}`
+                  : t("event_details_title")}
+              </EventsHeader>
+              {selectedDate && (
+                <Button
+                  onClick={() => setSelectedDate(null)}
+                  sx={{
+                    textTransform: "none",
+                    color: "#004c91",
+                    fontSize: "0.875rem",
+                    fontWeight: 600,
+                    backgroundColor: "#f6d469",
+                    padding: "6px 16px",
+                    borderRadius: "8px",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    "&:hover": {
+                      backgroundColor: "#f4c950",
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 4px 12px rgba(246, 212, 105, 0.4)",
+                    },
+                  }}
+                >
+                  {t("clear_filter_button")}
+                </Button>
+              )}
+            </Box>
             {selectedDate
               ? events
                   .filter((event) => event.calendarDate === selectedDate)
@@ -534,7 +594,7 @@ export default function UpcomingEvents() {
                           />
                           {status && (
                             <Chip
-                              label={`${status.availableSpots} spots left`}
+                              label={`${status.availableSpots} ${t("spots_left")}`}
                               size='small'
                               sx={{
                                 backgroundColor:
@@ -546,7 +606,7 @@ export default function UpcomingEvents() {
                                     ? "#c62828"
                                     : "#2e7d32",
                                 fontSize: "0.75rem",
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 height: "22px",
                               }}
                             />
@@ -580,11 +640,11 @@ export default function UpcomingEvents() {
                             color: isFull ? "#9e9e9e" : "white",
                             cursor: isFull ? "not-allowed" : "pointer",
                             "&:hover": {
-                              backgroundColor: isFull ? "#e0e0e0" : "#003d73",
+                              backgroundColor: isFull ? "#e0e0e0" : "#003366",
                             },
                           }}
                         >
-                          {isFull ? "Event Full" : "Register Now"}
+                          {isFull ? t("event_full") : t("event_register_button")}
                         </RegisterButton>
                       </EventCard>
                     );
@@ -600,7 +660,7 @@ export default function UpcomingEvents() {
                         <EventBadge label={event.organizer} color='secondary' />
                         {status && (
                           <Chip
-                            label={`${status.availableSpots} spots left`}
+                            label={`${status.availableSpots} ${t("spots_left")}`}
                             size='small'
                             sx={{
                               backgroundColor:
@@ -612,7 +672,7 @@ export default function UpcomingEvents() {
                                   ? "#c62828"
                                   : "#2e7d32",
                               fontSize: "0.75rem",
-                              fontWeight: 500,
+                              fontWeight: 600,
                               height: "22px",
                             }}
                           />
@@ -646,11 +706,11 @@ export default function UpcomingEvents() {
                           color: isFull ? "#9e9e9e" : "white",
                           cursor: isFull ? "not-allowed" : "pointer",
                           "&:hover": {
-                            backgroundColor: isFull ? "#e0e0e0" : "#003d73",
+                            backgroundColor: isFull ? "#e0e0e0" : "#003366",
                           },
                         }}
                       >
-                        {isFull ? "Event Full" : "Register Now"}
+                        {isFull ? t("event_full") : t("event_register_button")}
                       </RegisterButton>
                     </EventCard>
                   );

@@ -24,7 +24,7 @@ export default {
   event_organizer: "Organizer:",
 
   // Events Page
-  events_hero_title: "Events & Calendar",
+  events_hero_title: "Join the Movement: Upcoming Events & Workshops",
   events_hero_subtitle:
     "Join us in our mission to create an inclusive society. Discover upcoming events, workshops, and celebrations.",
   events_upcoming_title: "Upcoming Events",

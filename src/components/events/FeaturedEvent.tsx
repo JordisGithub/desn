@@ -21,9 +21,19 @@ const ContentGrid = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "1fr 1fr",
   gap: theme.spacing(6),
   alignItems: "center",
+  backgroundColor: "white",
+  borderRadius: "20px",
+  padding: theme.spacing(6),
+  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.55)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  "&:hover": {
+    boxShadow: "0 30px 80px rgba(0, 0, 0, 0.65)",
+    transform: "translateY(-4px)",
+  },
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gap: theme.spacing(4),
+    padding: theme.spacing(4),
   },
 }));
 
@@ -84,18 +94,21 @@ const MetaText = styled(Typography)({
 const LearnMoreButton = styled(Button)({
   backgroundColor: "#004c91",
   color: "white",
-  height: "54px",
+  height: "56px",
   borderRadius: "100px",
-  fontSize: "1rem",
+  fontSize: "1.125rem",
+  fontWeight: 600,
   textTransform: "none",
-  paddingLeft: "2rem",
-  paddingRight: "2rem",
+  paddingLeft: "2.5rem",
+  paddingRight: "2.5rem",
   alignSelf: "flex-start",
+  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.4)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003d73",
-    transform: "translateY(-2px)",
+    backgroundColor: "#003366",
+    transform: "translateY(-3px) scale(1.05)",
+    boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
   },
-  transition: "all 0.3s ease",
 });
 
 const ImageColumn = styled(Box)(({ theme }) => ({
@@ -109,7 +122,12 @@ const FeaturedImage = styled("img")(({ theme }) => ({
   height: "400px",
   objectFit: "cover",
   borderRadius: "16px",
-  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
+  boxShadow: "0 30px 80px rgba(0, 0, 0, 0.75)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  "&:hover": {
+    boxShadow: "0 40px 100px rgba(0, 0, 0, 0.85)",
+    transform: "scale(1.02) translateY(-6px)",
+  },
   [theme.breakpoints.down("md")]: {
     height: "300px",
   },
@@ -156,7 +174,7 @@ export default function FeaturedEvent() {
             </EventMeta>
 
             <LearnMoreButton endIcon={<ArrowForwardIcon />}>
-              Learn More
+              Register
             </LearnMoreButton>
           </ContentColumn>
 
