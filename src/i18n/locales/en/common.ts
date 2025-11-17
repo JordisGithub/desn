@@ -40,7 +40,7 @@ export default {
     get_involved: "Get Involved",
     programs: "Program & Services",
     resources: "Resources & Publications",
-    events: "Event & Calendar",
+    events: "Events & Calendar",
     projects: "Projects",
     contact: "Contact Us",
   },
