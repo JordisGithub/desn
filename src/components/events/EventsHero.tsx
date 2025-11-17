@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 const HeroContainer = styled("section")(({ theme }) => ({
   background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
-  paddingTop: theme.spacing(12),
-  paddingBottom: theme.spacing(6),
+  paddingTop: "120px",
+  paddingBottom: "120px",
   position: "relative",
   overflow: "hidden",
   [theme.breakpoints.down("md")]: {

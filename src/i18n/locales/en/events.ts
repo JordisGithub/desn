@@ -49,4 +49,34 @@ export default {
   event_details_heading: "Event Details",
   events_on_date: "Events on",
   clear_filter: "Clear Filter",
+
+  // Event Cards
+  event_type_label: "Event",
+  organized_by_label: "Organized by:",
+  spots_left: "spots left",
+  registration_spots_remaining: "registration spots remaining out of",
+  total_capacity: "total",
+  event_date_label: "Event date:",
+  event_time_label: "Event time:",
+  event_location_label: "Event location:",
+  showing_all_events: "Showing all",
+  upcoming_events_count: "upcoming events",
+  showing_events_for: "Showing",
+  events_for_date: "events for",
+  event_full: "Event Full",
+  register_now: "Register Now",
+
+  // Dynamic Event Translations (fallback for backend events)
+  event_disability_rights_title: "Disability Rights Awareness Workshop",
+  event_disability_rights_desc:
+    "Interactive workshop on understanding and promoting disability rights in communities",
+  event_accessible_tech_title: "Accessible Technology Training",
+  event_accessible_tech_desc:
+    "Hands-on training on assistive technologies and accessible software solutions",
+  event_annual_meeting_title: "Annual General Meeting 2025",
+  event_annual_meeting_desc:
+    "DESN's annual meeting to discuss progress, plans, and member concerns",
+  location_kathmandu_center: "Kathmandu Community Center",
+  location_desn_training: "DESN Training Center, Lalitpur",
+  location_hotel_yak: "Hotel Yak & Yeti, Kathmandu",
 };
