@@ -132,7 +132,7 @@ export default {
       "प्रकार व विषय अनुसार संगठित, झीगु पूर्ण प्रकाशन पुस्तकालय ब्राउज यायेगु।",
     search_label: "स्रोतफु न्हापा यायेगु",
     search_placeholder: "शीर्षक वा विवरण अनुसार न्हापा यायेगु...",
-    showing_results: "{total} या माझं {count} स्रोतफु दक्व दु",
+    showing_results: "{{total}} या माझं {{count}} स्रोतफु दक्व दु",
     no_resources_found: "छिगु मापदण्ड अनुरूप थ्व स्रोत मदु।",
     stay_updated_title: "अपडेट दुगु",
     stay_updated_description:

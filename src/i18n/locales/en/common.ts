@@ -134,7 +134,7 @@ export default {
       "Browse our complete library of publications, organized by type and topic.",
     search_label: "Search Resources",
     search_placeholder: "Search by title or description...",
-    showing_results: "Showing {count} of {total} resources",
+    showing_results: "Showing {{count}} of {{total}} resources",
     no_resources_found: "No resources found matching your criteria.",
     stay_updated_title: "Stay Updated",
     stay_updated_description:

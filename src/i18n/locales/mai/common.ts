@@ -133,7 +133,7 @@ export default {
       "प्रकार आ विषयक अनुसार संगठित, हमर पूर्ण प्रकाशन पुस्तकालय ब्राउज करू।",
     search_label: "स्रोतसभ खोजू",
     search_placeholder: "शीर्षक वा विवरणक अनुसार खोजू...",
-    showing_results: "{total} मे सँ {count} स्रोतसभ देखाएल जा रहल अछि",
+    showing_results: "{{total}} मे सँ {{count}} स्रोतसभ देखाएल जा रहल अछि",
     no_resources_found: "अहाँक मापदण्ड अनुरूप कोनो स्रोत नै भेटल।",
     stay_updated_title: "अपडेट रहू",
     stay_updated_description:
