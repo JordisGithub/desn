@@ -70,6 +70,10 @@ const CalendarCard = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     maxWidth: "100%",
   },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1.5),
+    borderRadius: "12px",
+  },
 }));
 
 const CalendarHeader = styled(Typography)({
@@ -88,6 +92,9 @@ const Calendar = styled(Box)(({ theme }) => ({
   borderRadius: "12px",
   padding: theme.spacing(1.5),
   backgroundColor: "#fafafa",
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1),
+  },
 }));
 
 const CalendarNav = styled(Box)({
@@ -124,11 +131,14 @@ const NavButton = styled(Button)({
   },
 });
 
-const CalendarGrid = styled(Box)({
+const CalendarGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(7, 1fr)",
   gap: "0",
-});
+  [theme.breakpoints.down("sm")]: {
+    gap: "2px",
+  },
+}));
 
 const DayHeader = styled(Typography)({
   fontSize: "0.8rem",
@@ -145,7 +155,7 @@ const DayCell = styled(Button, {
   isToday?: boolean;
   hasEvent?: boolean;
   isOtherMonth?: boolean;
-}>(({ isToday, hasEvent, isOtherMonth }) => ({
+}>(({ isToday, hasEvent, isOtherMonth, theme }) => ({
   minWidth: "32px",
   width: "32px",
   height: "32px",
@@ -161,6 +171,12 @@ const DayCell = styled(Button, {
   ...(hasEvent && {
     fontWeight: 700,
   }),
+  [theme.breakpoints.down("sm")]: {
+    minWidth: "28px",
+    width: "28px",
+    height: "28px",
+    fontSize: "0.75rem",
+  },
 }));
 
 const Note = styled(Box)({
@@ -203,6 +219,15 @@ const EventCard = styled(Box)(({ theme }) => ({
   "&:hover": {
     boxShadow: "0 24px 60px rgba(0, 0, 0, 0.65)",
     transform: "translateY(-6px) scale(1.02)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(2),
+    borderRadius: "12px",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
+    "&:hover": {
+      boxShadow: "0 12px 32px rgba(0, 0, 0, 0.45)",
+      transform: "translateY(-4px) scale(1.01)",
+    },
   },
 }));
 
@@ -509,7 +534,7 @@ export default function UpcomingEvents() {
       role='region'
       aria-label='Upcoming Events Section'
     >
-      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
+      <Container maxWidth='xl' sx={{ px: { xs: 1.5, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='upcoming-events-heading'>
           {t("events_upcoming_title")}
         </SectionTitle>
