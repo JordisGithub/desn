@@ -1,4 +1,7 @@
 export default {
+  // Date locale for formatting
+  date_locale: "en-US",
+
   // Page Titles (for document.title)
   page_titles: {
     home: "Home - Empowering Individuals with Disabilities",
@@ -131,7 +134,7 @@ export default {
       "Browse our complete library of publications, organized by type and topic.",
     search_label: "Search Resources",
     search_placeholder: "Search by title or description...",
-    showing_results: "Showing {count} of {total} resources",
+    showing_results: "Showing {{count}} of {{total}} resources",
     no_resources_found: "No resources found matching your criteria.",
     stay_updated_title: "Stay Updated",
     stay_updated_description:
@@ -142,13 +145,16 @@ export default {
     watch: "Watch",
     pages: "pages",
     views: "views",
+    filter_by_category: "Filter resources by category",
+    add_favorite: "Add to favorites",
+    remove_favorite: "Remove from favorites",
     resource_types: {
       all: "All Resources",
       annual_report: "Annual Reports",
       policy_brief: "Policy Briefs",
       training_manual: "Training Manuals",
       research: "Research",
-      guideline: "Guidelines",
+      registration: "Registrations",
       newsletter: "Newsletters",
       video: "Video Resources",
     },

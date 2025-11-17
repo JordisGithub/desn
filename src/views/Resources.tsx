@@ -30,9 +30,10 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import ResourceService from "../services/ResourceService";
 import type { Resource, ResourcesResponse } from "../services/ResourceService";
+import { getResourceTranslation } from "../utils/resourceTranslations";
 
 const Resources: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   usePageTitle("page_titles.resources");
   const { isAuthenticated, user } = useAuth();
   const token = user?.token;
@@ -68,8 +69,8 @@ const Resources: React.FC = () => {
       icon: "🔬",
     },
     {
-      key: "guideline",
-      label: t("resources.resource_types.guideline"),
+      key: "registration",
+      label: t("resources.resource_types.registration"),
       icon: "📝",
     },
     {
@@ -205,7 +206,9 @@ const Resources: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    // Use current i18n locale for date formatting
+    const locale = t("date_locale") || "en-US";
+    return date.toLocaleDateString(locale, {
       month: "short",
       year: "numeric",
     });
@@ -215,8 +218,18 @@ const Resources: React.FC = () => {
     const isVideo = resource.type === "video";
     const isFavorited = favorites.has(resource.id);
 
+    // Get translated title and description based on current language
+    const currentLang = i18n.language;
+    const translated = getResourceTranslation(
+      resource.id,
+      resource.title,
+      resource.description,
+      currentLang
+    );
+
     return (
       <Card
+        component='article'
         sx={{
           height: "100%",
           display: "flex",
@@ -227,6 +240,7 @@ const Resources: React.FC = () => {
             boxShadow: 4,
           },
         }}
+        aria-labelledby={`resource-title-${resource.id}`}
       >
         <Box sx={{ position: "relative" }}>
           {resource.thumbnailUrl ? (
@@ -234,7 +248,7 @@ const Resources: React.FC = () => {
               component='img'
               image={resource.thumbnailUrl}
               loading='lazy'
-              alt={resource.title}
+              alt={translated.title}
               sx={{
                 height: 200,
                 width: "100%",
@@ -293,11 +307,12 @@ const Resources: React.FC = () => {
             component='h3'
             gutterBottom
             sx={{ color: "primary.main" }}
+            id={`resource-title-${resource.id}`}
           >
-            {resource.title}
+            {translated.title}
           </Typography>
           <Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
-            {resource.description}
+            {translated.description}
           </Typography>
 
           <Box
@@ -337,8 +352,19 @@ const Resources: React.FC = () => {
           <Button
             variant='contained'
             fullWidth
-            startIcon={isVideo ? <PlayArrowIcon /> : <DownloadIcon />}
+            startIcon={
+              isVideo ? (
+                <PlayArrowIcon aria-hidden='true' />
+              ) : (
+                <DownloadIcon aria-hidden='true' />
+              )
+            }
             onClick={() => handleDownload(resource)}
+            aria-label={
+              isVideo
+                ? `${t("resources.watch")} ${translated.title}`
+                : `${t("resources.download")} ${translated.title}`
+            }
           >
             {isVideo ? t("resources.watch") : t("resources.download")}
           </Button>
@@ -346,8 +372,19 @@ const Resources: React.FC = () => {
             color={isFavorited ? "error" : "default"}
             onClick={() => handleToggleFavorite(resource.id)}
             disabled={!isAuthenticated}
+            aria-label={
+              isFavorited
+                ? t("resources.remove_favorite") ||
+                  `Remove ${translated.title} from favorites`
+                : t("resources.add_favorite") ||
+                  `Add ${translated.title} to favorites`
+            }
           >
-            {isFavorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            {isFavorited ? (
+              <FavoriteIcon aria-hidden='true' />
+            ) : (
+              <FavoriteBorderIcon aria-hidden='true' />
+            )}
           </IconButton>
         </CardActions>
       </Card>
@@ -355,9 +392,11 @@ const Resources: React.FC = () => {
   };
 
   return (
-    <>
+    <Box component='main' id='main-content'>
       {/* Hero Section */}
       <Box
+        component='section'
+        aria-labelledby='hero-heading'
         sx={{
           background:
             "linear-gradient(135deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
@@ -413,6 +452,8 @@ const Resources: React.FC = () => {
             component='h1'
             gutterBottom
             fontWeight='bold'
+            id='hero-heading'
+            sx={{ color: "white" }}
           >
             {t("resources.hero_title")}
           </Typography>
@@ -427,7 +468,12 @@ const Resources: React.FC = () => {
       </Box>
 
       {/* All Resources Section */}
-      <Box id='all-resources' sx={{ py: 10 }}>
+      <Box
+        component='section'
+        id='all-resources'
+        sx={{ py: 10 }}
+        aria-labelledby='all-resources-heading'
+      >
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
           <Typography
             variant='h3'
@@ -435,6 +481,7 @@ const Resources: React.FC = () => {
             align='center'
             gutterBottom
             color='primary'
+            id='all-resources-heading'
           >
             {t("resources.all_resources_title")}
           </Typography>
@@ -464,10 +511,13 @@ const Resources: React.FC = () => {
                 placeholder={t("resources.search_placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                inputProps={{
+                  "aria-label": t("resources.search_label"),
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>
-                      <SearchIcon />
+                      <SearchIcon aria-hidden='true' />
                     </InputAdornment>
                   ),
                 }}
@@ -477,26 +527,40 @@ const Resources: React.FC = () => {
                 variant='body2'
                 color='text.secondary'
                 sx={{ ml: "auto" }}
+                aria-live='polite'
+                aria-atomic='true'
               >
                 <VisibilityIcon
                   fontSize='small'
                   sx={{ verticalAlign: "middle", mr: 0.5 }}
+                  aria-hidden='true'
                 />
                 {t("resources.showing_results", {
                   count: resources.length,
-                  total: resources.length,
+                  total:
+                    Object.values(typeCounts).reduce((a, b) => a + b, 0) ||
+                    resources.length,
                 })}
               </Typography>
             </Box>
 
             {/* Category Chips */}
-            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+            <Box
+              sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}
+              role='group'
+              aria-label={
+                t("resources.filter_by_category") ||
+                "Filter resources by category"
+              }
+            >
               {resourceTypes.map((type) => (
                 <Chip
                   key={type.key}
                   label={
                     <>
-                      <span style={{ marginRight: 8 }}>{type.icon}</span>
+                      <span aria-hidden='true' style={{ marginRight: 8 }}>
+                        {type.icon}
+                      </span>
                       {type.label}
                       {typeCounts[type.key] !== undefined &&
                         type.key !== "" && (
@@ -597,81 +661,7 @@ const Resources: React.FC = () => {
           )}
         </Container>
       </Box>
-
-      {/* CTA Section */}
-      <Box
-        sx={{
-          py: 10,
-          background: "linear-gradient(135deg, #004c91 0%, #00a77f 100%)",
-          color: "white",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: "10%",
-            width: 600,
-            height: 600,
-            bgcolor: "rgba(255, 255, 255, 0.05)",
-            borderRadius: "50%",
-            filter: "blur(60px)",
-          }}
-        />
-        <Container
-          maxWidth='xl'
-          sx={{
-            position: "relative",
-            zIndex: 1,
-            textAlign: "center",
-            px: { xs: 2, sm: 3, md: 6 },
-          }}
-        >
-          <Typography variant='h3' gutterBottom fontWeight='bold'>
-            {t("resources.stay_updated_title")}
-          </Typography>
-          <Typography
-            variant='body1'
-            sx={{ mb: 4, opacity: 0.95, fontSize: "1.125rem" }}
-          >
-            {t("resources.stay_updated_description")}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
-              variant='contained'
-              size='large'
-              sx={{
-                bgcolor: "white",
-                color: "primary.main",
-                "&:hover": { bgcolor: "grey.100" },
-              }}
-            >
-              {t("resources.subscribe_now")}
-            </Button>
-            <Button
-              variant='outlined'
-              size='large'
-              sx={{
-                borderColor: "white",
-                color: "white",
-                "&:hover": { borderColor: "grey.300" },
-              }}
-            >
-              {t("resources.request_resources")}
-            </Button>
-          </Box>
-        </Container>
-      </Box>
-    </>
+    </Box>
   );
 };
 
