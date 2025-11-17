@@ -15,6 +15,7 @@ import {
   translateEventDescription,
   translateEventLocation,
 } from "../../utils/eventTranslations";
+import { formatDate, formatTimeRange } from "../../utils/dateLocalization";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -300,7 +301,7 @@ interface EventData {
 }
 
 export default function UpcomingEvents() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date(2025, 10, 1)); // November 2025
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
@@ -328,18 +329,8 @@ export default function UpcomingEvents() {
             organizer: "DESN",
             title: event.title,
             description: event.description,
-            date: startDate.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-            time: `${startDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-            })} - ${endDate.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-            })}`,
+            date: formatDate(startDate, i18n.language),
+            time: formatTimeRange(startDate, endDate, i18n.language),
             location: event.location,
             calendarDate: startDate.getDate(),
           };
@@ -352,7 +343,7 @@ export default function UpcomingEvents() {
     };
 
     fetchEvents();
-  }, []);
+  }, [i18n.language]); // Re-fetch when language changes to update date/time formatting
 
   // Fetch event statuses after events are loaded
   useEffect(() => {
