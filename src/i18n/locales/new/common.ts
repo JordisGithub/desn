@@ -38,7 +38,7 @@ export default {
     about: "झीगु बारेय",
     programs: "कार्यक्रम व सेवाफु",
     resources: "स्रोत व प्रकाशनफु",
-    events: "कार्यक्रम व पात्रो",
+    events: "कार्यक्रमफु व पात्रो",
     projects: "परियोजनाफु",
     get_involved: "संलग्न जुइगु",
     contact: "सम्पर्क यायेगु",

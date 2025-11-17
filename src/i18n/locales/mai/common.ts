@@ -38,7 +38,7 @@ export default {
     about: "हमर बारेमे",
     programs: "कार्यक्रम आ सेवासभ",
     resources: "स्रोत आ प्रकाशनसभ",
-    events: "कार्यक्रम आ पात्रो",
+    events: "कार्यक्रमसभ आ पात्रो",
     projects: "परियोजनासभ",
     get_involved: "संलग्न होउ",
     contact: "सम्पर्क करू",
