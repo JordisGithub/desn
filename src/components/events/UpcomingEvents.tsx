@@ -54,24 +54,34 @@ const ContentGrid = styled(Box)(({ theme }) => ({
 
 const CalendarCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  border: "2px solid #e5e7eb",
-  borderRadius: "14px",
-  padding: theme.spacing(3),
+  border: "none",
+  borderRadius: "16px",
+  padding: theme.spacing(2.5),
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  maxWidth: "380px",
+  margin: "0 auto",
+  alignSelf: "flex-start",
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "100%",
+  },
 }));
 
 const CalendarHeader = styled(Typography)({
-  fontSize: "1rem",
-  fontWeight: 400,
+  fontSize: "0.875rem",
+  fontWeight: 600,
   color: "#004c91",
   textAlign: "center",
-  marginBottom: "1.5rem",
+  marginBottom: "1rem",
   fontFamily: "'Poppins', sans-serif",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
 });
 
 const Calendar = styled(Box)(({ theme }) => ({
-  border: "1px solid rgba(0, 0, 0, 0.1)",
-  borderRadius: "8px",
-  padding: theme.spacing(2),
+  border: "none",
+  borderRadius: "12px",
+  padding: theme.spacing(1.5),
+  backgroundColor: "#fafafa",
 }));
 
 const CalendarNav = styled(Box)({
@@ -88,15 +98,23 @@ const MonthYear = styled(Typography)({
 });
 
 const NavButton = styled(Button)({
-  minWidth: "28px",
-  width: "28px",
-  height: "28px",
-  padding: "2px",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
+  minWidth: "36px",
+  width: "36px",
+  height: "36px",
+  padding: "4px",
+  border: "2px solid #004c91",
   borderRadius: "8px",
-  opacity: 0.5,
+  backgroundColor: "#004c91",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+  "&:hover": {
+    backgroundColor: "#003d73",
+    borderColor: "#003d73",
+    transform: "scale(1.05)",
+  },
   "& .MuiSvgIcon-root": {
-    fontSize: "1rem",
+    fontSize: "1.25rem",
+    color: "white",
   },
 });
 
@@ -127,30 +145,27 @@ const DayCell = styled(Button, {
   height: "32px",
   padding: "0",
   fontSize: "0.875rem",
-  color: isOtherMonth ? "#717182" : "#2b2b2b",
-  backgroundColor: hasEvent ? "#00a77f" : isToday ? "#030213" : "transparent",
+  color: hasEvent ? "#ffffff" : isOtherMonth ? "#717182" : "#004c91",
+  backgroundColor: hasEvent ? "#00875f" : "transparent",
   borderRadius: "8px",
+  border: isToday && !hasEvent ? "2px solid #004c91" : "none",
   "&:hover": {
-    backgroundColor: hasEvent ? "#008866" : isToday ? "#030213" : "#f3f4f6",
+    backgroundColor: hasEvent ? "#006644" : "#f3f4f6",
   },
   ...(hasEvent && {
-    color: "white",
     fontWeight: 700,
-  }),
-  ...(isToday && {
-    color: "white",
   }),
 }));
 
 const Note = styled(Box)({
-  backgroundColor: "rgba(246, 212, 105, 0.2)",
+  backgroundColor: "rgba(246, 212, 105, 0.15)",
   borderRadius: "10px",
-  padding: "1rem",
-  marginTop: "1.5rem",
+  padding: "0.75rem",
+  marginTop: "1rem",
 });
 
 const NoteText = styled(Typography)({
-  fontSize: "0.875rem",
+  fontSize: "0.75rem",
   color: "#364153",
   lineHeight: 1.4,
   "& strong": {
@@ -174,13 +189,14 @@ const EventsHeader = styled(Typography)({
 
 const EventCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
-  borderRadius: "14px",
+  border: "none",
+  borderRadius: "16px",
   padding: theme.spacing(3),
-  transition: "all 0.3s ease",
+  boxShadow: "0 18px 48px rgba(0, 0, 0, 0.45)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
-    transform: "translateY(-2px)",
+    boxShadow: "0 24px 60px rgba(0, 0, 0, 0.65)",
+    transform: "translateY(-6px) scale(1.02)",
   },
 }));
 
@@ -244,12 +260,17 @@ const RegisterButton = styled(Button)({
   backgroundColor: "#004c91",
   color: "white",
   width: "100%",
-  height: "48px",
-  borderRadius: "10px",
+  height: "52px",
+  borderRadius: "12px",
   fontSize: "1rem",
+  fontWeight: 600,
   textTransform: "none",
+  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.35)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003d73",
+    backgroundColor: "#003366",
+    boxShadow: "0 12px 32px rgba(0, 76, 145, 0.5)",
+    transform: "translateY(-2px)",
   },
 });
 
@@ -275,7 +296,7 @@ interface EventData {
 
 export default function UpcomingEvents() {
   const { t } = useTranslation();
-  const [currentDate] = useState(new Date(2025, 10, 1)); // November 2025
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 10, 1)); // November 2025
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -413,6 +434,26 @@ export default function UpcomingEvents() {
       0
     ).getDate();
 
+    // Get all event dates for the CURRENT DISPLAYED month and year only
+    const eventDates = new Set(
+      events
+        .filter((event) => {
+          // Parse the event date to check if it matches current displayed month/year
+          const eventDate = new Date(event.date);
+          return (
+            eventDate.getMonth() === currentDate.getMonth() &&
+            eventDate.getFullYear() === currentDate.getFullYear()
+          );
+        })
+        .map((event) => event.calendarDate)
+        .filter((date) => date !== null)
+    );
+
+    const today = new Date();
+    const isCurrentMonth =
+      currentDate.getMonth() === today.getMonth() &&
+      currentDate.getFullYear() === today.getFullYear();
+
     // Previous month days
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       days.push({
@@ -428,8 +469,8 @@ export default function UpcomingEvents() {
       days.push({
         day: i,
         isOtherMonth: false,
-        isToday: i === 2, // November 2nd is today
-        hasEvent: i === 2, // December 2nd has event
+        isToday: isCurrentMonth && i === today.getDate(),
+        hasEvent: eventDates.has(i),
       });
     }
 
@@ -440,7 +481,7 @@ export default function UpcomingEvents() {
         day: i,
         isOtherMonth: true,
         isToday: false,
-        hasEvent: i === 2,
+        hasEvent: false,
       });
     }
 
@@ -452,71 +493,172 @@ export default function UpcomingEvents() {
     year: "numeric",
   });
 
+  const handlePreviousMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
   return (
-    <SectionContainer aria-labelledby='upcoming-events-heading'>
+    <SectionContainer
+      aria-labelledby='upcoming-events-heading'
+      role='region'
+      aria-label='Upcoming Events Section'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='upcoming-events-heading'>
           {t("events_upcoming_title")}
         </SectionTitle>
         <SectionSubtitle>{t("events_upcoming_subtitle")}</SectionSubtitle>
 
-        <ContentGrid>
+        <ContentGrid
+          role='group'
+          aria-label='Event calendar and event listings'
+        >
           {/* Calendar */}
-          <CalendarCard>
-            <CalendarHeader>Event Calendar</CalendarHeader>
-            <Calendar>
-              <CalendarNav>
-                <NavButton aria-label={t("aria.previous_month")}>
-                  <ChevronLeftIcon />
+          <CalendarCard role='region' aria-label='Event calendar' tabIndex={0}>
+            <CalendarHeader id='calendar-heading'>
+              {t("calendar_heading")}
+            </CalendarHeader>
+            <Calendar role='application' aria-labelledby='calendar-heading'>
+              <CalendarNav role='group' aria-label='Calendar navigation'>
+                <NavButton
+                  onClick={handlePreviousMonth}
+                  aria-label={`Previous month. Current month is ${monthYear}`}
+                >
+                  <ChevronLeftIcon aria-hidden='true' />
                 </NavButton>
-                <MonthYear>{monthYear}</MonthYear>
-                <NavButton aria-label={t("aria.next_month")}>
-                  <ChevronRightIcon />
+                <MonthYear aria-live='polite' aria-atomic='true'>
+                  {monthYear}
+                </MonthYear>
+                <NavButton
+                  onClick={handleNextMonth}
+                  aria-label={`Next month. Current month is ${monthYear}`}
+                >
+                  <ChevronRightIcon aria-hidden='true' />
                 </NavButton>
               </CalendarNav>
 
-              <CalendarGrid>
-                {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                  <DayHeader key={day}>{day}</DayHeader>
-                ))}
-                {generateCalendarDays().map((dayInfo, index) => (
-                  <DayCell
-                    key={index}
-                    isToday={dayInfo.isToday}
-                    hasEvent={dayInfo.hasEvent}
-                    isOtherMonth={dayInfo.isOtherMonth}
-                    onClick={() =>
-                      !dayInfo.isOtherMonth && setSelectedDate(dayInfo.day)
-                    }
-                    aria-label={`Select ${dayInfo.day}${
-                      dayInfo.hasEvent ? " (has event)" : ""
-                    }${dayInfo.isToday ? " (today)" : ""}`}
-                    disabled={dayInfo.isOtherMonth}
-                    sx={{
-                      cursor: dayInfo.isOtherMonth ? "default" : "pointer",
-                    }}
-                  >
-                    {dayInfo.day}
-                  </DayCell>
-                ))}
+              <CalendarGrid
+                role='grid'
+                aria-label={`Calendar for ${monthYear}`}
+              >
+                <Box role='row' sx={{ display: "contents" }}>
+                  {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
+                    <DayHeader key={day} role='columnheader'>
+                      {day}
+                    </DayHeader>
+                  ))}
+                </Box>
+                {Array.from(
+                  { length: Math.ceil(generateCalendarDays().length / 7) },
+                  (_, weekIndex) => (
+                    <Box
+                      key={weekIndex}
+                      role='row'
+                      sx={{ display: "contents" }}
+                    >
+                      {generateCalendarDays()
+                        .slice(weekIndex * 7, (weekIndex + 1) * 7)
+                        .map((dayInfo, index) => (
+                          <DayCell
+                            key={weekIndex * 7 + index}
+                            isToday={dayInfo.isToday}
+                            hasEvent={dayInfo.hasEvent}
+                            isOtherMonth={dayInfo.isOtherMonth}
+                            onClick={() =>
+                              !dayInfo.isOtherMonth &&
+                              setSelectedDate(dayInfo.day)
+                            }
+                            aria-label={
+                              dayInfo.isOtherMonth
+                                ? `${dayInfo.day}, not in current month`
+                                : `${monthYear.split(" ")[0]} ${dayInfo.day}${
+                                    dayInfo.hasEvent
+                                      ? ", has scheduled event"
+                                      : ", no events"
+                                  }${dayInfo.isToday ? ", today" : ""}`
+                            }
+                            aria-current={dayInfo.isToday ? "date" : undefined}
+                            disabled={dayInfo.isOtherMonth}
+                            role='gridcell'
+                            tabIndex={dayInfo.isOtherMonth ? -1 : 0}
+                            sx={{
+                              cursor: dayInfo.isOtherMonth
+                                ? "default"
+                                : "pointer",
+                            }}
+                          >
+                            {dayInfo.day}
+                          </DayCell>
+                        ))}
+                    </Box>
+                  )
+                )}
               </CalendarGrid>
             </Calendar>
 
             <Note>
               <NoteText>
-                <strong>Note:</strong> Highlighted dates indicate scheduled
-                events. Click on an event below for more details.
+                <strong>Note:</strong> {t("calendar_note")}
               </NoteText>
             </Note>
           </CalendarCard>
 
           {/* Event Details */}
-          <EventsColumn>
-            <EventsHeader>
+          <EventsColumn role='region' aria-live='polite' aria-atomic='false'>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
+              <EventsHeader sx={{ mb: 0 }} id='event-list-heading'>
+                {selectedDate
+                  ? `${t("events_on_date")} ${
+                      monthYear.split(" ")[0]
+                    } ${selectedDate}`
+                  : t("event_details_heading")}
+              </EventsHeader>
+              {selectedDate && (
+                <Button
+                  onClick={() => setSelectedDate(null)}
+                  aria-label={`Clear date filter. Currently showing events for ${
+                    monthYear.split(" ")[0]
+                  } ${selectedDate}`}
+                  sx={{
+                    textTransform: "none",
+                    color: "#004c91",
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 76, 145, 0.08)",
+                    },
+                  }}
+                >
+                  {t("clear_filter")}
+                </Button>
+              )}
+            </Box>
+            <div role='status' aria-live='polite' className='sr-only'>
               {selectedDate
-                ? `Events on November ${selectedDate}`
-                : "Event Details"}
-            </EventsHeader>
+                ? `Showing ${
+                    events.filter(
+                      (event) => event.calendarDate === selectedDate
+                    ).length
+                  } events for ${monthYear.split(" ")[0]} ${selectedDate}`
+                : `Showing all ${events.length} upcoming events`}
+            </div>
             {selectedDate
               ? events
                   .filter((event) => event.calendarDate === selectedDate)
@@ -525,17 +667,32 @@ export default function UpcomingEvents() {
                     const isFull = status?.isFull || false;
 
                     return (
-                      <EventCard key={event.id}>
-                        <BadgeContainer>
-                          <EventBadge label={event.type} color='primary' />
+                      <EventCard
+                        key={event.id}
+                        role='article'
+                        aria-labelledby={`event-title-${event.id}`}
+                        aria-describedby={`event-desc-${event.id} event-meta-${event.id}`}
+                        tabIndex={0}
+                      >
+                        <BadgeContainer
+                          role='group'
+                          aria-label='Event categories'
+                        >
+                          <EventBadge
+                            label={event.type}
+                            color='primary'
+                            aria-label={`Event type: ${event.type}`}
+                          />
                           <EventBadge
                             label={event.organizer}
                             color='secondary'
+                            aria-label={`Organized by: ${event.organizer}`}
                           />
                           {status && (
                             <Chip
                               label={`${status.availableSpots} spots left`}
                               size='small'
+                              aria-label={`${status.availableSpots} registration spots remaining out of ${status.maxCapacity} total`}
                               sx={{
                                 backgroundColor:
                                   status.availableSpots < 10
@@ -553,28 +710,54 @@ export default function UpcomingEvents() {
                           )}
                         </BadgeContainer>
 
-                        <EventTitle>{event.title}</EventTitle>
-                        <EventDescription>{event.description}</EventDescription>
+                        <EventTitle id={`event-title-${event.id}`}>
+                          {event.title}
+                        </EventTitle>
+                        <EventDescription id={`event-desc-${event.id}`}>
+                          {event.description}
+                        </EventDescription>
 
-                        <EventMeta>
-                          <MetaItem>
-                            <CalendarTodayIcon />
-                            <MetaText>{event.date}</MetaText>
+                        <EventMeta
+                          role='list'
+                          aria-label='Event details'
+                          id={`event-meta-${event.id}`}
+                        >
+                          <MetaItem role='listitem'>
+                            <CalendarTodayIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event date: </span>
+                              {event.date}
+                            </MetaText>
                           </MetaItem>
-                          <MetaItem>
-                            <AccessTimeIcon />
-                            <MetaText>{event.time}</MetaText>
+                          <MetaItem role='listitem'>
+                            <AccessTimeIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event time: </span>
+                              {event.time}
+                            </MetaText>
                           </MetaItem>
-                          <MetaItem>
-                            <LocationOnIcon />
-                            <MetaText>{event.location}</MetaText>
+                          <MetaItem role='listitem'>
+                            <LocationOnIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event location: </span>
+                              {event.location}
+                            </MetaText>
                           </MetaItem>
                         </EventMeta>
 
                         <RegisterButton
-                          endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
+                          endIcon={
+                            !isFull ? (
+                              <ArrowForwardIcon aria-hidden='true' />
+                            ) : undefined
+                          }
                           onClick={() => handleRegisterClick(event)}
                           disabled={isFull}
+                          aria-label={
+                            isFull
+                              ? `Event full - Registration unavailable for ${event.title}`
+                              : `Register now for ${event.title} on ${event.date} at ${event.time}`
+                          }
                           sx={{
                             backgroundColor: isFull ? "#e0e0e0" : "#004c91",
                             color: isFull ? "#9e9e9e" : "white",

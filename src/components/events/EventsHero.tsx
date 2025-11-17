@@ -49,12 +49,17 @@ export default function EventsHero() {
   const { t } = useTranslation();
 
   return (
-    <HeroContainer aria-labelledby='events-hero-heading'>
+    <HeroContainer
+      aria-labelledby='events-hero-heading'
+      aria-label='Events page header'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <HeroTitle variant='h1' id='events-hero-heading'>
+        <HeroTitle variant='h1' id='events-hero-heading' tabIndex={-1}>
           {t("events_hero_title")}
         </HeroTitle>
-        <HeroSubtitle>{t("events_hero_subtitle")}</HeroSubtitle>
+        <HeroSubtitle role='doc-subtitle'>
+          {t("events_hero_subtitle")}
+        </HeroSubtitle>
       </Container>
     </HeroContainer>
   );
