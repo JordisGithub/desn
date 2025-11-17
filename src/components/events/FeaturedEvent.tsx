@@ -24,12 +24,7 @@ const ContentGrid = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "20px",
   padding: theme.spacing(6),
-  boxShadow: "0 24px 60px rgba(0, 0, 0, 0.55)",
   transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-  "&:hover": {
-    boxShadow: "0 30px 80px rgba(0, 0, 0, 0.65)",
-    transform: "translateY(-4px)",
-  },
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gap: theme.spacing(4),
@@ -137,52 +132,71 @@ const FeaturedImage = styled("img")(({ theme }) => ({
 }));
 
 export default function FeaturedEvent() {
-  useTranslation();
+  const { t } = useTranslation();
 
   return (
-    <SectionContainer aria-labelledby='featured-event-heading'>
+    <SectionContainer
+      aria-labelledby='featured-event-heading'
+      role='region'
+      aria-label='Featured Event Section'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <ContentGrid>
+        <ContentGrid
+          role='article'
+          aria-label={`Featured event: ${t("featured_event_heading")}`}
+        >
           <ContentColumn>
             <Box>
-              <FeaturedLabel>Featured Event</FeaturedLabel>
-              <FeaturedTitle variant='h3' id='featured-event-heading'>
-                International Day of Persons with Disabilities
+              <FeaturedLabel aria-label={`Event category: ${t("featured_event_title")}`}>
+                {t("featured_event_title")}
+              </FeaturedLabel>
+              <FeaturedTitle variant='h2' id='featured-event-heading'>
+                {t("featured_event_heading")}
               </FeaturedTitle>
             </Box>
 
             <FeaturedDescription>
-              Celebrating "Innovation for Inclusion" through awareness and
-              advocacy. Join us for a day of inspiring talks, interactive
-              workshops, and community celebration as we work together towards a
-              more inclusive society.
+              {t("featured_event_description")}
             </FeaturedDescription>
 
-            <EventMeta>
-              <MetaItem>
-                <CalendarTodayIcon />
-                <MetaText>December 3, 2025</MetaText>
+            <EventMeta role='list' aria-label='Event details'>
+              <MetaItem role='listitem'>
+                <CalendarTodayIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event date: </span>
+                  {t("featured_event_date")}
+                </MetaText>
               </MetaItem>
-              <MetaItem>
-                <AccessTimeIcon />
-                <MetaText>9:00 AM - 5:00 PM</MetaText>
+              <MetaItem role='listitem'>
+                <AccessTimeIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event time: </span>
+                  {t("featured_event_time")}
+                </MetaText>
               </MetaItem>
-              <MetaItem>
-                <LocationOnIcon />
-                <MetaText>DESN Office, Lalitpur, Nepal</MetaText>
+              <MetaItem role='listitem'>
+                <LocationOnIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event location: </span>
+                  {t("featured_event_location")}
+                </MetaText>
               </MetaItem>
             </EventMeta>
 
-            <LearnMoreButton endIcon={<ArrowForwardIcon />}>
-              Register
+            <LearnMoreButton
+              endIcon={<ArrowForwardIcon aria-hidden='true' />}
+              aria-label={`Register for ${t("featured_event_heading")} event on ${t("featured_event_date")}`}
+            >
+              {t("event_register_button")}
             </LearnMoreButton>
           </ContentColumn>
 
-          <ImageColumn>
+          <ImageColumn aria-hidden='true'>
             <FeaturedImage
               src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
-              alt='Group of people collaborating'
+              alt=''
               loading='lazy'
+              role='presentation'
             />
           </ImageColumn>
         </ContentGrid>

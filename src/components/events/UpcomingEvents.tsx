@@ -60,6 +60,7 @@ const CalendarCard = styled(Box)(({ theme }) => ({
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
   maxWidth: "380px",
   margin: "0 auto",
+  alignSelf: "flex-start",
   [theme.breakpoints.down("md")]: {
     maxWidth: "100%",
   },
@@ -97,15 +98,23 @@ const MonthYear = styled(Typography)({
 });
 
 const NavButton = styled(Button)({
-  minWidth: "28px",
-  width: "28px",
-  height: "28px",
-  padding: "2px",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
+  minWidth: "36px",
+  width: "36px",
+  height: "36px",
+  padding: "4px",
+  border: "2px solid #004c91",
   borderRadius: "8px",
-  opacity: 0.5,
+  backgroundColor: "#004c91",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+  "&:hover": {
+    backgroundColor: "#003d73",
+    borderColor: "#003d73",
+    transform: "scale(1.05)",
+  },
   "& .MuiSvgIcon-root": {
-    fontSize: "1rem",
+    fontSize: "1.25rem",
+    color: "white",
   },
 });
 
@@ -136,23 +145,15 @@ const DayCell = styled(Button, {
   height: "32px",
   padding: "0",
   fontSize: "0.875rem",
-  color: isOtherMonth ? "#717182" : "#2b2b2b",
-  backgroundColor: hasEvent ? "#00a77f" : isToday ? "#004c91" : "transparent",
+  color: isOtherMonth ? "#717182" : "#004c91",
+  backgroundColor: hasEvent ? "#00a77f" : "transparent",
   borderRadius: "8px",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  border: isToday && !hasEvent ? "2px solid #004c91" : "none",
   "&:hover": {
-    backgroundColor: hasEvent ? "#008866" : isToday ? "#004c91" : "#e3f2fd",
-    transform: !isOtherMonth ? "scale(1.15)" : "none",
-    boxShadow: hasEvent || isToday ? "0 4px 12px rgba(0, 0, 0, 0.25)" : "none",
+    backgroundColor: hasEvent ? "#008866" : "#f3f4f6",
   },
   ...(hasEvent && {
-    color: "white",
     fontWeight: 700,
-    boxShadow: "0 2px 8px rgba(0, 167, 127, 0.4)",
-  }),
-  ...(isToday && {
-    color: "white",
-    fontWeight: 600,
   }),
 }));
 
@@ -295,7 +296,7 @@ interface EventData {
 
 export default function UpcomingEvents() {
   const { t } = useTranslation();
-  const [currentDate] = useState(new Date(2025, 10, 1)); // November 2025
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 10, 1)); // November 2025
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -433,9 +434,19 @@ export default function UpcomingEvents() {
       0
     ).getDate();
 
-    // Get all event dates for the current month
+    // Get all event dates for the CURRENT DISPLAYED month and year only
     const eventDates = new Set(
-      events.map((event) => event.calendarDate).filter((date) => date !== null)
+      events
+        .filter((event) => {
+          // Parse the event date to check if it matches current displayed month/year
+          const eventDate = new Date(event.date);
+          return (
+            eventDate.getMonth() === currentDate.getMonth() &&
+            eventDate.getFullYear() === currentDate.getFullYear()
+          );
+        })
+        .map((event) => event.calendarDate)
+        .filter((date) => date !== null)
     );
 
     const today = new Date();
@@ -482,30 +493,64 @@ export default function UpcomingEvents() {
     year: "numeric",
   });
 
+  const handlePreviousMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
   return (
-    <SectionContainer aria-labelledby='upcoming-events-heading'>
+    <SectionContainer
+      aria-labelledby='upcoming-events-heading'
+      role='region'
+      aria-label='Upcoming Events Section'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <SectionTitle variant='h2' id='upcoming-events-heading'>
           {t("events_upcoming_title")}
         </SectionTitle>
         <SectionSubtitle>{t("events_upcoming_subtitle")}</SectionSubtitle>
 
-        <ContentGrid>
+        <ContentGrid
+          role='group'
+          aria-label='Event calendar and event listings'
+        >
           {/* Calendar */}
-          <CalendarCard>
-            <CalendarHeader>{t("event_calendar_title")}</CalendarHeader>
-            <Calendar>
-              <CalendarNav>
-                <NavButton aria-label={t("aria.previous_month")}>
-                  <ChevronLeftIcon />
+          <CalendarCard role='region' aria-label='Event calendar' tabIndex={0}>
+            <CalendarHeader id='calendar-heading'>
+              {t("calendar_heading")}
+            </CalendarHeader>
+            <Calendar role='application' aria-labelledby='calendar-heading'>
+              <CalendarNav role='group' aria-label='Calendar navigation'>
+                <NavButton
+                  onClick={handlePreviousMonth}
+                  aria-label={`Previous month. Current month is ${monthYear}`}
+                >
+                  <ChevronLeftIcon aria-hidden='true' />
                 </NavButton>
-                <MonthYear>{monthYear}</MonthYear>
-                <NavButton aria-label={t("aria.next_month")}>
-                  <ChevronRightIcon />
+                <MonthYear aria-live='polite' aria-atomic='true'>
+                  {monthYear}
+                </MonthYear>
+                <NavButton
+                  onClick={handleNextMonth}
+                  aria-label={`Next month. Current month is ${monthYear}`}
+                >
+                  <ChevronRightIcon aria-hidden='true' />
                 </NavButton>
               </CalendarNav>
 
-              <CalendarGrid>
+              <CalendarGrid
+                role='grid'
+                aria-label={`Calendar for ${monthYear}`}
+              >
                 {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
                   <DayHeader key={day}>{day}</DayHeader>
                 ))}
@@ -518,10 +563,19 @@ export default function UpcomingEvents() {
                     onClick={() =>
                       !dayInfo.isOtherMonth && setSelectedDate(dayInfo.day)
                     }
-                    aria-label={`Select ${dayInfo.day}${
-                      dayInfo.hasEvent ? " (has event)" : ""
-                    }${dayInfo.isToday ? " (today)" : ""}`}
+                    aria-label={
+                      dayInfo.isOtherMonth
+                        ? `${dayInfo.day}, not in current month`
+                        : `${monthYear.split(" ")[0]} ${dayInfo.day}${
+                            dayInfo.hasEvent
+                              ? ", has scheduled event"
+                              : ", no events"
+                          }${dayInfo.isToday ? ", today" : ""}`
+                    }
+                    aria-pressed={selectedDate === dayInfo.day}
                     disabled={dayInfo.isOtherMonth}
+                    role='gridcell'
+                    tabIndex={dayInfo.isOtherMonth ? -1 : 0}
                     sx={{
                       cursor: dayInfo.isOtherMonth ? "default" : "pointer",
                     }}
@@ -540,7 +594,7 @@ export default function UpcomingEvents() {
           </CalendarCard>
 
           {/* Event Details */}
-          <EventsColumn>
+          <EventsColumn role='region' aria-live='polite' aria-atomic='false'>
             <Box
               sx={{
                 display: "flex",
@@ -549,34 +603,40 @@ export default function UpcomingEvents() {
                 mb: 2,
               }}
             >
-              <EventsHeader sx={{ mb: 0 }}>
+              <EventsHeader sx={{ mb: 0 }} id='event-list-heading'>
                 {selectedDate
-                  ? `${t("events_on")} ${monthYear.split(" ")[0]} ${selectedDate}`
-                  : t("event_details_title")}
+                  ? `${t("events_on_date")} ${monthYear.split(" ")[0]} ${selectedDate}`
+                  : t("event_details_heading")}
               </EventsHeader>
               {selectedDate && (
                 <Button
                   onClick={() => setSelectedDate(null)}
+                  aria-label={`Clear date filter. Currently showing events for ${
+                    monthYear.split(" ")[0]
+                  } ${selectedDate}`}
                   sx={{
                     textTransform: "none",
                     color: "#004c91",
                     fontSize: "0.875rem",
-                    fontWeight: 600,
-                    backgroundColor: "#f6d469",
-                    padding: "6px 16px",
-                    borderRadius: "8px",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    fontWeight: 500,
                     "&:hover": {
-                      backgroundColor: "#f4c950",
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 4px 12px rgba(246, 212, 105, 0.4)",
+                      backgroundColor: "rgba(0, 76, 145, 0.08)",
                     },
                   }}
                 >
-                  {t("clear_filter_button")}
+                  {t("clear_filter")}
                 </Button>
               )}
             </Box>
+            <div role='status' aria-live='polite' className='sr-only'>
+              {selectedDate
+                ? `Showing ${
+                    events.filter(
+                      (event) => event.calendarDate === selectedDate
+                    ).length
+                  } events for ${monthYear.split(" ")[0]} ${selectedDate}`
+                : `Showing all ${events.length} upcoming events`}
+            </div>
             {selectedDate
               ? events
                   .filter((event) => event.calendarDate === selectedDate)
@@ -585,17 +645,32 @@ export default function UpcomingEvents() {
                     const isFull = status?.isFull || false;
 
                     return (
-                      <EventCard key={event.id}>
-                        <BadgeContainer>
-                          <EventBadge label={event.type} color='primary' />
+                      <EventCard
+                        key={event.id}
+                        role='article'
+                        aria-labelledby={`event-title-${event.id}`}
+                        aria-describedby={`event-desc-${event.id} event-meta-${event.id}`}
+                        tabIndex={0}
+                      >
+                        <BadgeContainer
+                          role='group'
+                          aria-label='Event categories'
+                        >
+                          <EventBadge
+                            label={event.type}
+                            color='primary'
+                            aria-label={`Event type: ${event.type}`}
+                          />
                           <EventBadge
                             label={event.organizer}
                             color='secondary'
+                            aria-label={`Organized by: ${event.organizer}`}
                           />
                           {status && (
                             <Chip
-                              label={`${status.availableSpots} ${t("spots_left")}`}
+                              label={`${status.availableSpots} spots left`}
                               size='small'
+                              aria-label={`${status.availableSpots} registration spots remaining out of ${status.maxCapacity} total`}
                               sx={{
                                 backgroundColor:
                                   status.availableSpots < 10
@@ -606,45 +681,71 @@ export default function UpcomingEvents() {
                                     ? "#c62828"
                                     : "#2e7d32",
                                 fontSize: "0.75rem",
-                                fontWeight: 600,
+                                fontWeight: 500,
                                 height: "22px",
                               }}
                             />
                           )}
                         </BadgeContainer>
 
-                        <EventTitle>{event.title}</EventTitle>
-                        <EventDescription>{event.description}</EventDescription>
+                        <EventTitle id={`event-title-${event.id}`}>
+                          {event.title}
+                        </EventTitle>
+                        <EventDescription id={`event-desc-${event.id}`}>
+                          {event.description}
+                        </EventDescription>
 
-                        <EventMeta>
-                          <MetaItem>
-                            <CalendarTodayIcon />
-                            <MetaText>{event.date}</MetaText>
+                        <EventMeta
+                          role='list'
+                          aria-label='Event details'
+                          id={`event-meta-${event.id}`}
+                        >
+                          <MetaItem role='listitem'>
+                            <CalendarTodayIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event date: </span>
+                              {event.date}
+                            </MetaText>
                           </MetaItem>
-                          <MetaItem>
-                            <AccessTimeIcon />
-                            <MetaText>{event.time}</MetaText>
+                          <MetaItem role='listitem'>
+                            <AccessTimeIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event time: </span>
+                              {event.time}
+                            </MetaText>
                           </MetaItem>
-                          <MetaItem>
-                            <LocationOnIcon />
-                            <MetaText>{event.location}</MetaText>
+                          <MetaItem role='listitem'>
+                            <LocationOnIcon aria-hidden='true' />
+                            <MetaText>
+                              <span className='sr-only'>Event location: </span>
+                              {event.location}
+                            </MetaText>
                           </MetaItem>
                         </EventMeta>
 
                         <RegisterButton
-                          endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
+                          endIcon={
+                            !isFull ? (
+                              <ArrowForwardIcon aria-hidden='true' />
+                            ) : undefined
+                          }
                           onClick={() => handleRegisterClick(event)}
                           disabled={isFull}
+                          aria-label={
+                            isFull
+                              ? `Event full - Registration unavailable for ${event.title}`
+                              : `Register now for ${event.title} on ${event.date} at ${event.time}`
+                          }
                           sx={{
                             backgroundColor: isFull ? "#e0e0e0" : "#004c91",
                             color: isFull ? "#9e9e9e" : "white",
                             cursor: isFull ? "not-allowed" : "pointer",
                             "&:hover": {
-                              backgroundColor: isFull ? "#e0e0e0" : "#003366",
+                              backgroundColor: isFull ? "#e0e0e0" : "#003d73",
                             },
                           }}
                         >
-                          {isFull ? t("event_full") : t("event_register_button")}
+                          {isFull ? "Event Full" : "Register Now"}
                         </RegisterButton>
                       </EventCard>
                     );
@@ -660,7 +761,7 @@ export default function UpcomingEvents() {
                         <EventBadge label={event.organizer} color='secondary' />
                         {status && (
                           <Chip
-                            label={`${status.availableSpots} ${t("spots_left")}`}
+                            label={`${status.availableSpots} spots left`}
                             size='small'
                             sx={{
                               backgroundColor:
@@ -672,7 +773,7 @@ export default function UpcomingEvents() {
                                   ? "#c62828"
                                   : "#2e7d32",
                               fontSize: "0.75rem",
-                              fontWeight: 600,
+                              fontWeight: 500,
                               height: "22px",
                             }}
                           />
@@ -706,11 +807,11 @@ export default function UpcomingEvents() {
                           color: isFull ? "#9e9e9e" : "white",
                           cursor: isFull ? "not-allowed" : "pointer",
                           "&:hover": {
-                            backgroundColor: isFull ? "#e0e0e0" : "#003366",
+                            backgroundColor: isFull ? "#e0e0e0" : "#003d73",
                           },
                         }}
                       >
-                        {isFull ? t("event_full") : t("event_register_button")}
+                        {isFull ? "Event Full" : "Register Now"}
                       </RegisterButton>
                     </EventCard>
                   );

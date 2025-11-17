@@ -33,6 +33,20 @@ export default {
 
   // Featured Event
   featured_event_title: "Featured Event",
-  event_register_button: "Register Now",
+  featured_event_heading: "International Day of Persons with Disabilities",
+  featured_event_description:
+    'Celebrating "Innovation for Inclusion" through awareness and advocacy. Join us for a day of inspiring talks, interactive workshops, and community celebration as we work together towards a more inclusive society.',
+  featured_event_date: "December 3, 2025",
+  featured_event_time: "9:00 AM - 5:00 PM",
+  featured_event_location: "DESN Office, Lalitpur, Nepal",
+  event_register_button: "Register",
   event_share_button: "Share",
+
+  // Upcoming Events Calendar
+  calendar_heading: "Event Calendar",
+  calendar_note:
+    "Highlighted dates indicate scheduled events. Click on an event below for more details.",
+  event_details_heading: "Event Details",
+  events_on_date: "Events on",
+  clear_filter: "Clear Filter",
 };
