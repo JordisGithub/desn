@@ -1,4 +1,7 @@
 export default {
+  // Date locale for formatting
+  date_locale: "ne-NP",
+
   // Page Titles (for document.title) - Maithili
   page_titles: {
     home: "गृहपृष्ठ - अपांगता भेल व्यक्तिसभक सशक्तिकरण",
@@ -130,7 +133,7 @@ export default {
       "प्रकार आ विषयक अनुसार संगठित, हमर पूर्ण प्रकाशन पुस्तकालय ब्राउज करू।",
     search_label: "स्रोतसभ खोजू",
     search_placeholder: "शीर्षक वा विवरणक अनुसार खोजू...",
-    showing_results: "{total} मे सँ {count} स्रोतसभ देखाएल जा रहल अछि",
+    showing_results: "{{total}} मे सँ {{count}} स्रोतसभ देखाएल जा रहल अछि",
     no_resources_found: "अहाँक मापदण्ड अनुरूप कोनो स्रोत नै भेटल।",
     stay_updated_title: "अपडेट रहू",
     stay_updated_description:
@@ -141,13 +144,16 @@ export default {
     watch: "देखू",
     pages: "पृष्ठसभ",
     views: "हेराइसभ",
+    filter_by_category: "श्रेणी द्वारा स्रोत फ़िल्टर करू",
+    add_favorite: "पसंदीदामे जोड़ू",
+    remove_favorite: "पसंदीदासँ हटाउ",
     resource_types: {
       all: "सभटा स्रोतसभ",
       annual_report: "वार्षिक प्रतिवेदनसभ",
       policy_brief: "नीति संक्षेपसभ",
       training_manual: "तालिम पुस्तिकासभ",
       research: "अनुसन्धान",
-      guideline: "दिशानिर्देशसभ",
+      registration: "दर्तासभ",
       newsletter: "न्यूजलेटरसभ",
       video: "भिडियो स्रोतसभ",
     },

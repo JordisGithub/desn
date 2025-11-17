@@ -24,8 +24,15 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
 } from "@mui/material";
-import { CloudUpload, Delete, Refresh, Download } from "@mui/icons-material";
+import {
+  CloudUpload,
+  Delete,
+  Refresh,
+  Download,
+  Edit,
+} from "@mui/icons-material";
 import { useAuth } from "../../contexts/AuthContext";
 import ApiService from "../../services/ApiService";
 
@@ -46,7 +53,7 @@ const CATEGORY_MAP: Record<string, string> = {
   "policy-brief": "Policy Briefs",
   "training-manual": "Training Manuals",
   research: "Research",
-  guideline: "Guidelines",
+  registration: "Registrations",
   newsletter: "Newsletters",
 };
 
@@ -66,6 +73,13 @@ export default function ResourceUploadPanel() {
     null
   );
   const [dragActive, setDragActive] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [resourceToEdit, setResourceToEdit] = useState<UploadedFile | null>(
+    null
+  );
+  const [editCategory, setEditCategory] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const fetchResources = useCallback(async () => {
     setLoading(true);
@@ -227,42 +241,26 @@ export default function ResourceUploadPanel() {
     if (!resourceToDelete) return;
 
     try {
-      // Extract category and filename from fileUrl
-      const urlParts = resourceToDelete.fileUrl.split("/");
-      const filename = urlParts[urlParts.length - 1];
-      const category = urlParts[urlParts.length - 2];
+      // First delete resource from database
+      const dbResponse = await ApiService.deleteWithAuth<{
+        success: boolean;
+        message: string;
+      }>(`/api/resources/${resourceToDelete.id}`);
 
-      // Delete file from storage
-      await fetch(
-        `${
-          import.meta.env.VITE_API_BASE_URL || ""
-        }/api/files/${category}/${filename}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      ).then((res) => {
-        if (!res.ok) throw new Error("Failed to delete file");
-        return res;
-      });
+      if (!dbResponse || !dbResponse.success) {
+        throw new Error("Failed to delete resource from database");
+      }
 
-      // Delete resource from database
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL || ""}/api/resources/${
-          resourceToDelete.id
-        }`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      ).then((res) => {
-        if (!res.ok) throw new Error("Failed to delete resource entry");
-        return res;
-      });
+      // Then try to delete file from storage (optional - may fail if file doesn't exist)
+      try {
+        const urlParts = resourceToDelete.fileUrl.split("/");
+        const filename = urlParts[urlParts.length - 1];
+        const category = urlParts[urlParts.length - 2];
+
+        await ApiService.deleteWithAuth(`/api/files/${category}/${filename}`);
+      } catch (fileError) {
+        console.warn("File deletion failed (may not exist):", fileError);
+      }
 
       setMessage({
         type: "success",
@@ -279,6 +277,75 @@ export default function ResourceUploadPanel() {
     } finally {
       setDeleteDialogOpen(false);
       setResourceToDelete(null);
+    }
+  };
+
+  const handleEditClick = (resource: UploadedFile) => {
+    setResourceToEdit(resource);
+    setEditCategory(resource.type);
+    setEditTitle(resource.title);
+    setEditDialogOpen(true);
+  };
+
+  const handleEditConfirm = async () => {
+    if (!resourceToEdit || !editCategory || !editTitle.trim()) return;
+
+    try {
+      const updatedResource = {
+        ...resourceToEdit,
+        type: editCategory,
+        title: editTitle.trim(),
+      };
+
+      const response = await ApiService.putWithAuth<{
+        success: boolean;
+        message: string;
+        resource: UploadedFile;
+      }>(`/api/resources/${resourceToEdit.id}`, updatedResource);
+
+      if (!response || !response.success) {
+        throw new Error("Failed to update resource");
+      }
+
+      // Update local state immediately for instant feedback
+      setResources((prevResources) => {
+        const updated = prevResources.map((r) =>
+          r.id === resourceToEdit.id
+            ? { ...r, type: editCategory, title: editTitle.trim() }
+            : r
+        );
+        console.log("Updated resources locally:", updated);
+        return updated;
+      });
+
+      // Force re-render
+      setRefreshKey((prev) => prev + 1);
+
+      setMessage({
+        type: "success",
+        text: "Resource updated successfully",
+      });
+
+      // Close dialog and reset state
+      setEditDialogOpen(false);
+      setResourceToEdit(null);
+      setEditCategory("");
+      setEditTitle("");
+
+      // Fetch from backend to ensure sync (but local state should already show the change)
+      setTimeout(() => fetchResources(), 100);
+    } catch (error) {
+      console.error("Update error:", error);
+      setMessage({
+        type: "error",
+        text:
+          error instanceof Error ? error.message : "Failed to update resource",
+      });
+      // Close dialog on error too
+      setEditDialogOpen(false);
+      setResourceToEdit(null);
+      setEditCategory("");
+      setEditTitle("");
     }
   };
 
@@ -473,7 +540,7 @@ export default function ResourceUploadPanel() {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody key={refreshKey}>
                   {resources.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} align='center'>
@@ -515,9 +582,17 @@ export default function ResourceUploadPanel() {
                             onClick={() =>
                               window.open(resource.fileUrl, "_blank")
                             }
-                            title='Download'
+                            title='View/Download'
                           >
                             <Download />
+                          </IconButton>
+                          <IconButton
+                            size='small'
+                            color='info'
+                            onClick={() => handleEditClick(resource)}
+                            title='Edit Resource'
+                          >
+                            <Edit />
                           </IconButton>
                           <IconButton
                             size='small'
@@ -558,6 +633,55 @@ export default function ResourceUploadPanel() {
             variant='contained'
           >
             Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Resource Dialog */}
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth='sm'
+        fullWidth
+      >
+        <DialogTitle>Edit Resource</DialogTitle>
+        <DialogContent>
+          <Typography variant='body2' sx={{ mb: 2, color: "text.secondary" }}>
+            Update the title and category for this resource
+          </Typography>
+          <TextField
+            fullWidth
+            label='Title'
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            sx={{ mt: 2, mb: 2 }}
+            required
+          />
+          <FormControl fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={editCategory}
+              label='Category'
+              onChange={(e) => setEditCategory(e.target.value)}
+            >
+              <MenuItem value='annual-report'>Annual Report</MenuItem>
+              <MenuItem value='policy-brief'>Policy Brief</MenuItem>
+              <MenuItem value='training-manual'>Training Manual</MenuItem>
+              <MenuItem value='research'>Research</MenuItem>
+              <MenuItem value='registration'>Registration</MenuItem>
+              <MenuItem value='newsletter'>Newsletter</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button
+            onClick={handleEditConfirm}
+            color='primary'
+            variant='contained'
+            disabled={!editCategory || !editTitle.trim()}
+          >
+            Save Changes
           </Button>
         </DialogActions>
       </Dialog>
