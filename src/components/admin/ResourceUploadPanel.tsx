@@ -242,9 +242,10 @@ export default function ResourceUploadPanel() {
 
     try {
       // First delete resource from database
-      const dbResponse = await ApiService.deleteWithAuth(
-        `/api/resources/${resourceToDelete.id}`
-      );
+      const dbResponse = await ApiService.deleteWithAuth<{
+        success: boolean;
+        message: string;
+      }>(`/api/resources/${resourceToDelete.id}`);
 
       if (!dbResponse || !dbResponse.success) {
         throw new Error("Failed to delete resource from database");
@@ -296,10 +297,11 @@ export default function ResourceUploadPanel() {
         title: editTitle.trim(),
       };
 
-      const response = await ApiService.putWithAuth(
-        `/api/resources/${resourceToEdit.id}`,
-        updatedResource
-      );
+      const response = await ApiService.putWithAuth<{
+        success: boolean;
+        message: string;
+        resource: UploadedFile;
+      }>(`/api/resources/${resourceToEdit.id}`, updatedResource);
 
       if (!response || !response.success) {
         throw new Error("Failed to update resource");
