@@ -1,4 +1,4 @@
-name: Deploy to Personal AWS
+name: Deploy to AWS
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -68,23 +68,23 @@ jobs:
           script: |
             cd /home/ubuntu
             tar -xzf deployment.tar.gz
-            
+
             # Deploy frontend
             sudo cp -r deployment/frontend/* /var/www/html/
             echo "✅ Frontend deployed"
-            
+
             # Deploy backend
             mkdir -p ~/desn-app/backend
             cp deployment/backend/app.jar ~/desn-app/backend/
             echo "✅ Backend deployed"
-            
+
             # Restart backend service
             sudo systemctl restart desn-backend
             echo "✅ Backend restarted"
-            
+
             # Clean up
             rm -rf deployment deployment.tar.gz
-            
+
             # Verify deployment
             sleep 5
             if sudo systemctl is-active --quiet desn-backend; then

@@ -4,9 +4,9 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 
 ## 🌐 Live Application
 
-- **Production Website**: http://15.206.210.71
-- **Production API**: http://15.206.210.71/api
-- **Health Check**: http://15.206.210.71/actuator/health
+- **Production Website**: http://98.81.50.37
+- **Production API**: http://98.81.50.37/api
+- **Health Check**: http://98.81.50.37/actuator/health
 
 ## 🚀 Quick Start for New Developers
 
@@ -326,7 +326,7 @@ STORAGE_MODE=database  # or "file" for file-based storage
 
 The application is deployed on **AWS EC2** with the following architecture:
 
-- **Server**: Ubuntu 24.04.3 LTS on AWS EC2 t3.small (15.206.210.71)
+- **Server**: Ubuntu 24.04.3 LTS on AWS EC2 t3.small (98.81.50.37)
 - **Region**: ap-south-1 (Mumbai)
 - **Instance**: Free tier eligible (750 hours/month free for 12 months)
 - **Web Server**: Nginx 1.24.0 (reverse proxy)
@@ -334,7 +334,7 @@ The application is deployed on **AWS EC2** with the following architecture:
 - **Backend**: Spring Boot JAR running on port 8080
 - **Database**: PostgreSQL 16 (localhost:5432/desn)
 - **Cost**: Free (first year), then ~$15/month
-- **SSH Access**: `ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71`
+- **SSH Access**: `ssh -i ~/.ssh/desn-app-key.pem ubuntu@98.81.50.37`
 
 ### Quick Deploy (Recommended)
 
@@ -364,8 +364,8 @@ npm ci && npm run build
 cd backend && ./mvnw clean package -DskipTests && cd ..
 
 # Upload to server
-scp -i ~/.ssh/desn-app-key.pem -r dist/* ubuntu@15.206.210.71:/home/ubuntu/desn-app/frontend/
-scp -i ~/.ssh/desn-app-key.pem backend/target/proxy-backend-*.jar ubuntu@15.206.210.71:/home/ubuntu/desn-app/backend/app.jar
+scp -i ~/.ssh/desn-app-key.pem -r dist/* ubuntu@98.81.50.37:/home/ubuntu/desn-app/frontend/
+scp -i ~/.ssh/desn-app-key.pem backend/target/proxy-backend-*.jar ubuntu@98.81.50.37:/home/ubuntu/desn-app/backend/app.jar
 
 # Restart services
 ssh -i ~/.ssh/desn-app-key.pem ubuntu@15.206.210.71 "sudo systemctl restart desn-backend && sudo systemctl reload nginx"
