@@ -51,7 +51,6 @@ export default function EventsHero() {
   return (
     <HeroContainer
       aria-labelledby='events-hero-heading'
-      role='banner'
       aria-label='Events page header'
     >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>

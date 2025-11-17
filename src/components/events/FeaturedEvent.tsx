@@ -40,8 +40,8 @@ const ContentColumn = styled(Box)({
 
 const FeaturedLabel = styled(Typography)({
   fontSize: "0.875rem",
-  fontWeight: 600,
-  color: "#00a77f",
+  fontWeight: 700,
+  color: "#007a56",
   textTransform: "uppercase",
   letterSpacing: "0.1em",
   marginBottom: "0.5rem",
@@ -147,7 +147,9 @@ export default function FeaturedEvent() {
         >
           <ContentColumn>
             <Box>
-              <FeaturedLabel aria-label={`Event category: ${t("featured_event_title")}`}>
+              <FeaturedLabel
+                aria-label={`Event category: ${t("featured_event_title")}`}
+              >
                 {t("featured_event_title")}
               </FeaturedLabel>
               <FeaturedTitle variant='h2' id='featured-event-heading'>
@@ -185,7 +187,9 @@ export default function FeaturedEvent() {
 
             <LearnMoreButton
               endIcon={<ArrowForwardIcon aria-hidden='true' />}
-              aria-label={`Register for ${t("featured_event_heading")} event on ${t("featured_event_date")}`}
+              aria-label={`Register for ${t(
+                "featured_event_heading"
+              )} event on ${t("featured_event_date")}`}
             >
               {t("event_register_button")}
             </LearnMoreButton>

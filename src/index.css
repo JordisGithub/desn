@@ -694,7 +694,7 @@ section[aria-labelledby="upcoming-events-heading"] [role="gridcell"] {
 /* Event days - highlighted with background color and bold text */
 section[aria-labelledby="upcoming-events-heading"]
   [role="gridcell"][aria-label*="has scheduled event"] {
-  background-color: var(--color-secondary) !important;
+  background-color: #00875f !important;
   color: white !important;
   font-weight: 700 !important;
   border-radius: 50% !important;
@@ -712,7 +712,7 @@ section[aria-labelledby="upcoming-events-heading"]
 /* Event days hover - darker green */
 section[aria-labelledby="upcoming-events-heading"]
   [role="gridcell"][aria-label*="has scheduled event"]:hover {
-  background-color: var(--color-secondary-dark) !important;
+  background-color: #006644 !important;
   color: white !important;
   font-weight: 700 !important;
   transform: scale(1.1) !important;

@@ -145,12 +145,12 @@ const DayCell = styled(Button, {
   height: "32px",
   padding: "0",
   fontSize: "0.875rem",
-  color: isOtherMonth ? "#717182" : "#004c91",
-  backgroundColor: hasEvent ? "#00a77f" : "transparent",
+  color: hasEvent ? "#ffffff" : isOtherMonth ? "#717182" : "#004c91",
+  backgroundColor: hasEvent ? "#00875f" : "transparent",
   borderRadius: "8px",
   border: isToday && !hasEvent ? "2px solid #004c91" : "none",
   "&:hover": {
-    backgroundColor: hasEvent ? "#008866" : "#f3f4f6",
+    backgroundColor: hasEvent ? "#006644" : "#f3f4f6",
   },
   ...(hasEvent && {
     fontWeight: 700,
@@ -551,38 +551,58 @@ export default function UpcomingEvents() {
                 role='grid'
                 aria-label={`Calendar for ${monthYear}`}
               >
-                {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                  <DayHeader key={day}>{day}</DayHeader>
-                ))}
-                {generateCalendarDays().map((dayInfo, index) => (
-                  <DayCell
-                    key={index}
-                    isToday={dayInfo.isToday}
-                    hasEvent={dayInfo.hasEvent}
-                    isOtherMonth={dayInfo.isOtherMonth}
-                    onClick={() =>
-                      !dayInfo.isOtherMonth && setSelectedDate(dayInfo.day)
-                    }
-                    aria-label={
-                      dayInfo.isOtherMonth
-                        ? `${dayInfo.day}, not in current month`
-                        : `${monthYear.split(" ")[0]} ${dayInfo.day}${
-                            dayInfo.hasEvent
-                              ? ", has scheduled event"
-                              : ", no events"
-                          }${dayInfo.isToday ? ", today" : ""}`
-                    }
-                    aria-pressed={selectedDate === dayInfo.day}
-                    disabled={dayInfo.isOtherMonth}
-                    role='gridcell'
-                    tabIndex={dayInfo.isOtherMonth ? -1 : 0}
-                    sx={{
-                      cursor: dayInfo.isOtherMonth ? "default" : "pointer",
-                    }}
-                  >
-                    {dayInfo.day}
-                  </DayCell>
-                ))}
+                <Box role='row' sx={{ display: "contents" }}>
+                  {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
+                    <DayHeader key={day} role='columnheader'>
+                      {day}
+                    </DayHeader>
+                  ))}
+                </Box>
+                {Array.from(
+                  { length: Math.ceil(generateCalendarDays().length / 7) },
+                  (_, weekIndex) => (
+                    <Box
+                      key={weekIndex}
+                      role='row'
+                      sx={{ display: "contents" }}
+                    >
+                      {generateCalendarDays()
+                        .slice(weekIndex * 7, (weekIndex + 1) * 7)
+                        .map((dayInfo, index) => (
+                          <DayCell
+                            key={weekIndex * 7 + index}
+                            isToday={dayInfo.isToday}
+                            hasEvent={dayInfo.hasEvent}
+                            isOtherMonth={dayInfo.isOtherMonth}
+                            onClick={() =>
+                              !dayInfo.isOtherMonth &&
+                              setSelectedDate(dayInfo.day)
+                            }
+                            aria-label={
+                              dayInfo.isOtherMonth
+                                ? `${dayInfo.day}, not in current month`
+                                : `${monthYear.split(" ")[0]} ${dayInfo.day}${
+                                    dayInfo.hasEvent
+                                      ? ", has scheduled event"
+                                      : ", no events"
+                                  }${dayInfo.isToday ? ", today" : ""}`
+                            }
+                            aria-current={dayInfo.isToday ? "date" : undefined}
+                            disabled={dayInfo.isOtherMonth}
+                            role='gridcell'
+                            tabIndex={dayInfo.isOtherMonth ? -1 : 0}
+                            sx={{
+                              cursor: dayInfo.isOtherMonth
+                                ? "default"
+                                : "pointer",
+                            }}
+                          >
+                            {dayInfo.day}
+                          </DayCell>
+                        ))}
+                    </Box>
+                  )
+                )}
               </CalendarGrid>
             </Calendar>
 
@@ -605,7 +625,9 @@ export default function UpcomingEvents() {
             >
               <EventsHeader sx={{ mb: 0 }} id='event-list-heading'>
                 {selectedDate
-                  ? `${t("events_on_date")} ${monthYear.split(" ")[0]} ${selectedDate}`
+                  ? `${t("events_on_date")} ${
+                      monthYear.split(" ")[0]
+                    } ${selectedDate}`
                   : t("event_details_heading")}
               </EventsHeader>
               {selectedDate && (
