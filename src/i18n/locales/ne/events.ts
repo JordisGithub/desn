@@ -31,6 +31,50 @@ export default {
 
   // Featured Event
   featured_event_title: "विशेष कार्यक्रम",
-  event_register_button: "अहिले नयाँ सदस्य बन्नुहोस्",
+  featured_event_heading: "अन्तर्राष्ट्रिय अपाङ्गता भएका व्यक्तिहरूको दिवस",
+  featured_event_description:
+    'सचेतना र वकालत मार्फत "समावेशीकरणको लागि नवप्रवर्तन" मनाउँदै। प्रेरणादायी भाषणहरू, अन्तरक्रियात्मक कार्यशालाहरू, र सामुदायिक उत्सवको दिनमा हामीसँग सामेल हुनुहोस् जसमा हामी थप समावेशी समाजको लागि मिलेर काम गर्छौं।',
+  featured_event_date: "डिसेम्बर ३, २०२५",
+  featured_event_time: "बिहान ९:०० - बेलुकी ५:००",
+  featured_event_location: "DESN कार्यालय, ललितपुर, नेपाल",
+  event_register_button: "दर्ता गर्नुहोस्",
   event_share_button: "साझा गर्नुहोस्",
+
+  // Upcoming Events Calendar
+  calendar_heading: "कार्यक्रम पात्रो",
+  calendar_note:
+    "हाइलाइट गरिएका मितिहरूले अनुसूचित कार्यक्रमहरू संकेत गर्दछ। थप विवरणहरूको लागि तलको कार्यक्रममा क्लिक गर्नुहोस्।",
+  event_details_heading: "कार्यक्रम विवरण",
+  events_on_date: "मितिमा कार्यक्रमहरू",
+  clear_filter: "फिल्टर हटाउनुहोस्",
+
+  // Event Cards
+  event_type_label: "कार्यक्रम",
+  organized_by_label: "आयोजक:",
+  spots_left: "स्थान बाँकी",
+  registration_spots_remaining: "दर्ता स्थान बाँकी",
+  total_capacity: "कुल",
+  event_date_label: "कार्यक्रम मिति:",
+  event_time_label: "कार्यक्रम समय:",
+  event_location_label: "कार्यक्रम स्थान:",
+  showing_all_events: "सबै देखाउँदै",
+  upcoming_events_count: "आगामी कार्यक्रमहरू",
+  showing_events_for: "देखाउँदै",
+  events_for_date: "को लागि कार्यक्रमहरू",
+  event_full: "कार्यक्रम भरिएको",
+  register_now: "अहिले दर्ता गर्नुहोस्",
+
+  // Dynamic Event Translations (fallback for backend events)
+  event_disability_rights_title: "अपाङ्गता अधिकार जागरूकता कार्यशाला",
+  event_disability_rights_desc:
+    "समुदायमा अपाङ्गता अधिकार बुझ्न र प्रवर्द्धन गर्ने अन्तरक्रियात्मक कार्यशाला",
+  event_accessible_tech_title: "पहुँचयोग्य प्रविधि तालिम",
+  event_accessible_tech_desc:
+    "सहायक प्रविधि र पहुँचयोग्य सफ्टवेयर समाधानहरूमा व्यावहारिक तालिम",
+  event_annual_meeting_title: "वार्षिक साधारण सभा २०२५",
+  event_annual_meeting_desc:
+    "प्रगति, योजना र सदस्य सरोकारहरू छलफल गर्न DESN को वार्षिक बैठक",
+  location_kathmandu_center: "काठमाडौं सामुदायिक केन्द्र",
+  location_desn_training: "DESN तालिम केन्द्र, ललितपुर",
+  location_hotel_yak: "होटल याक एण्ड येती, काठमाडौं",
 };

@@ -10,6 +10,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import EventRegistrationModal from "./EventRegistrationModal";
 import EventService from "../../services/EventService";
+import {
+  translateEventTitle,
+  translateEventDescription,
+  translateEventLocation,
+} from "../../utils/eventTranslations";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -652,12 +657,16 @@ export default function UpcomingEvents() {
             </Box>
             <div role='status' aria-live='polite' className='sr-only'>
               {selectedDate
-                ? `Showing ${
+                ? `${t("showing_events_for")} ${
                     events.filter(
                       (event) => event.calendarDate === selectedDate
                     ).length
-                  } events for ${monthYear.split(" ")[0]} ${selectedDate}`
-                : `Showing all ${events.length} upcoming events`}
+                  } ${t("events_for_date")} ${
+                    monthYear.split(" ")[0]
+                  } ${selectedDate}`
+                : `${t("showing_all_events")} ${events.length} ${t(
+                    "upcoming_events_count"
+                  )}`}
             </div>
             {selectedDate
               ? events
@@ -679,20 +688,26 @@ export default function UpcomingEvents() {
                           aria-label='Event categories'
                         >
                           <EventBadge
-                            label={event.type}
+                            label={t("event_type_label")}
                             color='primary'
-                            aria-label={`Event type: ${event.type}`}
+                            aria-label={`${t("event_type_label")}: ${t(
+                              "event_type_label"
+                            )}`}
                           />
                           <EventBadge
-                            label={event.organizer}
+                            label='DESN'
                             color='secondary'
-                            aria-label={`Organized by: ${event.organizer}`}
+                            aria-label={`${t("organized_by_label")} DESN`}
                           />
                           {status && (
                             <Chip
-                              label={`${status.availableSpots} spots left`}
+                              label={`${status.availableSpots} ${t(
+                                "spots_left"
+                              )}`}
                               size='small'
-                              aria-label={`${status.availableSpots} registration spots remaining out of ${status.maxCapacity} total`}
+                              aria-label={`${status.availableSpots} ${t(
+                                "registration_spots_remaining"
+                              )} ${status.maxCapacity} ${t("total_capacity")}`}
                               sx={{
                                 backgroundColor:
                                   status.availableSpots < 10
@@ -711,10 +726,10 @@ export default function UpcomingEvents() {
                         </BadgeContainer>
 
                         <EventTitle id={`event-title-${event.id}`}>
-                          {event.title}
+                          {translateEventTitle(event.title, t)}
                         </EventTitle>
                         <EventDescription id={`event-desc-${event.id}`}>
-                          {event.description}
+                          {translateEventDescription(event.description, t)}
                         </EventDescription>
 
                         <EventMeta
@@ -725,22 +740,28 @@ export default function UpcomingEvents() {
                           <MetaItem role='listitem'>
                             <CalendarTodayIcon aria-hidden='true' />
                             <MetaText>
-                              <span className='sr-only'>Event date: </span>
+                              <span className='sr-only'>
+                                {t("event_date_label")}{" "}
+                              </span>
                               {event.date}
                             </MetaText>
                           </MetaItem>
                           <MetaItem role='listitem'>
                             <AccessTimeIcon aria-hidden='true' />
                             <MetaText>
-                              <span className='sr-only'>Event time: </span>
+                              <span className='sr-only'>
+                                {t("event_time_label")}{" "}
+                              </span>
                               {event.time}
                             </MetaText>
                           </MetaItem>
                           <MetaItem role='listitem'>
                             <LocationOnIcon aria-hidden='true' />
                             <MetaText>
-                              <span className='sr-only'>Event location: </span>
-                              {event.location}
+                              <span className='sr-only'>
+                                {t("event_location_label")}{" "}
+                              </span>
+                              {translateEventLocation(event.location, t)}
                             </MetaText>
                           </MetaItem>
                         </EventMeta>
@@ -755,8 +776,14 @@ export default function UpcomingEvents() {
                           disabled={isFull}
                           aria-label={
                             isFull
-                              ? `Event full - Registration unavailable for ${event.title}`
-                              : `Register now for ${event.title} on ${event.date} at ${event.time}`
+                              ? `${t("event_full")} - ${translateEventTitle(
+                                  event.title,
+                                  t
+                                )}`
+                              : `${t("register_now")} - ${translateEventTitle(
+                                  event.title,
+                                  t
+                                )} - ${event.date} ${event.time}`
                           }
                           sx={{
                             backgroundColor: isFull ? "#e0e0e0" : "#004c91",
@@ -767,7 +794,7 @@ export default function UpcomingEvents() {
                             },
                           }}
                         >
-                          {isFull ? "Event Full" : "Register Now"}
+                          {isFull ? t("event_full") : t("register_now")}
                         </RegisterButton>
                       </EventCard>
                     );
@@ -779,11 +806,16 @@ export default function UpcomingEvents() {
                   return (
                     <EventCard key={event.id}>
                       <BadgeContainer>
-                        <EventBadge label={event.type} color='primary' />
-                        <EventBadge label={event.organizer} color='secondary' />
+                        <EventBadge
+                          label={t("event_type_label")}
+                          color='primary'
+                        />
+                        <EventBadge label='DESN' color='secondary' />
                         {status && (
                           <Chip
-                            label={`${status.availableSpots} spots left`}
+                            label={`${status.availableSpots} ${t(
+                              "spots_left"
+                            )}`}
                             size='small'
                             sx={{
                               backgroundColor:
@@ -802,8 +834,12 @@ export default function UpcomingEvents() {
                         )}
                       </BadgeContainer>
 
-                      <EventTitle>{event.title}</EventTitle>
-                      <EventDescription>{event.description}</EventDescription>
+                      <EventTitle>
+                        {translateEventTitle(event.title, t)}
+                      </EventTitle>
+                      <EventDescription>
+                        {translateEventDescription(event.description, t)}
+                      </EventDescription>
 
                       <EventMeta>
                         <MetaItem>
@@ -816,7 +852,9 @@ export default function UpcomingEvents() {
                         </MetaItem>
                         <MetaItem>
                           <LocationOnIcon />
-                          <MetaText>{event.location}</MetaText>
+                          <MetaText>
+                            {translateEventLocation(event.location, t)}
+                          </MetaText>
                         </MetaItem>
                       </EventMeta>
 
@@ -833,7 +871,7 @@ export default function UpcomingEvents() {
                           },
                         }}
                       >
-                        {isFull ? "Event Full" : "Register Now"}
+                        {isFull ? t("event_full") : t("register_now")}
                       </RegisterButton>
                     </EventCard>
                   );
@@ -847,10 +885,10 @@ export default function UpcomingEvents() {
           open={modalOpen}
           onClose={handleModalClose}
           eventId={selectedEvent.eventId}
-          eventTitle={selectedEvent.title}
+          eventTitle={translateEventTitle(selectedEvent.title, t)}
           eventDate={selectedEvent.date}
           eventTime={selectedEvent.time}
-          eventLocation={selectedEvent.location}
+          eventLocation={translateEventLocation(selectedEvent.location, t)}
           onRegistrationSuccess={handleRegistrationSuccess}
         />
       )}
