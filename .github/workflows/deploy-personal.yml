@@ -73,6 +73,11 @@ jobs:
             sudo cp -r deployment/frontend/* /var/www/html/
             echo "✅ Frontend deployed"
 
+            # --- CRITICAL FIX ---
+            sudo systemctl restart nginx
+            echo "✅ Nginx restarted (Frontend cache cleared)"
+            # --------------------
+
             # Deploy backend
             mkdir -p ~/desn-app/backend
             cp deployment/backend/app.jar ~/desn-app/backend/

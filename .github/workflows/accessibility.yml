@@ -52,7 +52,6 @@ jobs:
 
   lighthouse-audit:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     permissions:
       contents: read
       issues: write
@@ -129,7 +128,6 @@ jobs:
 
   a11y-mcp-audit:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     permissions:
       contents: read
       issues: write
