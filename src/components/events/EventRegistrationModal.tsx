@@ -23,42 +23,66 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
     borderRadius: "16px",
     padding: theme.spacing(2),
     maxWidth: "500px",
+    [theme.breakpoints.down("sm")]: {
+      margin: theme.spacing(2),
+      padding: theme.spacing(1.5),
+      maxWidth: "calc(100% - 32px)",
+    },
   },
 }));
 
-const StyledDialogTitle = styled(DialogTitle)({
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   fontSize: "1.5rem",
   fontWeight: 600,
   color: "#004c91",
   textAlign: "center",
   paddingBottom: "1rem",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.25rem",
+    padding: theme.spacing(1.5, 1, 0.75, 1),
+  },
+}));
 
-const StyledDialogContent = styled(DialogContent)({
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   paddingTop: "1rem",
   paddingBottom: "1.5rem",
-});
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1, 1.5, 1.5, 1.5),
+  },
+}));
 
 const LoginPromptBox = styled(Box)(({ theme }) => ({
   textAlign: "center",
   padding: theme.spacing(3),
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(2, 1),
+  },
 }));
 
-const LoginPromptText = styled(Typography)({
+const LoginPromptText = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
   color: "#4a5565",
   marginBottom: "1.5rem",
   lineHeight: 1.6,
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    marginBottom: "1rem",
+  },
+}));
 
-const ActionButton = styled(Button)({
+const ActionButton = styled(Button)(({ theme }) => ({
   borderRadius: "100px",
   padding: "12px 32px",
   fontSize: "1rem",
   textTransform: "none",
   fontWeight: 600,
   minWidth: "140px",
-});
+  [theme.breakpoints.down("sm")]: {
+    padding: "10px 20px",
+    fontSize: "0.875rem",
+    minWidth: "100px",
+  },
+}));
 
 const PrimaryButton = styled(ActionButton)({
   backgroundColor: "#004c91",
@@ -76,12 +100,16 @@ const SecondaryButton = styled(ActionButton)({
   },
 });
 
-const EventDetails = styled(Box)({
+const EventDetails = styled(Box)(({ theme }) => ({
   backgroundColor: "#f9fafb",
   borderRadius: "12px",
   padding: "1.5rem",
   marginBottom: "1.5rem",
-});
+  [theme.breakpoints.down("sm")]: {
+    padding: "1rem",
+    marginBottom: "1rem",
+  },
+}));
 
 const EventDetailRow = styled(Box)({
   display: "flex",
@@ -199,13 +227,30 @@ export default function EventRegistrationModal({
           id='registration-modal-description'
         >
           <CheckCircleIcon
-            sx={{ fontSize: "4rem", color: "#00a77f", marginBottom: 2 }}
+            sx={{
+              fontSize: { xs: "3rem", sm: "4rem" },
+              color: "#00a77f",
+              marginBottom: 2,
+            }}
             aria-hidden='true'
           />
-          <Typography variant='h6' sx={{ color: "#00a77f", fontWeight: 600 }}>
+          <Typography
+            variant='h6'
+            sx={{
+              color: "#00a77f",
+              fontWeight: 600,
+              fontSize: { xs: "1.125rem", sm: "1.25rem" },
+            }}
+          >
             {t("event_registration_success")}
           </Typography>
-          <Typography sx={{ color: "#4a5565", marginTop: 1 }}>
+          <Typography
+            sx={{
+              color: "#4a5565",
+              marginTop: 1,
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            }}
+          >
             {t("event_registration_success_message")}
           </Typography>
         </LoginPromptBox>
@@ -217,7 +262,11 @@ export default function EventRegistrationModal({
         <>
           <LoginPromptBox id='registration-modal-description'>
             <LoginIcon
-              sx={{ fontSize: "3rem", color: "#004c91", marginBottom: 2 }}
+              sx={{
+                fontSize: { xs: "2.5rem", sm: "3rem" },
+                color: "#004c91",
+                marginBottom: 2,
+              }}
               aria-hidden='true'
             />
             <LoginPromptText>
@@ -225,7 +274,15 @@ export default function EventRegistrationModal({
             </LoginPromptText>
           </LoginPromptBox>
           <DialogActions
-            sx={{ justifyContent: "center", gap: 2, paddingBottom: 2 }}
+            sx={{
+              justifyContent: "center",
+              gap: 2,
+              paddingBottom: 2,
+              flexDirection: { xs: "column", sm: "row" },
+              "& > button": {
+                width: { xs: "100%", sm: "auto" },
+              },
+            }}
             role='group'
             aria-label='Authentication actions'
           >
@@ -295,7 +352,15 @@ export default function EventRegistrationModal({
         </StyledDialogContent>
 
         <DialogActions
-          sx={{ justifyContent: "center", gap: 2, paddingBottom: 2 }}
+          sx={{
+            justifyContent: "center",
+            gap: 2,
+            paddingBottom: 2,
+            flexDirection: { xs: "column", sm: "row" },
+            "& > button": {
+              width: { xs: "100%", sm: "auto" },
+            },
+          }}
           role='group'
           aria-label='Registration confirmation actions'
         >

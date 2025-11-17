@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Container, Typography, Box, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
@@ -5,6 +6,15 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import EventService from "../../services/EventService";
+import EventRegistrationModal from "./EventRegistrationModal";
+import {
+  translateEventTitle,
+  translateEventDescription,
+  translateEventLocation,
+} from "../../utils/eventTranslations";
+import { formatDate, formatTimeRange } from "../../utils/dateLocalization";
+import disabilityRightsImage from "../../assets/Events/disabilityRights.jpeg";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "#f9fafb",
@@ -131,8 +141,142 @@ const FeaturedImage = styled("img")(({ theme }) => ({
   },
 }));
 
+interface FeaturedEventData {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  imageUrl?: string;
+}
+
 export default function FeaturedEvent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [featuredEvent, setFeaturedEvent] = useState<FeaturedEventData | null>(
+    null
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // Fetch featured event from backend
+  useEffect(() => {
+    const fetchFeaturedEvent = async () => {
+      try {
+        const events = await EventService.getUpcomingEvents();
+        // Find the first featured event (backend has featured flag)
+        // For now, just use the first event as featured
+        if (events.length > 0) {
+          setFeaturedEvent(events[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching featured event:", error);
+      }
+    };
+
+    fetchFeaturedEvent();
+  }, []);
+
+  const handleRegisterClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleRegistrationSuccess = () => {
+    setModalOpen(false);
+    // Could show a success message here
+  };
+
+  // If no event data yet, show loading state with translations
+  if (!featuredEvent) {
+    return (
+      <SectionContainer
+        aria-labelledby='featured-event-heading'
+        role='region'
+        aria-label='Featured Event Section'
+      >
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
+          <ContentGrid
+            role='article'
+            aria-label={`Featured event: ${t("featured_event_heading")}`}
+          >
+            <ContentColumn>
+              <Box>
+                <FeaturedLabel
+                  aria-label={`Event category: ${t("featured_event_title")}`}
+                >
+                  {t("featured_event_title")}
+                </FeaturedLabel>
+                <FeaturedTitle variant='h2' id='featured-event-heading'>
+                  {t("featured_event_heading")}
+                </FeaturedTitle>
+              </Box>
+
+              <FeaturedDescription>
+                {t("featured_event_description")}
+              </FeaturedDescription>
+
+              <EventMeta role='list' aria-label='Event details'>
+                <MetaItem role='listitem'>
+                  <CalendarTodayIcon aria-hidden='true' />
+                  <MetaText>
+                    <span className='sr-only'>Event date: </span>
+                    {t("featured_event_date")}
+                  </MetaText>
+                </MetaItem>
+                <MetaItem role='listitem'>
+                  <AccessTimeIcon aria-hidden='true' />
+                  <MetaText>
+                    <span className='sr-only'>Event time: </span>
+                    {t("featured_event_time")}
+                  </MetaText>
+                </MetaItem>
+                <MetaItem role='listitem'>
+                  <LocationOnIcon aria-hidden='true' />
+                  <MetaText>
+                    <span className='sr-only'>Event location: </span>
+                    {t("featured_event_location")}
+                  </MetaText>
+                </MetaItem>
+              </EventMeta>
+
+              <LearnMoreButton
+                endIcon={<ArrowForwardIcon aria-hidden='true' />}
+                aria-label={`Register for ${t(
+                  "featured_event_heading"
+                )} event on ${t("featured_event_date")}`}
+                disabled
+              >
+                {t("event_register_button")}
+              </LearnMoreButton>
+            </ContentColumn>
+
+            <ImageColumn aria-hidden='true'>
+              <FeaturedImage
+                src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
+                alt=''
+                loading='lazy'
+                role='presentation'
+              />
+            </ImageColumn>
+          </ContentGrid>
+        </Container>
+      </SectionContainer>
+    );
+  }
+
+  const startDate = new Date(featuredEvent.startDate);
+  const endDate = new Date(featuredEvent.endDate);
+  const formattedDate = formatDate(startDate, i18n.language);
+  const formattedTime = formatTimeRange(startDate, endDate, i18n.language);
+  const translatedTitle = translateEventTitle(featuredEvent.title, t);
+  const translatedDescription = translateEventDescription(
+    featuredEvent.description,
+    t
+  );
+  const translatedLocation = translateEventLocation(featuredEvent.location, t);
 
   return (
     <SectionContainer
@@ -143,7 +287,7 @@ export default function FeaturedEvent() {
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentGrid
           role='article'
-          aria-label={`Featured event: ${t("featured_event_heading")}`}
+          aria-label={`Featured event: ${translatedTitle}`}
         >
           <ContentColumn>
             <Box>
@@ -153,43 +297,40 @@ export default function FeaturedEvent() {
                 {t("featured_event_title")}
               </FeaturedLabel>
               <FeaturedTitle variant='h2' id='featured-event-heading'>
-                {t("featured_event_heading")}
+                {translatedTitle}
               </FeaturedTitle>
             </Box>
 
-            <FeaturedDescription>
-              {t("featured_event_description")}
-            </FeaturedDescription>
+            <FeaturedDescription>{translatedDescription}</FeaturedDescription>
 
             <EventMeta role='list' aria-label='Event details'>
               <MetaItem role='listitem'>
                 <CalendarTodayIcon aria-hidden='true' />
                 <MetaText>
                   <span className='sr-only'>Event date: </span>
-                  {t("featured_event_date")}
+                  {formattedDate}
                 </MetaText>
               </MetaItem>
               <MetaItem role='listitem'>
                 <AccessTimeIcon aria-hidden='true' />
                 <MetaText>
                   <span className='sr-only'>Event time: </span>
-                  {t("featured_event_time")}
+                  {formattedTime}
                 </MetaText>
               </MetaItem>
               <MetaItem role='listitem'>
                 <LocationOnIcon aria-hidden='true' />
                 <MetaText>
                   <span className='sr-only'>Event location: </span>
-                  {t("featured_event_location")}
+                  {translatedLocation}
                 </MetaText>
               </MetaItem>
             </EventMeta>
 
             <LearnMoreButton
+              onClick={handleRegisterClick}
               endIcon={<ArrowForwardIcon aria-hidden='true' />}
-              aria-label={`Register for ${t(
-                "featured_event_heading"
-              )} event on ${t("featured_event_date")}`}
+              aria-label={`Register for ${translatedTitle} event on ${formattedDate}`}
             >
               {t("event_register_button")}
             </LearnMoreButton>
@@ -197,7 +338,7 @@ export default function FeaturedEvent() {
 
           <ImageColumn aria-hidden='true'>
             <FeaturedImage
-              src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
+              src={disabilityRightsImage}
               alt=''
               loading='lazy'
               role='presentation'
@@ -205,6 +346,19 @@ export default function FeaturedEvent() {
           </ImageColumn>
         </ContentGrid>
       </Container>
+
+      {featuredEvent && (
+        <EventRegistrationModal
+          open={modalOpen}
+          onClose={handleModalClose}
+          eventId={featuredEvent.id}
+          eventTitle={translatedTitle}
+          eventDate={formattedDate}
+          eventTime={formattedTime}
+          eventLocation={translatedLocation}
+          onRegistrationSuccess={handleRegistrationSuccess}
+        />
+      )}
     </SectionContainer>
   );
 }
