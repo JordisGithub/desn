@@ -1,4 +1,7 @@
 export default {
+  // Date locale for formatting
+  date_locale: "ne-NP",
+
   // Page Titles (for document.title) - Newar
   page_titles: {
     home: "गृहपृष्ठ - अपाङ्गता भयाः व्यक्तिफता सशक्तिकरण",
@@ -140,13 +143,16 @@ export default {
     watch: "च्वयेगु",
     pages: "पृष्ठफु",
     views: "हेराइफु",
+    filter_by_category: "श्रेणी अनुसार स्रोत फिल्टर जुया",
+    add_favorite: "मनपर्नेया थव",
+    remove_favorite: "मनपर्नेयात हटाव",
     resource_types: {
       all: "सकलें स्रोतफु",
       annual_report: "वार्षिक प्रतिवेदनफु",
       policy_brief: "नीति संक्षेपफु",
       training_manual: "तालिम पुस्तिकाफु",
       research: "अनुसन्धान",
-      guideline: "दिशानिर्देशफु",
+      registration: "दर्ताफु",
       newsletter: "न्यूजलेटरफु",
       video: "भिडियो स्रोतफु",
     },

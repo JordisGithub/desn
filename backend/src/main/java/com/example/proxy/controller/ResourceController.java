@@ -114,8 +114,28 @@ public class ResourceController {
         
         return resourceService.getResourceById(id)
                 .map(existingResource -> {
-                    resource.setId(id);
-                    Resource updatedResource = resourceService.saveResource(resource);
+                    // Only update the fields that are allowed to be changed
+                    if (resource.getTitle() != null) {
+                        existingResource.setTitle(resource.getTitle());
+                    }
+                    if (resource.getDescription() != null) {
+                        existingResource.setDescription(resource.getDescription());
+                    }
+                    if (resource.getType() != null) {
+                        existingResource.setType(resource.getType());
+                    }
+                    if (resource.getThumbnailUrl() != null) {
+                        existingResource.setThumbnailUrl(resource.getThumbnailUrl());
+                    }
+                    if (resource.getPages() != null) {
+                        existingResource.setPages(resource.getPages());
+                    }
+                    if (resource.getFeatured() != null) {
+                        existingResource.setFeatured(resource.getFeatured());
+                    }
+                    // Note: fileUrl, publishDate, clicks, favoriteCount, createdAt should not be updated via this endpoint
+                    
+                    Resource updatedResource = resourceService.saveResource(existingResource);
                     response.put("success", true);
                     response.put("message", "Resource updated successfully");
                     response.put("resource", updatedResource);

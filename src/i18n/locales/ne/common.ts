@@ -1,4 +1,7 @@
 export default {
+  // Date locale for formatting
+  date_locale: "ne-NP",
+
   // Page Titles (for document.title)
   page_titles: {
     home: "गृहपृष्ठ - अपाङ्गता भएका व्यक्तिहरूलाई सशक्तिकरण",
@@ -142,13 +145,16 @@ export default {
     watch: "हेर्नुहोस्",
     pages: "पृष्ठहरू",
     views: "हेराइहरू",
+    filter_by_category: "श्रेणीद्वारा स्रोतहरू फिल्टर गर्नुहोस्",
+    add_favorite: "मनपर्नेमा थप्नुहोस्",
+    remove_favorite: "मनपर्नेबाट हटाउनुहोस्",
     resource_types: {
       all: "सबै स्रोतहरू",
       annual_report: "वार्षिक प्रतिवेदनहरू",
       policy_brief: "नीति संक्षेपहरू",
       training_manual: "तालिम पुस्तिकाहरू",
       research: "अनुसन्धान",
-      guideline: "दिशानिर्देशहरू",
+      registration: "दर्ताहरू",
       newsletter: "न्यूजलेटरहरू",
       video: "भिडियो स्रोतहरू",
     },
