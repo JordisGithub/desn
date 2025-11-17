@@ -9,8 +9,8 @@ export default function Events() {
   return (
     <>
       <EventsHero />
-      <UpcomingEvents />
       <FeaturedEvent />
+      <UpcomingEvents />
     </>
   );
 }

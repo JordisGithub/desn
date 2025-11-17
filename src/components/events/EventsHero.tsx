@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 const HeroContainer = styled("section")(({ theme }) => ({
   background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
-  paddingTop: theme.spacing(12),
-  paddingBottom: theme.spacing(6),
+  paddingTop: "120px",
+  paddingBottom: "120px",
   position: "relative",
   overflow: "hidden",
   [theme.breakpoints.down("md")]: {
@@ -49,12 +49,17 @@ export default function EventsHero() {
   const { t } = useTranslation();
 
   return (
-    <HeroContainer aria-labelledby='events-hero-heading'>
+    <HeroContainer
+      aria-labelledby='events-hero-heading'
+      aria-label='Events page header'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <HeroTitle variant='h1' id='events-hero-heading'>
+        <HeroTitle variant='h1' id='events-hero-heading' tabIndex={-1}>
           {t("events_hero_title")}
         </HeroTitle>
-        <HeroSubtitle>{t("events_hero_subtitle")}</HeroSubtitle>
+        <HeroSubtitle role='doc-subtitle'>
+          {t("events_hero_subtitle")}
+        </HeroSubtitle>
       </Container>
     </HeroContainer>
   );

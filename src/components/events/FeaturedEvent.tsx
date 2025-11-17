@@ -21,9 +21,14 @@ const ContentGrid = styled(Box)(({ theme }) => ({
   gridTemplateColumns: "1fr 1fr",
   gap: theme.spacing(6),
   alignItems: "center",
+  backgroundColor: "white",
+  borderRadius: "20px",
+  padding: theme.spacing(6),
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gap: theme.spacing(4),
+    padding: theme.spacing(4),
   },
 }));
 
@@ -35,8 +40,8 @@ const ContentColumn = styled(Box)({
 
 const FeaturedLabel = styled(Typography)({
   fontSize: "0.875rem",
-  fontWeight: 600,
-  color: "#00a77f",
+  fontWeight: 700,
+  color: "#007a56",
   textTransform: "uppercase",
   letterSpacing: "0.1em",
   marginBottom: "0.5rem",
@@ -84,18 +89,21 @@ const MetaText = styled(Typography)({
 const LearnMoreButton = styled(Button)({
   backgroundColor: "#004c91",
   color: "white",
-  height: "54px",
+  height: "56px",
   borderRadius: "100px",
-  fontSize: "1rem",
+  fontSize: "1.125rem",
+  fontWeight: 600,
   textTransform: "none",
-  paddingLeft: "2rem",
-  paddingRight: "2rem",
+  paddingLeft: "2.5rem",
+  paddingRight: "2.5rem",
   alignSelf: "flex-start",
+  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.4)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003d73",
-    transform: "translateY(-2px)",
+    backgroundColor: "#003366",
+    transform: "translateY(-3px) scale(1.05)",
+    boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
   },
-  transition: "all 0.3s ease",
 });
 
 const ImageColumn = styled(Box)(({ theme }) => ({
@@ -109,7 +117,12 @@ const FeaturedImage = styled("img")(({ theme }) => ({
   height: "400px",
   objectFit: "cover",
   borderRadius: "16px",
-  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
+  boxShadow: "0 30px 80px rgba(0, 0, 0, 0.75)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  "&:hover": {
+    boxShadow: "0 40px 100px rgba(0, 0, 0, 0.85)",
+    transform: "scale(1.02) translateY(-6px)",
+  },
   [theme.breakpoints.down("md")]: {
     height: "300px",
   },
@@ -119,52 +132,75 @@ const FeaturedImage = styled("img")(({ theme }) => ({
 }));
 
 export default function FeaturedEvent() {
-  useTranslation();
+  const { t } = useTranslation();
 
   return (
-    <SectionContainer aria-labelledby='featured-event-heading'>
+    <SectionContainer
+      aria-labelledby='featured-event-heading'
+      role='region'
+      aria-label='Featured Event Section'
+    >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-        <ContentGrid>
+        <ContentGrid
+          role='article'
+          aria-label={`Featured event: ${t("featured_event_heading")}`}
+        >
           <ContentColumn>
             <Box>
-              <FeaturedLabel>Featured Event</FeaturedLabel>
-              <FeaturedTitle variant='h3' id='featured-event-heading'>
-                International Day of Persons with Disabilities
+              <FeaturedLabel
+                aria-label={`Event category: ${t("featured_event_title")}`}
+              >
+                {t("featured_event_title")}
+              </FeaturedLabel>
+              <FeaturedTitle variant='h2' id='featured-event-heading'>
+                {t("featured_event_heading")}
               </FeaturedTitle>
             </Box>
 
             <FeaturedDescription>
-              Celebrating "Innovation for Inclusion" through awareness and
-              advocacy. Join us for a day of inspiring talks, interactive
-              workshops, and community celebration as we work together towards a
-              more inclusive society.
+              {t("featured_event_description")}
             </FeaturedDescription>
 
-            <EventMeta>
-              <MetaItem>
-                <CalendarTodayIcon />
-                <MetaText>December 3, 2025</MetaText>
+            <EventMeta role='list' aria-label='Event details'>
+              <MetaItem role='listitem'>
+                <CalendarTodayIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event date: </span>
+                  {t("featured_event_date")}
+                </MetaText>
               </MetaItem>
-              <MetaItem>
-                <AccessTimeIcon />
-                <MetaText>9:00 AM - 5:00 PM</MetaText>
+              <MetaItem role='listitem'>
+                <AccessTimeIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event time: </span>
+                  {t("featured_event_time")}
+                </MetaText>
               </MetaItem>
-              <MetaItem>
-                <LocationOnIcon />
-                <MetaText>DESN Office, Lalitpur, Nepal</MetaText>
+              <MetaItem role='listitem'>
+                <LocationOnIcon aria-hidden='true' />
+                <MetaText>
+                  <span className='sr-only'>Event location: </span>
+                  {t("featured_event_location")}
+                </MetaText>
               </MetaItem>
             </EventMeta>
 
-            <LearnMoreButton endIcon={<ArrowForwardIcon />}>
-              Learn More
+            <LearnMoreButton
+              endIcon={<ArrowForwardIcon aria-hidden='true' />}
+              aria-label={`Register for ${t(
+                "featured_event_heading"
+              )} event on ${t("featured_event_date")}`}
+            >
+              {t("event_register_button")}
             </LearnMoreButton>
           </ContentColumn>
 
-          <ImageColumn>
+          <ImageColumn aria-hidden='true'>
             <FeaturedImage
               src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
-              alt='Group of people collaborating'
+              alt=''
               loading='lazy'
+              role='presentation'
             />
           </ImageColumn>
         </ContentGrid>

@@ -41,6 +41,40 @@
   box-sizing: border-box;
 }
 
+/* Screen Reader Only Text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip Link for Keyboard Navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #004c91;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #f6d469;
+  outline-offset: 2px;
+}
+
 a {
   font-weight: 500;
   color: var(--color-primary);
@@ -458,4 +492,248 @@ section[aria-labelledby="cta-heading"] a[href="/about#team"] {
 section[aria-labelledby="cta-heading"] a[href="/about#team"]:focus-visible {
   outline: 3px solid #f6d469 !important;
   outline-offset: 3px !important;
+}
+
+/* =================================================================
+   EVENTS PAGE: GRID LAYOUT & AESTHETIC POLISH
+   ================================================================= */
+
+/* A. GRID & CONTAINER SPACING FIXES */
+
+/* 1. Grid Breathing Room: Generous vertical/horizontal padding */
+section[aria-labelledby="upcoming-events-heading"] {
+  padding: 40px 0 !important;
+}
+
+/* Events section container padding */
+section[aria-labelledby="upcoming-events-heading"] > div {
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+}
+
+/* 2. Gutter Spacing: Consistent large gaps between cards */
+section[aria-labelledby="upcoming-events-heading"] [class*="EventsColumn"],
+section[aria-labelledby="upcoming-events-heading"] > div > div {
+  gap: 32px !important;
+}
+
+/* B. EVENT CARD INTERNAL LAYOUT (The Awkwardness Cure) */
+
+/* 1. Image-Content Balance */
+
+/* Event Card: Standardized internal layout */
+section[aria-labelledby="upcoming-events-heading"] [class*="EventCard"],
+.css-1jh6cnv {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65) !important;
+  border-radius: 16px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"] [class*="EventCard"]:hover,
+.css-1jh6cnv:hover {
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.75) !important;
+  transform: translateY(-8px) scale(1.03) !important;
+}
+
+/* Image Ratio Fix: 16:9 or 4:3 aspect ratio */
+section[aria-labelledby="upcoming-events-heading"] [class*="EventCard"] img,
+.css-1jh6cnv img {
+  aspect-ratio: 4/3 !important;
+  object-fit: cover !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+/* Inner Padding: Breathing room for text content */
+section[aria-labelledby="upcoming-events-heading"] [class*="EventCard"] > div,
+.css-1jh6cnv > div {
+  padding: 24px 28px !important;
+}
+
+/* 2. Content Alignment */
+
+/* Badge Container at top */
+section[aria-labelledby="upcoming-events-heading"] [class*="BadgeContainer"] {
+  margin-bottom: 12px !important;
+}
+
+/* Title/Date grouping with minimal space */
+section[aria-labelledby="upcoming-events-heading"] [class*="EventTitle"] {
+  margin-bottom: 8px !important;
+  line-height: 1.4 !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"] [class*="EventDescription"] {
+  margin-bottom: 16px !important;
+  flex-grow: 1 !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"] [class*="EventMeta"] {
+  margin-bottom: 20px !important;
+  margin-top: auto !important;
+}
+
+/* Button: Push to bottom as card footer */
+section[aria-labelledby="upcoming-events-heading"] [class*="RegisterButton"],
+.css-1becnkq-MuiButtonBase-root-MuiButton-root {
+  margin-top: auto !important;
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 24px rgba(0, 76, 145, 0.4) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"]
+  [class*="RegisterButton"]:hover,
+.css-1becnkq-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: var(--color-primary-dark) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 36px rgba(0, 76, 145, 0.55) !important;
+}
+
+/* C. FINAL AESTHETIC ENFORCEMENT (MAXIMUM POLISH) */
+
+/* 1. Button Polish - Maximum Contrast */
+section[aria-labelledby="upcoming-events-heading"] button[class*="Register"],
+section[aria-labelledby="upcoming-events-heading"] .MuiButton-root {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  border-radius: 12px !important;
+  padding: 14px 24px !important;
+  font-size: 1rem !important;
+}
+
+/* 2. Clear Filter Button - Accent styling */
+section[aria-labelledby="upcoming-events-heading"] button[class*="Clear"],
+section[aria-labelledby="upcoming-events-heading"]
+  > div
+  > div
+  > div
+  > div
+  > button {
+  background-color: var(--color-accent) !important;
+  color: var(--color-primary-dark) !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 8px 20px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"]
+  button[class*="Clear"]:hover {
+  background-color: var(--color-accent-dark) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(246, 212, 105, 0.4) !important;
+}
+
+/* 3. Calendar Card Constraints - Clean Widget Look */
+section[aria-labelledby="upcoming-events-heading"] [class*="CalendarCard"] {
+  max-width: 380px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid var(--color-background-alt) !important;
+  border-radius: 16px !important;
+  background-color: white !important;
+}
+
+/* Calendar alignment with event cards - desktop only */
+@media (min-width: 900px) {
+  section[aria-labelledby="upcoming-events-heading"] [class*="CalendarCard"] {
+    margin-top: 65px !important;
+  }
+}
+
+/* Calendar internal spacing */
+section[aria-labelledby="upcoming-events-heading"] [class*="Calendar"] {
+  padding: 12px 16px !important;
+}
+
+/* Calendar navigation buttons - clean styling */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="group"][aria-label="Calendar navigation"]
+  button {
+  color: white !important;
+  background-color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary) !important;
+  min-width: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"]
+  [role="group"][aria-label="Calendar navigation"]
+  button:hover {
+  background-color: var(--color-primary-dark) !important;
+  border-color: var(--color-primary-dark) !important;
+  transform: scale(1.05) !important;
+}
+
+section[aria-labelledby="upcoming-events-heading"]
+  [role="group"][aria-label="Calendar navigation"]
+  button
+  svg {
+  color: white !important;
+  font-size: 1.25rem !important;
+}
+
+/* Calendar date cells - minimalist with clear event indicators */
+section[aria-labelledby="upcoming-events-heading"] [role="gridcell"] {
+  background-color: transparent !important;
+  position: relative !important;
+  color: var(--color-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Event days - highlighted with background color and bold text */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"][aria-label*="has scheduled event"] {
+  background-color: #00875f !important;
+  color: white !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+}
+
+/* Hover effect for all calendar days */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"]:hover:not(:disabled) {
+  background-color: rgba(0, 76, 145, 0.15) !important;
+  color: var(--color-primary) !important;
+  border-radius: 50% !important;
+  transform: scale(1.1) !important;
+}
+
+/* Event days hover - darker green */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"][aria-label*="has scheduled event"]:hover {
+  background-color: #006644 !important;
+  color: white !important;
+  font-weight: 700 !important;
+  transform: scale(1.1) !important;
+}
+
+/* Featured Event Section Enhancement */
+section[aria-labelledby="featured-event-heading"] > div > div {
+  border-radius: 20px !important;
+  padding: 48px !important;
+  background-color: transparent !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Featured Event Image */
+section[aria-labelledby="featured-event-heading"] img {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75) !important;
+  border-radius: 16px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+section[aria-labelledby="featured-event-heading"] img:hover {
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85) !important;
+  transform: scale(1.03) translateY(-8px) !important;
 }

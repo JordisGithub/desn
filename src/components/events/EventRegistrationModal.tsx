@@ -193,9 +193,14 @@ export default function EventRegistrationModal({
   const renderContent = () => {
     if (success) {
       return (
-        <LoginPromptBox>
+        <LoginPromptBox
+          role='status'
+          aria-live='polite'
+          id='registration-modal-description'
+        >
           <CheckCircleIcon
             sx={{ fontSize: "4rem", color: "#00a77f", marginBottom: 2 }}
+            aria-hidden='true'
           />
           <Typography variant='h6' sx={{ color: "#00a77f", fontWeight: 600 }}>
             {t("event_registration_success")}
@@ -210,9 +215,10 @@ export default function EventRegistrationModal({
     if (!isAuthenticated) {
       return (
         <>
-          <LoginPromptBox>
+          <LoginPromptBox id='registration-modal-description'>
             <LoginIcon
               sx={{ fontSize: "3rem", color: "#004c91", marginBottom: 2 }}
+              aria-hidden='true'
             />
             <LoginPromptText>
               {t("event_registration_login_required")}
@@ -220,12 +226,25 @@ export default function EventRegistrationModal({
           </LoginPromptBox>
           <DialogActions
             sx={{ justifyContent: "center", gap: 2, paddingBottom: 2 }}
+            role='group'
+            aria-label='Authentication actions'
           >
-            <SecondaryButton onClick={onClose}>{t("cancel")}</SecondaryButton>
-            <SecondaryButton onClick={handleRegisterRedirect}>
+            <SecondaryButton
+              onClick={onClose}
+              aria-label='Cancel and close registration dialog'
+            >
+              {t("cancel")}
+            </SecondaryButton>
+            <SecondaryButton
+              onClick={handleRegisterRedirect}
+              aria-label='Create new account to register for events'
+            >
               {t("create_account")}
             </SecondaryButton>
-            <PrimaryButton onClick={handleLoginRedirect}>
+            <PrimaryButton
+              onClick={handleLoginRedirect}
+              aria-label='Login to your account to register for this event'
+            >
               {t("login")}
             </PrimaryButton>
           </DialogActions>
@@ -235,9 +254,14 @@ export default function EventRegistrationModal({
 
     return (
       <>
-        <StyledDialogContent>
+        <StyledDialogContent id='registration-modal-description'>
           {error && (
-            <Alert severity='error' sx={{ marginBottom: 2 }}>
+            <Alert
+              severity='error'
+              sx={{ marginBottom: 2 }}
+              role='alert'
+              aria-live='assertive'
+            >
               {error}
             </Alert>
           )}
@@ -246,24 +270,24 @@ export default function EventRegistrationModal({
             {t("event_registration_confirm_message")}
           </Typography>
 
-          <EventDetails>
-            <EventDetailRow>
+          <EventDetails role='list' aria-label='Event registration details'>
+            <EventDetailRow role='listitem'>
               <DetailLabel>{t("event")}:</DetailLabel>
               <DetailValue>{eventTitle}</DetailValue>
             </EventDetailRow>
-            <EventDetailRow>
+            <EventDetailRow role='listitem'>
               <DetailLabel>{t("date")}:</DetailLabel>
               <DetailValue>{eventDate}</DetailValue>
             </EventDetailRow>
-            <EventDetailRow>
+            <EventDetailRow role='listitem'>
               <DetailLabel>{t("time")}:</DetailLabel>
               <DetailValue>{eventTime}</DetailValue>
             </EventDetailRow>
-            <EventDetailRow>
+            <EventDetailRow role='listitem'>
               <DetailLabel>{t("location")}:</DetailLabel>
               <DetailValue>{eventLocation}</DetailValue>
             </EventDetailRow>
-            <EventDetailRow>
+            <EventDetailRow role='listitem'>
               <DetailLabel>{t("registrant")}:</DetailLabel>
               <DetailValue>{user?.fullName}</DetailValue>
             </EventDetailRow>
@@ -272,13 +296,35 @@ export default function EventRegistrationModal({
 
         <DialogActions
           sx={{ justifyContent: "center", gap: 2, paddingBottom: 2 }}
+          role='group'
+          aria-label='Registration confirmation actions'
         >
-          <SecondaryButton onClick={onClose} disabled={loading}>
+          <SecondaryButton
+            onClick={onClose}
+            disabled={loading}
+            aria-label='Cancel registration and close dialog'
+          >
             {t("cancel")}
           </SecondaryButton>
-          <PrimaryButton onClick={handleConfirmRegistration} disabled={loading}>
+          <PrimaryButton
+            onClick={handleConfirmRegistration}
+            disabled={loading}
+            aria-label={
+              loading
+                ? "Submitting registration, please wait"
+                : `Confirm registration for ${eventTitle} on ${eventDate}`
+            }
+            aria-busy={loading}
+          >
             {loading ? (
-              <CircularProgress size={24} sx={{ color: "white" }} />
+              <>
+                <CircularProgress
+                  size={24}
+                  sx={{ color: "white" }}
+                  aria-hidden='true'
+                />
+                <span className='sr-only'>Submitting registration</span>
+              </>
             ) : (
               t("confirm_registration")
             )}
@@ -289,8 +335,17 @@ export default function EventRegistrationModal({
   };
 
   return (
-    <StyledDialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-      <StyledDialogTitle>
+    <StyledDialog
+      open={open}
+      onClose={onClose}
+      maxWidth='sm'
+      fullWidth
+      aria-labelledby='registration-modal-title'
+      aria-describedby='registration-modal-description'
+      role='dialog'
+      aria-modal='true'
+    >
+      <StyledDialogTitle id='registration-modal-title'>
         {success
           ? t("event_registration_success_title")
           : !isAuthenticated
