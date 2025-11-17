@@ -83,7 +83,32 @@ jobs:
             cp deployment/backend/app.jar ~/desn-app/backend/
             echo "✅ Backend deployed"
 
-            # Restart backend service
+            # Update systemd service with correct database credentials
+            sudo tee /etc/systemd/system/desn-backend.service > /dev/null <<EOF
+            [Unit]
+            Description=DESN Backend Service
+            After=network.target postgresql.service
+
+            [Service]
+            Type=simple
+            User=ubuntu
+            WorkingDirectory=/home/ubuntu/desn-app/backend
+            ExecStart=/usr/bin/java -jar /home/ubuntu/desn-app/backend/app.jar
+            Restart=always
+            RestartSec=10
+            Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn"
+            Environment="SPRING_DATASOURCE_USERNAME=desn_user"
+            Environment="SPRING_DATASOURCE_PASSWORD=desn2025"
+            StandardOutput=journal
+            StandardError=journal
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            echo "✅ Service configuration updated"
+
+            # Reload systemd and restart backend service
+            sudo systemctl daemon-reload
             sudo systemctl restart desn-backend
             echo "✅ Backend restarted"
 
