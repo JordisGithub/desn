@@ -228,8 +228,12 @@ export default function ContactFormSection() {
       errors.message = t("contact.form.errors.message_required");
     }
 
+    console.log("Validation errors:", errors);
+    console.log("Number of errors:", Object.keys(errors).length);
     setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+    const isValid = Object.keys(errors).length === 0;
+    console.log("Returning isValid:", isValid);
+    return isValid;
   };
 
   const handleChange = (
@@ -255,11 +259,15 @@ export default function ContactFormSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted", formData);
     setSubmitError(null);
     setSubmitSuccess(false);
 
     // Client-side validation
-    if (!validateForm()) {
+    const isValid = validateForm();
+    console.log("Form is valid?", isValid);
+    if (!isValid) {
+      console.log("Validation failed, focusing error summary");
       // Focus the error summary for screen readers
       setTimeout(() => {
         errorSummaryRef.current?.focus();
@@ -320,7 +328,7 @@ export default function ContactFormSection() {
               {t("contact.form.description")}
             </SectionDescription>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               <Stack spacing={4}>
                 {/* Error Summary */}
                 {Object.keys(validationErrors).length > 0 && (

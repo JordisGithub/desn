@@ -311,18 +311,64 @@ export default function IntegratedContactSection() {
   });
   const [formStatus, setFormStatus] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<{
+    fullName?: string;
+    email?: string;
+    message?: string;
+  }>({});
+
+  const validateForm = (): boolean => {
+    const errors: {
+      fullName?: string;
+      email?: string;
+      message?: string;
+    } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = t("contact.form.errors.full_name_required");
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = t("contact.form.errors.email_required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = t("contact.form.errors.email_invalid");
+    }
+
+    if (!formData.message.trim()) {
+      errors.message = t("contact.form.errors.message_required");
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    // Clear field error when user types
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name as keyof typeof validationErrors];
+        return updated;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form
+    if (!validateForm()) {
+      setFormStatus("");
+      return;
+    }
+
     setIsSubmitting(true);
     setFormStatus("Submitting your message...");
 
@@ -335,6 +381,7 @@ export default function IntegratedContactSection() {
       setIsSubmitting(false);
       // Reset form
       setFormData({ fullName: "", email: "", message: "" });
+      setValidationErrors({});
     }, 1000);
   };
 
@@ -462,19 +509,13 @@ export default function IntegratedContactSection() {
                     label={t("contact.form.full_name")}
                     value={formData.fullName}
                     onChange={handleChange}
+                    error={!!validationErrors.fullName}
+                    helperText={validationErrors.fullName}
                     inputProps={{
                       "aria-required": "true",
-                      "aria-describedby": "fullName-hint",
+                      "aria-invalid": !!validationErrors.fullName,
                     }}
                     autoComplete='name'
-                    helperText={
-                      <span
-                        id='fullName-hint'
-                        style={{ position: "absolute", left: "-10000px" }}
-                      >
-                        Enter your full name as you would like us to address you
-                      </span>
-                    }
                   />
 
                   <MinimalistTextField
@@ -485,19 +526,13 @@ export default function IntegratedContactSection() {
                     label={t("contact.form.email")}
                     value={formData.email}
                     onChange={handleChange}
+                    error={!!validationErrors.email}
+                    helperText={validationErrors.email}
                     inputProps={{
                       "aria-required": "true",
-                      "aria-describedby": "email-hint",
+                      "aria-invalid": !!validationErrors.email,
                     }}
                     autoComplete='email'
-                    helperText={
-                      <span
-                        id='email-hint'
-                        style={{ position: "absolute", left: "-10000px" }}
-                      >
-                        Enter a valid email address where we can reply to you
-                      </span>
-                    }
                   />
 
                   <MinimalistTextField
@@ -509,18 +544,12 @@ export default function IntegratedContactSection() {
                     label={t("contact.form.message")}
                     value={formData.message}
                     onChange={handleChange}
+                    error={!!validationErrors.message}
+                    helperText={validationErrors.message}
                     inputProps={{
                       "aria-required": "true",
-                      "aria-describedby": "message-hint",
+                      "aria-invalid": !!validationErrors.message,
                     }}
-                    helperText={
-                      <span
-                        id='message-hint'
-                        style={{ position: "absolute", left: "-10000px" }}
-                      >
-                        Describe your inquiry or message in detail
-                      </span>
-                    }
                   />
 
                   <SubmitButton
