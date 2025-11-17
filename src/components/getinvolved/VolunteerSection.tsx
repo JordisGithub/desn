@@ -16,6 +16,7 @@ import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import VolunteerForm from "./VolunteerForm";
+import volunteerHeroImg from "../../assets/GetInvolved/GetInvolvedVol.png";
 import educationSupportImg from "../../assets/GetInvolved/educationSupport.jpg";
 import communityOutreachImg from "../../assets/GetInvolved/communityOutreach.jpg";
 import techSupportImg from "../../assets/GetInvolved/techSupport.jpg";
@@ -333,7 +334,7 @@ const VolunteerSection: React.FC = () => {
         </TextContent>
         <ImageContainer>
           <img
-            src='https://www.figma.com/api/mcp/asset/30f6bda9-4ead-4541-9913-f64164737fe8'
+            src={volunteerHeroImg}
             alt='Volunteers working together to support community members with disabilities'
           />
         </ImageContainer>

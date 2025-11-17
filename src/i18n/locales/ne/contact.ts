@@ -50,8 +50,19 @@ export default {
     subject: "विषय",
     subject_placeholder: "यो के बारेमा हो?",
     message: "सन्देश",
-    message_placeholder: "तपाईंको सोधपुछको बारेमा थप बताउनुहोस्...",
+    message_placeholder: "तपाईंको सोधपुछको बारेमा थप जानकारी दिनुहोस्...",
     submit: "सन्देश पठाउनुहोस्",
+    submitting: "पठाउँदै...",
+    success_message:
+      "तपाईंको सन्देशको लागि धन्यवाद! हामी चाँडै तपाईंलाई सम्पर्क गर्नेछौं।",
+    errors: {
+      summary_title: "कृपया निम्न त्रुटिहरू सुधार्नुहोस्:",
+      full_name_required: "पूरा नाम आवश्यक छ",
+      email_required: "इमेल ठेगाना आवश्यक छ",
+      email_invalid: "कृपया मान्य इमेल ठेगाना प्रविष्ट गर्नुहोस्",
+      subject_required: "विषय आवश्यक छ",
+      message_required: "सन्देश आवश्यक छ",
+    },
   },
 
   // Office Hours

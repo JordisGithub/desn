@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
+import donationImg from "../../assets/GetInvolved/GetInvolvedDonate.png";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
@@ -241,7 +242,7 @@ const DonationSection: React.FC = () => {
       <IntroContainer>
         <ImageContainer>
           <img
-            src='https://www.figma.com/api/mcp/asset/90389292-c0f3-4ebb-9928-d20c1b0c4265'
+            src={donationImg}
             alt='Community members benefiting from donation-funded programs and services'
           />
         </ImageContainer>

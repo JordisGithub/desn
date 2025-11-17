@@ -78,6 +78,14 @@ export default {
       sending: "भेज रहल छी...",
       success: "अहाँक संदेश सफलतापूर्वक भेज देल गेलै!",
       error: "संदेश भेजै में त्रुटि भेलै। कृपया फेरऽ सऽ प्रयास करी।",
+      errors: {
+        summary_title: "कृपया निम्न त्रुटिसभके सुधारू:",
+        full_name_required: "पूरा नाम आवश्यक अछि",
+        email_required: "इमेल पता आवश्यक अछि",
+        email_invalid: "कृपया मान्य इमेल पता दर्ज करू",
+        subject_required: "विषय आवश्यक अछि",
+        message_required: "संदेश आवश्यक अछि",
+      },
     },
   },
   office_hours: {
