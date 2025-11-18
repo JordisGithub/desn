@@ -4,7 +4,7 @@ export default {
 
   // Page Titles (for document.title)
   page_titles: {
-    home: "Home - Empowering Individuals with Disabilities",
+    home: "Disability Empowerment Society Nepal (DESN) – Home",
     about: "About Us - Our Mission & Vision",
     programs: "Programs & Services",
     events: "Events & Calendar",

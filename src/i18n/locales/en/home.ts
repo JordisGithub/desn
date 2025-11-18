@@ -72,11 +72,11 @@ export default {
   program_community_desc:
     "Building inclusive communities through awareness, training, and accessibility initiatives.",
   program_disability_alt:
-    "People with disabilities participating in advocacy workshop, raising awareness about equal rights and accessibility",
+    "A group of people sit on the floor during an advocacy workshop about equal rights and accessibility. They are weaving long strands of natural fiber by hand. In the front, a young woman with a disability is focused on braiding several strands together.",
   program_ict_alt:
-    "Person with disability using assistive technology device with accessible digital interface and screen reader",
+    "A large group of women and several men pose together for a handcrafted woven materials workshop in front of a banner that reads 'Local Handicraft Training for Women and Girls with Disabilities – UNDP LNOB Initiative 2024.'",
   program_livelihood_alt:
-    "Persons with disabilities learning vocational skills in training workshop, working on entrepreneurship development",
+    "A large group of women and men stand outside on the grass during a vocational training program, smiling for a group photo with a banner in Nepali, as they all learn vocational and entrepreneurship skills together.",
   program_life_skills_alt:
     "Youth with disabilities engaged in life skills education class, building confidence and self-reliance",
   program_women_alt:

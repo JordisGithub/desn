@@ -123,28 +123,34 @@ const PartnerLogo = styled("img")(({ theme }) => ({
 
 const partners = [
   {
-    name: "UNDP",
+    name: "UNDP – Nepal",
     logo: undpLogo,
+    url: "https://www.np.undp.org/",
   },
   {
-    name: "APNIC",
+    name: "APNIC Foundation",
     logo: apnicLogo,
+    url: "https://foundation.apnic.net/",
   },
   {
     name: "Khyentse Foundation",
     logo: khyentseLogo,
+    url: "https://khyentsefoundation.org/",
   },
   {
-    name: "National Federation for the Disabled",
+    name: "Abilis",
     logo: abilis,
+    url: "https://www.abilis.fi/en/",
   },
   {
     name: "Meedan",
     logo: meedanLogo,
+    url: "https://meedan.com/",
   },
   {
     name: "Government of Nepal",
     logo: governmentNepalLogo,
+    url: "https://www.nepal.gov.np/",
   },
 ];
 
@@ -165,7 +171,14 @@ export default function PartnersSection() {
 
         <PartnersGrid>
           {partners.map((partner, index) => (
-            <PartnerCard key={index}>
+            <PartnerCard
+              key={index}
+              as='a'
+              href={partner.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={`Visit ${partner.name} website (opens in new window)`}
+            >
               <PartnerLogo src={partner.logo} alt={partner.name} />
             </PartnerCard>
           ))}

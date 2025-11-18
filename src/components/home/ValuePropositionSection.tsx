@@ -200,36 +200,60 @@ export default function ValuePropositionSection() {
       <Container maxWidth='lg'>
         <ContentWrapper>
           {/* What We Do Section */}
-          <ServicesColumn>
-            <SectionHeading variant='h2' as='h2'>
+          <ServicesColumn as='section' aria-labelledby='what-we-do-heading'>
+            <SectionHeading variant='h2' as='h2' id='what-we-do-heading'>
               {t("value_prop_what_we_do")}
             </SectionHeading>
-            {services.map((service, index) => (
-              <ServiceItem key={index}>
-                <IconWrapper>{service.icon}</IconWrapper>
-                <ServiceTitle>{service.title}</ServiceTitle>
-              </ServiceItem>
-            ))}
+            <Box
+              component='ul'
+              sx={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2.5,
+              }}
+            >
+              {services.map((service, index) => (
+                <ServiceItem component='li' key={index}>
+                  <IconWrapper>{service.icon}</IconWrapper>
+                  <ServiceTitle>{service.title}</ServiceTitle>
+                </ServiceItem>
+              ))}
+            </Box>
           </ServicesColumn>
 
           {/* Divider */}
           <Divider />
 
           {/* Our Impact Section */}
-          <ImpactColumn>
-            <SectionHeading variant='h2' as='h2'>
+          <ImpactColumn as='section' aria-labelledby='our-impact-heading'>
+            <SectionHeading variant='h2' as='h2' id='our-impact-heading'>
               {t("value_prop_our_impact")}
             </SectionHeading>
-            {metrics.map((metric, index) => (
-              <MetricCard key={index}>
-                <MetricNumber className='metric-number' variant='h3' as='div'>
-                  {metric.number}
-                </MetricNumber>
-                <MetricLabel className='metric-label'>
-                  {metric.label}
-                </MetricLabel>
-              </MetricCard>
-            ))}
+            <Box
+              component='ul'
+              sx={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2.5,
+              }}
+            >
+              {metrics.map((metric, index) => (
+                <MetricCard component='li' key={index}>
+                  <MetricNumber className='metric-number' variant='h3' as='div'>
+                    {metric.number}
+                  </MetricNumber>
+                  <MetricLabel className='metric-label'>
+                    {metric.label}
+                  </MetricLabel>
+                </MetricCard>
+              ))}
+            </Box>
           </ImpactColumn>
         </ContentWrapper>
       </Container>

@@ -206,7 +206,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <FooterContainer role='contentinfo'>
+    <FooterContainer role='contentinfo' aria-label='Footer'>
       <TopSection>
         <Container maxWidth='lg' sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
           {/* Social Media Section */}
@@ -214,27 +214,30 @@ export default function Footer() {
             <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
             <SocialIcon
               href='https://facebook.com'
-              aria-label='Facebook'
+              aria-label='Facebook (opens in new window)'
               target='_blank'
               rel='noopener noreferrer'
             >
-              <FacebookIcon />
+              <FacebookIcon aria-hidden='false' titleAccess='Facebook' />
             </SocialIcon>
             <SocialIcon
               href='https://twitter.com'
-              aria-label='Twitter'
+              aria-label='X (Formerly known as Twitter) (opens in new window)'
               target='_blank'
               rel='noopener noreferrer'
             >
-              <TwitterIcon />
+              <TwitterIcon
+                aria-hidden='false'
+                titleAccess='X (Formerly known as Twitter)'
+              />
             </SocialIcon>
             <SocialIcon
               href='https://linkedin.com'
-              aria-label='LinkedIn'
+              aria-label='LinkedIn (opens in new window)'
               target='_blank'
               rel='noopener noreferrer'
             >
-              <LinkedInIcon />
+              <LinkedInIcon aria-hidden='false' titleAccess='LinkedIn' />
             </SocialIcon>
           </SocialSection>
 
@@ -247,7 +250,7 @@ export default function Footer() {
                 <Box
                   component='img'
                   src={desnLogo}
-                  alt='DESN Logo'
+                  alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
                   sx={{
                     width: { xs: 70, sm: 80 },
                     height: { xs: 70, sm: 80 },

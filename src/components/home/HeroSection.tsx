@@ -77,9 +77,9 @@ const HeroHeading = styled(Typography)(({ theme }) => ({
 const HeroSubHeading = styled(Typography)(({ theme }) => ({
   color: "#ffffff",
   fontSize: "1.75rem", // Desktop: 28px
-  fontWeight: 500,
+  fontWeight: 600,
   lineHeight: 1.5,
-  textShadow: "0px 2px 8px rgba(0, 0, 0, 0.4)",
+  textShadow: "0px 3px 10px rgba(0, 0, 0, 0.6)",
   letterSpacing: "0.01em",
   maxWidth: "900px",
   margin: "0 auto",
@@ -169,7 +169,7 @@ export default function HeroSection() {
                 "_blank"
               )
             }
-            aria-label={t("hero_donate_aria_label")}
+            aria-label='Donate now to support people with disabilities in Nepal (opens in new window)'
           >
             {t("hero_button")}
           </HeroDonateButton>

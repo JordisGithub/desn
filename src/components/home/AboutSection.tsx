@@ -229,6 +229,19 @@ export default function AboutSection() {
 
           {/* Right Column - Key Facts */}
           <FactsColumn>
+            <Box sx={{ mb: 3 }}>
+              <Typography
+                variant='h3'
+                sx={{
+                  fontSize: "1.75rem",
+                  fontWeight: 700,
+                  color: "primary.main",
+                  mb: 2,
+                }}
+              >
+                Key Facts
+              </Typography>
+            </Box>
             <FactsContainer>
               {keyFacts.map((fact, index) => (
                 <FactItem key={index}>
