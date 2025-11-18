@@ -5,6 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -36,6 +37,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import desnLogo from "../assets/DESN_logo_500x500.jpg";
 import SearchService from "../services/SearchService";
 import type { SearchItem } from "../services/SearchService";
+import { border } from "@mui/system";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -54,23 +56,40 @@ const TopBar = styled(Box)(({ theme }) => ({
 
 const SearchField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    backgroundColor: "#f5f5f5",
-    borderRadius: "24px",
-    fontSize: "14px",
-    "& fieldset": {
-      borderColor: "transparent",
+    // default notched outline appearance
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "gray !important",
+      borderWidth: "1px !important",
+      borderStyle: "solid !important",
     },
-    "&:hover fieldset": {
-      borderColor: "#004c91",
+
+    // hover: slightly stronger (2px) blue border
+    "&:hover": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderWidth: "2px !important",
+        borderColor: "#004c91 !important",
+        borderStyle: "solid !important",
+      },
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#004c91",
-      borderWidth: "1px",
+
+    // focus: prominent 4px solid primary border
+    "&.Mui-focused": {
+      outline: "none !important",
+      boxShadow: "none !important",
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderWidth: "4px !important",
+        borderColor: "#004c91 !important",
+        borderStyle: "solid !important",
+      },
     },
-    "& input::placeholder": {
-      color: "#666",
-      opacity: 1,
+
+    // prevent browser default focus-visible on inner input
+    "& input:focus-visible": {
+      outline: "none !important",
+      boxShadow: "none !important",
     },
+
+    "& input::placeholder": { color: "#666", opacity: 1 },
   },
 });
 
@@ -144,21 +163,36 @@ const NavLink = styled(RouterLink)(() => ({
   },
 }));
 
-const LanguageButton = styled(Button)(({ theme }) => ({
+// Lightweight plain button built on ButtonBase so we can fully control styles
+const PlainButton = styled(ButtonBase)(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: theme.spacing(1),
+  padding: theme.spacing(1, 2),
+  background: "transparent",
+  border: "none",
   color: "#333",
   textTransform: "none",
   fontSize: "16px",
-  padding: theme.spacing(1, 2),
-  minWidth: "auto",
-  transition: "all 0.2s ease",
-  "&:hover, &:focus": {
+  cursor: "pointer",
+  borderRadius: 6,
+  transition:
+    "background-color 0.2s ease, color 0.2s ease, transform 0.1s ease",
+  "&:hover": {
     color: "#ffffff",
     backgroundColor: "rgba(0, 76, 145, 0.9)",
   },
   "&:focus": {
     outline: "3px solid #f6d469",
     outlineOffset: "2px",
+    color: "#ffffff",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
   },
+  "& svg": {
+    fontSize: 20,
+  },
+  WebkitAppearance: "none",
+  MozAppearance: "none",
 }));
 
 const DonateButton = styled(Button)(({ theme }) => ({
@@ -402,21 +436,29 @@ const Header: React.FC = () => {
             </LogoLink>
           </TopBarLeft>{" "}
           <TopBarRight>
-            <LanguageButton
+            <PlainButton
               onClick={handleLanguageClick}
-              startIcon={<PublicIcon titleAccess='Global Translation Menu' />}
-              endIcon={<KeyboardArrowDownIcon />}
+              disableRipple
               sx={{ display: { xs: "none", md: "flex" } }}
               aria-label={t("aria.globe_menu")}
+              type='button'
             >
-              {lang === "en"
-                ? "English"
-                : lang === "ne"
-                ? "नेपाली"
-                : lang === "new"
-                ? "नेवारी"
-                : "मैथिली"}
-            </LanguageButton>
+              <PublicIcon
+                titleAccess='Global Translation Menu'
+                aria-hidden='true'
+                sx={{ mr: 1 }}
+              />
+              <span>
+                {lang === "en"
+                  ? "English"
+                  : lang === "ne"
+                  ? "नेपाली"
+                  : lang === "new"
+                  ? "नेवारी"
+                  : "मैथिली"}
+              </span>
+              <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+            </PlainButton>
             <Menu
               anchorEl={langAnchorEl}
               open={Boolean(langAnchorEl)}
@@ -485,29 +527,36 @@ const Header: React.FC = () => {
                 </Menu>
               </>
             ) : (
-              <Button
+              <PlainButton
                 onClick={handleLogin}
-                startIcon={<LoginIcon titleAccess='User Login Portal' />}
+                disableRipple
                 aria-label={t("aria.user_login")}
+                type='button'
                 sx={{
                   color: "#004c91",
                   textTransform: "none",
                   fontSize: "14px",
                   display: { xs: "none", md: "flex" },
+                  // keep styles minimal and rely on MUI accessibility defaults
                   "&:hover": {
                     color: "#ffffff",
                     backgroundColor: "rgba(0, 76, 145, 0.9)",
                   },
                   "&:focus": {
-                    color: "#ffffff",
-                    backgroundColor: "rgba(0, 76, 145, 0.9)",
                     outline: "3px solid #f6d469",
                     outlineOffset: "2px",
+                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 76, 145, 0.9)",
                   },
                 }}
               >
+                <LoginIcon
+                  titleAccess='User Login Portal'
+                  aria-hidden='true'
+                  sx={{ mr: 1 }}
+                />
                 {t("header.login")}
-              </Button>
+              </PlainButton>
             )}
 
             <SearchField
@@ -544,7 +593,7 @@ const Header: React.FC = () => {
             {/* Search results dropdown */}
             {searchOpen && searchResults.length > 0 && (
               <Box
-                sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
+              // sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
               >
                 <Paper
                   elevation={3}

@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import heroImage from "../../assets/home/nepal-hero-image.png";
@@ -94,36 +94,6 @@ const HeroSubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Prominent CTA button with accent color
-const HeroDonateButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.warning.main, // #f6d469
-  color: theme.palette.warning.contrastText, // #2b2b2b
-  fontSize: "1.25rem",
-  fontWeight: 700,
-  textTransform: "uppercase",
-  padding: theme.spacing(2.5, 6),
-  borderRadius: "100px",
-  boxShadow: "0px 8px 24px rgba(246, 212, 105, 0.5)",
-  letterSpacing: "0.05em",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: theme.palette.warning.dark, // #f5c943
-    transform: "translateY(-4px) scale(1.03)",
-    boxShadow: "0px 12px 32px rgba(246, 212, 105, 0.7)",
-  },
-  "&:active": {
-    transform: "translateY(-2px) scale(1.01)",
-  },
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.125rem",
-    padding: theme.spacing(2, 5),
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-    padding: theme.spacing(1.75, 4),
-  },
-}));
-
 export default function HeroSection() {
   const { t } = useTranslation();
   // Donations now open PayPal directly
@@ -160,23 +130,8 @@ export default function HeroSection() {
 
           {/* Sub-Headline */}
           <HeroSubHeading as='p'>{t("hero_description")}</HeroSubHeading>
-
-          {/* Primary CTA Button */}
-          <HeroDonateButton
-            onClick={() =>
-              window.open(
-                "https://www.paypal.com/paypalme/thekopkrish",
-                "_blank"
-              )
-            }
-            aria-label={t("hero_donate_aria_label")}
-          >
-            {t("hero_button")}
-          </HeroDonateButton>
         </HeroContent>
       </HeroContainer>
-
-      {/* Donations open PayPal directly (no modal) */}
     </>
   );
 }

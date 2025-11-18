@@ -164,6 +164,35 @@ const MetricLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const DonateLink = styled("a")(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(2, 4),
+  backgroundColor: "#00a77f",
+  color: "#ffffff",
+  fontSize: "1.125rem",
+  fontWeight: 600,
+  textDecoration: "none",
+  borderRadius: "8px",
+  transition: "all 0.3s ease",
+  boxShadow: "0 4px 12px rgba(0, 167, 127, 0.3)",
+  "&:hover, &:focus": {
+    backgroundColor: "#008c6a",
+    color: "#ffffff",
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 20px rgba(0, 167, 127, 0.4)",
+  },
+  "&:focus": {
+    outline: "3px solid #00a77f",
+    outlineOffset: "4px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    padding: theme.spacing(1.5, 3),
+  },
+}));
+
 export default function ValuePropositionSection() {
   const { t } = useTranslation();
 
@@ -264,6 +293,24 @@ export default function ValuePropositionSection() {
             </Box>
           </ImpactColumn>
         </ContentWrapper>
+        
+        {/* Donation Link */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 6,
+          }}
+        >
+          <DonateLink
+            href="https://www.paypal.com/paypalme/thekopkrish"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Donate now to support people with disabilities in Nepal (opens in new window)"
+          >
+            Donate now to support people with disabilities in Nepal
+          </DonateLink>
+        </Box>
       </Container>
     </ValueSection>
   );

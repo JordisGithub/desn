@@ -172,7 +172,6 @@ export default function PartnersSection() {
               rel='noopener noreferrer'
               aria-label={t("aria.visit_partner", {
                 partner: partner.name,
-                ns: "common",
               })}
               sx={PartnerCardStyles}
             >

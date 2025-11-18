@@ -2,7 +2,7 @@ import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import XIcon from "@mui/icons-material/X";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -229,7 +229,7 @@ export default function Footer() {
               target='_blank'
               rel='noopener noreferrer'
             >
-              <TwitterIcon
+              <XIcon
                 aria-hidden='false'
                 titleAccess={t("aria.twitter").split(" (")[0]}
               />
