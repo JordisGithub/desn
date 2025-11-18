@@ -194,7 +194,7 @@ const ViewAllButton = styled(Link)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   gap: theme.spacing(1.5),
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: "#007056",
   color: "#ffffff",
   fontWeight: 700,
   fontSize: "1.125rem",
@@ -205,16 +205,16 @@ const ViewAllButton = styled(Link)(({ theme }) => ({
   letterSpacing: "0.5px",
   transition: "all 0.3s ease",
   fontFamily: "Poppins, sans-serif",
-  boxShadow: "0 4px 14px rgba(0, 167, 127, 0.3)",
+  boxShadow: "0 4px 14px rgba(0, 112, 86, 0.3)",
   "& .MuiSvgIcon-root": {
     fontSize: "1.5rem",
     transition: "transform 0.3s ease",
   },
   "&:hover": {
-    backgroundColor: "#006d54",
+    backgroundColor: "#005a45",
     color: "#ffffff",
     transform: "translateY(-2px)",
-    boxShadow: "0 8px 24px rgba(0, 167, 127, 0.4)",
+    boxShadow: "0 8px 24px rgba(0, 112, 86, 0.4)",
     "& .MuiSvgIcon-root": {
       transform: "translateX(6px)",
     },

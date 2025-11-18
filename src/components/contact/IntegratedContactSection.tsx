@@ -412,7 +412,7 @@ export default function IntegratedContactSection() {
                   referrerPolicy='no-referrer-when-downgrade'
                   title={t("contact.map.iframe_title")}
                   tabIndex={-1}
-                  aria-label='Decorative map showing DESN office location. Full location details provided in text below.'
+                  aria-label={t("aria.decorative_map")}
                 />
               </MapContainer>
 
@@ -576,7 +576,7 @@ export default function IntegratedContactSection() {
       {/* Contact Info Cards Section */}
       <ContactSection
         sx={{ backgroundColor: "white", paddingTop: 8, paddingBottom: 8 }}
-        aria-label='Contact information'
+        aria-label={t("aria.contact_info")}
         role='region'
       >
         <Container maxWidth='xl'>

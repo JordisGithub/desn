@@ -102,7 +102,10 @@ export default function AboutHero() {
     >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <ContentWrapper>
-          <LogoImage src={desnLogo} alt='DESN Logo' />
+          <LogoImage
+            src={desnLogo}
+            alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
+          />
           <OrganizationName as='h1' id='about-hero-heading'>
             {t("about_hero_org_name")}
           </OrganizationName>

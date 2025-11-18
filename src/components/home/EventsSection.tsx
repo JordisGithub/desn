@@ -158,14 +158,14 @@ const EventDate = styled("time")(({ theme }) => ({
 }));
 
 const EventTime = styled("span")(({ theme }) => ({
-  backgroundColor: "#00a77f",
+  backgroundColor: "#007056",
   color: "white",
   padding: "0.625rem 1.25rem",
   borderRadius: "100px",
   fontSize: "0.9375rem",
-  fontWeight: 600,
+  fontWeight: 700,
   fontFamily: "Poppins, sans-serif",
-  boxShadow: "0 2px 8px rgba(0, 167, 127, 0.25)",
+  boxShadow: "0 2px 8px rgba(0, 112, 86, 0.25)",
   [theme.breakpoints.down("sm")]: {
     fontSize: "0.875rem",
     padding: "0.5rem 1rem",
@@ -450,7 +450,7 @@ export default function EventsSection() {
                   <strong>{t("event_organizer")}</strong> {event.organizer}
                 </EventOrganizer>
                 <RegisterButton
-                  aria-label={`Register for ${t(event.titleKey)}`}
+                  aria-label={`Register Now for ${t(event.titleKey)}`}
                   endIcon={
                     !eventStatuses[event.id]?.isFull ? (
                       <ArrowForwardIcon />
