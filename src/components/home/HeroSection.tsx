@@ -169,7 +169,7 @@ export default function HeroSection() {
                 "_blank"
               )
             }
-            aria-label='Donate now to support people with disabilities in Nepal (opens in new window)'
+            aria-label={t("hero_donate_aria_label")}
           >
             {t("hero_button")}
           </HeroDonateButton>

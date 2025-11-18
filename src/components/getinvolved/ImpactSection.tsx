@@ -150,7 +150,7 @@ const ImpactSection: React.FC = () => {
             {t("get_involved.impact.description")}
           </Description>
         </Header>
-        <StatsGrid role='list' aria-label='Impact statistics'>
+        <StatsGrid role='list' aria-label={t("aria.impact_statistics")}>
           {stats.map((stat, index) => (
             <StatCard
               key={index}

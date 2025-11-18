@@ -170,7 +170,10 @@ export default function PartnersSection() {
               href={partner.url}
               target='_blank'
               rel='noopener noreferrer'
-              aria-label={`Visit ${partner.name} website (opens in new window)`}
+              aria-label={t("aria.visit_partner", {
+                partner: partner.name,
+                ns: "common",
+              })}
               sx={PartnerCardStyles}
             >
               <PartnerLogo src={partner.logo} alt={partner.name} />

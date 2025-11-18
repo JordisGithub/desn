@@ -53,6 +53,24 @@ export default {
     menu: "मेनु",
     previous_month: "अघिल्लो महिना",
     next_month: "अर्को महिना",
+    footer: "फुटर",
+    facebook: "Facebook (नयाँ सञ्झ्यालमा खुल्छ)",
+    twitter: "X (पहिले Twitter भनेर चिनिन्थ्यो) (नयाँ सञ्झ्यालमा खुल्छ)",
+    linkedin: "LinkedIn (नयाँ सञ्झ्यालमा खुल्छ)",
+    visit_partner:
+      "{{partner}} वेबसाइट भ्रमण गर्नुहोस् (नयाँ सञ्झ्यालमा खुल्छ)",
+    globe_menu: "विश्वव्यापी अनुवाद विकल्प मेनु",
+    user_login: "प्रयोगकर्ता लगइन पोर्टल",
+    search_bar: "खोज बार",
+    search_results: "खोज परिणामहरू",
+    navigation_menu: "नेभिगेसन मेनु",
+    donate_header: "दान गर्नुहोस् (नयाँ सञ्झ्यालमा खुल्छ)",
+    contact_info: "सम्पर्क जानकारी",
+    what_we_do_impact: "हामी के गर्छौं र हाम्रो प्रभाव",
+    events_page_header: "कार्यक्रम पृष्ठ हेडर",
+    impact_statistics: "प्रभाव तथ्याङ्क",
+    decorative_map:
+      "DESN कार्यालय स्थान देखाउने सजावटी नक्सा। पूर्ण स्थान विवरण तल पाठमा प्रदान गरिएको छ।",
   },
   // Header
   header: {

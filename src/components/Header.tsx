@@ -407,7 +407,7 @@ const Header: React.FC = () => {
               startIcon={<PublicIcon titleAccess='Global Translation Menu' />}
               endIcon={<KeyboardArrowDownIcon />}
               sx={{ display: { xs: "none", md: "flex" } }}
-              aria-label='Global Translation Option Menu'
+              aria-label={t("aria.globe_menu")}
             >
               {lang === "en"
                 ? "English"
@@ -488,7 +488,7 @@ const Header: React.FC = () => {
               <Button
                 onClick={handleLogin}
                 startIcon={<LoginIcon titleAccess='User Login Portal' />}
-                aria-label='User Login Portal'
+                aria-label={t("aria.user_login")}
                 sx={{
                   color: "#004c91",
                   textTransform: "none",
@@ -514,7 +514,7 @@ const Header: React.FC = () => {
               placeholder={t("header.search_placeholder")}
               variant='outlined'
               size='small'
-              aria-label='Search bar'
+              aria-label={t("aria.search_bar")}
               inputProps={{
                 "aria-label": "Search bar",
               }}
@@ -550,7 +550,7 @@ const Header: React.FC = () => {
                   elevation={3}
                   sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
                   role='region'
-                  aria-label='Search results'
+                  aria-label={t("aria.search_results")}
                 >
                   <Box
                     sx={{
@@ -648,7 +648,7 @@ const Header: React.FC = () => {
 
             <MobileMenuButton
               edge='end'
-              aria-label='Navigation Menu'
+              aria-label={t("aria.navigation_menu")}
               onClick={toggleMobileMenu}
             >
               <MenuIcon titleAccess='Navigation Menu' />
@@ -680,7 +680,7 @@ const Header: React.FC = () => {
                 "_blank"
               )
             }
-            aria-label='Donate Now (opens in new window)'
+            aria-label={t("aria.donate_header")}
           >
             {t("header.donate")}
           </MobileDonateButton>
@@ -717,7 +717,7 @@ const Header: React.FC = () => {
                     "_blank"
                   )
                 }
-                aria-label='Donate Now (opens in new window)'
+                aria-label={t("aria.donate_header")}
               >
                 {t("header.donate")}
               </DonateButton>

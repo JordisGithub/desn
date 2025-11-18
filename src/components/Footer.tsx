@@ -206,7 +206,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <FooterContainer role='contentinfo' aria-label='Footer'>
+    <FooterContainer role='contentinfo' aria-label={t("aria.footer")}>
       <TopSection>
         <Container maxWidth='lg' sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
           {/* Social Media Section */}
@@ -214,30 +214,36 @@ export default function Footer() {
             <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
             <SocialIcon
               href='https://facebook.com'
-              aria-label='Facebook (opens in new window)'
+              aria-label={t("aria.facebook")}
               target='_blank'
               rel='noopener noreferrer'
             >
-              <FacebookIcon aria-hidden='false' titleAccess='Facebook' />
+              <FacebookIcon
+                aria-hidden='false'
+                titleAccess={t("aria.facebook").split(" (")[0]}
+              />
             </SocialIcon>
             <SocialIcon
               href='https://twitter.com'
-              aria-label='X (Formerly known as Twitter) (opens in new window)'
+              aria-label={t("aria.twitter")}
               target='_blank'
               rel='noopener noreferrer'
             >
               <TwitterIcon
                 aria-hidden='false'
-                titleAccess='X (Formerly known as Twitter)'
+                titleAccess={t("aria.twitter").split(" (")[0]}
               />
             </SocialIcon>
             <SocialIcon
               href='https://linkedin.com'
-              aria-label='LinkedIn (opens in new window)'
+              aria-label={t("aria.linkedin")}
               target='_blank'
               rel='noopener noreferrer'
             >
-              <LinkedInIcon aria-hidden='false' titleAccess='LinkedIn' />
+              <LinkedInIcon
+                aria-hidden='false'
+                titleAccess={t("aria.linkedin").split(" (")[0]}
+              />
             </SocialIcon>
           </SocialSection>
 

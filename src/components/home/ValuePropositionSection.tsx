@@ -196,7 +196,7 @@ export default function ValuePropositionSection() {
   ];
 
   return (
-    <ValueSection aria-label='What we do and our impact'>
+    <ValueSection aria-label={t("what_we_do_impact", { ns: "common" })}>
       <Container maxWidth='lg'>
         <ContentWrapper>
           {/* What We Do Section */}

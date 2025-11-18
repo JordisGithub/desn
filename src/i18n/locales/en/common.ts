@@ -53,6 +53,23 @@ export default {
     menu: "Menu",
     previous_month: "Previous month",
     next_month: "Next month",
+    footer: "Footer",
+    facebook: "Facebook (opens in new window)",
+    twitter: "X (Formerly known as Twitter) (opens in new window)",
+    linkedin: "LinkedIn (opens in new window)",
+    visit_partner: "Visit {{partner}} website (opens in new window)",
+    globe_menu: "Global Translation Option Menu",
+    user_login: "User Login Portal",
+    search_bar: "Search bar",
+    search_results: "Search results",
+    navigation_menu: "Navigation Menu",
+    donate_header: "Donate Now (opens in new window)",
+    contact_info: "Contact information",
+    what_we_do_impact: "What we do and our impact",
+    events_page_header: "Events page header",
+    impact_statistics: "Impact statistics",
+    decorative_map:
+      "Decorative map showing DESN office location. Full location details provided in text below.",
   },
   // Header
   header: {

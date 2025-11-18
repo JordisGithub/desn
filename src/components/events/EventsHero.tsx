@@ -51,7 +51,7 @@ export default function EventsHero() {
   return (
     <HeroContainer
       aria-labelledby='events-hero-heading'
-      aria-label='Events page header'
+      aria-label={t("aria.events_page_header")}
     >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
         <HeroTitle variant='h1' id='events-hero-heading' tabIndex={-1}>
