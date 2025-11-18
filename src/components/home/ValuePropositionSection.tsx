@@ -216,10 +216,12 @@ export default function ValuePropositionSection() {
               }}
             >
               {services.map((service, index) => (
-                <ServiceItem component='li' key={index}>
-                  <IconWrapper>{service.icon}</IconWrapper>
-                  <ServiceTitle>{service.title}</ServiceTitle>
-                </ServiceItem>
+                <Box component='li' key={index} sx={{ listStyle: "none" }}>
+                  <ServiceItem>
+                    <IconWrapper>{service.icon}</IconWrapper>
+                    <ServiceTitle>{service.title}</ServiceTitle>
+                  </ServiceItem>
+                </Box>
               ))}
             </Box>
           </ServicesColumn>
@@ -244,14 +246,20 @@ export default function ValuePropositionSection() {
               }}
             >
               {metrics.map((metric, index) => (
-                <MetricCard component='li' key={index}>
-                  <MetricNumber className='metric-number' variant='h3' as='div'>
-                    {metric.number}
-                  </MetricNumber>
-                  <MetricLabel className='metric-label'>
-                    {metric.label}
-                  </MetricLabel>
-                </MetricCard>
+                <Box component='li' key={index} sx={{ listStyle: "none" }}>
+                  <MetricCard>
+                    <MetricNumber
+                      className='metric-number'
+                      variant='h3'
+                      as='div'
+                    >
+                      {metric.number}
+                    </MetricNumber>
+                    <MetricLabel className='metric-label'>
+                      {metric.label}
+                    </MetricLabel>
+                  </MetricCard>
+                </Box>
               ))}
             </Box>
           </ImpactColumn>
