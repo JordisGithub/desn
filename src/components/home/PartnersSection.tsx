@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 // import { imgNationalFederationLogo } from "../../constants/figmaAssets";
@@ -76,18 +76,19 @@ const PartnersGrid = styled("div")(({ theme }) => ({
   },
 }));
 
-const PartnerCard = styled("div")(({ theme }) => ({
+const PartnerCardStyles = {
   backgroundColor: "white",
-  padding: theme.spacing(3),
+  padding: { xs: 2.5, md: 3.5 },
   borderRadius: "16px",
   textAlign: "center",
-  minHeight: "100px",
+  minHeight: { xs: "100px", md: "120px" },
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   boxShadow: "0 4px 16px rgba(0, 0, 0, 0.15)",
   border: "2px solid transparent",
+  textDecoration: "none",
   "&:hover": {
     transform: "translateY(-6px) scale(1.03)",
     boxShadow: "0 12px 32px rgba(246, 212, 105, 0.3)",
@@ -97,15 +98,7 @@ const PartnerCard = styled("div")(({ theme }) => ({
       transform: "scale(1.05)",
     },
   },
-  [theme.breakpoints.up("md")]: {
-    padding: theme.spacing(3.5),
-    minHeight: "120px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(2.5),
-    minHeight: "90px",
-  },
-}));
+};
 
 const PartnerLogo = styled("img")(({ theme }) => ({
   width: "100%",
@@ -123,28 +116,34 @@ const PartnerLogo = styled("img")(({ theme }) => ({
 
 const partners = [
   {
-    name: "UNDP",
+    name: "UNDP – Nepal",
     logo: undpLogo,
+    url: "https://www.np.undp.org/",
   },
   {
-    name: "APNIC",
+    name: "APNIC Foundation",
     logo: apnicLogo,
+    url: "https://foundation.apnic.net/",
   },
   {
     name: "Khyentse Foundation",
     logo: khyentseLogo,
+    url: "https://khyentsefoundation.org/",
   },
   {
-    name: "National Federation for the Disabled",
+    name: "Abilis",
     logo: abilis,
+    url: "https://www.abilis.fi/en/",
   },
   {
     name: "Meedan",
     logo: meedanLogo,
+    url: "https://meedan.com/",
   },
   {
     name: "Government of Nepal",
     logo: governmentNepalLogo,
+    url: "https://www.nepal.gov.np/",
   },
 ];
 
@@ -165,9 +164,20 @@ export default function PartnersSection() {
 
         <PartnersGrid>
           {partners.map((partner, index) => (
-            <PartnerCard key={index}>
+            <Box
+              key={index}
+              component='a'
+              href={partner.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={t("aria.visit_partner", {
+                partner: partner.name,
+                ns: "common",
+              })}
+              sx={PartnerCardStyles}
+            >
               <PartnerLogo src={partner.logo} alt={partner.name} />
-            </PartnerCard>
+            </Box>
           ))}
         </PartnersGrid>
       </Container>

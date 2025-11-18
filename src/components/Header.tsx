@@ -129,21 +129,18 @@ const NavLink = styled(RouterLink)(() => ({
   textDecoration: "none",
   fontSize: "16px",
   fontWeight: 400,
-  padding: "2px",
+  padding: "8px 12px",
   position: "relative",
-  "&::after": {
-    content: "attr(data-text)",
-    fontWeight: 700,
-    height: 0,
-    visibility: "hidden",
-    overflow: "hidden",
-    userSelect: "none",
-    pointerEvents: "none",
-    display: "block",
-  },
+  display: "inline-block",
+  transition: "all 0.2s ease",
   "&:hover, &:focus": {
     color: "#004c91",
     fontWeight: 700,
+  },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    borderRadius: "4px",
   },
 }));
 
@@ -397,15 +394,20 @@ const Header: React.FC = () => {
         <TopBar>
           <TopBarLeft>
             <LogoLink to='/'>
-              <Logo src={desnLogo} alt='DESN Logo' style={{ height: "90px" }} />
+              <Logo
+                src={desnLogo}
+                alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
+                style={{ height: "90px" }}
+              />
             </LogoLink>
           </TopBarLeft>{" "}
           <TopBarRight>
             <LanguageButton
               onClick={handleLanguageClick}
-              startIcon={<PublicIcon />}
+              startIcon={<PublicIcon titleAccess='Global Translation Menu' />}
               endIcon={<KeyboardArrowDownIcon />}
               sx={{ display: { xs: "none", md: "flex" } }}
+              aria-label={t("aria.globe_menu")}
             >
               {lang === "en"
                 ? "English"
@@ -485,7 +487,8 @@ const Header: React.FC = () => {
             ) : (
               <Button
                 onClick={handleLogin}
-                startIcon={<LoginIcon />}
+                startIcon={<LoginIcon titleAccess='User Login Portal' />}
+                aria-label={t("aria.user_login")}
                 sx={{
                   color: "#004c91",
                   textTransform: "none",
@@ -511,6 +514,10 @@ const Header: React.FC = () => {
               placeholder={t("header.search_placeholder")}
               variant='outlined'
               size='small'
+              aria-label={t("aria.search_bar")}
+              inputProps={{
+                "aria-label": "Search bar",
+              }}
               sx={{
                 width: { xs: "200px", md: "300px" },
                 display: { xs: "none", sm: "block" },
@@ -525,7 +532,10 @@ const Header: React.FC = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <SearchIcon sx={{ color: "#666", fontSize: "20px" }} />
+                    <SearchIcon
+                      sx={{ color: "#666", fontSize: "20px" }}
+                      titleAccess='Search bar'
+                    />
                   </InputAdornment>
                 ),
               }}
@@ -540,7 +550,7 @@ const Header: React.FC = () => {
                   elevation={3}
                   sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
                   role='region'
-                  aria-label='Search results'
+                  aria-label={t("aria.search_results")}
                 >
                   <Box
                     sx={{
@@ -638,10 +648,10 @@ const Header: React.FC = () => {
 
             <MobileMenuButton
               edge='end'
-              aria-label={t("aria.menu")}
+              aria-label={t("aria.navigation_menu")}
               onClick={toggleMobileMenu}
             >
-              <MenuIcon />
+              <MenuIcon titleAccess='Navigation Menu' />
             </MobileMenuButton>
           </TopBarRight>
         </TopBar>
@@ -657,7 +667,10 @@ const Header: React.FC = () => {
           </MobileMenuButton>
 
           <LogoLink to='/'>
-            <MobileLogo src={desnLogo} alt='DESN Logo' />
+            <MobileLogo
+              src={desnLogo}
+              alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
+            />
           </LogoLink>
 
           <MobileDonateButton
@@ -667,6 +680,7 @@ const Header: React.FC = () => {
                 "_blank"
               )
             }
+            aria-label={t("aria.donate_header")}
           >
             {t("header.donate")}
           </MobileDonateButton>
@@ -684,7 +698,7 @@ const Header: React.FC = () => {
           <NavBar>
             <NavLinks>
               {navItems.map((item) => (
-                <NavLink key={item.path} to={item.path} data-text={item.label}>
+                <NavLink key={item.path} to={item.path} aria-label={item.label}>
                   {item.label}
                 </NavLink>
               ))}
@@ -703,6 +717,7 @@ const Header: React.FC = () => {
                     "_blank"
                   )
                 }
+                aria-label={t("aria.donate_header")}
               >
                 {t("header.donate")}
               </DonateButton>
@@ -724,7 +739,11 @@ const Header: React.FC = () => {
       >
         <DrawerContent>
           <DrawerHeader>
-            <Logo src={desnLogo} alt='DESN Logo' style={{ height: "40px" }} />
+            <Logo
+              src={desnLogo}
+              alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
+              style={{ height: "40px" }}
+            />
             <IconButton
               onClick={toggleMobileMenu}
               sx={{ color: "white" }}
