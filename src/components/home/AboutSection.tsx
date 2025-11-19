@@ -123,20 +123,22 @@ const AboutButton = styled(Link)(({ theme }) => ({
   },
 }));
 
-// Key facts container
-const FactsContainer = styled(Box)(({ theme }) => ({
+// Key facts container - now a list
+const FactsContainer = styled("ul")(({ theme }) => ({
   backgroundColor: "#ffffff",
   borderRadius: 16,
   padding: theme.spacing(4),
   boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.08)",
   border: `2px solid ${theme.palette.primary.light}`,
+  listStyle: "none",
+  margin: 0,
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(3),
   },
 }));
 
-// Individual fact item
-const FactItem = styled(Box)(({ theme }) => ({
+// Individual fact item - now a list item
+const FactItem = styled("li")(({ theme }) => ({
   display: "flex",
   alignItems: "flex-start",
   gap: theme.spacing(2),
@@ -239,13 +241,14 @@ export default function AboutSection() {
                   color: "primary.main",
                   mb: 2,
                 }}
+                id='key-facts-heading'
               >
                 Key Facts
               </Typography>
             </Box>
-            <FactsContainer>
+            <FactsContainer aria-labelledby='key-facts-heading' role='list'>
               {keyFacts.map((fact, index) => (
-                <FactItem key={index}>
+                <FactItem key={index} role='listitem'>
                   <FactIcon>{fact.icon}</FactIcon>
                   <FactContent>
                     <FactLabel>{fact.label}</FactLabel>

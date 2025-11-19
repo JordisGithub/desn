@@ -55,30 +55,44 @@ const TopBar = styled(Box)(({ theme }) => ({
 
 const SearchField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
     // default notched outline appearance
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "gray !important",
-      borderWidth: "1px !important",
+      borderColor: "#004c91 !important",
+      borderWidth: "2px !important",
       borderStyle: "solid !important",
     },
 
-    // hover: slightly stronger (2px) blue border
+    // Icon colors - default
+    "& .MuiInputAdornment-positionStart svg": {
+      color: "#004c91",
+      transition: "color 0.2s ease",
+    },
+
+    // hover: stronger blue border and darker icons
     "&:hover": {
       "& .MuiOutlinedInput-notchedOutline": {
         borderWidth: "2px !important",
-        borderColor: "#004c91 !important",
+        borderColor: "#003d73 !important",
         borderStyle: "solid !important",
+      },
+      "& .MuiInputAdornment-positionStart svg": {
+        color: "#003d73",
       },
     },
 
-    // focus: prominent 4px solid primary border
+    // focus: prominent 3px solid dark blue border and white icon
     "&.Mui-focused": {
       outline: "none !important",
-      boxShadow: "none !important",
+      boxShadow: "0 0 0 4px rgba(0, 76, 145, 0.15) !important",
       "& .MuiOutlinedInput-notchedOutline": {
-        borderWidth: "4px !important",
-        borderColor: "#004c91 !important",
+        borderWidth: "3px !important",
+        borderColor: "#002b52 !important",
         borderStyle: "solid !important",
+      },
+      "& .MuiInputAdornment-positionStart svg": {
+        color: "#ffffff",
       },
     },
 
@@ -88,7 +102,7 @@ const SearchField = styled(TextField)({
       boxShadow: "none !important",
     },
 
-    "& input::placeholder": { color: "#666", opacity: 1 },
+    "& input::placeholder": { color: "#004c91", opacity: 1 },
   },
 });
 
@@ -602,14 +616,6 @@ const Header: React.FC = () => {
                 }}
                 onKeyDown={onSearchKeyDown}
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon
-                        sx={{ color: "#666", fontSize: "20px" }}
-                        titleAccess='Search bar'
-                      />
-                    </InputAdornment>
-                  ),
                   endAdornment: (
                     <InputAdornment position='end'>
                       <IconButton
@@ -624,6 +630,12 @@ const Header: React.FC = () => {
                           color: "#004c91",
                           "&:hover": {
                             backgroundColor: "rgba(0, 76, 145, 0.08)",
+                          },
+                          "&:focus-visible": {
+                            color: "#ffffff",
+                            backgroundColor: "#002b52",
+                            outline: "3px solid #f6d469",
+                            outlineOffset: "2px",
                           },
                         }}
                       >
@@ -754,7 +766,7 @@ const Header: React.FC = () => {
         <MobileNavBar>
           <MobileMenuButton
             edge='start'
-            aria-label={t("aria.menu")}
+            aria-label={t("aria.navigation_menu")}
             onClick={toggleMobileMenu}
           >
             <MenuIcon />
@@ -827,11 +839,6 @@ const Header: React.FC = () => {
       >
         <DrawerContent>
           <DrawerHeader>
-            <Logo
-              src={desnLogo}
-              alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
-              style={{ height: "40px" }}
-            />
             <IconButton
               onClick={toggleMobileMenu}
               sx={{ color: "white" }}
