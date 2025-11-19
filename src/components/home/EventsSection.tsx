@@ -6,14 +6,17 @@ import {
   CardContent,
   Stack,
   Button,
+  Box,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import OptimizedImage from "../OptimizedImage";
 import EventRegistrationModal from "../events/EventRegistrationModal";
 import EventService from "../../services/EventService";
+import eventImage1 from "../../assets/optimized/home-events1-jpg-800.jpg";
+import eventImage2 from "../../assets/optimized/home-events2-jpg-800.jpg";
+import eventImage3 from "../../assets/optimized/home-events3-jpg-800.jpg";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -78,6 +81,29 @@ const EventsGrid = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
     gap: theme.spacing(4),
+  },
+  [theme.breakpoints.up("lg")]: {
+    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+    gap: theme.spacing(4),
+  },
+  "@media (max-width: 1600px)": {
+    overflowX: "auto",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    paddingBottom: theme.spacing(1),
+    "&::-webkit-scrollbar": {
+      height: "8px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "#f1f1f1",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#004c91",
+      borderRadius: "10px",
+      "&:hover": {
+        backgroundColor: "#003a6b",
+      },
+    },
   },
 }));
 
@@ -276,6 +302,35 @@ interface EventStatus {
   availableSpots: number;
 }
 
+interface EventData {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  maxAttendees: number;
+  currentAttendees: number;
+  featured?: boolean;
+  imageUrl?: string;
+}
+
+// Map event IDs to imported image URLs
+const getEventImageUrl = (eventId: number, event?: EventData): string => {
+  // First try using the backend imageUrl field if it exists and is not an Unsplash URL
+  if (event?.imageUrl && !event.imageUrl.includes("unsplash")) {
+    return event.imageUrl;
+  }
+
+  // Fallback to imported local event images
+  const imageMap: Record<number, string> = {
+    1: eventImage1,
+    2: eventImage2,
+    3: eventImage3,
+  };
+  return imageMap[eventId] || "";
+};
+
 export default function EventsSection() {
   const { t } = useTranslation();
   const [selectedEvent, setSelectedEvent] = useState<{
@@ -286,68 +341,44 @@ export default function EventsSection() {
   } | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [eventStatuses, setEventStatuses] = useState<
-    Record<string, EventStatus>
+    Record<number, EventStatus>
   >({});
+  const [events, setEvents] = useState<EventData[]>([]);
 
-  const events = [
-    {
-      id: "air-mid-point-check-in",
-      eventId: 1,
-      date: "2025-10-24",
-      dateLabelKey: "event_1_date",
-      timeKey: "event_1_time",
-      titleKey: "event_1_title",
-      descKey: "event_1_desc",
-      organizer: "knowbility",
-      image: "home/events1.jpg",
-      altKey: "event_1_alt",
-      location: "Virtual Event",
-    },
-    {
-      id: "international-day-of-persons-with-disabilities",
-      eventId: 2,
-      date: "2025-12-02",
-      dateLabelKey: "event_2_date",
-      timeKey: "event_2_time",
-      titleKey: "event_2_title",
-      descKey: "event_2_desc",
-      organizer: "DESN",
-      image: "home/events2.jpg",
-      altKey: "event_2_alt",
-      location: "Lalitpur, Nepal",
-    },
-    {
-      id: "air-award-ceremony",
-      eventId: 3,
-      date: "2026-01-15",
-      dateLabelKey: "event_3_date",
-      timeKey: "event_3_time",
-      titleKey: "event_3_title",
-      descKey: "event_3_desc",
-      organizer: "knowbility",
-      image: "home/events3.jpg",
-      altKey: "event_3_alt",
-      location: "Virtual Event",
-    },
-  ];
-
-  // Fetch event statuses on mount
+  // Fetch upcoming events from backend
   useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const backendEvents = await EventService.getUpcomingEvents();
+        setEvents(backendEvents);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        // Fallback to empty array if API fails
+        setEvents([]);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Fetch event statuses after events are loaded
+  useEffect(() => {
+    if (events.length === 0) return;
+
     const fetchEventStatuses = async () => {
-      const statuses: Record<string, EventStatus> = {};
+      const statuses: Record<number, EventStatus> = {};
 
       for (const event of events) {
         try {
-          const response = await EventService.getEventById(event.eventId);
           statuses[event.id] = {
-            isFull: response.currentAttendees >= response.maxAttendees,
-            currentRegistrations: response.currentAttendees,
-            maxCapacity: response.maxAttendees,
-            availableSpots: response.maxAttendees - response.currentAttendees,
+            isFull: event.currentAttendees >= event.maxAttendees,
+            currentRegistrations: event.currentAttendees,
+            maxCapacity: event.maxAttendees,
+            availableSpots: event.maxAttendees - event.currentAttendees,
           };
         } catch (error) {
           console.error(
-            `Error fetching status for event ${event.eventId}:`,
+            `Error processing status for event ${event.id}:`,
             error
           );
         }
@@ -357,15 +388,27 @@ export default function EventsSection() {
     };
 
     fetchEventStatuses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [events]);
 
-  const handleRegisterClick = (event: (typeof events)[0]) => {
+  const handleRegisterClick = (event: EventData) => {
+    const startDate = new Date(event.startDate);
+    const endDate = new Date(event.endDate);
+
     setSelectedEvent({
-      id: event.id,
-      title: t(event.titleKey),
-      date: t(event.dateLabelKey),
-      time: t(event.timeKey),
+      id: event.id.toString(),
+      title: event.title,
+      date: startDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      time: `${startDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })} - ${endDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
     });
     setModalOpen(true);
   };
@@ -378,9 +421,9 @@ export default function EventsSection() {
   const handleRegistrationSuccess = () => {
     // Refresh event statuses after successful registration
     if (selectedEvent) {
-      const event = events.find((e) => e.id === selectedEvent.id);
+      const event = events.find((e) => e.id === parseInt(selectedEvent.id));
       if (event) {
-        EventService.getEventById(event.eventId)
+        EventService.getEventById(event.id)
           .then((response) => {
             setEventStatuses((prev) => ({
               ...prev,
@@ -416,58 +459,105 @@ export default function EventsSection() {
         </SectionSubheading>
 
         <EventsGrid>
-          {events.map((event, index) => (
-            <EventCard key={index}>
-              <ImageWrapper>
-                <OptimizedImage
-                  src={event.image}
-                  alt={t(event.altKey)}
-                  loading='lazy'
-                  sizes='(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw'
-                  className='event-image'
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    display: "block",
-                    transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                />
-              </ImageWrapper>
-              <CardContent>
-                <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
-                  <EventDate dateTime={event.date}>
-                    {t(event.dateLabelKey)}
-                  </EventDate>
-                  <EventTime>{t(event.timeKey)}</EventTime>
-                </Stack>
-                <EventTitle as='h3'>
-                  <EventTitleLink to={`/events/${event.id}`}>
-                    {t(event.titleKey)}
-                  </EventTitleLink>
-                </EventTitle>
-                <EventDescription>{t(event.descKey)}</EventDescription>
-                <EventOrganizer>
-                  <strong>{t("event_organizer")}</strong> {event.organizer}
-                </EventOrganizer>
-                <RegisterButton
-                  aria-label={`Register Now for ${t(event.titleKey)}`}
-                  endIcon={
-                    !eventStatuses[event.id]?.isFull ? (
-                      <ArrowForwardIcon />
-                    ) : undefined
-                  }
-                  onClick={() => handleRegisterClick(event)}
-                  disabled={eventStatuses[event.id]?.isFull}
-                >
-                  {eventStatuses[event.id]?.isFull
-                    ? t("event_full")
-                    : t("register_now")}
-                </RegisterButton>
-              </CardContent>
-            </EventCard>
-          ))}
+          {events.length === 0 ? (
+            <Typography
+              sx={{
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                color: "#666",
+                py: 4,
+              }}
+            >
+              {t("no_events")}
+            </Typography>
+          ) : (
+            events.map((event) => {
+              const startDate = new Date(event.startDate);
+              const endDate = new Date(event.endDate);
+              const status = eventStatuses[event.id];
+
+              return (
+                <EventCard key={event.id}>
+                  <ImageWrapper>
+                    {getEventImageUrl(event.id, event) ? (
+                      <img
+                        src={getEventImageUrl(event.id, event)}
+                        alt={event.title}
+                        loading='lazy'
+                        className='event-image'
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          display: "block",
+                          transition:
+                            "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: "#f0f0f0",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          minHeight: "250px",
+                        }}
+                      >
+                        <Typography color='text.secondary'>
+                          Event Image
+                        </Typography>
+                      </Box>
+                    )}
+                  </ImageWrapper>
+                  <CardContent>
+                    <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
+                      <EventDate dateTime={event.startDate}>
+                        {startDate.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </EventDate>
+                      <EventTime>
+                        {startDate.toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        -{" "}
+                        {endDate.toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </EventTime>
+                    </Stack>
+                    <EventTitle as='h3'>
+                      <EventTitleLink to={`/events`}>
+                        {event.title}
+                      </EventTitleLink>
+                    </EventTitle>
+                    <EventDescription>{event.description}</EventDescription>
+                    <EventOrganizer>
+                      <strong>{t("event_organizer")}</strong> DESN
+                    </EventOrganizer>
+                    <RegisterButton
+                      aria-label={`Register Now for ${event.title}`}
+                      endIcon={
+                        !status?.isFull ? <ArrowForwardIcon /> : undefined
+                      }
+                      onClick={() => handleRegisterClick(event)}
+                      disabled={status?.isFull}
+                    >
+                      {status?.isFull ? t("event_full") : t("register_now")}
+                    </RegisterButton>
+                  </CardContent>
+                </EventCard>
+              );
+            })
+          )}
         </EventsGrid>
       </Container>
 
@@ -475,12 +565,15 @@ export default function EventsSection() {
         <EventRegistrationModal
           open={modalOpen}
           onClose={handleModalClose}
-          eventId={events.find((e) => e.id === selectedEvent.id)?.eventId || 0}
+          eventId={
+            events.find((e) => e.id === parseInt(selectedEvent.id))?.id || 0
+          }
           eventTitle={selectedEvent.title}
           eventDate={selectedEvent.date}
           eventTime={selectedEvent.time}
           eventLocation={
-            events.find((e) => e.id === selectedEvent.id)?.location || ""
+            events.find((e) => e.id === parseInt(selectedEvent.id))?.location ||
+            ""
           }
           onRegistrationSuccess={handleRegistrationSuccess}
         />
