@@ -214,13 +214,15 @@ const KnowbilityLink = styled("a")(({ theme }) => ({
   alignItems: "center",
   marginLeft: theme.spacing(2),
   transition: "all 0.2s ease",
-  "&:hover, &:focus": {
-    opacity: 0.8,
+  "&:hover": {
+    transform: "scale(1.1)",
+    filter: "brightness(1.2)",
   },
   "&:focus": {
-    outline: "3px solid #ffffff",
-    outlineOffset: "2px",
+    outline: "3px solid #f6d469",
+    outlineOffset: "4px",
     borderRadius: "4px",
+    transform: "scale(1.05)",
   },
   "& img": {
     height: "32px",
