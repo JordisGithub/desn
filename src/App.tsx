@@ -24,6 +24,7 @@ const PaymentVerify = lazy(() => import("./views/PaymentVerify"));
 const AccessibilityStatement = lazy(
   () => import("./views/AccessibilityStatement")
 );
+const SearchResults = lazy(() => import("./views/SearchResults"));
 
 // Loading component
 const LoadingFallback = () => (
@@ -55,6 +56,7 @@ export default function App() {
                   <Route path='/resources' element={<Resources />} />
                   <Route path='/contact' element={<Contact />} />
                   <Route path='/programs' element={<Programs />} />
+                  <Route path='/search' element={<SearchResults />} />
                   <Route
                     path='/accessibility'
                     element={<AccessibilityStatement />}

@@ -315,7 +315,7 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!searchQuery || searchQuery.trim().length < 3) {
+    if (!searchQuery || searchQuery.trim().length < 2) {
       setSearchResults([]);
       return;
     }
@@ -336,7 +336,14 @@ const Header: React.FC = () => {
   }, [searchQuery]);
 
   const onSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      setSearchOpen(false);
+      return;
+    }
+
+    // Only handle arrow and enter keys if dropdown is open
     if (!searchOpen || searchResults.length === 0) return;
+
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, searchResults.length - 1));
@@ -345,15 +352,28 @@ const Header: React.FC = () => {
       setActiveIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const sel =
-        activeIndex >= 0 ? searchResults[activeIndex] : searchResults[0];
-      if (sel) {
-        setSearchOpen(false);
-        setSearchQuery("");
-        navigate(sel.url);
+      // Only select a result if one is actively highlighted
+      if (activeIndex >= 0) {
+        const sel = searchResults[activeIndex];
+        if (sel) {
+          setSearchOpen(false);
+          setSearchQuery("");
+          navigate(sel.url);
+        }
+      } else {
+        // If no result is highlighted, submit the search form instead
+        handleSearchSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
       }
-    } else if (e.key === "Escape") {
+    }
+  };
+
+  const handleSearchSubmit = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
       setSearchOpen(false);
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
@@ -559,36 +579,62 @@ const Header: React.FC = () => {
               </PlainButton>
             )}
 
-            <SearchField
-              placeholder={t("header.search_placeholder")}
-              variant='outlined'
-              size='small'
-              aria-label={t("aria.search_bar")}
-              inputProps={{
-                "aria-label": "Search bar",
-              }}
-              sx={{
-                width: { xs: "200px", md: "300px" },
-                display: { xs: "none", sm: "block" },
-              }}
-              ref={searchRef}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => {
-                if (searchResults.length > 0) setSearchOpen(true);
-              }}
-              onKeyDown={onSearchKeyDown}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <SearchIcon
-                      sx={{ color: "#666", fontSize: "20px" }}
-                      titleAccess='Search bar'
-                    />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <Box
+              component='form'
+              onSubmit={handleSearchSubmit}
+              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
+            >
+              <SearchField
+                placeholder={t("header.search_placeholder")}
+                variant='outlined'
+                size='small'
+                aria-label={t("aria.search_bar")}
+                inputProps={{
+                  "aria-label": "Search bar",
+                }}
+                sx={{
+                  width: { xs: "200px", md: "300px" },
+                }}
+                ref={searchRef}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (searchResults.length > 0) setSearchOpen(true);
+                }}
+                onKeyDown={onSearchKeyDown}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <SearchIcon
+                        sx={{ color: "#666", fontSize: "20px" }}
+                        titleAccess='Search bar'
+                      />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        type='submit'
+                        size='small'
+                        edge='end'
+                        onClick={handleSearchSubmit}
+                        aria-label={t("aria.search_submit", {
+                          defaultValue: "Search",
+                        })}
+                        sx={{
+                          color: "#004c91",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 76, 145, 0.08)",
+                          },
+                        }}
+                      >
+                        <SearchIcon sx={{ fontSize: "20px" }} />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
 
             {/* Search results dropdown */}
             {searchOpen && searchResults.length > 0 && (
