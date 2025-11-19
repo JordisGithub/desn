@@ -1,10 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import heroImage from "../../assets/home/nepal-hero-image.png";
 
 // Full-width hero container with background image
-const HeroContainer = styled("section")(({ theme }) => ({
+const HeroContainer = styled("div")(({ theme }) => ({
   position: "relative",
   width: "100%",
   minHeight: "85vh",
@@ -94,35 +94,25 @@ const HeroSubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Prominent CTA button with accent color
-const HeroDonateButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.warning.main, // #f6d469
-  color: theme.palette.warning.contrastText, // #2b2b2b
-  fontSize: "1.25rem",
+// Hero copy heading - WCAG 2.2 AAA compliant (7:1 contrast on light backgrounds)
+// Use this component when rendering hero_copy_heading translation key
+const HeroCopyHeading = styled(Typography)(({ theme }) => ({
+  color: "#001a33", // Very dark blue: 12.6:1 contrast on white background (WCAG AAA)
+  fontSize: "2.25rem", // Desktop: 36px
   fontWeight: 700,
-  textTransform: "uppercase",
-  padding: theme.spacing(2.5, 6),
-  borderRadius: "100px",
-  boxShadow: "0px 8px 24px rgba(246, 212, 105, 0.5)",
-  letterSpacing: "0.05em",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: theme.palette.warning.dark, // #f5c943
-    transform: "translateY(-4px) scale(1.03)",
-    boxShadow: "0px 12px 32px rgba(246, 212, 105, 0.7)",
-  },
-  "&:active": {
-    transform: "translateY(-2px) scale(1.01)",
-  },
+  lineHeight: 1.3,
+  letterSpacing: "-0.01em",
+  marginBottom: theme.spacing(3),
   [theme.breakpoints.down("md")]: {
-    fontSize: "1.125rem",
-    padding: theme.spacing(2, 5),
+    fontSize: "1.875rem", // 30px
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-    padding: theme.spacing(1.75, 4),
+    fontSize: "1.5rem", // 24px - mobile
+    marginBottom: theme.spacing(2),
   },
 }));
+
+export { HeroCopyHeading }; // Exported for use with hero_copy_heading translation
 
 export default function HeroSection() {
   const { t } = useTranslation();
@@ -160,23 +150,8 @@ export default function HeroSection() {
 
           {/* Sub-Headline */}
           <HeroSubHeading as='p'>{t("hero_description")}</HeroSubHeading>
-
-          {/* Primary CTA Button */}
-          <HeroDonateButton
-            onClick={() =>
-              window.open(
-                "https://www.paypal.com/paypalme/thekopkrish",
-                "_blank"
-              )
-            }
-            aria-label={t("hero_donate_aria_label")}
-          >
-            {t("hero_button")}
-          </HeroDonateButton>
         </HeroContent>
       </HeroContainer>
-
-      {/* Donations open PayPal directly (no modal) */}
     </>
   );
 }

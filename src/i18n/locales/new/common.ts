@@ -52,6 +52,23 @@ export default {
     menu: "मेनु",
     previous_month: "अघिल्लो महिना",
     next_month: "अर्को महिना",
+    footer: "फुटर",
+    facebook: "Facebook (न्हु सञ्झ्यालय खुल्छ)",
+    twitter: "X (पहिले Twitter धकाः चिन्हाः जुल) (न्हु सञ्झ्यालय खुल्छ)",
+    linkedin: "LinkedIn (न्हु सञ्झ्यालय खुल्छ)",
+    visit_partner: "{{partner}} वेबसाइट भ्रमण यायेगु (न्हु सञ्झ्यालय खुल्छ)",
+    globe_menu: "विश्वव्यापी अनुवाद विकल्प मेनु",
+    user_login: "प्रयोगकर्ता लगइन पोर्टल",
+    search_bar: "न्हापा बार",
+    search_results: "न्हापा परिणामफु",
+    navigation_menu: "नेभिगेसन मेनु",
+    donate_header: "दान यायेगु (न्हु सञ्झ्यालय खुल्छ)",
+    contact_info: "सम्पर्क जानकारी",
+    what_we_do_impact: "झिसे छु याना व झीगु प्रभाव",
+    events_page_header: "कार्यक्रम पृष्ठ हेडर",
+    impact_statistics: "प्रभाव तथ्याङ्क",
+    decorative_map:
+      "DESN कार्यालय स्थान क्वने सजावटी नक्सा। पूर्ण स्थान विवरण तलय पाठय दीगु जुल।",
   },
   // Header
   header: {

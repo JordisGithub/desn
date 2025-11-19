@@ -253,6 +253,8 @@ const RegisterButton = styled(Button)(({ theme }) => ({
   "&:focus": {
     outline: `3px solid ${theme.palette.primary.main}`,
     outlineOffset: "3px",
+    backgroundColor: "#f6d469",
+    color: "#ffffff",
   },
   "&:disabled": {
     backgroundColor: "#e0e0e0",

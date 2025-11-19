@@ -229,8 +229,8 @@ const DonationSection: React.FC = () => {
   ];
 
   const handlePayPalDonate = () => {
-    // PayPal.me link with the specified email
-    window.open("https://www.paypal.com/paypalme/thekopkrish", "_blank");
+    // PayPal donation link
+    window.open("https://www.paypal.com/us/home", "_blank");
   };
 
   return (

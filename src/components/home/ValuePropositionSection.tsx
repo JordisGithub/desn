@@ -200,7 +200,7 @@ export default function ValuePropositionSection() {
       <Container maxWidth='lg'>
         <ContentWrapper>
           {/* What We Do Section */}
-          <ServicesColumn as='section' aria-labelledby='what-we-do-heading'>
+          <ServicesColumn aria-labelledby='what-we-do-heading'>
             <SectionHeading variant='h2' as='h2' id='what-we-do-heading'>
               {t("value_prop_what_we_do")}
             </SectionHeading>
@@ -230,7 +230,7 @@ export default function ValuePropositionSection() {
           <Divider />
 
           {/* Our Impact Section */}
-          <ImpactColumn as='section' aria-labelledby='our-impact-heading'>
+          <ImpactColumn aria-labelledby='our-impact-heading'>
             <SectionHeading variant='h2' as='h2' id='our-impact-heading'>
               {t("value_prop_our_impact")}
             </SectionHeading>

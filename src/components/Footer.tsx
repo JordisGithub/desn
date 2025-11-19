@@ -2,13 +2,14 @@ import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import XIcon from "@mui/icons-material/X";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import { useTranslation } from "react-i18next";
 import desnLogo from "../assets/DESN_logo_500x500.jpg";
+import knowbilityLogo from "../assets/Knowbility.svg";
 
 const FooterContainer = styled("footer")({
   backgroundColor: "#00a77f",
@@ -27,11 +28,16 @@ const SocialSection = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   gap: theme.spacing(3),
+  marginTop: theme.spacing(6),
   marginBottom: theme.spacing(4),
+  paddingTop: theme.spacing(4),
+  borderTop: "2px solid rgba(0, 0, 0, 0.1)",
   flexWrap: "wrap",
   [theme.breakpoints.down("sm")]: {
     gap: theme.spacing(2),
     marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(4),
+    paddingTop: theme.spacing(3),
   },
 }));
 
@@ -120,7 +126,8 @@ const SocialIcon = styled("a")(({ theme }) => ({
   transition: "all 0.3s ease",
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
   "&:hover, &:focus": {
-    backgroundColor: "#000000",
+    backgroundColor: "#ffffff",
+    color: "#1a1a1a",
     transform: "translateY(-4px)",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
   },
@@ -202,6 +209,25 @@ const CopyrightText = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const KnowbilityLink = styled("a")(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  marginLeft: theme.spacing(2),
+  transition: "all 0.2s ease",
+  "&:hover, &:focus": {
+    opacity: 0.8,
+  },
+  "&:focus": {
+    outline: "3px solid #ffffff",
+    outlineOffset: "2px",
+    borderRadius: "4px",
+  },
+  "& img": {
+    height: "32px",
+    width: "auto",
+  },
+}));
+
 export default function Footer() {
   const { t } = useTranslation();
 
@@ -209,44 +235,6 @@ export default function Footer() {
     <FooterContainer role='contentinfo' aria-label={t("aria.footer")}>
       <TopSection>
         <Container maxWidth='lg' sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
-          {/* Social Media Section */}
-          <SocialSection>
-            <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
-            <SocialIcon
-              href='https://facebook.com'
-              aria-label={t("aria.facebook")}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <FacebookIcon
-                aria-hidden='false'
-                titleAccess={t("aria.facebook").split(" (")[0]}
-              />
-            </SocialIcon>
-            <SocialIcon
-              href='https://twitter.com'
-              aria-label={t("aria.twitter")}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <TwitterIcon
-                aria-hidden='false'
-                titleAccess={t("aria.twitter").split(" (")[0]}
-              />
-            </SocialIcon>
-            <SocialIcon
-              href='https://linkedin.com'
-              aria-label={t("aria.linkedin")}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <LinkedInIcon
-                aria-hidden='false'
-                titleAccess={t("aria.linkedin").split(" (")[0]}
-              />
-            </SocialIcon>
-          </SocialSection>
-
           {/* Footer Links Grid */}
           <FooterGrid>
             {/* About DESN */}
@@ -334,6 +322,44 @@ export default function Footer() {
               </ContactItem>
             </FooterColumn>
           </FooterGrid>
+
+          {/* Social Media Section */}
+          <SocialSection>
+            <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
+            <SocialIcon
+              href='https://facebook.com'
+              aria-label={t("aria.facebook")}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FacebookIcon
+                aria-hidden='false'
+                titleAccess={t("aria.facebook").split(" (")[0]}
+              />
+            </SocialIcon>
+            <SocialIcon
+              href='https://twitter.com'
+              aria-label={t("aria.twitter")}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <XIcon
+                aria-hidden='false'
+                titleAccess={t("aria.twitter").split(" (")[0]}
+              />
+            </SocialIcon>
+            <SocialIcon
+              href='https://linkedin.com'
+              aria-label={t("aria.linkedin")}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <LinkedInIcon
+                aria-hidden='false'
+                titleAccess={t("aria.linkedin").split(" (")[0]}
+              />
+            </SocialIcon>
+          </SocialSection>
         </Container>
       </TopSection>
 
@@ -344,6 +370,24 @@ export default function Footer() {
             <BottomLink to='/accessibility'>
               {t("footer_link_accessibility")}
             </BottomLink>
+            <KnowbilityLink
+              href='https://knowbility.org/programs/air'
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={t("footer_knowbility_alt")}
+            >
+              <Box
+                component='img'
+                src={knowbilityLogo}
+                alt={t("footer_knowbility_alt")}
+                sx={{
+                  height: "32px",
+                  width: "auto",
+                  filter: "brightness(0) invert(1) saturate(2)",
+                  display: "block",
+                }}
+              />
+            </KnowbilityLink>
           </BottomLinks>
           <CopyrightText>{t("footer_copyright")}</CopyrightText>
         </Container>
