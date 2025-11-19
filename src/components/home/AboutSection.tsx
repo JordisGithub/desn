@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PublicIcon from "@mui/icons-material/Public";
 import FlagIcon from "@mui/icons-material/Flag";
+import { colors } from "../../constants/colors";
 
-const AboutContainer = styled("section")(({ theme }) => ({
+const AboutContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   padding: theme.spacing(10, 0),
   position: "relative",
@@ -65,7 +66,7 @@ const AboutHeading = styled(Typography)(({ theme }) => ({
 const Tagline = styled(Typography)(({ theme }) => ({
   fontSize: "1.25rem",
   fontWeight: 600,
-  color: theme.palette.secondary.main,
+  color: colors.components.tagline,
   marginBottom: theme.spacing(3),
   lineHeight: 1.4,
   fontStyle: "italic",

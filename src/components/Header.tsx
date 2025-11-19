@@ -37,7 +37,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import desnLogo from "../assets/DESN_logo_500x500.jpg";
 import SearchService from "../services/SearchService";
 import type { SearchItem } from "../services/SearchService";
-import { border } from "@mui/system";
 
 const TopBar = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -770,10 +769,7 @@ const Header: React.FC = () => {
 
           <MobileDonateButton
             onClick={() =>
-              window.open(
-                "https://www.paypal.com/paypalme/thekopkrish",
-                "_blank"
-              )
+              window.open("https://www.paypal.com/us/home", "_blank")
             }
             aria-label={t("aria.donate_header")}
           >
@@ -807,10 +803,7 @@ const Header: React.FC = () => {
             >
               <DonateButton
                 onClick={() =>
-                  window.open(
-                    "https://www.paypal.com/paypalme/thekopkrish",
-                    "_blank"
-                  )
+                  window.open("https://www.paypal.com/us/home", "_blank")
                 }
                 aria-label={t("aria.donate_header")}
               >
@@ -924,10 +917,7 @@ const Header: React.FC = () => {
             <DonateButton
               fullWidth
               onClick={() => {
-                window.open(
-                  "https://www.paypal.com/paypalme/thekopkrish",
-                  "_blank"
-                );
+                window.open("https://www.paypal.com/us/home", "_blank");
                 setMobileMenuOpen(false);
               }}
             >

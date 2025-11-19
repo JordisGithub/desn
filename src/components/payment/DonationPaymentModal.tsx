@@ -142,10 +142,10 @@ const DonationPaymentModal: React.FC<DonationPaymentModalProps> = ({
       return;
     }
 
-    // Instead of initiating Khalti, route all donations to PayPal.me
+    // Instead of initiating Khalti, route all donations to PayPal
     setLoading(true);
     try {
-      const payPalUrl = "https://www.paypal.com/paypalme/thekopkrish";
+      const payPalUrl = "https://www.paypal.com/us/home";
       // Open PayPal in a new tab so the user can complete payment there
       window.open(payPalUrl, "_blank");
       // Optionally close the modal after opening PayPal

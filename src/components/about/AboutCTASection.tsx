@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const CTAContainer = styled("section")({
+const CTAContainer = styled("div")({
   background: "linear-gradient(180deg, #002b52 0%, #004c91 20%, #00a77f 100%)",
   padding: "20px",
   position: "relative",

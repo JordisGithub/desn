@@ -7,7 +7,7 @@ import testimonial2 from "../../assets/testimonials/testimonial2.png";
 import testimonial3 from "../../assets/testimonials/testimonial3.png";
 
 // Section container
-const StoriesSectionContainer = styled("section")(({ theme }) => ({
+const StoriesSectionContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   padding: theme.spacing(10, 0),
   [theme.breakpoints.down("md")]: {

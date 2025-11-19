@@ -23,6 +23,7 @@ export default {
   footer_link_terms: "Terms of Service",
   footer_link_accessibility: "Accessibility Statement",
   footer_link_account_privacy: "Account Privacy",
+  footer_knowbility_alt: "Knowbility, Inc",
   footer_copyright: "© Copyright 2025 DESN. All Rights Reserved",
   footer_donate_button: "Donate",
   footer_contact_location: "Lalitpur, Nepal",
