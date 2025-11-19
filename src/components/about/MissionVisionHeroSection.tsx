@@ -18,6 +18,7 @@ const HeroContainer = styled("section")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   overflow: "hidden",
+  backgroundImage: `url(${heroImageUrl})`,
   backgroundSize: "cover",
   backgroundPosition: "center center",
   backgroundRepeat: "no-repeat",
@@ -36,7 +37,7 @@ const HeroContainer = styled("section")(({ theme }) => ({
     right: 0,
     bottom: 0,
     background:
-      "linear-gradient(135deg, rgba(0, 76, 145, 0.85) 0%, rgba(0, 61, 115, 0.75) 100%)",
+      "linear-gradient(135deg, rgba(0, 76, 145, 0.75) 10%, rgba(0, 61, 115, 0.85) 100%, rgba(0, 0, 0, 0.7) 100%)",
     zIndex: 1,
   },
 }));

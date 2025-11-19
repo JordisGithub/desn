@@ -49,7 +49,9 @@ const PillarsGrid = styled(Box)(({ theme }) => ({
   },
 }));
 
-const PillarCard = styled(Box)<{
+const PillarCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "pillarColor",
+})<{
   pillarColor: string;
   component?: React.ElementType;
 }>(({ theme, pillarColor }) => ({
@@ -69,7 +71,9 @@ const PillarCard = styled(Box)<{
   },
 }));
 
-const IconWrapper = styled(Box)<{ bgColor: string }>(({ bgColor }) => ({
+const IconWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "bgColor",
+})<{ bgColor: string }>(({ bgColor }) => ({
   width: "80px",
   height: "80px",
   borderRadius: "50%",

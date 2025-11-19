@@ -46,6 +46,9 @@ public class SecurityConfig {
                 // Admin only endpoints
                 .requestMatchers(HttpMethod.GET, "/api/forms/membership", "/api/forms/volunteer").hasRole("ADMIN")
                 .requestMatchers("/api/payment/transactions").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // Public endpoints - events
+                .requestMatchers("/api/events/**").permitAll()
                 // All other requests are public (home page, about page, etc.)
                 .anyRequest().permitAll()
             )

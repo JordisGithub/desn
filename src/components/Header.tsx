@@ -165,14 +165,16 @@ const NavLink = styled(RouterLink)(() => ({
   position: "relative",
   display: "inline-block",
   transition: "all 0.2s ease",
-  "&:hover, &:focus": {
+  "&:hover": {
     color: "#004c91",
     fontWeight: 700,
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
+    outline: "2px solid #004c91",
     outlineOffset: "2px",
     borderRadius: "4px",
+    color: "#004c91",
+    fontWeight: 700,
   },
 }));
 
@@ -339,8 +341,7 @@ const Header: React.FC = () => {
         setSearchResults(results);
         setSearchOpen(true);
         setActiveIndex(-1);
-      } catch (err) {
-        console.error("Search error", err);
+      } catch {
         setSearchResults([]);
       }
     }, 250);

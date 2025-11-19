@@ -10,12 +10,18 @@ interface EventResponse {
   id: number;
   title: string;
   description: string;
+  altText?: string;
+  titleTranslations?: string | Record<string, string>;
+  descriptionTranslations?: string | Record<string, string>;
+  altTextTranslations?: string | Record<string, string>;
   startDate: string;
   endDate: string;
   location: string;
   maxAttendees: number;
   currentAttendees: number;
-  status: string;
+  status?: string;
+  featured?: boolean;
+  imageUrl?: string;
 }
 
 interface RegistrationResponse {
@@ -110,6 +116,21 @@ const EventService = {
       return response;
     } catch (error) {
       console.error("Error getting upcoming events:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get featured events for home page
+   */
+  async getFeaturedEvents(): Promise<EventResponse[]> {
+    try {
+      const response = await ApiService.get<EventResponse[]>(
+        "/api/events/featured"
+      );
+      return response;
+    } catch (error) {
+      console.error("Error getting featured events:", error);
       throw error;
     }
   },

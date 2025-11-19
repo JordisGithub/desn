@@ -17,6 +17,18 @@ public class Event {
     @Column(columnDefinition = "TEXT")
     private String description;
     
+    @Column(columnDefinition = "TEXT")
+    private String altText;
+    
+    @Column(columnDefinition = "TEXT")
+    private String titleTranslations;
+    
+    @Column(columnDefinition = "TEXT")
+    private String descriptionTranslations;
+    
+    @Column(columnDefinition = "TEXT")
+    private String altTextTranslations;
+    
     @Column(nullable = false)
     private LocalDateTime startDate;
     
@@ -150,5 +162,37 @@ public class Event {
     
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public String getAltText() {
+        return altText;
+    }
+    
+    public void setAltText(String altText) {
+        this.altText = altText;
+    }
+    
+    public String getTitleTranslations() {
+        return titleTranslations;
+    }
+    
+    public void setTitleTranslations(String titleTranslations) {
+        this.titleTranslations = titleTranslations;
+    }
+    
+    public String getDescriptionTranslations() {
+        return descriptionTranslations;
+    }
+    
+    public void setDescriptionTranslations(String descriptionTranslations) {
+        this.descriptionTranslations = descriptionTranslations;
+    }
+    
+    public String getAltTextTranslations() {
+        return altTextTranslations;
+    }
+    
+    public void setAltTextTranslations(String altTextTranslations) {
+        this.altTextTranslations = altTextTranslations;
     }
 }

@@ -198,7 +198,6 @@ export default function SearchResults() {
           resultsRef.current?.focus();
         }, 100);
       } catch (err) {
-        console.error("Search error:", err);
         setResults([]);
         announce(
           t("search_results_error", {
