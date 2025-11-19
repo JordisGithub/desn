@@ -23,6 +23,7 @@ export default {
   footer_link_terms: "सेवाका सर्तहरू",
   footer_link_accessibility: "पहुँच कथन",
   footer_link_account_privacy: "खाता गोपनीयता",
+  footer_knowbility_alt: "Knowbility, Inc",
   footer_copyright: "© प्रतिलिपि अधिकार २०२५ DESN। सबै अधिकार सुरक्षित",
   footer_donate_button: "दान गर्नुहोस्",
   footer_contact_location: "ललितपुर, नेपाल",

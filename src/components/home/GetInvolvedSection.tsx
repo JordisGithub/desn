@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import getinvolved1 from "../../assets/home/getinvolved1.jpg";
 import getinvolved2 from "../../assets/home/getinvolved2.jpg";
 
-const GetInvolvedContainer = styled("section")({
+const GetInvolvedContainer = styled("div")({
   backgroundColor: "#004c91",
   position: "relative",
   overflow: "hidden",
@@ -147,10 +147,7 @@ export default function GetInvolvedSection() {
               </GetInvolvedButton>
               <DonateBtn
                 onClick={() =>
-                  window.open(
-                    "https://www.paypal.com/paypalme/thekopkrish",
-                    "_blank"
-                  )
+                  window.open("https://www.paypal.com/us/home", "_blank")
                 }
                 aria-label={tGetInvolved("donate_button")}
               >

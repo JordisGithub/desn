@@ -19,10 +19,14 @@ import LoginIcon from "@mui/icons-material/Login";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiBackdrop-root": {
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
   "& .MuiDialog-paper": {
     borderRadius: "16px",
     padding: theme.spacing(2),
     maxWidth: "500px",
+    border: "2px solid #004c91",
     [theme.breakpoints.down("sm")]: {
       margin: theme.spacing(2),
       padding: theme.spacing(1.5),
@@ -33,8 +37,8 @@ const StyledDialog = styled(Dialog)(({ theme }) => ({
 
 const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   fontSize: "1.5rem",
-  fontWeight: 600,
-  color: "#004c91",
+  fontWeight: 700,
+  color: "#002b52",
   textAlign: "center",
   paddingBottom: "1rem",
   [theme.breakpoints.down("sm")]: {
@@ -61,9 +65,10 @@ const LoginPromptBox = styled(Box)(({ theme }) => ({
 
 const LoginPromptText = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
-  color: "#4a5565",
+  color: "#2b2b2b",
   marginBottom: "1.5rem",
   lineHeight: 1.6,
+  fontWeight: 500,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem",
     marginBottom: "1rem",
@@ -71,32 +76,76 @@ const LoginPromptText = styled(Typography)(({ theme }) => ({
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
-  borderRadius: "100px",
+  borderRadius: "8px",
   padding: "12px 32px",
   fontSize: "1rem",
   textTransform: "none",
-  fontWeight: 600,
+  fontWeight: 700,
   minWidth: "140px",
+  minHeight: "48px",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  "&:focus-visible": {
+    outline: "3px solid #002b52",
+    outlineOffset: "2px",
+  },
   [theme.breakpoints.down("sm")]: {
-    padding: "10px 20px",
-    fontSize: "0.875rem",
-    minWidth: "100px",
+    padding: "12px 20px",
+    fontSize: "0.95rem",
+    minWidth: "120px",
   },
 }));
 
 const PrimaryButton = styled(ActionButton)({
-  backgroundColor: "#004c91",
-  color: "white",
+  backgroundColor: "#002b52",
+  color: "#ffffff",
+  border: "2px solid transparent",
   "&:hover": {
-    backgroundColor: "#003d73",
+    backgroundColor: "#ffffff",
+    color: "#002b52",
+    border: "2px solid #002b52",
+  },
+  "&:focus-visible": {
+    backgroundColor: "#001f3a",
+    outline: "3px solid #ffffff",
+    outlineOffset: "2px",
+  },
+  "&:active": {
+    backgroundColor: "#001f3a",
+  },
+  "&:disabled": {
+    backgroundColor: "#999999",
+    color: "#ffffff",
+    cursor: "not-allowed",
   },
 });
 
 const SecondaryButton = styled(ActionButton)({
-  backgroundColor: "#f3f4f6",
-  color: "#4a5565",
+  backgroundColor: "#ffffff",
+  color: "#002b52",
+  border: "2px solid #002b52",
+  fontWeight: 700,
   "&:hover": {
+    backgroundColor: "#e8eff7",
+    borderColor: "#001f3a",
+    color: "#001f3a",
+  },
+  "&:focus-visible": {
+    backgroundColor: "#e8eff7",
+    borderColor: "#001f3a",
+    color: "#001f3a",
+    outline: "3px solid #002b52",
+    outlineOffset: "2px",
+  },
+  "&:active": {
+    backgroundColor: "#d9e5f0",
+  },
+  "&:disabled": {
     backgroundColor: "#e5e7eb",
+    color: "#999999",
+    borderColor: "#999999",
+    cursor: "not-allowed",
   },
 });
 
@@ -121,14 +170,14 @@ const EventDetailRow = styled(Box)({
 });
 
 const DetailLabel = styled(Typography)({
-  fontSize: "0.875rem",
-  color: "#717182",
-  fontWeight: 500,
+  fontSize: "0.95rem",
+  color: "#2b2b2b",
+  fontWeight: 700,
 });
 
 const DetailValue = styled(Typography)({
-  fontSize: "0.875rem",
-  color: "#2b2b2b",
+  fontSize: "0.95rem",
+  color: "#004c91",
   fontWeight: 600,
 });
 
@@ -323,7 +372,9 @@ export default function EventRegistrationModal({
             </Alert>
           )}
 
-          <Typography sx={{ marginBottom: 2, color: "#4a5565" }}>
+          <Typography
+            sx={{ marginBottom: 2, color: "#2b2b2b", fontWeight: 500 }}
+          >
             {t("event_registration_confirm_message")}
           </Typography>
 

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const CTAContainer = styled("section")({
+const CTAContainer = styled("div")({
   background: "linear-gradient(180deg, #002b52 0%, #004c91 20%, #00a77f 100%)",
   padding: "20px",
   position: "relative",
@@ -76,31 +76,31 @@ const PrimaryButton = styled(Link)(({ theme }) => ({
 }));
 
 const SecondaryButton = styled(Link)(({ theme }) => ({
-  backgroundColor: "transparent",
-  color: "white",
-  fontWeight: 600,
+  background: "linear-gradient(135deg, #f6d469 0%, #f5c943 100%)",
+  color: "#2b2b2b",
+  fontWeight: 700,
   fontSize: "1.125rem",
-  padding: theme.spacing(1.5, 4),
-  minHeight: "44px",
-  borderRadius: "8px",
-  border: "2px solid white",
+  padding: theme.spacing(2, 5),
+  borderRadius: "12px",
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   gap: theme.spacing(1),
-  transition: "all 0.3s ease",
+  boxShadow: "0 6px 12px rgba(246, 212, 105, 0.35)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
-    borderColor: "white",
+    background: "linear-gradient(135deg, #f5c943 0%, #e5b833 100%)",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 24px rgba(246, 212, 105, 0.45)",
   },
-  "&:focus-visible": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "3px",
+  "&:focus": {
+    outline: "3px solid white",
+    outlineOffset: "2px",
   },
   [theme.breakpoints.down("sm")]: {
     width: "100%",
-    padding: theme.spacing(1.5, 3),
+    padding: theme.spacing(2, 3),
     fontSize: "1rem",
   },
 }));

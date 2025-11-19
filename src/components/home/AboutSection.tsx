@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PublicIcon from "@mui/icons-material/Public";
 import FlagIcon from "@mui/icons-material/Flag";
+import { colors } from "../../constants/colors";
 
-const AboutContainer = styled("section")(({ theme }) => ({
+const AboutContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   padding: theme.spacing(10, 0),
   position: "relative",
@@ -65,7 +66,7 @@ const AboutHeading = styled(Typography)(({ theme }) => ({
 const Tagline = styled(Typography)(({ theme }) => ({
   fontSize: "1.25rem",
   fontWeight: 600,
-  color: theme.palette.secondary.main,
+  color: colors.components.tagline,
   marginBottom: theme.spacing(3),
   lineHeight: 1.4,
   fontStyle: "italic",
@@ -122,20 +123,22 @@ const AboutButton = styled(Link)(({ theme }) => ({
   },
 }));
 
-// Key facts container
-const FactsContainer = styled(Box)(({ theme }) => ({
+// Key facts container - now a list
+const FactsContainer = styled("ul")(({ theme }) => ({
   backgroundColor: "#ffffff",
   borderRadius: 16,
   padding: theme.spacing(4),
   boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.08)",
   border: `2px solid ${theme.palette.primary.light}`,
+  listStyle: "none",
+  margin: 0,
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(3),
   },
 }));
 
-// Individual fact item
-const FactItem = styled(Box)(({ theme }) => ({
+// Individual fact item - now a list item
+const FactItem = styled("li")(({ theme }) => ({
   display: "flex",
   alignItems: "flex-start",
   gap: theme.spacing(2),
@@ -238,13 +241,14 @@ export default function AboutSection() {
                   color: "primary.main",
                   mb: 2,
                 }}
+                id='key-facts-heading'
               >
                 Key Facts
               </Typography>
             </Box>
-            <FactsContainer>
+            <FactsContainer aria-labelledby='key-facts-heading' role='list'>
               {keyFacts.map((fact, index) => (
-                <FactItem key={index}>
+                <FactItem key={index} role='listitem'>
                   <FactIcon>{fact.icon}</FactIcon>
                   <FactContent>
                     <FactLabel>{fact.label}</FactLabel>

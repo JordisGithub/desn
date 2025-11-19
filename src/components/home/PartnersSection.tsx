@@ -9,7 +9,7 @@ import khyentseLogo from "../../assets/grantors/khyentse_foundation.png";
 import meedanLogo from "../../assets/grantors/Meedan.svg";
 import undpLogo from "../../assets/grantors/UNDP.png";
 
-const PartnersContainer = styled("section")({
+const PartnersContainer = styled("div")({
   background: "linear-gradient(135deg, #004c91 0%, #003d73 50%, #002b52 100%)",
   position: "relative",
   "&::before": {

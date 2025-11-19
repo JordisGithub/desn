@@ -15,30 +15,6 @@ const HeroSection = styled("section")(({ theme }) => ({
   },
 }));
 
-const GradientOverlay1 = styled(Box)({
-  position: "absolute",
-  top: "80px",
-  left: "253px",
-  width: "384px",
-  height: "384px",
-  backgroundColor: "rgba(255, 255, 255, 0.05)",
-  borderRadius: "50%",
-  filter: "blur(96px)",
-  pointerEvents: "none",
-});
-
-const GradientOverlay2 = styled(Box)({
-  position: "absolute",
-  top: "-33px",
-  left: "160px",
-  width: "600px",
-  height: "600px",
-  backgroundColor: "rgba(246, 212, 105, 0.1)",
-  borderRadius: "50%",
-  filter: "blur(96px)",
-  pointerEvents: "none",
-});
-
 const Badge = styled(Box)(({ theme }) => ({
   backgroundColor: "rgba(255, 255, 255, 0.2)",
   border: "1px solid rgba(0, 0, 0, 0)",
@@ -111,8 +87,6 @@ export default function ContactHero() {
 
   return (
     <HeroSection aria-labelledby='contact-hero-heading' role='banner'>
-      <GradientOverlay1 />
-      <GradientOverlay2 />
       <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
         <Box sx={{ maxWidth: "733px" }}>
           <Badge>

@@ -5,6 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -54,23 +55,54 @@ const TopBar = styled(Box)(({ theme }) => ({
 
 const SearchField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    backgroundColor: "#f5f5f5",
-    borderRadius: "24px",
-    fontSize: "14px",
-    "& fieldset": {
-      borderColor: "transparent",
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    // default notched outline appearance
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#004c91 !important",
+      borderWidth: "2px !important",
+      borderStyle: "solid !important",
     },
-    "&:hover fieldset": {
-      borderColor: "#004c91",
+
+    // Icon colors - default
+    "& .MuiInputAdornment-positionStart svg": {
+      color: "#004c91",
+      transition: "color 0.2s ease",
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#004c91",
-      borderWidth: "1px",
+
+    // hover: stronger blue border and darker icons
+    "&:hover": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderWidth: "2px !important",
+        borderColor: "#003d73 !important",
+        borderStyle: "solid !important",
+      },
+      "& .MuiInputAdornment-positionStart svg": {
+        color: "#003d73",
+      },
     },
-    "& input::placeholder": {
-      color: "#666",
-      opacity: 1,
+
+    // focus: prominent 3px solid dark blue border and white icon
+    "&.Mui-focused": {
+      outline: "none !important",
+      boxShadow: "0 0 0 4px rgba(0, 76, 145, 0.15) !important",
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderWidth: "3px !important",
+        borderColor: "#002b52 !important",
+        borderStyle: "solid !important",
+      },
+      "& .MuiInputAdornment-positionStart svg": {
+        color: "#ffffff",
+      },
     },
+
+    // prevent browser default focus-visible on inner input
+    "& input:focus-visible": {
+      outline: "none !important",
+      boxShadow: "none !important",
+    },
+
+    "& input::placeholder": { color: "#004c91", opacity: 1 },
   },
 });
 
@@ -144,21 +176,36 @@ const NavLink = styled(RouterLink)(() => ({
   },
 }));
 
-const LanguageButton = styled(Button)(({ theme }) => ({
+// Lightweight plain button built on ButtonBase so we can fully control styles
+const PlainButton = styled(ButtonBase)(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: theme.spacing(1),
+  padding: theme.spacing(1, 2),
+  background: "transparent",
+  border: "none",
   color: "#333",
   textTransform: "none",
   fontSize: "16px",
-  padding: theme.spacing(1, 2),
-  minWidth: "auto",
-  transition: "all 0.2s ease",
-  "&:hover, &:focus": {
+  cursor: "pointer",
+  borderRadius: 6,
+  transition:
+    "background-color 0.2s ease, color 0.2s ease, transform 0.1s ease",
+  "&:hover": {
     color: "#ffffff",
     backgroundColor: "rgba(0, 76, 145, 0.9)",
   },
   "&:focus": {
     outline: "3px solid #f6d469",
     outlineOffset: "2px",
+    color: "#ffffff",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
   },
+  "& svg": {
+    fontSize: 20,
+  },
+  WebkitAppearance: "none",
+  MozAppearance: "none",
 }));
 
 const DonateButton = styled(Button)(({ theme }) => ({
@@ -422,21 +469,29 @@ const Header: React.FC = () => {
             </LogoLink>
           </TopBarLeft>{" "}
           <TopBarRight>
-            <LanguageButton
+            <PlainButton
               onClick={handleLanguageClick}
-              startIcon={<PublicIcon titleAccess='Global Translation Menu' />}
-              endIcon={<KeyboardArrowDownIcon />}
+              disableRipple
               sx={{ display: { xs: "none", md: "flex" } }}
               aria-label={t("aria.globe_menu")}
+              type='button'
             >
-              {lang === "en"
-                ? "English"
-                : lang === "ne"
-                ? "नेपाली"
-                : lang === "new"
-                ? "नेवारी"
-                : "मैथिली"}
-            </LanguageButton>
+              <PublicIcon
+                titleAccess='Global Translation Menu'
+                aria-hidden='true'
+                sx={{ mr: 1 }}
+              />
+              <span>
+                {lang === "en"
+                  ? "English"
+                  : lang === "ne"
+                  ? "नेपाली"
+                  : lang === "new"
+                  ? "नेवारी"
+                  : "मैथिली"}
+              </span>
+              <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+            </PlainButton>
             <Menu
               anchorEl={langAnchorEl}
               open={Boolean(langAnchorEl)}
@@ -505,29 +560,36 @@ const Header: React.FC = () => {
                 </Menu>
               </>
             ) : (
-              <Button
+              <PlainButton
                 onClick={handleLogin}
-                startIcon={<LoginIcon titleAccess='User Login Portal' />}
+                disableRipple
                 aria-label={t("aria.user_login")}
+                type='button'
                 sx={{
                   color: "#004c91",
                   textTransform: "none",
                   fontSize: "14px",
                   display: { xs: "none", md: "flex" },
+                  // keep styles minimal and rely on MUI accessibility defaults
                   "&:hover": {
                     color: "#ffffff",
                     backgroundColor: "rgba(0, 76, 145, 0.9)",
                   },
                   "&:focus": {
-                    color: "#ffffff",
-                    backgroundColor: "rgba(0, 76, 145, 0.9)",
                     outline: "3px solid #f6d469",
                     outlineOffset: "2px",
+                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 76, 145, 0.9)",
                   },
                 }}
               >
+                <LoginIcon
+                  titleAccess='User Login Portal'
+                  aria-hidden='true'
+                  sx={{ mr: 1 }}
+                />
                 {t("header.login")}
-              </Button>
+              </PlainButton>
             )}
 
             <Box
@@ -554,14 +616,6 @@ const Header: React.FC = () => {
                 }}
                 onKeyDown={onSearchKeyDown}
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon
-                        sx={{ color: "#666", fontSize: "20px" }}
-                        titleAccess='Search bar'
-                      />
-                    </InputAdornment>
-                  ),
                   endAdornment: (
                     <InputAdornment position='end'>
                       <IconButton
@@ -577,6 +631,12 @@ const Header: React.FC = () => {
                           "&:hover": {
                             backgroundColor: "rgba(0, 76, 145, 0.08)",
                           },
+                          "&:focus-visible": {
+                            color: "#ffffff",
+                            backgroundColor: "#002b52",
+                            outline: "3px solid #f6d469",
+                            outlineOffset: "2px",
+                          },
                         }}
                       >
                         <SearchIcon sx={{ fontSize: "20px" }} />
@@ -590,7 +650,7 @@ const Header: React.FC = () => {
             {/* Search results dropdown */}
             {searchOpen && searchResults.length > 0 && (
               <Box
-                sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
+              // sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
               >
                 <Paper
                   elevation={3}
@@ -706,7 +766,7 @@ const Header: React.FC = () => {
         <MobileNavBar>
           <MobileMenuButton
             edge='start'
-            aria-label={t("aria.menu")}
+            aria-label={t("aria.navigation_menu")}
             onClick={toggleMobileMenu}
           >
             <MenuIcon />
@@ -721,10 +781,7 @@ const Header: React.FC = () => {
 
           <MobileDonateButton
             onClick={() =>
-              window.open(
-                "https://www.paypal.com/paypalme/thekopkrish",
-                "_blank"
-              )
+              window.open("https://www.paypal.com/us/home", "_blank")
             }
             aria-label={t("aria.donate_header")}
           >
@@ -758,10 +815,7 @@ const Header: React.FC = () => {
             >
               <DonateButton
                 onClick={() =>
-                  window.open(
-                    "https://www.paypal.com/paypalme/thekopkrish",
-                    "_blank"
-                  )
+                  window.open("https://www.paypal.com/us/home", "_blank")
                 }
                 aria-label={t("aria.donate_header")}
               >
@@ -785,11 +839,6 @@ const Header: React.FC = () => {
       >
         <DrawerContent>
           <DrawerHeader>
-            <Logo
-              src={desnLogo}
-              alt='Disability Empowerment Society Nepal (DESN), established in the year 2060 Bikram Sambat (2003 AD)'
-              style={{ height: "40px" }}
-            />
             <IconButton
               onClick={toggleMobileMenu}
               sx={{ color: "white" }}
@@ -875,10 +924,7 @@ const Header: React.FC = () => {
             <DonateButton
               fullWidth
               onClick={() => {
-                window.open(
-                  "https://www.paypal.com/paypalme/thekopkrish",
-                  "_blank"
-                );
+                window.open("https://www.paypal.com/us/home", "_blank");
                 setMobileMenuOpen(false);
               }}
             >
