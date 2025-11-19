@@ -198,7 +198,7 @@ class SearchService {
         keys: ["title", "excerpt", "type"],
         threshold: 0.35,
         includeMatches: true,
-        minMatchCharLength: 3,
+        minMatchCharLength: 2,
       });
     } catch (error) {
       console.error("Error building search index", error);
