@@ -145,7 +145,6 @@ export default function CoreValuesSection() {
           {values.map((value, index) => (
             <ValueCard
               key={index}
-              tabIndex={0}
               role='article'
               aria-label={`Core value: ${value.title}`}
             >

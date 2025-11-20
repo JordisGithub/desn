@@ -5,11 +5,9 @@ import {
   Card,
   CardContent,
   Stack,
-  Button,
   Box,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EventRegistrationModal from "../events/EventRegistrationModal";
@@ -107,10 +105,11 @@ const EventsGrid = styled("div")(({ theme }) => ({
   },
 }));
 
-const EventCard = styled(Card)(({ theme }) => ({
+const EventCard = styled(Card)(() => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
+  justifyContent: "space-between",
   borderRadius: "20px",
   overflow: "hidden",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -137,13 +136,6 @@ const EventCard = styled(Card)(({ theme }) => ({
     },
     "& .event-image": {
       transform: "scale(1.1)",
-    },
-  },
-  "&:focus-within": {
-    outline: `3px solid ${theme.palette.primary.main}`,
-    outlineOffset: "4px",
-    "&::before": {
-      opacity: 1,
     },
   },
 }));
@@ -214,21 +206,6 @@ const EventTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const EventTitleLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  textDecoration: "none",
-  transition: "color 0.25s ease",
-  "&:hover, &:focus": {
-    color: "#006d54",
-    textDecoration: "underline",
-  },
-  "&:focus": {
-    outline: `3px solid ${theme.palette.primary.main}`,
-    outlineOffset: "3px",
-    borderRadius: "4px",
-  },
-}));
-
 const EventDescription = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   fontSize: "1.0625rem",
@@ -258,35 +235,37 @@ const EventOrganizer = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const RegisterButton = styled(Button)(({ theme }) => ({
+const RegisterButton = styled("button")(({ theme }) => ({
   backgroundColor: "#f6d469",
-  color: "#1a2332",
+  color: "#003d73",
   width: "100%",
   borderRadius: "12px",
   fontSize: "1rem",
   fontWeight: 700,
   padding: "12px 24px",
   textTransform: "uppercase",
-  letterSpacing: "0.5px",
+  letterSpacing: "0.02em",
   fontFamily: "Poppins, sans-serif",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  cursor: "pointer",
+  border: "none",
   boxShadow: "0 4px 12px rgba(246, 212, 105, 0.3)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "8px",
   "&:hover": {
-    backgroundColor: "#f5c943",
-    transform: "translateY(-2px)",
-    boxShadow: "0 8px 20px rgba(246, 212, 105, 0.4)",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
   },
   "&:focus": {
-    outline: `3px solid ${theme.palette.primary.main}`,
-    outlineOffset: "3px",
-    backgroundColor: "#f6d469",
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
     color: "#ffffff",
   },
   "&:disabled": {
     backgroundColor: "#e0e0e0",
     color: "#9e9e9e",
     cursor: "not-allowed",
-    transform: "none",
     boxShadow: "none",
   },
   [theme.breakpoints.down("sm")]: {
@@ -534,24 +513,20 @@ export default function EventsSection() {
                         })}
                       </EventTime>
                     </Stack>
-                    <EventTitle as='h3'>
-                      <EventTitleLink to={`/events`}>
-                        {event.title}
-                      </EventTitleLink>
-                    </EventTitle>
+                    <EventTitle as='h3'>{event.title}</EventTitle>
                     <EventDescription>{event.description}</EventDescription>
                     <EventOrganizer>
                       <strong>{t("event_organizer")}</strong> DESN
                     </EventOrganizer>
                     <RegisterButton
                       aria-label={`Register Now for ${event.title}`}
-                      endIcon={
-                        !status?.isFull ? <ArrowForwardIcon /> : undefined
-                      }
                       onClick={() => handleRegisterClick(event)}
                       disabled={status?.isFull}
                     >
                       {status?.isFull ? t("event_full") : t("register_now")}
+                      {!status?.isFull && (
+                        <ArrowForwardIcon sx={{ fontSize: "1rem" }} />
+                      )}
                     </RegisterButton>
                   </CardContent>
                 </EventCard>

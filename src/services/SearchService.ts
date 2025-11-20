@@ -104,7 +104,7 @@ class SearchService {
             title: "Home",
             url: "/",
             excerpt:
-              "DESN homepage - Empowering persons with disabilities in Nepal",
+              "DESN homepage - Empowering persons with disabilities in Nepal through inclusive programs and advocacy",
           },
           {
             id: "page-about",
@@ -112,37 +112,55 @@ class SearchService {
             title: "About Us",
             url: "/about",
             excerpt:
-              "Learn about DESN's mission, vision, and our work with persons with disabilities",
+              "Learn about DESN's mission, vision, and our work with persons with disabilities in Nepal",
           },
           {
             id: "page-programs",
             type: "page",
-            title: "Programs",
+            title: "Programs & Services",
             url: "/programs",
             excerpt:
-              "Education, Livelihood, and Advocacy programs for persons with disabilities",
+              "Education, Livelihood, and Advocacy programs for persons with disabilities including ICT training, skill development, and employment support",
           },
           {
             id: "page-programs-education",
             type: "page",
             title: "Education Programs",
             url: "/programs#pillar-education",
-            excerpt: "ICT Training, Braille & Sign Language, Scholarship Fund",
+            excerpt:
+              "ICT Training, Braille & Sign Language instruction, Scholarship Fund for students with disabilities",
           },
           {
             id: "page-programs-livelihood",
             type: "page",
             title: "Livelihood Programs",
             url: "/programs#pillar-livelihood",
-            excerpt: "Microfinance, Skill Development, Job Placement Support",
+            excerpt:
+              "Microfinance, Skill Development training, Job Placement Support for employment and economic empowerment",
           },
           {
             id: "page-programs-advocacy",
             type: "page",
-            title: "Advocacy Programs",
+            title: "Advocacy & Rights",
             url: "/programs#pillar-advocacy",
             excerpt:
-              "UNCRPD Monitoring, Policy Dialogue, Barrier-Free Environment Campaign",
+              "UNCRPD Monitoring, Policy Dialogue, Barrier-Free Environment Campaign for disability rights and inclusion",
+          },
+          {
+            id: "page-what-we-do",
+            type: "page",
+            title: "What We Do",
+            url: "/programs",
+            excerpt:
+              "DESN promotes disability inclusion through education, livelihood programs, and policy advocacy in Nepal",
+          },
+          {
+            id: "page-impact",
+            type: "page",
+            title: "Our Impact",
+            url: "/about",
+            excerpt:
+              "DESN has empowered thousands of persons with disabilities through training, employment, and advocacy initiatives",
           },
           {
             id: "page-get-involved",
@@ -150,49 +168,55 @@ class SearchService {
             title: "Get Involved",
             url: "/get-involved",
             excerpt:
-              "Volunteer, donate, or become a member to support our cause",
+              "Volunteer, donate, or become a member to support DESN's work with persons with disabilities",
           },
           {
             id: "page-volunteer",
             type: "page",
-            title: "Volunteer",
+            title: "Volunteer with DESN",
             url: "/get-involved#volunteer",
-            excerpt: "Join our team of volunteers making a difference",
+            excerpt:
+              "Join our team of volunteers making a difference in the lives of persons with disabilities",
           },
           {
             id: "page-donate",
             type: "page",
             title: "Donate",
             url: "/get-involved#donate",
-            excerpt: "Support our programs with your generous donation",
+            excerpt:
+              "Support DESN programs with your generous donation to help persons with disabilities",
           },
           {
             id: "page-membership",
             type: "page",
-            title: "Membership",
+            title: "Become a Member",
             url: "/get-involved#membership",
-            excerpt: "Become a DESN member and join our community",
+            excerpt:
+              "Become a DESN member and join our community supporting disability inclusion and empowerment",
           },
           {
             id: "page-events",
             type: "page",
-            title: "Events",
+            title: "Events & Activities",
             url: "/events",
-            excerpt: "Upcoming events, workshops, and activities",
+            excerpt:
+              "Upcoming events, workshops, and activities promoting disability awareness and inclusion",
           },
           {
             id: "page-resources",
             type: "page",
-            title: "Resources",
+            title: "Resources & Publications",
             url: "/resources",
-            excerpt: "Documents, publications, and helpful resources",
+            excerpt:
+              "Documents, publications, policies, and helpful resources on disability empowerment",
           },
           {
             id: "page-contact",
             type: "page",
-            title: "Contact",
+            title: "Contact DESN",
             url: "/contact",
-            excerpt: "Get in touch with DESN - Location, phone, email",
+            excerpt:
+              "Get in touch with DESN - Location, phone, email address for inquiries",
           },
         ];
 

@@ -143,7 +143,7 @@ const MetricCard = styled(Box)(({ theme }) => ({
 const MetricNumber = styled(Typography)(({ theme }) => ({
   fontSize: "2.75rem",
   fontWeight: 800,
-  color: theme.palette.secondary.main,
+  color: "#007056",
   lineHeight: 1,
   marginBottom: theme.spacing(0.5),
   letterSpacing: "-0.02em",

@@ -81,7 +81,7 @@ export default {
     language_maithili: "Maithili",
     login: "Login",
     logout: "Logout",
-    my_events: "My Events",
+    my_events: "Dashboard",
     admin_dashboard: "Admin Dashboard",
   },
 
