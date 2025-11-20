@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import HeroSection from "../components/getinvolved/HeroSection";
 import ImpactSection from "../components/getinvolved/ImpactSection";
 import VolunteerSection from "../components/getinvolved/VolunteerSection";
@@ -11,6 +12,7 @@ import AboutCTASection from "../components/about/AboutCTASection";
 
 const GetInvolved: React.FC = () => {
   usePageTitle("page_titles.get_involved");
+  useSearchHighlight();
 
   const SkipLink = styled("a")(({ theme }) => ({
     position: "absolute",

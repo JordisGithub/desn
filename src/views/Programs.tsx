@@ -1,4 +1,5 @@
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import ProgramsHero from "../components/programs/ProgramsHero";
 import ProgramPillarsSection from "../components/programs/ProgramPillarsSection";
 import ProgramPillarCategory from "../components/programs/ProgramPillarCategory";
@@ -101,6 +102,7 @@ const advocacyPrograms = [
 
 export default function Programs() {
   usePageTitle("page_titles.programs");
+  useSearchHighlight();
 
   return (
     <>

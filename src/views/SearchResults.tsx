@@ -18,6 +18,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useAnnouncer } from "../hooks/useAnnouncer";
+import { createHighlightUrl } from "../utils/searchHighlight";
 
 const PageContainer = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(6),
@@ -280,7 +281,15 @@ export default function SearchResults() {
                       : "Event"}
                   </ResultType>
                 </Box>
-                <ResultTitle to={result.url}>{result.title}</ResultTitle>
+                <ResultTitle
+                  to={createHighlightUrl(result.url, query)}
+                  onClick={() => {
+                    // Announce navigation
+                    announce(`Navigating to ${result.title}`);
+                  }}
+                >
+                  {result.title}
+                </ResultTitle>
                 {result.excerpt && (
                   <ResultExcerpt>{result.excerpt}</ResultExcerpt>
                 )}
