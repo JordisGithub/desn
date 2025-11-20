@@ -45,32 +45,62 @@ const Title = styled("h1")({
 
 const Subtitle = styled(Typography)({
   fontSize: "16px",
-  color: "#666",
+  color: "#374151",
   marginBottom: "32px",
   textAlign: "center",
+  fontWeight: 400,
 });
 
 const StyledTextField = styled(TextField)({
   marginBottom: "20px",
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#d1d5db",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#004c91",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "3px",
+      borderColor: "#004c91",
+    },
+  },
+  "& .MuiOutlinedInput-input": {
+    "&:focus-visible": {
+      outline: "none",
+    },
   },
 });
 
 const SubmitButton = styled(Button)({
   backgroundColor: "#004c91",
-  color: "white",
+  color: "#ffffff",
   fontSize: "16px",
-  fontWeight: 500,
+  fontWeight: 600,
   padding: "12px",
   borderRadius: "10px",
   textTransform: "none",
   marginTop: "20px",
+  letterSpacing: "0.02em",
+  transition: "all 0.2s ease",
   "&:hover": {
-    backgroundColor: "#003d75",
+    backgroundColor: "#003d73",
+    boxShadow: "0 4px 12px rgba(0, 76, 145, 0.3)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
   },
   "&:disabled": {
-    backgroundColor: "#cccccc",
+    backgroundColor: "#d1d5db",
+    color: "#6b7280",
   },
 });
 
@@ -78,13 +108,28 @@ const LinkText = styled(Typography)({
   marginTop: "20px",
   textAlign: "center",
   fontSize: "14px",
-  color: "#666",
+  color: "#374151",
+  fontWeight: 400,
   "& a": {
     color: "#004c91",
     textDecoration: "none",
     fontWeight: 500,
+    transition: "all 0.2s ease",
     "&:hover": {
+      color: "#003d73",
       textDecoration: "underline",
+    },
+    "&:focus": {
+      outline: "3px solid #004c91",
+      outlineOffset: "2px",
+      borderRadius: "4px",
+      color: "#003d73",
+    },
+    "&:focus-visible": {
+      outline: "3px solid #004c91",
+      outlineOffset: "2px",
+      borderRadius: "4px",
+      color: "#003d73",
     },
   },
 });
@@ -180,6 +225,10 @@ const Register: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
+              inputProps={{
+                "aria-label": t("register_fullname"),
+                "aria-required": true,
+              }}
             />
             <StyledTextField
               fullWidth
@@ -189,6 +238,10 @@ const Register: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
+              inputProps={{
+                "aria-label": t("register_username"),
+                "aria-required": true,
+              }}
             />
             <StyledTextField
               fullWidth
@@ -199,6 +252,10 @@ const Register: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
+              inputProps={{
+                "aria-label": t("register_email"),
+                "aria-required": true,
+              }}
             />
             <StyledTextField
               fullWidth
@@ -209,6 +266,10 @@ const Register: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
+              inputProps={{
+                "aria-label": t("register_password"),
+                "aria-required": true,
+              }}
             />
 
             <SubmitButton

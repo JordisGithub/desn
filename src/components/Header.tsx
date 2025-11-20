@@ -888,7 +888,7 @@ const Header: React.FC = () => {
           <NavBar>
             <NavLinks>
               {navItems.map((item) => (
-                <NavLink key={item.path} to={item.path} aria-label={item.label}>
+                <NavLink key={item.path} to={item.path}>
                   {item.label}
                 </NavLink>
               ))}
