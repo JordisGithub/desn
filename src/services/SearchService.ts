@@ -24,13 +24,8 @@ class SearchService {
     this.isBuilding = true;
 
     try {
-      // Try sessionStorage cache first
-      const cached =
-        typeof window !== "undefined" &&
-        sessionStorage.getItem("desn_search_index");
-      if (cached) {
-        this.items = JSON.parse(cached) as SearchItem[];
-      } else {
+      // No caching - always build fresh index to ensure latest content is searchable
+      {
         interface ResourcesResponse {
           resources?: Array<Record<string, unknown>>;
         }
@@ -168,7 +163,7 @@ class SearchService {
             title: "Get Involved",
             url: "/get-involved",
             excerpt:
-              "Volunteer, donate, or become a member to support DESN's work with persons with disabilities",
+              "Join our mission to support DESN's work. Volunteer, donate, or become a member to support DESN's mission of empowerment for persons with disabilities",
           },
           {
             id: "page-volunteer",
@@ -311,17 +306,6 @@ class SearchService {
           ...documentItems,
           ...pageItems,
         ];
-
-        try {
-          if (typeof window !== "undefined") {
-            sessionStorage.setItem(
-              "desn_search_index",
-              JSON.stringify(this.items)
-            );
-          }
-        } catch {
-          // ignore sessionStorage errors
-        }
       }
 
       // Create Fuse index
@@ -383,12 +367,6 @@ class SearchService {
 
   // Force refresh (clear cache and rebuild)
   async refresh(): Promise<void> {
-    try {
-      if (typeof window !== "undefined")
-        sessionStorage.removeItem("desn_search_index");
-    } catch {
-      // ignore
-    }
     this.fuse = null;
     this.items = [];
     await this.buildIndex();

@@ -1,4 +1,5 @@
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import HeroSection from "../components/home/HeroSection";
 import AboutCTASection from "../components/about/AboutCTASection";
 import StoriesSection from "../components/home/StoriesSection";
@@ -10,6 +11,7 @@ import ValuePropositionSection from "../components/home/ValuePropositionSection"
 
 export default function Home() {
   usePageTitle("page_titles.home");
+  useSearchHighlight();
 
   return (
     <>

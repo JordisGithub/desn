@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import {
   Box,
   Container,
@@ -35,6 +36,7 @@ import { getResourceTranslation } from "../utils/resourceTranslations";
 const Resources: React.FC = () => {
   const { t, i18n } = useTranslation();
   usePageTitle("page_titles.resources");
+  useSearchHighlight();
   const { isAuthenticated, user } = useAuth();
   const token = user?.token;
 
