@@ -211,7 +211,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <AboutContainer aria-labelledby='about-heading'>
+    <AboutContainer>
       <Container maxWidth='lg'>
         <GridContainer>
           {/* Left Column - Main Content */}

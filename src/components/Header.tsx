@@ -355,28 +355,26 @@ const Header: React.FC = () => {
       return;
     }
 
-    // Only handle arrow and enter keys if dropdown is open
-    if (!searchOpen || searchResults.length === 0) return;
-
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" && searchOpen && searchResults.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, searchResults.length - 1));
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === "ArrowUp" && searchOpen && searchResults.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      // Only select a result if one is actively highlighted
-      if (activeIndex >= 0) {
+      // If dropdown is open and a result is highlighted, navigate to it
+      if (searchOpen && searchResults.length > 0 && activeIndex >= 0) {
         const sel = searchResults[activeIndex];
         if (sel) {
           setSearchOpen(false);
           setSearchQuery("");
           navigate(sel.url);
         }
-      } else {
-        // If no result is highlighted, submit the search form instead
-        handleSearchSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+      } else if (searchQuery.trim()) {
+        // Otherwise submit search form if query is not empty
+        setSearchOpen(false);
+        navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       }
     }
   };
@@ -596,7 +594,11 @@ const Header: React.FC = () => {
             <Box
               component='form'
               onSubmit={handleSearchSubmit}
-              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                alignItems: "center",
+                position: "relative",
+              }}
             >
               <SearchField
                 placeholder={t("header.search_placeholder")}
@@ -651,13 +653,24 @@ const Header: React.FC = () => {
             {/* Search results dropdown */}
             {searchOpen && searchResults.length > 0 && (
               <Box
-              // sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
+                sx={{
+                  position: "absolute",
+                  top: 80,
+                  right: 35,
+                  zIndex: 1400,
+                  width: "300px",
+                }}
               >
                 <Paper
                   elevation={3}
-                  sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
                   role='region'
                   aria-label={t("aria.search_results")}
+                  sx={{
+                    position: "relative",
+                    borderRadius: "0 0 8px 8px",
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                  }}
                 >
                   <Box
                     sx={{
@@ -698,6 +711,8 @@ const Header: React.FC = () => {
                               <EventIcon fontSize='small' />
                             ) : r.type === "resource" ? (
                               <DescriptionIcon fontSize='small' />
+                            ) : r.type === "document" ? (
+                              <DescriptionIcon fontSize='small' />
                             ) : (
                               <MenuBookIcon fontSize='small' />
                             )}
@@ -721,6 +736,8 @@ const Header: React.FC = () => {
                                     ? "Page"
                                     : r.type === "resource"
                                     ? "Resource"
+                                    : r.type === "document"
+                                    ? "Document"
                                     : "Event"}
                                 </Box>
                                 {r.matchText && (
@@ -848,6 +865,54 @@ const Header: React.FC = () => {
               <CloseIcon />
             </IconButton>
           </DrawerHeader>
+          <Divider />
+          {/* Mobile Search */}
+          <Box
+            component='form'
+            onSubmit={handleSearchSubmit}
+            sx={{ display: "flex", alignItems: "center", px: 2, py: 1.5 }}
+          >
+            <SearchField
+              placeholder={t("header.search_placeholder")}
+              variant='outlined'
+              size='small'
+              aria-label={t("aria.search_bar")}
+              fullWidth
+              sx={{
+                width: "100%",
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#ffffff",
+                },
+              }}
+              ref={searchRef}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={onSearchKeyDown}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton
+                      type='submit'
+                      size='small'
+                      edge='end'
+                      onClick={handleSearchSubmit}
+                      aria-label={t("aria.search_submit", {
+                        defaultValue: "Search",
+                      })}
+                      sx={{
+                        color: "#004c91",
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 76, 145, 0.08)",
+                        },
+                      }}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
           <Divider />
           <List>
             {navItems.map((item) => (
