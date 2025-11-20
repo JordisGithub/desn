@@ -2,7 +2,11 @@
 // - GET requests are passed through without headers
 // - postWithAuth / putWithAuth / deleteWithAuth add X-API-Key header automatically
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+// Use environment variable if available, otherwise use relative paths in production
+// In development, vite.config.ts proxy handles /api requests to localhost:8080
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV ? "http://localhost:8080" : "");
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -22,7 +26,15 @@ async function request<T = unknown>(
   options: RequestOptions = {}
 ): Promise<T> {
   const url = `${BASE_URL}${endpoint}`;
-  const res = await fetch(url, options);
+  let res;
+  try {
+    res = await fetch(url, options);
+  } catch (error) {
+    // Network error (e.g., connection refused, CORS issue)
+    const err: ApiError = new Error("Network request failed");
+    err.status = 0;
+    throw err;
+  }
 
   const contentType = res.headers.get("content-type") || "";
   const isJson = contentType.includes("application/json");

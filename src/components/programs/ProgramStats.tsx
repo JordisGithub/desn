@@ -34,7 +34,9 @@ const StatCard = styled(Box)({
   alignItems: "center",
 });
 
-const IconContainer = styled(Box)<{ bgcolor: string }>(({ bgcolor }) => ({
+const IconContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "bgcolor",
+})<{ bgcolor: string }>(({ bgcolor }) => ({
   width: "128px",
   height: "128px",
   borderRadius: "50%",

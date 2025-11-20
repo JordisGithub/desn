@@ -1,7 +1,7 @@
 import Fuse from "fuse.js";
 import ApiService from "./ApiService";
 
-export type SearchItemType = "resource" | "event" | "page";
+export type SearchItemType = "resource" | "event" | "page" | "document";
 
 export interface SearchItem {
   id: string;
@@ -42,9 +42,19 @@ class SearchService {
         let eventItems: SearchItem[] = [];
 
         try {
+          // Only try to fetch from API if we have a valid BASE_URL
+          // In production without VITE_API_BASE_URL set, API calls will fail gracefully
+          // and search will use static items only (which is acceptable)
+          const resourcesPromise = ApiService.get<ResourcesResponse>(
+            "/api/resources"
+          ).catch(() => ({ resources: [] }));
+          const eventsPromise = ApiService.get<EventsResponse>(
+            "/api/events"
+          ).catch(() => ({ events: [] }));
+
           const [resourcesRes, eventsRes] = await Promise.all([
-            ApiService.get<ResourcesResponse>("/api/resources"),
-            ApiService.get<EventsResponse>("/api/events"),
+            resourcesPromise,
+            eventsPromise,
           ]);
 
           const resources: Array<Record<string, unknown>> =
@@ -77,7 +87,14 @@ class SearchService {
             } as SearchItem;
           });
         } catch (apiError) {
-          console.warn("API calls failed, using page items only:", apiError);
+          // API errors are expected when backend is not available
+          // Search will still work with static page and document items
+          if (import.meta.env.DEV) {
+            console.warn(
+              "API calls failed (backend may not be running), using static items only:",
+              apiError
+            );
+          }
         }
 
         const pageItems: SearchItem[] = [
@@ -87,7 +104,7 @@ class SearchService {
             title: "Home",
             url: "/",
             excerpt:
-              "DESN homepage - Empowering persons with disabilities in Nepal",
+              "DESN homepage - Empowering persons with disabilities in Nepal through inclusive programs and advocacy",
           },
           {
             id: "page-about",
@@ -95,37 +112,55 @@ class SearchService {
             title: "About Us",
             url: "/about",
             excerpt:
-              "Learn about DESN's mission, vision, and our work with persons with disabilities",
+              "Learn about DESN's mission, vision, and our work with persons with disabilities in Nepal",
           },
           {
             id: "page-programs",
             type: "page",
-            title: "Programs",
+            title: "Programs & Services",
             url: "/programs",
             excerpt:
-              "Education, Livelihood, and Advocacy programs for persons with disabilities",
+              "Education, Livelihood, and Advocacy programs for persons with disabilities including ICT training, skill development, and employment support",
           },
           {
             id: "page-programs-education",
             type: "page",
             title: "Education Programs",
             url: "/programs#pillar-education",
-            excerpt: "ICT Training, Braille & Sign Language, Scholarship Fund",
+            excerpt:
+              "ICT Training, Braille & Sign Language instruction, Scholarship Fund for students with disabilities",
           },
           {
             id: "page-programs-livelihood",
             type: "page",
             title: "Livelihood Programs",
             url: "/programs#pillar-livelihood",
-            excerpt: "Microfinance, Skill Development, Job Placement Support",
+            excerpt:
+              "Microfinance, Skill Development training, Job Placement Support for employment and economic empowerment",
           },
           {
             id: "page-programs-advocacy",
             type: "page",
-            title: "Advocacy Programs",
+            title: "Advocacy & Rights",
             url: "/programs#pillar-advocacy",
             excerpt:
-              "UNCRPD Monitoring, Policy Dialogue, Barrier-Free Environment Campaign",
+              "UNCRPD Monitoring, Policy Dialogue, Barrier-Free Environment Campaign for disability rights and inclusion",
+          },
+          {
+            id: "page-what-we-do",
+            type: "page",
+            title: "What We Do",
+            url: "/programs",
+            excerpt:
+              "DESN promotes disability inclusion through education, livelihood programs, and policy advocacy in Nepal",
+          },
+          {
+            id: "page-impact",
+            type: "page",
+            title: "Our Impact",
+            url: "/about",
+            excerpt:
+              "DESN has empowered thousands of persons with disabilities through training, employment, and advocacy initiatives",
           },
           {
             id: "page-get-involved",
@@ -133,53 +168,149 @@ class SearchService {
             title: "Get Involved",
             url: "/get-involved",
             excerpt:
-              "Volunteer, donate, or become a member to support our cause",
+              "Volunteer, donate, or become a member to support DESN's work with persons with disabilities",
           },
           {
             id: "page-volunteer",
             type: "page",
-            title: "Volunteer",
+            title: "Volunteer with DESN",
             url: "/get-involved#volunteer",
-            excerpt: "Join our team of volunteers making a difference",
+            excerpt:
+              "Join our team of volunteers making a difference in the lives of persons with disabilities",
           },
           {
             id: "page-donate",
             type: "page",
             title: "Donate",
             url: "/get-involved#donate",
-            excerpt: "Support our programs with your generous donation",
+            excerpt:
+              "Support DESN programs with your generous donation to help persons with disabilities",
           },
           {
             id: "page-membership",
             type: "page",
-            title: "Membership",
+            title: "Become a Member",
             url: "/get-involved#membership",
-            excerpt: "Become a DESN member and join our community",
+            excerpt:
+              "Become a DESN member and join our community supporting disability inclusion and empowerment",
           },
           {
             id: "page-events",
             type: "page",
-            title: "Events",
+            title: "Events & Activities",
             url: "/events",
-            excerpt: "Upcoming events, workshops, and activities",
+            excerpt:
+              "Upcoming events, workshops, and activities promoting disability awareness and inclusion",
           },
           {
             id: "page-resources",
             type: "page",
-            title: "Resources",
+            title: "Resources & Publications",
             url: "/resources",
-            excerpt: "Documents, publications, and helpful resources",
+            excerpt:
+              "Documents, publications, policies, and helpful resources on disability empowerment",
           },
           {
             id: "page-contact",
             type: "page",
-            title: "Contact",
+            title: "Contact DESN",
             url: "/contact",
-            excerpt: "Get in touch with DESN - Location, phone, email",
+            excerpt:
+              "Get in touch with DESN - Location, phone, email address for inquiries",
           },
         ];
 
-        this.items = [...resourceItems, ...eventItems, ...pageItems];
+        // Document/Publication items - actual resources
+        const documentItems: SearchItem[] = [
+          {
+            id: "doc-communication-policy",
+            type: "document",
+            title: "Communication Policy",
+            url: "/resources",
+            excerpt: "Official communication policy of DESN",
+          },
+          {
+            id: "doc-computer-usage-policy",
+            type: "document",
+            title: "Computer Usage Policy",
+            url: "/resources",
+            excerpt: "Computer usage policy and guidelines of DESN",
+          },
+          {
+            id: "doc-annual-report",
+            type: "document",
+            title: "Annual Report",
+            url: "/resources",
+            excerpt: "DESN Annual Report - Strategic initiatives and impact",
+          },
+          {
+            id: "doc-policy-brief",
+            type: "document",
+            title: "Policy Brief",
+            url: "/resources",
+            excerpt: "Policy briefs on disability rights and inclusion",
+          },
+          {
+            id: "doc-guidelines",
+            type: "document",
+            title: "Accessibility Guidelines",
+            url: "/resources",
+            excerpt: "Guidelines for accessible environment and services",
+          },
+          {
+            id: "doc-training-materials",
+            type: "document",
+            title: "Training Materials",
+            url: "/resources",
+            excerpt:
+              "Educational materials for disability awareness and inclusion",
+          },
+          {
+            id: "doc-research-papers",
+            type: "document",
+            title: "Research Papers",
+            url: "/resources",
+            excerpt: "Research and studies on disability empowerment in Nepal",
+          },
+          {
+            id: "doc-publications",
+            type: "document",
+            title: "Publications",
+            url: "/resources",
+            excerpt: "DESN publications and articles on disability issues",
+          },
+          {
+            id: "doc-protection-policy",
+            type: "document",
+            title: "Protection from Sexual Exploitation and Abuse Policy",
+            url: "/resources",
+            excerpt:
+              "Protection from Sexual Exploitation and Abuse (PSEA) policy",
+          },
+          {
+            id: "doc-data-protection-policy",
+            type: "document",
+            title: "Data Protection Policy",
+            url: "/resources",
+            excerpt:
+              "Data protection and privacy policy for DESN beneficiaries and staff",
+          },
+          {
+            id: "doc-financial-policy",
+            type: "document",
+            title: "Financial Policy and Procedures",
+            url: "/resources",
+            excerpt:
+              "Financial management policies and procedures for organizational accountability",
+          },
+        ];
+
+        this.items = [
+          ...resourceItems,
+          ...eventItems,
+          ...documentItems,
+          ...pageItems,
+        ];
 
         try {
           if (typeof window !== "undefined") {

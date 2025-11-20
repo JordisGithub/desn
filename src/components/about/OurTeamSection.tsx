@@ -270,6 +270,11 @@ export default function OurTeamSection() {
     )}&size=200&background=${bgColor}&color=${textColor}&bold=true&format=png`;
   };
 
+  // Helper function to get initials alt text from name
+  const getInitialsAltText = (name: string): string => {
+    return `initials of ${name}`;
+  };
+
   // A. OUR BOARD & LEADERSHIP (All 11 members - consolidated)
   const boardAndLeadership: TeamMember[] = [
     {
@@ -479,7 +484,11 @@ export default function OurTeamSection() {
                   <AvatarCircle>
                     <AvatarImage
                       src={memberImage || placeholderImage}
-                      alt={`Photo of ${member.name}, ${member.role}`}
+                      alt={
+                        memberImage
+                          ? `Photo of ${member.name}, ${member.role}`
+                          : getInitialsAltText(member.name)
+                      }
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = placeholderImage;
                       }}
@@ -514,7 +523,7 @@ export default function OurTeamSection() {
                   <AvatarCircle>
                     <AvatarImage
                       src={placeholderImage}
-                      alt={`Photo of ${member.name}, ${member.role}`}
+                      alt={getInitialsAltText(member.name)}
                     />
                   </AvatarCircle>
                   <MemberName>{member.name}</MemberName>
@@ -547,7 +556,11 @@ export default function OurTeamSection() {
                   <AvatarCircle>
                     <AvatarImage
                       src={memberImage || placeholderImage}
-                      alt={`Photo of ${member.name}, ${member.role}`}
+                      alt={
+                        memberImage
+                          ? `Photo of ${member.name}, ${member.role}`
+                          : getInitialsAltText(member.name)
+                      }
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = placeholderImage;
                       }}

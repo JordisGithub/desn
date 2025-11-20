@@ -1,7 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-// import { imgNationalFederationLogo } from "../../constants/figmaAssets";
 import abilis from "../../assets/grantors/Abilis.png";
 import apnicLogo from "../../assets/grantors/APNIC.png";
 import governmentNepalLogo from "../../assets/grantors/GvmtNepal.png";

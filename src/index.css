@@ -122,14 +122,12 @@ button {
   background-color: var(--color-primary);
   color: #ffffff;
   cursor: pointer;
-  transition: all 0.3s ease;
   letter-spacing: 0.02em;
 }
 
 button:hover,
 button:focus {
   background-color: var(--color-primary-light);
-  transform: translateY(-2px);
   box-shadow: 0px 8px 16px rgba(0, 76, 145, 0.2);
 }
 
@@ -264,18 +262,6 @@ textarea:focus-visible,
 select:focus-visible {
   outline: 3px solid var(--color-accent) !important;
   outline-offset: 2px !important;
-}
-
-/* C. Donate Button highest contrast */
-.css-1vnbnna-MuiButtonBase-root-MuiButton-root {
-  background-color: var(--color-accent) !important;
-  color: var(--color-primary-dark) !important;
-  box-shadow: 0px 8px 24px rgba(246, 212, 105, 0.5) !important;
-}
-.css-1vnbnna-MuiButtonBase-root-MuiButton-root:hover,
-.css-1vnbnna-MuiButtonBase-root-MuiButton-root:focus-visible {
-  background-color: var(--color-accent-dark) !important;
-  transform: translateY(-3px) !important;
 }
 
 /* B. FINAL CRO OVERRIDES: Maximum depth & conversion polish */

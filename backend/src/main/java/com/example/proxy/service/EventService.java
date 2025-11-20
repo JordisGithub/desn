@@ -6,14 +6,17 @@ import com.example.proxy.repository.EventRegistrationRepository;
 import com.example.proxy.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -143,5 +146,37 @@ public class EventService {
     
     public boolean isUserRegistered(Long eventId, String username) {
         return registrationRepository.existsByEventIdAndUsername(eventId, username);
+    }
+
+    public ResponseEntity<List<Map<String, Object>>> getAllEventsRegistrations() {
+        List<Event> events = getAllEvents();
+        List<Map<String, Object>> response = new ArrayList<>();
+        
+        for (Event event : events) {
+            Map<String, Object> eventData = new HashMap<>();
+            eventData.put("eventId", event.getId());
+            eventData.put("eventTitle", event.getTitle());
+            eventData.put("maxCapacity", event.getMaxAttendees());
+            eventData.put("currentRegistrations", event.getCurrentAttendees());
+            eventData.put("availableSpots", event.getMaxAttendees() - event.getCurrentAttendees());
+            
+            List<EventRegistration> registrations = registrationRepository.findByEventId(event.getId());
+            List<Map<String, Object>> registrationsList = registrations.stream()
+                .map(reg -> {
+                    Map<String, Object> regData = new HashMap<>();
+                    regData.put("username", reg.getUsername());
+                    regData.put("email", reg.getEmail());
+                    regData.put("fullName", reg.getUsername());
+                    regData.put("registeredAt", reg.getRegisteredAt().toString());
+                    regData.put("status", "confirmed");
+                    return regData;
+                })
+                .collect(Collectors.toList());
+            
+            eventData.put("registrations", registrationsList);
+            response.add(eventData);
+        }
+        
+        return ResponseEntity.ok(response);
     }
 }

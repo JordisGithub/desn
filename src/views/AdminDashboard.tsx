@@ -26,6 +26,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import EventService from "../services/EventService";
 import ResourceUploadPanel from "../components/admin/ResourceUploadPanel";
+import EventManagementPanel from "../components/admin/EventManagementPanel";
 import ApiService from "../services/ApiService";
 
 const PageContainer = styled(Box)({
@@ -283,7 +284,12 @@ const AdminDashboard: React.FC = () => {
                 id='tab-3'
                 aria-controls='tabpanel-3'
               />
-              <Tab label='Resources' id='tab-4' aria-controls='tabpanel-4' />
+              <Tab
+                label='Event Management'
+                id='tab-4'
+                aria-controls='tabpanel-4'
+              />
+              <Tab label='Resources' id='tab-5' aria-controls='tabpanel-5' />
             </Tabs>
           </Box>
 
@@ -609,6 +615,10 @@ const AdminDashboard: React.FC = () => {
               </TabPanel>
 
               <TabPanel value={tabValue} index={4}>
+                <EventManagementPanel />
+              </TabPanel>
+
+              <TabPanel value={tabValue} index={5}>
                 <ResourceUploadPanel />
               </TabPanel>
             </>
