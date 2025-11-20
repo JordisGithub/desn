@@ -139,7 +139,7 @@ const ImpactSection: React.FC = () => {
   ];
 
   return (
-    <Section role='region' aria-labelledby='impact-section-title'>
+    <Section aria-labelledby='impact-section-title'>
       <Container>
         <Header>
           <SectionTitle as='h2' id='impact-section-title'>

@@ -74,11 +74,13 @@ export default {
         email_invalid: "Please enter a valid email address",
       },
     },
+    open_form_aria_label: "Open volunteer application form",
+    opportunities_list_aria_label: "Volunteer opportunities",
   },
   donation: {
     title: "Donate",
     description:
-      "Support our work through secure PayPal donations. Your contribution helps provide education, training, and opportunities to those who need it most.",
+      "Support our work through secure Nepalese Rupee (NPR) PayPal donations. Your contribution helps provide education, training, and opportunities to those who need it most.",
     security_note:
       "All online payments are securely processed through PayPal's encrypted payment system.",
     benefits: {
@@ -101,6 +103,8 @@ export default {
         description: "Supports a full accessibility program",
       },
     },
+    paypal_aria_label: "Donate through PayPal",
+    impact_list_aria_label: "Your donation impact examples",
   },
   membership: {
     title: "Become a Member",
