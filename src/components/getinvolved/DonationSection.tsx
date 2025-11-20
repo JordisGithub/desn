@@ -2,7 +2,6 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -183,21 +182,37 @@ const ImpactDescription = styled(Typography)({
 
 // Payment callout removed; styles retained only if needed later.
 
-const DonateNowButton = styled(Button)(({ theme }) => ({
+const DonateNowButton = styled("a")(({ theme }) => ({
   backgroundColor: "#f6d469",
-  color: "#004c91",
-  fontSize: "18px",
+  color: "#003d73",
+  fontSize: "1rem",
   fontWeight: 700,
-  padding: theme.spacing(2, 6),
-  borderRadius: "12px",
-  textTransform: "none",
-  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.5)",
-  transition: "all 0.3s ease",
+  padding: theme.spacing(1.5, 4),
+  borderRadius: "100px",
+  textTransform: "uppercase",
+  letterSpacing: "0.02em",
+  border: "none",
+  cursor: "pointer",
+  textDecoration: "none",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   marginTop: theme.spacing(2),
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: theme.spacing(1),
   "&:hover": {
-    backgroundColor: "#f5ca4a",
-    transform: "translateY(-3px)",
-    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.6)",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#004c91",
+    color: "white",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(1.25, 3),
+    fontSize: "0.875rem",
   },
 }));
 
@@ -227,11 +242,6 @@ const DonationSection: React.FC = () => {
       description: t("get_involved.donation.impact.accessibility.description"),
     },
   ];
-
-  const handlePayPalDonate = () => {
-    // PayPal donation link
-    window.open("https://www.paypal.com/us/home", "_blank");
-  };
 
   return (
     <Section
@@ -264,10 +274,12 @@ const DonationSection: React.FC = () => {
             ))}
           </BenefitsList>
           <DonateNowButton
-            startIcon={<PaymentIcon />}
-            onClick={handlePayPalDonate}
+            href='https://www.paypal.com/us/home'
+            target='_blank'
+            rel='noopener noreferrer'
             aria-label={t("get_involved.donation.paypal_aria_label")}
           >
+            <PaymentIcon sx={{ fontSize: 20 }} />
             {t("footer_donate_button")}
           </DonateNowButton>
         </TextContent>

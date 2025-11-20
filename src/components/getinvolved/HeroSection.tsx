@@ -6,7 +6,7 @@ import useLazyBackground from "../../hooks/useLazyBackground";
 import type { MutableRefObject } from "react";
 import getInvolvedHero from "../../assets/GetInvolved/get-involved-hero.png";
 
-const HeroContainer = styled("section")(({ theme }) => ({
+const HeroContainer = styled("div")(({ theme }) => ({
   position: "relative",
   height: "500px",
   overflow: "hidden",
@@ -84,7 +84,7 @@ const Tagline = styled(Typography)(({ theme }) => ({
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
-  const bgRef = useLazyBackground() as MutableRefObject<HTMLElement | null>;
+  const bgRef = useLazyBackground() as MutableRefObject<HTMLDivElement | null>;
 
   return (
     <HeroContainer
