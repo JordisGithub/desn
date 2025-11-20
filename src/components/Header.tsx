@@ -29,6 +29,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PublicIcon from "@mui/icons-material/Public";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { createHighlightUrl } from "../utils/searchHighlight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
@@ -769,7 +770,7 @@ const Header: React.FC = () => {
                           onClick={() => {
                             setSearchOpen(false);
                             setSearchQuery("");
-                            navigate(r.url);
+                            navigate(createHighlightUrl(r.url, searchQuery));
                           }}
                           aria-label={`${r.title}, ${r.type}, ${
                             r.matchText || r.excerpt || ""
@@ -1016,9 +1017,9 @@ const Header: React.FC = () => {
                           selected={idx === activeIndex}
                           onClick={() => {
                             setSearchOpen(false);
-                            setSearchQuery("");
                             setMobileMenuOpen(false);
-                            navigate(r.url);
+                            navigate(createHighlightUrl(r.url, searchQuery));
+                            setSearchQuery("");
                           }}
                           aria-label={`${r.title}, ${r.type}, ${
                             r.matchText || r.excerpt || ""

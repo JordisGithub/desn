@@ -1,4 +1,5 @@
 import { usePageTitle } from "../hooks/usePageTitle";
+import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import { Box } from "@mui/material";
 import MissionVisionHeroSection from "../components/about/MissionVisionHeroSection";
 import IntegratedMissionVisionSection from "../components/about/IntegratedMissionVisionSection";
@@ -11,6 +12,7 @@ import AboutCTASection from "../components/about/AboutCTASection";
 
 export default function About() {
   usePageTitle("page_titles.about");
+  useSearchHighlight();
 
   return (
     <Box
