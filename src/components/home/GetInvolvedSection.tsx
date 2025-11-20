@@ -87,7 +87,6 @@ const DonateBtn = styled(Button)(({ theme }) => ({
     backgroundColor: "#f5c943",
     transform: "translateY(-2px)",
     boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
-    fontWeight: 700,
   },
   "&:focus": {
     outline: "3px solid white",

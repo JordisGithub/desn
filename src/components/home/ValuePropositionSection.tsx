@@ -143,7 +143,7 @@ const MetricCard = styled(Box)(({ theme }) => ({
 const MetricNumber = styled(Typography)(({ theme }) => ({
   fontSize: "2.75rem",
   fontWeight: 800,
-  color: theme.palette.secondary.main,
+  color: "#007056",
   lineHeight: 1,
   marginBottom: theme.spacing(0.5),
   letterSpacing: "-0.02em",
@@ -200,7 +200,7 @@ export default function ValuePropositionSection() {
       <Container maxWidth='lg'>
         <ContentWrapper>
           {/* What We Do Section */}
-          <ServicesColumn aria-labelledby='what-we-do-heading'>
+          <ServicesColumn>
             <SectionHeading variant='h2' as='h2' id='what-we-do-heading'>
               {t("value_prop_what_we_do")}
             </SectionHeading>
@@ -230,7 +230,7 @@ export default function ValuePropositionSection() {
           <Divider />
 
           {/* Our Impact Section */}
-          <ImpactColumn aria-labelledby='our-impact-heading'>
+          <ImpactColumn>
             <SectionHeading variant='h2' as='h2' id='our-impact-heading'>
               {t("value_prop_our_impact")}
             </SectionHeading>

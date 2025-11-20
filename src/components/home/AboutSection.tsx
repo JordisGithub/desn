@@ -104,16 +104,24 @@ const AboutButton = styled(Link)(({ theme }) => ({
   boxShadow: "0 4px 12px rgba(0, 76, 145, 0.3)",
   transition: "all 0.3s ease",
   border: `2px solid ${theme.palette.primary.main}`,
-  "&:hover, &:focus": {
+  "&:hover": {
     backgroundColor: "#003d73",
     borderColor: "#003d73",
     color: "#ffffff",
     textDecoration: "none",
-    transform: "translateY(-2px)",
     boxShadow: "0 6px 16px rgba(0, 76, 145, 0.4)",
   },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+    borderColor: "#003d73",
+    color: "#ffffff",
+    textDecoration: "none",
+  },
   "&:active": {
-    transform: "translateY(0)",
+    backgroundColor: "#002b52",
+    borderColor: "#002b52",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "0.9375rem",
@@ -211,7 +219,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <AboutContainer aria-labelledby='about-heading'>
+    <AboutContainer>
       <Container maxWidth='lg'>
         <GridContainer>
           {/* Left Column - Main Content */}

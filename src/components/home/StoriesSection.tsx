@@ -189,7 +189,7 @@ export default function StoriesSection() {
   ];
 
   return (
-    <StoriesSectionContainer aria-labelledby='stories-heading'>
+    <StoriesSectionContainer>
       <Container maxWidth='lg'>
         <SectionTitle id='stories-heading' variant='h2' as='h2'>
           {t("stories_heading")}

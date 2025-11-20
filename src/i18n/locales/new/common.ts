@@ -80,7 +80,7 @@ export default {
     language_maithili: "मैथिली",
     login: "लगइन",
     logout: "लगआउट",
-    my_events: "जिगु कार्यक्रमफु",
+    my_events: "Dashboard",
     admin_dashboard: "प्रशासक ड्यासबोर्ड",
   },
 

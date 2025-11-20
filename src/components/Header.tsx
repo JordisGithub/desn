@@ -57,6 +57,7 @@ const SearchField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "#ffffff",
     borderRadius: "8px",
+    transition: "all 0.2s ease",
     // default notched outline appearance
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor: "#004c91 !important",
@@ -70,21 +71,23 @@ const SearchField = styled(TextField)({
       transition: "color 0.2s ease",
     },
 
-    // hover: stronger blue border and darker icons
+    // hover: stronger blue border, darker icons, and background change for WCAG AAA contrast
     "&:hover": {
+      backgroundColor: "#f0f7ff",
       "& .MuiOutlinedInput-notchedOutline": {
-        borderWidth: "2px !important",
-        borderColor: "#003d73 !important",
+        borderWidth: "3px !important",
+        borderColor: "#002b52 !important",
         borderStyle: "solid !important",
       },
       "& .MuiInputAdornment-positionStart svg": {
-        color: "#003d73",
+        color: "#002b52",
       },
     },
 
-    // focus: prominent 3px solid dark blue border and white icon
+    // focus: prominent 3px solid dark blue border and appropriate icon color
     "&.Mui-focused": {
       outline: "none !important",
+      backgroundColor: "#f0f7ff",
       boxShadow: "0 0 0 4px rgba(0, 76, 145, 0.15) !important",
       "& .MuiOutlinedInput-notchedOutline": {
         borderWidth: "3px !important",
@@ -134,14 +137,33 @@ const NavBar = styled(Toolbar)(({ theme }) => ({
 const LogoLink = styled(RouterLink)({
   display: "flex",
   alignItems: "center",
+  borderRadius: "8px",
+  "&:focus": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+  },
 });
 
 const Logo = styled("img")({
   height: "80px",
   cursor: "pointer",
   transition: "transform 0.2s ease",
+  borderRadius: "8px",
   "&:hover": {
     transform: "scale(1.05)",
+  },
+  "&:focus": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+    transform: "scale(1.05)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
   },
 });
 
@@ -164,17 +186,15 @@ const NavLink = styled(RouterLink)(() => ({
   padding: "8px 12px",
   position: "relative",
   display: "inline-block",
-  transition: "all 0.2s ease",
+  transition: "color 0.2s ease",
   "&:hover": {
     color: "#004c91",
-    fontWeight: 700,
   },
   "&:focus": {
     outline: "2px solid #004c91",
     outlineOffset: "2px",
     borderRadius: "4px",
     color: "#004c91",
-    fontWeight: 700,
   },
 }));
 
@@ -198,7 +218,7 @@ const PlainButton = styled(ButtonBase)(({ theme }) => ({
     backgroundColor: "rgba(0, 76, 145, 0.9)",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
+    outline: "3px solid #003d73",
     outlineOffset: "2px",
     color: "#ffffff",
     backgroundColor: "rgba(0, 76, 145, 0.9)",
@@ -210,21 +230,28 @@ const PlainButton = styled(ButtonBase)(({ theme }) => ({
   MozAppearance: "none",
 }));
 
-const DonateButton = styled(Button)(({ theme }) => ({
+const DonateButton = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: "#f6d469",
-  color: "#2b2b2b",
+  color: "#003d73",
   textTransform: "uppercase",
   fontSize: "1rem",
   fontWeight: 700,
   padding: theme.spacing(1.5, 4),
   borderRadius: "100px",
-  boxShadow: "0px 4px 12px rgba(246, 212, 105, 0.4)",
-  transition: "all 0.3s ease",
+  border: "none",
+  cursor: "pointer",
   letterSpacing: "0.02em",
-  "&:hover, &:focus": {
-    backgroundColor: "#f5c943",
-    transform: "translateY(-2px)",
-    boxShadow: "0px 8px 20px rgba(246, 212, 105, 0.6)",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  "&:hover": {
+    backgroundColor: "#004c91",
+    color: "#ffffff",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    color: "white",
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(1.25, 3),
@@ -262,18 +289,15 @@ const MobileMenuButton = styled(IconButton)(({ theme }) => ({
 
 const MobileDonateButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.warning.main,
-  color: "#2b2b2b",
+  color: "#003d73",
   fontWeight: 700,
   fontSize: "0.875rem",
   textTransform: "uppercase",
   padding: theme.spacing(1, 2.5),
   borderRadius: "100px",
-  boxShadow: "0px 4px 12px rgba(246, 212, 105, 0.4)",
-  transition: "all 0.3s ease",
   "&:hover": {
-    backgroundColor: theme.palette.warning.dark,
-    transform: "translateY(-2px)",
-    boxShadow: "0px 6px 16px rgba(246, 212, 105, 0.6)",
+    backgroundColor: "#e6b800",
+    color: "#003d73",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "0.8125rem",
@@ -293,6 +317,19 @@ const DrawerContent = styled(Box)({
   width: 280,
 });
 
+const UserMenuItemStyled = styled(MenuItem)({
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.08)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.08)",
+  },
+});
+
 const Header: React.FC = () => {
   const { lang, setLang } = useLanguage();
   const { user, isAdmin, logout, isAuthenticated } = useAuth();
@@ -308,6 +345,7 @@ const Header: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement | null>(null);
+  const mobileSearchRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   useEffect(() => {
@@ -318,12 +356,21 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Close results when clicking outside
+    // Close results when clicking outside search areas
     const onDocClick = (e: MouseEvent) => {
-      if (!searchRef.current) return;
-      if (!searchRef.current.contains(e.target as Node)) {
-        setSearchOpen(false);
+      // Check desktop search
+      if (searchRef.current && searchRef.current.contains(e.target as Node)) {
+        return;
       }
+      // Check mobile search
+      if (
+        mobileSearchRef.current &&
+        mobileSearchRef.current.contains(e.target as Node)
+      ) {
+        return;
+      }
+      // Clicked outside both, close results
+      setSearchOpen(false);
     };
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
@@ -355,28 +402,26 @@ const Header: React.FC = () => {
       return;
     }
 
-    // Only handle arrow and enter keys if dropdown is open
-    if (!searchOpen || searchResults.length === 0) return;
-
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" && searchOpen && searchResults.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, searchResults.length - 1));
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === "ArrowUp" && searchOpen && searchResults.length > 0) {
       e.preventDefault();
       setActiveIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      // Only select a result if one is actively highlighted
-      if (activeIndex >= 0) {
+      // If dropdown is open and a result is highlighted, navigate to it
+      if (searchOpen && searchResults.length > 0 && activeIndex >= 0) {
         const sel = searchResults[activeIndex];
         if (sel) {
           setSearchOpen(false);
           setSearchQuery("");
           navigate(sel.url);
         }
-      } else {
-        // If no result is highlighted, submit the search form instead
-        handleSearchSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+      } else if (searchQuery.trim()) {
+        // Otherwise submit search form if query is not empty
+        setSearchOpen(false);
+        navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       }
     }
   };
@@ -442,7 +487,6 @@ const Header: React.FC = () => {
     { label: t("nav.events"), path: "/events" },
     { label: t("nav.resources"), path: "/resources" },
     { label: t("nav.programs"), path: "/programs" },
-    // { label: t("nav.projects"), path: "/projects" },
     { label: t("nav.contact"), path: "/contact" },
   ];
 
@@ -514,26 +558,42 @@ const Header: React.FC = () => {
 
             {user ? (
               <>
-                <Button
+                <PlainButton
                   onClick={handleUserMenuClick}
-                  startIcon={<AccountCircleIcon />}
-                  endIcon={<KeyboardArrowDownIcon />}
+                  disableRipple
                   sx={{
                     color: "#004c91",
                     textTransform: "none",
                     fontSize: "14px",
                     display: { xs: "none", md: "flex" },
+                    gap: "8px",
+                    "&:hover": {
+                      color: "#ffffff",
+                      backgroundColor: "rgba(0, 76, 145, 0.9)",
+                    },
+                    "&:focus": {
+                      outline: "3px solid #003d73",
+                      outlineOffset: "2px",
+                      color: "#ffffff",
+                      backgroundColor: "rgba(0, 76, 145, 0.9)",
+                    },
                   }}
+                  aria-label={t("aria.user_menu", {
+                    defaultValue: "User menu",
+                  })}
+                  type='button'
                 >
+                  <AccountCircleIcon sx={{ fontSize: 20 }} />
                   {user.fullName || user.username}
-                </Button>
+                  <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
+                </PlainButton>
                 <Menu
                   anchorEl={userMenuAnchorEl}
                   open={Boolean(userMenuAnchorEl)}
                   onClose={handleUserMenuClose}
                 >
                   {isAuthenticated && !isAdmin && (
-                    <MenuItem
+                    <UserMenuItemStyled
                       onClick={() => {
                         navigate("/member/dashboard");
                         handleUserMenuClose();
@@ -541,10 +601,10 @@ const Header: React.FC = () => {
                     >
                       <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
                       {t("header.my_events")}
-                    </MenuItem>
+                    </UserMenuItemStyled>
                   )}
                   {isAdmin && (
-                    <MenuItem
+                    <UserMenuItemStyled
                       onClick={() => {
                         navigate("/admin/dashboard");
                         handleUserMenuClose();
@@ -552,12 +612,12 @@ const Header: React.FC = () => {
                     >
                       <DashboardIcon sx={{ mr: 1 }} fontSize='small' />
                       {t("header.admin_dashboard")}
-                    </MenuItem>
+                    </UserMenuItemStyled>
                   )}
-                  <MenuItem onClick={handleLogout}>
+                  <UserMenuItemStyled onClick={handleLogout}>
                     <LogoutIcon sx={{ mr: 1 }} fontSize='small' />
                     {t("header.logout")}
-                  </MenuItem>
+                  </UserMenuItemStyled>
                 </Menu>
               </>
             ) : (
@@ -577,7 +637,7 @@ const Header: React.FC = () => {
                     backgroundColor: "rgba(0, 76, 145, 0.9)",
                   },
                   "&:focus": {
-                    outline: "3px solid #f6d469",
+                    outline: "3px solid #003d73",
                     outlineOffset: "2px",
                     color: "#ffffff",
                     backgroundColor: "rgba(0, 76, 145, 0.9)",
@@ -596,7 +656,11 @@ const Header: React.FC = () => {
             <Box
               component='form'
               onSubmit={handleSearchSubmit}
-              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                alignItems: "center",
+                position: "relative",
+              }}
             >
               <SearchField
                 placeholder={t("header.search_placeholder")}
@@ -629,14 +693,21 @@ const Header: React.FC = () => {
                         })}
                         sx={{
                           color: "#004c91",
+                          transition: "all 0.2s ease",
                           "&:hover": {
                             backgroundColor: "rgba(0, 76, 145, 0.08)",
                           },
-                          "&:focus-visible": {
-                            color: "#ffffff",
-                            backgroundColor: "#002b52",
-                            outline: "3px solid #f6d469",
+                          "&:focus": {
+                            outline: "3px solid #003d73",
                             outlineOffset: "2px",
+                            backgroundColor: "#f0f7ff",
+                            color: "#002b52",
+                          },
+                          "&:focus-visible": {
+                            outline: "3px solid #003d73",
+                            outlineOffset: "2px",
+                            backgroundColor: "#f0f7ff",
+                            color: "#002b52",
                           },
                         }}
                       >
@@ -651,13 +722,24 @@ const Header: React.FC = () => {
             {/* Search results dropdown */}
             {searchOpen && searchResults.length > 0 && (
               <Box
-              // sx={{ position: "absolute", right: 120, top: 64, zIndex: 1400 }}
+                sx={{
+                  position: "absolute",
+                  top: 80,
+                  right: 35,
+                  zIndex: 1400,
+                  width: "300px",
+                }}
               >
                 <Paper
                   elevation={3}
-                  sx={{ width: 360, maxWidth: "clamp(260px, 40vw, 480px)" }}
                   role='region'
                   aria-label={t("aria.search_results")}
+                  sx={{
+                    position: "relative",
+                    borderRadius: "0 0 8px 8px",
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                  }}
                 >
                   <Box
                     sx={{
@@ -698,6 +780,8 @@ const Header: React.FC = () => {
                               <EventIcon fontSize='small' />
                             ) : r.type === "resource" ? (
                               <DescriptionIcon fontSize='small' />
+                            ) : r.type === "document" ? (
+                              <DescriptionIcon fontSize='small' />
                             ) : (
                               <MenuBookIcon fontSize='small' />
                             )}
@@ -721,6 +805,8 @@ const Header: React.FC = () => {
                                     ? "Page"
                                     : r.type === "resource"
                                     ? "Resource"
+                                    : r.type === "document"
+                                    ? "Document"
                                     : "Event"}
                                 </Box>
                                 {r.matchText && (
@@ -849,6 +935,161 @@ const Header: React.FC = () => {
             </IconButton>
           </DrawerHeader>
           <Divider />
+          {/* Mobile Search Container */}
+          <Box ref={mobileSearchRef}>
+            {/* Mobile Search Input */}
+            <Box
+              component='form'
+              onSubmit={handleSearchSubmit}
+              sx={{ display: "flex", alignItems: "center", px: 2, py: 1.5 }}
+            >
+              <SearchField
+                placeholder={t("header.search_placeholder")}
+                variant='outlined'
+                size='small'
+                aria-label={t("aria.search_bar")}
+                fullWidth
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#ffffff",
+                  },
+                }}
+                ref={searchRef}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={onSearchKeyDown}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        type='submit'
+                        size='small'
+                        edge='end'
+                        onClick={handleSearchSubmit}
+                        aria-label={t("aria.search_submit", {
+                          defaultValue: "Search",
+                        })}
+                        sx={{
+                          color: "#004c91",
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 76, 145, 0.08)",
+                          },
+                          "&:focus": {
+                            outline: "3px solid #003d73",
+                            outlineOffset: "2px",
+                            backgroundColor: "#f0f7ff",
+                            color: "#002b52",
+                          },
+                          "&:focus-visible": {
+                            outline: "3px solid #003d73",
+                            outlineOffset: "2px",
+                            backgroundColor: "#f0f7ff",
+                            color: "#002b52",
+                          },
+                        }}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+
+            {/* Mobile Search Results */}
+            {searchOpen && searchResults.length > 0 && (
+              <Box sx={{ px: 2, py: 1 }}>
+                <Paper
+                  elevation={2}
+                  role='region'
+                  aria-label={t("aria.search_results")}
+                  sx={{
+                    borderRadius: "8px",
+                  }}
+                >
+                  <List dense>
+                    {searchResults.map((r, idx) => (
+                      <ListItem key={r.id} disablePadding>
+                        <ListItemButton
+                          selected={idx === activeIndex}
+                          onClick={() => {
+                            setSearchOpen(false);
+                            setSearchQuery("");
+                            setMobileMenuOpen(false);
+                            navigate(r.url);
+                          }}
+                          aria-label={`${r.title}, ${r.type}, ${
+                            r.matchText || r.excerpt || ""
+                          }`}
+                        >
+                          <ListItemIcon>
+                            {r.type === "event" ? (
+                              <EventIcon fontSize='small' />
+                            ) : r.type === "resource" ? (
+                              <DescriptionIcon fontSize='small' />
+                            ) : r.type === "document" ? (
+                              <DescriptionIcon fontSize='small' />
+                            ) : (
+                              <MenuBookIcon fontSize='small' />
+                            )}
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={r.title}
+                            secondary={
+                              <>
+                                <Box
+                                  component='span'
+                                  sx={{
+                                    display: "block",
+                                    fontSize: "0.75rem",
+                                    color: "text.secondary",
+                                    textTransform: "uppercase",
+                                    fontWeight: 600,
+                                    mb: 0.5,
+                                  }}
+                                >
+                                  {r.type === "page"
+                                    ? "Page"
+                                    : r.type === "resource"
+                                    ? "Resource"
+                                    : r.type === "document"
+                                    ? "Document"
+                                    : "Event"}
+                                </Box>
+                                {r.matchText && (
+                                  <Box
+                                    component='span'
+                                    sx={{
+                                      display: "block",
+                                      fontSize: "0.875rem",
+                                      color: "text.primary",
+                                      lineHeight: 1.5,
+                                    }}
+                                  >
+                                    {r.matchText}
+                                  </Box>
+                                )}
+                              </>
+                            }
+                            primaryTypographyProps={{
+                              sx: { fontWeight: 600, mb: 0.5 },
+                            }}
+                            secondaryTypographyProps={{
+                              component: "div",
+                            }}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              </Box>
+            )}
+          </Box>
+
+          <Divider />
           <List>
             {navItems.map((item) => (
               <ListItem key={item.path} disablePadding>
@@ -923,11 +1164,11 @@ const Header: React.FC = () => {
           </List>
           <Box sx={{ p: 2 }}>
             <DonateButton
-              fullWidth
               onClick={() => {
                 window.open("https://www.paypal.com/us/home", "_blank");
                 setMobileMenuOpen(false);
               }}
+              sx={{ width: "100%" }}
             >
               {t("header.donate")}
             </DonateButton>

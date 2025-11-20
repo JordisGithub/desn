@@ -56,9 +56,12 @@ export default function Layout({ children }: LayoutProps) {
         }}
         onFocus={(e) => {
           e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.outline = "3px solid #004c91";
+          e.currentTarget.style.outlineOffset = "2px";
         }}
         onBlur={(e) => {
           e.currentTarget.style.transform = "translateY(-150%)";
+          e.currentTarget.style.outline = "none";
         }}
       >
         Skip to main content
