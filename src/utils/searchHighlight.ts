@@ -248,8 +248,12 @@ export function createHighlightUrl(baseUrl: string, query: string): string {
 
 /**
  * Gets the highlight query from URL params
+ * Returns null if window is not defined (e.g., in test environment)
  */
 export function getHighlightQuery(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
   const params = new URLSearchParams(window.location.search);
   return params.get("highlight");
 }
