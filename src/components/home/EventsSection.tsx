@@ -326,6 +326,9 @@ export default function EventsSection() {
 
   // Fetch upcoming events from backend
   useEffect(() => {
+    // Skip fetching in non-browser environments (tests, SSR)
+    if (typeof window === "undefined") return;
+
     const fetchEvents = async () => {
       try {
         const backendEvents = await EventService.getUpcomingEvents();
