@@ -31,24 +31,39 @@ const Section = styled(Box)(({ theme }) => ({
   },
 }));
 
-const BecomeaMemberButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#f6d469",
-  color: "#004c91",
-  fontSize: "18px",
-  fontWeight: 700,
-  padding: theme.spacing(2, 5),
-  borderRadius: "12px",
+const BecomeaMemberButton = styled(Button)({
+  backgroundColor: "#008766",
+  color: "#ffffff",
+  fontSize: "16px",
+  fontWeight: 600,
+  padding: "12px 40px",
+  borderRadius: "10px",
   textTransform: "none",
-  marginTop: theme.spacing(3),
-  maxWidth: "280px",
-  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  marginTop: "20px",
+  letterSpacing: "0.02em",
+  boxShadow: "none",
+  transition: "none !important", // eliminate animation for focus entry
   "&:hover": {
-    backgroundColor: "#f5ca4a",
-    transform: "translateY(-3px) scale(1.02)",
-    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+    backgroundColor: "#006f54",
+    boxShadow: "0 4px 12px rgba(0, 135, 102, 0.3)",
+    transition: "all 0.2s ease", // hover only
   },
-}));
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#008766",
+    transition: "none !important",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#008766",
+    transition: "none !important",
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+});
 
 const IntroContainer = styled(Box)(({ theme }) => ({
   display: "grid",

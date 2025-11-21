@@ -8,7 +8,6 @@ import ImpactSection from "../components/getinvolved/ImpactSection";
 import VolunteerSection from "../components/getinvolved/VolunteerSection";
 import DonationSection from "../components/getinvolved/DonationSection";
 import MembershipSection from "../components/getinvolved/MembershipSection";
-import AboutCTASection from "../components/about/AboutCTASection";
 
 const GetInvolved: React.FC = () => {
   usePageTitle("page_titles.get_involved");
@@ -42,7 +41,6 @@ const GetInvolved: React.FC = () => {
         <VolunteerSection />
         <DonationSection />
         <MembershipSection />
-        <AboutCTASection />
       </Box>
     </Box>
   );
