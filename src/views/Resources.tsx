@@ -394,7 +394,7 @@ const Resources: React.FC = () => {
   };
 
   return (
-    <Box component='main' id='main-content'>
+    <Box>
       {/* Hero Section */}
       <Box
         component='section'
@@ -439,7 +439,7 @@ const Resources: React.FC = () => {
           sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3, md: 6 } }}
         >
           <Chip
-            label={t("nav.resources")}
+            label={t("resources.knowledge_library")}
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.2)",
               color: "white",
@@ -505,30 +505,12 @@ const Resources: React.FC = () => {
                 mb: 3,
                 alignItems: "center",
                 flexWrap: "wrap",
+                justifyContent: "space-between",
               }}
             >
-              <TextField
-                fullWidth
-                label={t("resources.search_label")}
-                placeholder={t("resources.search_placeholder")}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                inputProps={{
-                  "aria-label": t("resources.search_label"),
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon aria-hidden='true' />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ maxWidth: 600 }}
-              />
               <Typography
                 variant='body2'
                 color='text.secondary'
-                sx={{ ml: "auto" }}
                 aria-live='polite'
                 aria-atomic='true'
               >
