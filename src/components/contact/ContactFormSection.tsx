@@ -624,6 +624,7 @@ export default function ContactFormSection() {
                   disabled={isSubmitting}
                   error={!!validationErrors.message}
                   helperText={validationErrors.message}
+                  autoComplete='off'
                   slotProps={{
                     input: {
                       "aria-label": t("contact.form.message"),
