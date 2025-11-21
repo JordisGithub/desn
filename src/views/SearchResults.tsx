@@ -260,7 +260,7 @@ export default function SearchResults() {
           aria-label='Search results'
         >
           <ResultsGrid>
-            {results.map((result, index) => (
+            {results.map((result) => (
               <StyledResultLink
                 key={result.id}
                 to={createHighlightUrl(result.url, query)}
