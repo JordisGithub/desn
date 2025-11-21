@@ -480,6 +480,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             inputRef={firstInputRef}
             slotProps={{
               htmlInput: {
+                autoComplete: "name",
                 "aria-invalid": !!validationErrors.fullName,
                 "aria-describedby": validationErrors.fullName
                   ? "volunteer-fullName-error"
@@ -505,6 +506,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             helperText={validationErrors.email}
             slotProps={{
               htmlInput: {
+                autoComplete: "email",
                 "aria-invalid": !!validationErrors.email,
                 "aria-describedby": validationErrors.email
                   ? "volunteer-email-error"
