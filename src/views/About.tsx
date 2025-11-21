@@ -8,7 +8,6 @@ import CoreValuesSection from "../components/about/CoreValuesSection";
 import ObjectivesCleanSection from "../components/about/ObjectivesCleanSection";
 import OurTeamSection from "../components/about/OurTeamSection";
 import PartnersSection from "../components/home/PartnersSection";
-import AboutCTASection from "../components/about/AboutCTASection";
 
 export default function About() {
   usePageTitle("page_titles.about");
@@ -27,7 +26,6 @@ export default function About() {
       <ObjectivesCleanSection />
       <OurTeamSection />
       <PartnersSection />
-      <AboutCTASection />
     </Box>
   );
 }
