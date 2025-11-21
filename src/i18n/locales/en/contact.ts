@@ -41,6 +41,8 @@ export default {
     title: "Send Us a Message",
     description:
       "Fill out the form below and we will get back to you as soon as possible.",
+    required_fields_instruction:
+      "Fields marked with an asterisk (*) are required.",
     full_name: "Full Name",
     full_name_placeholder: "Enter your full name",
     email: "Email Address",
@@ -92,6 +94,59 @@ export default {
     title: "Our Location: Siddhi Road, Lalitpur, Nepal",
     description:
       "Complete location details and directions to reach our office in Mahalaxmi Municipality, Lalitpur.",
+
+    // Accessible Data Table
+    table_heading: "DESN Location Support - Accessible Data Table",
+    table_feature: "Feature",
+    table_details: "Details",
+    table_full_address: "Full Address",
+    table_full_address_value:
+      "Mahalaxmi Municipality–5, Bagmati Province, Lalitpur, Nepal",
+    table_landmark: "Landmark",
+    table_landmark_value:
+      "Near Siddhi Pokhari pond, visible DESN signboard at entrance",
+    table_nearest_transit: "Nearest Transit",
+    table_nearest_transit_value:
+      "Pulchowk on Ring Road (10-minute walk to Sanepa)",
+    table_ride_options: "Ride Options",
+    table_ride_options_value: "Local taxis, Pathao, InDrive",
+    table_directions: "Directions",
+    table_directions_value:
+      "From Pulchowk, walk towards Sanepa; follow signs to DESN",
+    table_map_link: "Map Link",
+    table_map_link_value: "Google Maps Directions",
+
+    // Accessibility Features
+    accessibility_features_heading: "Accessible Features",
+    accessibility_features: {
+      structured_data:
+        "Structured Data View: All key location information (address, transit, directions, landmark, and map link) is provided below or beside the map in an HTML table and list format. This view is fully accessible to screen readers, keyboard navigation, and users who cannot visually interact with the map.",
+      clear_headings:
+        "Clear Headings and Labels: Every section uses distinct, semantic headings and properly labeled links for context and ease of use.",
+      direct_map_link:
+        "Direct Map Link: An accessible link is provided to open Google Maps in a new tab.",
+      keyboard_access:
+        "Keyboard Access to Data: The accessible data view (not the map) can be navigated using a keyboard.",
+      text_landmarks:
+        "Text Landmarks and Detailed Directions: Directions, local transit, and known landmarks are included in the accessible data view.",
+      user_guidance:
+        "User Guidance: A tooltip is provided on how to access information and describing the map.",
+    },
+
+    // Known Limitations
+    known_limitations_heading: "Known Limitations",
+    known_limitations: {
+      embedded_map:
+        "Embedded Map Keyboard Gaps: The interactive Google Map may not fully support navigation or feature discovery using only a keyboard. Standard keyboard commands may not work as expected.",
+      screen_reader:
+        "Screen Reader Access: Map markers, overlays, and visual elements may be hidden to screen readers.",
+      limited_interactivity:
+        "Limited Map Interactivity: Keyboard users may have limited interactivity with the map such as zoom in/out or activating map location; please refer to the Data Table View.",
+      no_live_directions:
+        "No Live Directions in Data View: Interactive routing is only available via the external Google Maps link.",
+      vendor_updates:
+        "Dependent on Vendor Updates: Accessibility of Google Maps is subject to change.",
+    },
 
     // Non-Visual Component (NVC) - Primary accessible content
     location_details_heading: "Location Details",

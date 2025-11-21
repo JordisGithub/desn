@@ -72,18 +72,31 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     },
     "&.Mui-focused fieldset": {
       borderColor: "#004c91",
+      borderWidth: "3px",
+    },
+    "&.Mui-focused": {
+      outline: "3px solid #004c91",
+      outlineOffset: "2px",
+      borderRadius: theme.spacing(1.75),
     },
   },
   "& .MuiInputLabel-root": {
     fontSize: "1.125rem",
     fontWeight: 500,
     color: "#101828",
+    backgroundColor: "#f3f3f5",
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
     "&.Mui-focused": {
       color: "#004c91",
+      fontSize: "1.25rem",
+    },
+    "&.MuiInputLabel-shrink": {
+      fontSize: "1.25rem",
     },
   },
   "& .MuiInputBase-input": {
-    fontSize: "0.875rem",
+    fontSize: "1rem",
     padding: theme.spacing(2, 3),
     "&::placeholder": {
       color: "#717182",
@@ -91,7 +104,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
+const SubmitButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "disableRipple" && prop !== "disableTouchRipple",
+})(({ theme }) => ({
   backgroundColor: "#004c91",
   color: "white",
   fontWeight: 500,
@@ -100,12 +116,22 @@ const SubmitButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(1.75),
   textTransform: "none",
   width: "100%",
+  transition: "background-color 0.2s ease, transform 0.1s ease",
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
   "&:hover": {
     backgroundColor: "#003d73",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
+    outline: "4px solid #f6d469",
+    outlineOffset: "3px",
+    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
+  },
+  "&:focus-visible": {
+    outline: "4px solid #f6d469",
+    outlineOffset: "3px",
+    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
   },
   "&:disabled": {
     backgroundColor: "#d1d5db",
@@ -200,6 +226,7 @@ export default function ContactFormSection() {
     message?: string;
   }>({});
   const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+  const successMessageRef = useRef<HTMLDivElement | null>(null);
 
   const validateForm = (): boolean => {
     const errors: {
@@ -264,13 +291,25 @@ export default function ContactFormSection() {
     setSubmitSuccess(false);
 
     // Client-side validation
-    const isValid = validateForm();
-    console.log("Form is valid?", isValid);
-    if (!isValid) {
-      console.log("Validation failed, focusing error summary");
-      // Focus the error summary for screen readers
+    if (!validateForm()) {
+      console.log("Validation failed, focusing first error field");
+      // Focus the first error field
       setTimeout(() => {
-        errorSummaryRef.current?.focus();
+        // Focus order: fullName -> email -> subject -> message
+        const firstErrorId = !formData.fullName.trim()
+          ? "contact-fullName"
+          : !formData.email.trim() ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+          ? "contact-email"
+          : !formData.subject.trim()
+          ? "contact-subject"
+          : !formData.message.trim()
+          ? "contact-message"
+          : null;
+
+        if (firstErrorId) {
+          document.getElementById(firstErrorId)?.focus();
+        }
       }, 100);
       return;
     }
@@ -301,6 +340,10 @@ export default function ContactFormSection() {
           subject: "",
           message: "",
         });
+        // Focus success message for screen readers
+        setTimeout(() => {
+          successMessageRef.current?.focus();
+        }, 100);
       } else {
         setSubmitError(response.message || "Failed to submit message");
       }
@@ -327,6 +370,17 @@ export default function ContactFormSection() {
             <SectionDescription>
               {t("contact.form.description")}
             </SectionDescription>
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                color: "#364153",
+                marginBottom: 2,
+                fontStyle: "italic",
+              }}
+              role='note'
+            >
+              {t("contact.form.required_fields_instruction")}
+            </Typography>
 
             <form onSubmit={handleSubmit} noValidate>
               <Stack spacing={4}>
@@ -425,7 +479,21 @@ export default function ContactFormSection() {
 
                 {/* Success Message */}
                 {submitSuccess && (
-                  <Alert severity='success' role='status' aria-live='polite'>
+                  <Alert
+                    severity='success'
+                    role='status'
+                    aria-live='assertive'
+                    aria-atomic='true'
+                    ref={successMessageRef}
+                    tabIndex={-1}
+                    sx={{
+                      mb: 2,
+                      "&:focus": {
+                        outline: "3px solid #00a77f",
+                        outlineOffset: "2px",
+                      },
+                    }}
+                  >
                     {t("contact.form.success_message") ||
                       "Thank you for your message! We will get back to you soon."}
                   </Alert>
@@ -582,6 +650,8 @@ export default function ContactFormSection() {
                     )
                   }
                   disabled={isSubmitting}
+                  disableRipple
+                  disableTouchRipple
                 >
                   {isSubmitting
                     ? t("contact.form.submitting") || "Sending..."

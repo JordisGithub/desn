@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import AccessibleIcon from "@mui/icons-material/Accessible";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const MapSection = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -47,19 +48,6 @@ const MapContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Screen reader only utility class
-const srOnlyStyles = {
-  position: "absolute",
-  width: "1px",
-  height: "1px",
-  padding: 0,
-  margin: "-1px",
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
-  borderWidth: 0,
-} as const;
-
 const MapFrame = styled(Box)(({ theme }) => ({
   width: "100%",
   height: "600px",
@@ -75,7 +63,10 @@ const MapFrame = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DirectionsButton = styled(Button)<{
+const DirectionsButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "disableRipple" && prop !== "disableTouchRipple",
+})<{
   href?: string;
   component?: React.ElementType;
   target?: string;
@@ -90,12 +81,21 @@ const DirectionsButton = styled(Button)<{
   textTransform: "none",
   width: "100%",
   marginTop: theme.spacing(3),
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
   "&:hover": {
     backgroundColor: "#003d73",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
+    outline: "4px solid #f6d469",
+    outlineOffset: "3px",
+    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
+  },
+  "&:focus-visible": {
+    outline: "4px solid #f6d469",
+    outlineOffset: "3px",
+    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem",
@@ -130,6 +130,304 @@ export default function MapLocationSection() {
           {t("contact.map.title")}
         </SectionTitle>
         <SectionDescription>{t("contact.map.description")}</SectionDescription>
+
+        {/* Accessible Data Table */}
+        <Box sx={{ marginBottom: 6 }}>
+          <Typography
+            component='h3'
+            sx={{
+              fontSize: { xs: "1.75rem", sm: "2rem" },
+              fontWeight: 500,
+              color: "#004c91",
+              fontFamily: '"Poppins", "Roboto", sans-serif',
+              marginBottom: 3,
+            }}
+          >
+            {t("contact.map.table_heading")}
+          </Typography>
+
+          <Box
+            component='table'
+            sx={{
+              width: "100%",
+              borderCollapse: "collapse",
+              border: "2px solid #004c91",
+              backgroundColor: "white",
+              "& th, & td": {
+                border: "1px solid #d1d5dc",
+                padding: { xs: 2, sm: 3 },
+                textAlign: "left",
+              },
+              "& th": {
+                backgroundColor: "#f9fafb",
+                color: "#004c91",
+                fontWeight: 600,
+                fontSize: { xs: "1rem", sm: "1.125rem" },
+              },
+              "& td": {
+                color: "#364153",
+                fontSize: { xs: "0.875rem", sm: "1rem" },
+                lineHeight: 1.6,
+              },
+            }}
+          >
+            <Box component='thead'>
+              <Box component='tr'>
+                <Box component='th' scope='col'>
+                  {t("contact.map.table_feature")}
+                </Box>
+                <Box component='th' scope='col'>
+                  {t("contact.map.table_details")}
+                </Box>
+              </Box>
+            </Box>
+            <Box component='tbody'>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_full_address")}
+                </Box>
+                <Box component='td'>
+                  {t("contact.map.table_full_address_value")}
+                </Box>
+              </Box>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_landmark")}
+                </Box>
+                <Box component='td'>
+                  {t("contact.map.table_landmark_value")}
+                </Box>
+              </Box>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_nearest_transit")}
+                </Box>
+                <Box component='td'>
+                  {t("contact.map.table_nearest_transit_value")}
+                </Box>
+              </Box>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_ride_options")}
+                </Box>
+                <Box component='td'>
+                  {t("contact.map.table_ride_options_value")}
+                </Box>
+              </Box>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_directions")}
+                </Box>
+                <Box component='td'>
+                  {t("contact.map.table_directions_value")}
+                </Box>
+              </Box>
+              <Box component='tr'>
+                <Box component='th' scope='row'>
+                  {t("contact.map.table_map_link")}
+                </Box>
+                <Box component='td'>
+                  <Box
+                    component='a'
+                    href={directionsUrl}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    sx={{
+                      color: "#004c91",
+                      textDecoration: "underline",
+                      "&:hover": {
+                        color: "#003d73",
+                      },
+                      "&:focus": {
+                        outline: "3px solid #004c91",
+                        outlineOffset: "2px",
+                      },
+                    }}
+                  >
+                    {t("contact.map.table_map_link_value")}
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Accessible Features Section */}
+        <Box sx={{ marginBottom: 6 }}>
+          <Typography
+            component='h3'
+            sx={{
+              fontSize: { xs: "1.75rem", sm: "2rem" },
+              fontWeight: 500,
+              color: "#004c91",
+              fontFamily: '"Poppins", "Roboto", sans-serif',
+              marginBottom: 3,
+            }}
+          >
+            {t("contact.map.accessibility_features_heading")}
+          </Typography>
+          <Box
+            component='ul'
+            sx={{
+              listStyle: "disc",
+              paddingLeft: 4,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.structured_data")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.clear_headings")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.direct_map_link")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.keyboard_access")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.text_landmarks")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.accessibility_features.user_guidance")}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Known Limitations Section */}
+        <Box sx={{ marginBottom: 6 }}>
+          <Typography
+            component='h3'
+            sx={{
+              fontSize: { xs: "1.75rem", sm: "2rem" },
+              fontWeight: 500,
+              color: "#004c91",
+              fontFamily: '"Poppins", "Roboto", sans-serif',
+              marginBottom: 3,
+            }}
+          >
+            {t("contact.map.known_limitations_heading")}
+          </Typography>
+          <Box
+            component='ul'
+            sx={{
+              listStyle: "disc",
+              paddingLeft: 4,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.known_limitations.embedded_map")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.known_limitations.screen_reader")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.known_limitations.limited_interactivity")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.known_limitations.no_live_directions")}
+              </Typography>
+            </Box>
+            <Box component='li'>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1rem", sm: "1.125rem" },
+                  color: "#364153",
+                  lineHeight: 1.75,
+                }}
+              >
+                {t("contact.map.known_limitations.vendor_updates")}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
 
         <MapContainer>
           {/* NON-VISUAL COMPONENT (NVC) - Primary accessible content */}
@@ -257,18 +555,13 @@ export default function MapLocationSection() {
                   target='_blank'
                   rel='noopener noreferrer'
                   startIcon={<DirectionsIcon />}
-                  aria-describedby='directions-tip'
+                  endIcon={<OpenInNewIcon />}
+                  disableRipple
+                  disableTouchRipple
                   sx={{ marginTop: 1 }}
                 >
-                  {t("contact.map.get_directions")}
+                  Get Directions to DESN Office
                 </DirectionsButton>
-                <Typography
-                  id='directions-tip'
-                  component='span'
-                  sx={srOnlyStyles}
-                >
-                  {t("contact.map.directions_tip")}
-                </Typography>
               </Box>
             </Box>
 
@@ -322,7 +615,7 @@ export default function MapLocationSection() {
           </Box>
 
           {/* OPTIONAL VISUAL COMPONENT (OVC) - Visual representation for sighted users */}
-          <MapFrame>
+          <MapFrame aria-hidden='true'>
             <iframe
               src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1234567890!2d85.3240!3d27.6710!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzE1LjYiTiA4NcKwMTknMjYuNCJF!5e0!3m2!1sen!2snp!4v1234567890'
               width='100%'
@@ -331,8 +624,8 @@ export default function MapLocationSection() {
               allowFullScreen
               loading='lazy'
               referrerPolicy='no-referrer-when-downgrade'
-              title={t("contact.map.iframe_title")}
-              role='application'
+              tabIndex={-1}
+              title='The interactive Google Map provides precise location details for the DESN office. It is located on Siddhi Road, Mahalaxmi Municipality, Lalitpur 44700, Nepal. Refer to the location data table for complete location details.'
             />
           </MapFrame>
         </MapContainer>
