@@ -283,6 +283,28 @@ const MobileLogo = styled("img")(({ theme }) => ({
 const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   display: "none",
   color: "#333",
+  // Hover matches focus background and icon color
+  "&:hover": {
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  "&:hover svg": {
+    color: "#ffffff",
+  },
+  // Add accessible focus outline for keyboard users
+  "&:focus": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  // Ensure icon turns white on focus for visibility
+  "&:focus svg, &:focus-visible svg": {
+    color: "#ffffff",
+  },
   [theme.breakpoints.down("lg")]: {
     display: "flex",
   },
@@ -297,7 +319,7 @@ const MobileDonateButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(1, 2.5),
   borderRadius: "100px",
   "&:hover": {
-    backgroundColor: "#e6b800",
+    // backgroundColor: "#e6b800",
     color: "#003d73",
   },
   [theme.breakpoints.down("sm")]: {
