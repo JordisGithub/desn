@@ -716,6 +716,7 @@ const Header: React.FC = () => {
                 variant='outlined'
                 size='small'
                 inputProps={{
+                  autoComplete: "off",
                   "aria-label": t("aria.search_bar"),
                 }}
                 sx={{
@@ -1007,6 +1008,11 @@ const Header: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={onSearchKeyDown}
+                slotProps={{
+                  htmlInput: {
+                    autoComplete: "off",
+                  },
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
