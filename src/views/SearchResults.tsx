@@ -42,6 +42,10 @@ const SearchInfoBox = styled(Box)(({ theme }) => ({
   textAlign: "center",
   borderLeft: "4px solid #004c91",
   border: "1px solid #004c91",
+  "&:focus-within": {
+    outline: "4px solid #f6d469",
+    outlineOffset: "2px",
+  },
 }));
 
 const ResultsGrid = styled(Box)(({ theme }) => ({
@@ -50,6 +54,21 @@ const ResultsGrid = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
+  },
+}));
+
+const StyledResultLink = styled(Link)(() => ({
+  textDecoration: "none",
+  color: "inherit",
+  display: "flex",
+  borderRadius: "12px",
+  "&:focus": {
+    outline: "none",
+  },
+  "&:focus-visible": {
+    outline: "4px solid #004c91",
+    outlineOffset: "4px",
+    borderRadius: "12px",
   },
 }));
 
@@ -62,32 +81,10 @@ const ResultCard = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
   height: "100%",
   "&:hover": {
-    boxShadow: "0 8px 24px rgba(0, 76, 145, 0.15)",
-    transform: "translateY(-4px)",
-    borderColor: "#004c91",
-  },
-  "&:focus-within": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
-  },
-}));
-
-const ResultTitle = styled(Link)(({ theme }) => ({
-  fontSize: "1.25rem",
-  fontWeight: 600,
-  color: "#004c91",
-  textDecoration: "none",
-  marginBottom: theme.spacing(1),
-  display: "block",
-  transition: "color 0.2s ease",
-  "&:hover, &:focus": {
-    color: "#002b52",
-    textDecoration: "underline",
-  },
-  "&:focus": {
-    outline: "3px solid #f6d469",
-    outlineOffset: "2px",
-    borderRadius: "4px",
+    boxShadow: "0 4px 12px rgba(0, 76, 145, 0.12)",
+    transform: "translateY(-2px)",
+    borderColor: "#66a3d2",
+    backgroundColor: "#f8fbff",
   },
 }));
 
@@ -193,11 +190,6 @@ export default function SearchResults() {
             defaultValue: "results found",
           })}`
         );
-
-        // Move focus to results after search completes
-        setTimeout(() => {
-          resultsRef.current?.focus();
-        }, 100);
       } catch (err) {
         setResults([]);
         announce(
@@ -259,46 +251,58 @@ export default function SearchResults() {
         </Box>
       ) : results.length > 0 ? (
         <Box
+          id='search-results'
           ref={resultsRef}
-          tabIndex={-1}
-          sx={{ outline: "none" }}
           role='region'
           aria-label='Search results'
+          aria-live='polite'
+          aria-atomic='false'
         >
           <ResultsGrid>
             {results.map((result, index) => (
-              <ResultCard key={result.id} elevation={0}>
-                <Box
-                  sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}
-                  aria-label={`Result ${index + 1} of ${results.length}`}
-                >
-                  <ResultTypeIcon type={result.type} />
-                  <ResultType>
-                    {result.type === "page"
-                      ? "Page"
-                      : result.type === "resource"
-                      ? "Resource"
-                      : "Event"}
-                  </ResultType>
-                </Box>
-                <ResultTitle
-                  to={createHighlightUrl(result.url, query)}
-                  onClick={() => {
-                    // Announce navigation
-                    announce(`Navigating to ${result.title}`);
-                  }}
-                >
-                  {result.title}
-                </ResultTitle>
-                {result.excerpt && (
-                  <ResultExcerpt>{result.excerpt}</ResultExcerpt>
-                )}
-                {result.matchText && (
-                  <ResultMatch>
-                    <strong>Match:</strong> {result.matchText}
-                  </ResultMatch>
-                )}
-              </ResultCard>
+              <StyledResultLink
+                key={result.id}
+                to={createHighlightUrl(result.url, query)}
+                onClick={() => {
+                  announce(`Navigating to ${result.title}`);
+                }}
+              >
+                <ResultCard elevation={0} role='article'>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}
+                    aria-label={`Result ${index + 1} of ${results.length}`}
+                  >
+                    <ResultTypeIcon type={result.type} />
+                    <ResultType>
+                      {result.type === "page"
+                        ? "Page"
+                        : result.type === "resource"
+                        ? "Resource"
+                        : "Event"}
+                    </ResultType>
+                  </Box>
+                  <Typography
+                    component='h2'
+                    sx={{
+                      fontSize: "1.25rem",
+                      fontWeight: 600,
+                      color: "#004c91",
+                      marginBottom: 1,
+                      display: "block",
+                    }}
+                  >
+                    {result.title}
+                  </Typography>
+                  {result.excerpt && (
+                    <ResultExcerpt>{result.excerpt}</ResultExcerpt>
+                  )}
+                  {result.matchText && (
+                    <ResultMatch>
+                      <strong>Match:</strong> {result.matchText}
+                    </ResultMatch>
+                  )}
+                </ResultCard>
+              </StyledResultLink>
             ))}
           </ResultsGrid>
         </Box>
