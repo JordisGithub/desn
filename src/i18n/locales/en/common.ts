@@ -154,7 +154,8 @@ export default {
 
   // Resources Page
   resources: {
-    hero_title: "Knowledge Library",
+    knowledge_library: "Knowledge Library",
+    hero_title: "Resources & Publications",
     hero_description:
       "Access our comprehensive collection of reports, research papers, training materials, and multimedia resources on disability rights and inclusion.",
     browse_resources: "Browse Resources",

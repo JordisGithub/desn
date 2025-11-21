@@ -5,8 +5,6 @@ import {
   Box,
   Container,
   Typography,
-  TextField,
-  InputAdornment,
   Chip,
   Card,
   CardMedia,
@@ -18,7 +16,6 @@ import {
   Alert,
 } from "@mui/material";
 import {
-  Search as SearchIcon,
   Download as DownloadIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
@@ -42,7 +39,6 @@ const Resources: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [resources, setResources] = useState<Resource[]>([]);
   const [typeCounts, setTypeCounts] = useState<Record<string, number>>({});
@@ -94,7 +90,7 @@ const Resources: React.FC = () => {
       try {
         const response: ResourcesResponse = await ResourceService.getResources(
           selectedType || undefined,
-          searchQuery || undefined
+          undefined
         );
         if (isMounted) {
           setResources(response.resources);
@@ -117,7 +113,7 @@ const Resources: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [selectedType, searchQuery]);
+  }, [selectedType]);
 
   // Fetch user favorites if authenticated
   useEffect(() => {
@@ -394,7 +390,7 @@ const Resources: React.FC = () => {
   };
 
   return (
-    <Box component='main' id='main-content'>
+    <Box>
       {/* Hero Section */}
       <Box
         component='section'
@@ -439,7 +435,7 @@ const Resources: React.FC = () => {
           sx={{ position: "relative", zIndex: 1, px: { xs: 2, sm: 3, md: 6 } }}
         >
           <Chip
-            label={t("nav.resources")}
+            label={t("resources.knowledge_library")}
             sx={{
               bgcolor: "rgba(255, 255, 255, 0.2)",
               color: "white",
@@ -505,30 +501,12 @@ const Resources: React.FC = () => {
                 mb: 3,
                 alignItems: "center",
                 flexWrap: "wrap",
+                justifyContent: "space-between",
               }}
             >
-              <TextField
-                fullWidth
-                label={t("resources.search_label")}
-                placeholder={t("resources.search_placeholder")}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                inputProps={{
-                  "aria-label": t("resources.search_label"),
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon aria-hidden='true' />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ maxWidth: 600 }}
-              />
               <Typography
                 variant='body2'
                 color='text.secondary'
-                sx={{ ml: "auto" }}
                 aria-live='polite'
                 aria-atomic='true'
               >
