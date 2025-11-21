@@ -62,7 +62,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   color: "#004c91",
   fontFamily: '"Poppins", "Roboto", sans-serif',
   marginBottom: theme.spacing(2),
-}));
+})) as typeof Typography;
 
 const CardDescription = styled(Typography)({
   fontSize: "1.125rem",
@@ -121,7 +121,9 @@ export default function ContactCards() {
                 >
                   <EmailIcon sx={{ fontSize: 40, color: "#004c91" }} />
                 </IconContainer>
-                <CardTitle>{t("contact.cards.email.title")}</CardTitle>
+                <CardTitle component='h2'>
+                  {t("contact.cards.email.title")}
+                </CardTitle>
                 <CardDescription>
                   {t("contact.cards.email.description")}
                 </CardDescription>
@@ -132,15 +134,17 @@ export default function ContactCards() {
                       color: "#101828",
                       textDecoration: "underline",
                       textDecorationColor: "transparent",
+                      borderRadius: "4px",
                     }}
-                    aria-label='Email disabilityemp@gmail.com'
-                    onFocus={(e) =>
-                      (e.currentTarget.style.textDecorationColor = "#101828")
-                    }
-                    onBlur={(e) =>
-                      (e.currentTarget.style.textDecorationColor =
-                        "transparent")
-                    }
+                    onFocus={(e) => {
+                      e.currentTarget.style.textDecorationColor = "#101828";
+                      e.currentTarget.style.outline = "3px solid #004c91";
+                      e.currentTarget.style.outlineOffset = "2px";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.textDecorationColor = "transparent";
+                      e.currentTarget.style.outline = "none";
+                    }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.textDecorationColor = "#101828")
                     }
@@ -159,15 +163,17 @@ export default function ContactCards() {
                       color: "#4a5565",
                       textDecoration: "underline",
                       textDecorationColor: "transparent",
+                      borderRadius: "4px",
                     }}
-                    aria-label='Email thekopkrish@gmail.com'
-                    onFocus={(e) =>
-                      (e.currentTarget.style.textDecorationColor = "#4a5565")
-                    }
-                    onBlur={(e) =>
-                      (e.currentTarget.style.textDecorationColor =
-                        "transparent")
-                    }
+                    onFocus={(e) => {
+                      e.currentTarget.style.textDecorationColor = "#4a5565";
+                      e.currentTarget.style.outline = "3px solid #004c91";
+                      e.currentTarget.style.outlineOffset = "2px";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.textDecorationColor = "transparent";
+                      e.currentTarget.style.outline = "none";
+                    }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.textDecorationColor = "#4a5565")
                     }
@@ -193,7 +199,9 @@ export default function ContactCards() {
                 >
                   <PhoneIcon sx={{ fontSize: 40, color: "#00a77f" }} />
                 </IconContainer>
-                <CardTitle>{t("contact.cards.phone.title")}</CardTitle>
+                <CardTitle component='h2'>
+                  {t("contact.cards.phone.title")}
+                </CardTitle>
                 <CardDescription>
                   {t("contact.cards.phone.description")}
                 </CardDescription>
@@ -204,15 +212,17 @@ export default function ContactCards() {
                       color: "#101828",
                       textDecoration: "underline",
                       textDecorationColor: "transparent",
+                      borderRadius: "4px",
                     }}
-                    aria-label='Call +977-15709205'
-                    onFocus={(e) =>
-                      (e.currentTarget.style.textDecorationColor = "#101828")
-                    }
-                    onBlur={(e) =>
-                      (e.currentTarget.style.textDecorationColor =
-                        "transparent")
-                    }
+                    onFocus={(e) => {
+                      e.currentTarget.style.textDecorationColor = "#101828";
+                      e.currentTarget.style.outline = "3px solid #004c91";
+                      e.currentTarget.style.outlineOffset = "2px";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.textDecorationColor = "transparent";
+                      e.currentTarget.style.outline = "none";
+                    }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.textDecorationColor = "#101828")
                     }
@@ -231,15 +241,17 @@ export default function ContactCards() {
                       color: "#4a5565",
                       textDecoration: "underline",
                       textDecorationColor: "transparent",
+                      borderRadius: "4px",
                     }}
-                    aria-label='Call +977-9849873868'
-                    onFocus={(e) =>
-                      (e.currentTarget.style.textDecorationColor = "#4a5565")
-                    }
-                    onBlur={(e) =>
-                      (e.currentTarget.style.textDecorationColor =
-                        "transparent")
-                    }
+                    onFocus={(e) => {
+                      e.currentTarget.style.textDecorationColor = "#4a5565";
+                      e.currentTarget.style.outline = "3px solid #004c91";
+                      e.currentTarget.style.outlineOffset = "2px";
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.textDecorationColor = "transparent";
+                      e.currentTarget.style.outline = "none";
+                    }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.textDecorationColor = "#4a5565")
                     }
@@ -265,7 +277,9 @@ export default function ContactCards() {
                 >
                   <LocationOnIcon sx={{ fontSize: 40, color: "#965595" }} />
                 </IconContainer>
-                <CardTitle>{t("contact.cards.location.title")}</CardTitle>
+                <CardTitle component='h2'>
+                  {t("contact.cards.location.title")}
+                </CardTitle>
                 <CardDescription>
                   {t("contact.cards.location.description")}
                 </CardDescription>

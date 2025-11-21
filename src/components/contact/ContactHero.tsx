@@ -1,7 +1,6 @@
-import { Container, Typography, Button, Stack, Box } from "@mui/material";
+import { Container, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
-import SendIcon from "@mui/icons-material/Send";
 
 const HeroSection = styled("section")(({ theme }) => ({
   background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
@@ -48,40 +47,6 @@ const HeroDescription = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const HeroButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#f6d469",
-  color: "#2b2b2b",
-  fontWeight: 600,
-  fontSize: "1.125rem",
-  padding: theme.spacing(2, 6),
-  borderRadius: "100px",
-  textTransform: "none",
-  boxShadow:
-    "0px 20px 25px -5px rgba(0,0,0,0.1), 0px 8px 10px -6px rgba(0,0,0,0.1)",
-  "&:hover": {
-    backgroundColor: "#f5c943",
-    transform: "translateY(-2px)",
-    boxShadow: "0px 25px 50px -12px rgba(0,0,0,0.25)",
-  },
-  "&:focus": {
-    outline: "3px solid white",
-    outlineOffset: "2px",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-    padding: theme.spacing(1.5, 4),
-    width: "100%",
-  },
-}));
-
-const OutlineButton = styled(HeroButton)({
-  backgroundColor: "#f6d469",
-  border: "2px solid white",
-  "&:hover": {
-    backgroundColor: "#f5c943",
-  },
-});
-
 export default function ContactHero() {
   const { t } = useTranslation();
 
@@ -107,26 +72,6 @@ export default function ContactHero() {
           </HeroTitle>
 
           <HeroDescription>{t("contact.hero.description")}</HeroDescription>
-
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-            <HeroButton
-              href='#contact-section'
-              startIcon={<SendIcon />}
-              aria-label={`${t(
-                "contact.hero.send_message"
-              )} - Skip to contact form`}
-            >
-              {t("contact.hero.send_message")}
-            </HeroButton>
-            <OutlineButton
-              href='#location-details'
-              aria-label={`${t(
-                "contact.hero.view_location"
-              )} - Skip to location information`}
-            >
-              {t("contact.hero.view_location")}
-            </OutlineButton>
-          </Stack>
         </Box>
       </Container>
     </HeroSection>
