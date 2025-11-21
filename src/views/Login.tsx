@@ -432,6 +432,7 @@ const Login: React.FC = () => {
               helperText={validationErrors.username}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "username",
                   "aria-invalid": !!validationErrors.username,
                   "aria-describedby": validationErrors.username
                     ? "login-username-error"
@@ -457,6 +458,7 @@ const Login: React.FC = () => {
               helperText={validationErrors.password}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "current-password",
                   "aria-invalid": !!validationErrors.password,
                   "aria-describedby": validationErrors.password
                     ? "login-password-error"

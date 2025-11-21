@@ -10,19 +10,19 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  Button,
+  Link,
   IconButton,
   Skeleton,
   Alert,
 } from "@mui/material";
 import {
-  Download as DownloadIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
   CalendarToday as CalendarIcon,
   Description as DescriptionIcon,
   Visibility as VisibilityIcon,
   PlayArrow as PlayArrowIcon,
+  OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
@@ -183,25 +183,6 @@ const Resources: React.FC = () => {
     }
   };
 
-  const handleDownload = async (resource: Resource) => {
-    try {
-      // Track click
-      await ResourceService.trackClick(resource.id);
-
-      // Update click count in UI
-      setResources((prev) =>
-        prev.map((r) =>
-          r.id === resource.id ? { ...r, clicks: r.clicks + 1 } : r
-        )
-      );
-
-      // Open file in new tab
-      window.open(resource.fileUrl, "_blank");
-    } catch (err) {
-      console.error("Error tracking download:", err);
-    }
-  };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     // Use current i18n locale for date formatting
@@ -227,7 +208,6 @@ const Resources: React.FC = () => {
 
     return (
       <Card
-        component='article'
         sx={{
           height: "100%",
           display: "flex",
@@ -238,7 +218,6 @@ const Resources: React.FC = () => {
             boxShadow: 4,
           },
         }}
-        aria-labelledby={`resource-title-${resource.id}`}
       >
         <Box sx={{ position: "relative" }}>
           {resource.thumbnailUrl ? (
@@ -330,14 +309,56 @@ const Resources: React.FC = () => {
               </Box>
             )}
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <CalendarIcon fontSize='small' color='action' />
+              <CalendarIcon
+                fontSize='small'
+                color='action'
+                aria-hidden='true'
+              />
               <Typography variant='caption' color='text.secondary'>
+                <Box
+                  component='span'
+                  sx={{
+                    position: "absolute",
+                    width: "1px",
+                    height: "1px",
+                    padding: 0,
+                    margin: "-1px",
+                    overflow: "hidden",
+                    clip: "rect(0, 0, 0, 0)",
+                    whiteSpace: "nowrap",
+                    border: 0,
+                  }}
+                >
+                  {t("resources.published_date") || "Published date:"}
+                </Box>
                 {formatDate(resource.publishDate)}
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <VisibilityIcon fontSize='small' color='action' />
+              <VisibilityIcon
+                fontSize='small'
+                color='action'
+                aria-hidden='true'
+              />
               <Typography variant='caption' color='text.secondary'>
+                <Box
+                  component='span'
+                  sx={{
+                    position: "absolute",
+                    width: "1px",
+                    height: "1px",
+                    padding: 0,
+                    margin: "-1px",
+                    overflow: "hidden",
+                    clip: "rect(0, 0, 0, 0)",
+                    whiteSpace: "nowrap",
+                    border: 0,
+                  }}
+                >
+                  {isVideo
+                    ? t("resources.video_views_label") || "Video views:"
+                    : t("resources.download_count_label") || "Download count:"}
+                </Box>
                 {isVideo
                   ? `${resource.clicks} ${t("resources.views")}`
                   : resource.clicks}
@@ -347,25 +368,116 @@ const Resources: React.FC = () => {
         </CardContent>
 
         <CardActions sx={{ px: 2, pb: 2 }}>
-          <Button
-            variant='contained'
-            fullWidth
-            startIcon={
-              isVideo ? (
-                <PlayArrowIcon aria-hidden='true' />
-              ) : (
-                <DownloadIcon aria-hidden='true' />
-              )
-            }
-            onClick={() => handleDownload(resource)}
-            aria-label={
-              isVideo
-                ? `${t("resources.watch")} ${translated.title}`
-                : `${t("resources.download")} ${translated.title}`
-            }
+          <Link
+            href={resource.fileUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            onClick={async (_e) => {
+              // Track click without preventing default link behavior
+              try {
+                await ResourceService.trackClick(resource.id);
+                // Update click count in UI
+                setResources((prev) =>
+                  prev.map((r) =>
+                    r.id === resource.id ? { ...r, clicks: r.clicks + 1 } : r
+                  )
+                );
+              } catch (err) {
+                console.error("Error tracking click:", err);
+              }
+            }}
+            underline='none'
+            sx={{
+              width: "100%",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1,
+              padding: "8px 16px",
+              backgroundColor: "#004c91",
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: 600,
+              borderRadius: "4px",
+              textTransform: "none",
+              letterSpacing: "0.02em",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                backgroundColor: "#003d73",
+                color: "#ffffff",
+                boxShadow: "0 4px 12px rgba(0, 76, 145, 0.3)",
+              },
+              "&:focus": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "#003d73",
+                color: "#ffffff",
+              },
+              "&:focus-visible": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "#003d73",
+                color: "#ffffff",
+              },
+            }}
           >
-            {isVideo ? t("resources.watch") : t("resources.download")}
-          </Button>
+            {isVideo ? (
+              <>
+                <PlayArrowIcon aria-hidden='true' sx={{ fontSize: 20 }} />
+                {t("resources.watch")}
+                <Box
+                  component='span'
+                  sx={{
+                    position: "absolute",
+                    width: "1px",
+                    height: "1px",
+                    padding: 0,
+                    margin: "-1px",
+                    overflow: "hidden",
+                    clip: "rect(0, 0, 0, 0)",
+                    whiteSpace: "nowrap",
+                    border: 0,
+                  }}
+                >
+                  : {translated.title}
+                </Box>
+                <OpenInNewIcon
+                  aria-label={
+                    t("resources.opens_new_window") || "opens in new window"
+                  }
+                  sx={{ fontSize: 18, ml: 0.5 }}
+                />
+              </>
+            ) : (
+              <>
+                <DescriptionIcon aria-hidden='true' sx={{ fontSize: 20 }} />
+                {t("resources.view_pdf")}
+                <Box
+                  component='span'
+                  sx={{
+                    position: "absolute",
+                    width: "1px",
+                    height: "1px",
+                    padding: 0,
+                    margin: "-1px",
+                    overflow: "hidden",
+                    clip: "rect(0, 0, 0, 0)",
+                    whiteSpace: "nowrap",
+                    border: 0,
+                  }}
+                >
+                  : {translated.title}
+                </Box>
+                <OpenInNewIcon
+                  aria-label={
+                    t("resources.opens_pdf_new_window") ||
+                    "opens PDF in new window"
+                  }
+                  sx={{ fontSize: 18, ml: 0.5 }}
+                />
+              </>
+            )}
+          </Link>
           <IconButton
             color={isFavorited ? "error" : "default"}
             onClick={() => handleToggleFavorite(resource.id)}
@@ -377,6 +489,40 @@ const Resources: React.FC = () => {
                 : t("resources.add_favorite") ||
                   `Add ${translated.title} to favorites`
             }
+            sx={{
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+              "&:focus": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+              "&:focus-visible": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+            }}
           >
             {isFavorited ? (
               <FavoriteIcon aria-hidden='true' />
@@ -533,70 +679,140 @@ const Resources: React.FC = () => {
                 "Filter resources by category"
               }
             >
-              {resourceTypes.map((type) => (
-                <Chip
-                  key={type.key}
-                  label={
-                    <>
-                      <span aria-hidden='true' style={{ marginRight: 8 }}>
-                        {type.icon}
-                      </span>
-                      {type.label}
-                      {typeCounts[type.key] !== undefined &&
-                        type.key !== "" && (
-                          <Box
-                            component='span'
-                            sx={{
-                              ml: 1,
-                              bgcolor:
-                                selectedType === type.key
-                                  ? "white"
-                                  : "primary.light",
-                              color:
-                                selectedType === type.key
-                                  ? "primary.main"
-                                  : "white",
-                              borderRadius: 1,
-                              px: 1,
-                              py: 0.25,
-                              fontSize: "0.75rem",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {typeCounts[type.key] || 0}
-                          </Box>
-                        )}
-                      {type.key === "" && (
-                        <Box
-                          component='span'
-                          sx={{
-                            ml: 1,
-                            bgcolor:
-                              selectedType === type.key
-                                ? "white"
-                                : "primary.light",
-                            color:
-                              selectedType === type.key
-                                ? "primary.main"
-                                : "white",
-                            borderRadius: 1,
-                            px: 1,
-                            py: 0.25,
-                            fontSize: "0.75rem",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {Object.values(typeCounts).reduce((a, b) => a + b, 0)}
-                        </Box>
-                      )}
-                    </>
-                  }
-                  onClick={() => setSelectedType(type.key)}
-                  color={selectedType === type.key ? "primary" : "default"}
-                  variant={selectedType === type.key ? "filled" : "outlined"}
-                  sx={{ fontSize: "1rem", py: 2.5 }}
-                />
-              ))}
+              {resourceTypes.map((type) => {
+                const count =
+                  type.key === ""
+                    ? Object.values(typeCounts).reduce((a, b) => a + b, 0)
+                    : typeCounts[type.key] || 0;
+                const ariaDescId = `filter-desc-${type.key || "all"}`;
+
+                return (
+                  <Box key={type.key} sx={{ position: "relative" }}>
+                    <Chip
+                      label={
+                        <>
+                          <span aria-hidden='true' style={{ marginRight: 8 }}>
+                            {type.icon}
+                          </span>
+                          {type.label}
+                          {typeCounts[type.key] !== undefined &&
+                            type.key !== "" && (
+                              <Box
+                                component='span'
+                                aria-hidden='true'
+                                sx={{
+                                  ml: 1,
+                                  bgcolor:
+                                    selectedType === type.key
+                                      ? "white"
+                                      : "primary.light",
+                                  color:
+                                    selectedType === type.key
+                                      ? "primary.main"
+                                      : "white",
+                                  borderRadius: 1,
+                                  px: 1,
+                                  py: 0.25,
+                                  fontSize: "0.75rem",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                {typeCounts[type.key] || 0}
+                              </Box>
+                            )}
+                          {type.key === "" && (
+                            <Box
+                              component='span'
+                              aria-hidden='true'
+                              sx={{
+                                ml: 1,
+                                bgcolor:
+                                  selectedType === type.key
+                                    ? "white"
+                                    : "primary.light",
+                                color:
+                                  selectedType === type.key
+                                    ? "primary.main"
+                                    : "white",
+                                borderRadius: 1,
+                                px: 1,
+                                py: 0.25,
+                                fontSize: "0.75rem",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {Object.values(typeCounts).reduce(
+                                (a, b) => a + b,
+                                0
+                              )}
+                            </Box>
+                          )}
+                        </>
+                      }
+                      onClick={() => setSelectedType(type.key)}
+                      color={selectedType === type.key ? "primary" : "default"}
+                      variant={
+                        selectedType === type.key ? "filled" : "outlined"
+                      }
+                      aria-describedby={ariaDescId}
+                      sx={{
+                        fontSize: "1rem",
+                        py: 2.5,
+                        transition: "all 0.3s ease",
+                        cursor: "pointer",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow:
+                            selectedType === type.key
+                              ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                              : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                          backgroundColor:
+                            selectedType === type.key
+                              ? "#003d73"
+                              : "rgba(0, 76, 145, 0.08)",
+                          borderColor:
+                            selectedType === type.key ? "#003d73" : "#004c91",
+                        },
+                        "&:focus": {
+                          outline: "3px solid #004c91",
+                          outlineOffset: "2px",
+                          boxShadow:
+                            selectedType === type.key
+                              ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                              : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                        },
+                        "&:focus-visible": {
+                          outline: "3px solid #004c91",
+                          outlineOffset: "2px",
+                          boxShadow:
+                            selectedType === type.key
+                              ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                              : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                        },
+                        "& .MuiTouchRipple-root": {
+                          display: "none",
+                        },
+                      }}
+                    />
+                    <span
+                      id={ariaDescId}
+                      style={{
+                        position: "absolute",
+                        width: "1px",
+                        height: "1px",
+                        padding: 0,
+                        margin: "-1px",
+                        overflow: "hidden",
+                        clip: "rect(0, 0, 0, 0)",
+                        whiteSpace: "nowrap",
+                        border: 0,
+                      }}
+                    >
+                      {count} {t("resources.available_resources")}
+                    </span>
+                  </Box>
+                );
+              })}
             </Box>
           </Box>
 
@@ -628,14 +844,20 @@ const Resources: React.FC = () => {
             </Box>
           ) : (
             <Box
+              component='ul'
               sx={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                 gap: 4,
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
               }}
             >
               {resources.map((resource) => (
-                <ResourceCard key={resource.id} resource={resource} />
+                <Box component='li' key={resource.id}>
+                  <ResourceCard resource={resource} />
+                </Box>
               ))}
             </Box>
           )}

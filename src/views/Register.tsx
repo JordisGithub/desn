@@ -520,6 +520,7 @@ const Register: React.FC = () => {
               helperText={validationErrors.fullName}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "name",
                   "aria-invalid": !!validationErrors.fullName,
                   "aria-describedby": validationErrors.fullName
                     ? "register-fullName-error"
@@ -544,6 +545,7 @@ const Register: React.FC = () => {
               helperText={validationErrors.username}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "username",
                   "aria-invalid": !!validationErrors.username,
                   "aria-describedby": validationErrors.username
                     ? "register-username-error"
@@ -569,6 +571,7 @@ const Register: React.FC = () => {
               helperText={validationErrors.email}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "email",
                   "aria-invalid": !!validationErrors.email,
                   "aria-describedby": validationErrors.email
                     ? "register-email-error"
@@ -594,6 +597,7 @@ const Register: React.FC = () => {
               helperText={validationErrors.password}
               slotProps={{
                 htmlInput: {
+                  autoComplete: "new-password",
                   "aria-invalid": !!validationErrors.password,
                   "aria-describedby": validationErrors.password
                     ? "register-password-error"

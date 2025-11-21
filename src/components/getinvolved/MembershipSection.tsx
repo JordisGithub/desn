@@ -850,6 +850,7 @@ const MembershipSection: React.FC = () => {
                       "aria-describedby": validationErrors.fullName
                         ? "membership-fullName-error"
                         : undefined,
+                      autoComplete: "name",
                     },
                   }}
                   FormHelperTextProps={{
@@ -877,6 +878,7 @@ const MembershipSection: React.FC = () => {
                       "aria-describedby": validationErrors.email
                         ? "membership-email-error"
                         : undefined,
+                      autoComplete: "email",
                     },
                   }}
                   FormHelperTextProps={{
@@ -905,6 +907,7 @@ const MembershipSection: React.FC = () => {
                     "aria-describedby": validationErrors.phone
                       ? "membership-phone-error"
                       : undefined,
+                    autoComplete: "tel",
                   },
                 }}
                 FormHelperTextProps={{
