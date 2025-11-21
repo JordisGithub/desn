@@ -26,4 +26,17 @@ export default {
   auth_error_login_failed: "लगइन असफल जुइना। फेरि खन्ह या लागि सद्या यानू।",
   auth_required_field: "थ्व फिल्ड आवश्यक ख",
   auth_invalid_email: "कृपया मान्य इमेल ठेगाना बर्नू",
+
+  // Login Form Errors
+  login_error_summary_title: "फर्ममा गलतित छु:",
+  login_error_username_required: "प्रयोगकर्ता नाँ आवश्यक ख",
+  login_error_password_required: "पासवर्ड आवश्यक ख",
+
+  // Register Form Errors
+  register_error_summary_title: "फर्ममा गलतित छु:",
+  register_error_fullname_required: "पूरा नाँ आवश्यक ख",
+  register_error_username_required: "प्रयोगकर्ता नाँ आवश्यक ख",
+  register_error_email_required: "इमेल आवश्यक ख",
+  register_error_email_invalid: "कृपया मान्य इमेल ठेगाना बर्नू",
+  register_error_password_required: "पासवर्ड आवश्यक ख",
 };

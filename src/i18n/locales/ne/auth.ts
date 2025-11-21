@@ -26,4 +26,17 @@ export default {
   auth_error_login_failed: "लगइन असफल भयो। कृपया फेरि प्रयास गर्नुहोस्।",
   auth_required_field: "यो फिल्ड आवश्यक छ",
   auth_invalid_email: "कृपया मान्य इमेल ठेगाना प्रविष्ट गर्नुहोस्",
+
+  // Login Form Errors
+  login_error_summary_title: "फारममा त्रुटिहरू छन्:",
+  login_error_username_required: "प्रयोगकर्ता नाम आवश्यक छ",
+  login_error_password_required: "पासवर्ड आवश्यक छ",
+
+  // Register Form Errors
+  register_error_summary_title: "फारममा त्रुटिहरू छन्:",
+  register_error_fullname_required: "पूरा नाम आवश्यक छ",
+  register_error_username_required: "प्रयोगकर्ता नाम आवश्यक छ",
+  register_error_email_required: "इमेल आवश्यक छ",
+  register_error_email_invalid: "कृपया मान्य इमेल ठेगाना प्रविष्ट गर्नुहोस्",
+  register_error_password_required: "पासवर्ड आवश्यक छ",
 };
