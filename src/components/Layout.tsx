@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useFocusManagement } from "../hooks/useFocusManagement";
+import { useTranslation } from "react-i18next";
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const announcementRef = useFocusManagement();
+  const { t } = useTranslation();
 
   const skipToMainContent = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ export default function Layout({ children }: LayoutProps) {
       <a
         href='#main-content'
         onClick={skipToMainContent}
+        aria-label={t("skip_to_content")}
         style={{
           position: "fixed",
           left: "8px",
@@ -64,7 +67,7 @@ export default function Layout({ children }: LayoutProps) {
           e.currentTarget.style.outline = "none";
         }}
       >
-        Skip to main content
+        {t("skip_to_content")}
       </a>
 
       {/* Screen reader announcement for route changes */}

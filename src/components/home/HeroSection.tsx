@@ -120,7 +120,7 @@ export default function HeroSection() {
 
   return (
     <>
-      <HeroContainer id='hero' aria-labelledby='hero-heading'>
+      <HeroContainer as='section' id='hero' aria-labelledby='hero-heading'>
         <HeroContent>
           {/* Massive Headline */}
           <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>

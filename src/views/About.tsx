@@ -14,11 +14,7 @@ export default function About() {
   useSearchHighlight();
 
   return (
-    <Box
-      component='div'
-      sx={{ backgroundColor: "#F0F4F8" }}
-      aria-label='About DESN'
-    >
+    <Box component='div' sx={{ backgroundColor: "#F0F4F8" }}>
       <MissionVisionHeroSection />
       <IntegratedMissionVisionSection />
       <FoundingFactsSection />

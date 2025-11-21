@@ -1,4 +1,21 @@
 export default {
+  // Search Results Page
+  search_results_title: "खोज परिणामहरू",
+  search_results_for: "परिणामहरू",
+  search_results_found: "परिणामहरू फेला परे",
+  search_results_result_singular: "परिणाम फेला पर्यो",
+  search_results_no_query: "परिणामहरू हेर्न खोज शब्द प्रविष्ट गर्नुहोस्",
+  search_results_no_results: "तपाईंको खोजको लागि कुनै परिणाम फेला परेन।",
+  search_results_try_other:
+    "विभिन्न कीवर्डहरू प्रयास गर्नुहोस् वा हाम्रा पृष्ठहरू ब्राउज गर्नुहोस्।",
+  search_results_searching: "खोजी गर्दै...",
+  search_results_loading: "परिणामहरू लोड गर्दै...",
+  search_results_error: "खोजको क्रममा त्रुटि भयो",
+  search_results_type_page: "पृष्ठ",
+  search_results_type_resource: "स्रोत",
+  search_results_type_event: "कार्यक्रम",
+  search_results_match_label: "मिल्दो",
+
   // Date locale for formatting
   date_locale: "ne-NP",
 

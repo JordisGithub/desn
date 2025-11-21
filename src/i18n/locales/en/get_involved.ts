@@ -27,30 +27,35 @@ export default {
       training: "Training and support provided",
       impact: "Make meaningful connections and impact",
     },
+    opportunities_heading: "Ways You Can Make a Difference",
     opportunities: {
       education: {
         title: "Education Support",
         description:
           "Help teach children with disabilities and support their learning journey",
         time: "4-8 hours/week",
+        alt: "A teacher stands at the front of a classroom, presenting to students seated at blue desks in a brightly lit room.",
       },
       outreach: {
         title: "Community Outreach",
         description:
           "Assist with awareness campaigns and community engagement programs",
         time: "Flexible",
+        alt: "A woman stands at a podium speaking into a microphone while four people sit on a couch and chairs in a conference room with a presentation screen.",
       },
       tech: {
         title: "Tech Training",
         description:
           "Share your tech skills to help persons with disabilities access digital tools",
         time: "2-4 hours/week",
+        alt: "A person sits at a table with a laptop, speaking into a microphone, surrounded by cables and curtains in the background.",
       },
       events: {
         title: "Event Support",
         description:
           "Help organize and run events, workshops, and advocacy programs",
         time: "Project-based",
+        alt: "A woman stands and speaks among seated participants in a sunlit room with large windows and curtains.",
       },
     },
     security_note:
@@ -81,6 +86,8 @@ export default {
     title: "Donate",
     description:
       "Support our work through secure Nepalese Rupee (NPR) PayPal donations. Your contribution helps provide education, training, and opportunities to those who need it most.",
+    image_alt:
+      "A group of women, several men, and children stand outside holding a banner for Fifteen Days Mushroom Training Program for Women with Disabilities.",
     security_note:
       "All online payments are securely processed through PayPal's encrypted payment system.",
     benefits: {

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { useSearchHighlight } from "../hooks/useSearchHighlight";
+import { useTranslation } from "react-i18next";
 import HeroSection from "../components/getinvolved/HeroSection";
 import ImpactSection from "../components/getinvolved/ImpactSection";
 import VolunteerSection from "../components/getinvolved/VolunteerSection";
@@ -12,6 +13,7 @@ import MembershipSection from "../components/getinvolved/MembershipSection";
 const GetInvolved: React.FC = () => {
   usePageTitle("page_titles.get_involved");
   useSearchHighlight();
+  const { t } = useTranslation();
 
   const SkipLink = styled("a")(({ theme }) => ({
     position: "absolute",
@@ -34,7 +36,9 @@ const GetInvolved: React.FC = () => {
 
   return (
     <Box component='div'>
-      <SkipLink href='#main-content'>Skip to content</SkipLink>
+      <SkipLink href='#main-content' aria-label={t("skip_to_content")}>
+        {t("skip_to_content")}
+      </SkipLink>
       <Box component='div'>
         <HeroSection />
         <ImpactSection />

@@ -260,7 +260,7 @@ export default function SearchResults() {
           aria-label='Search results'
         >
           <ResultsGrid>
-            {results.map((result, index) => (
+            {results.map((result) => (
               <StyledResultLink
                 key={result.id}
                 to={createHighlightUrl(result.url, query)}
@@ -271,15 +271,14 @@ export default function SearchResults() {
                 <ResultCard elevation={0} role='article'>
                   <Box
                     sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}
-                    aria-label={`Result ${index + 1} of ${results.length}`}
                   >
                     <ResultTypeIcon type={result.type} />
                     <ResultType>
                       {result.type === "page"
-                        ? "Page"
+                        ? t("search_results_type_page")
                         : result.type === "resource"
-                        ? "Resource"
-                        : "Event"}
+                        ? t("search_results_type_resource")
+                        : t("search_results_type_event")}
                     </ResultType>
                   </Box>
                   <Typography
@@ -299,7 +298,8 @@ export default function SearchResults() {
                   )}
                   {result.matchText && (
                     <ResultMatch>
-                      <strong>Match:</strong> {result.matchText}
+                      <strong>{t("search_results_match_label")}:</strong>{" "}
+                      {result.matchText}
                     </ResultMatch>
                   )}
                 </ResultCard>

@@ -78,11 +78,14 @@ const Description = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const StatsGrid = styled(Box)(({ theme }) => ({
+const StatsGrid = styled("ul")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "32px",
   width: "100%",
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
   [theme.breakpoints.down("md")]: {
     gap: "24px",
   },
@@ -92,7 +95,7 @@ const StatsGrid = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StatCard = styled(Box)(({ theme }) => ({
+const StatCard = styled("li")(({ theme }) => ({
   backgroundColor: "white",
   background: "linear-gradient(135deg, #e5f3ff, #ffffff)",
   borderTop: "5px solid #f6d469",
@@ -107,6 +110,7 @@ const StatCard = styled(Box)(({ theme }) => ({
   cursor: "default",
   position: "relative",
   overflow: "hidden",
+  listStyle: "none",
   "&::before": {
     content: '""',
     position: "absolute",
@@ -194,7 +198,7 @@ const ImpactSection: React.FC = () => {
   ];
 
   return (
-    <Section aria-labelledby='impact-section-title'>
+    <Section role='region' aria-labelledby='impact-section-title'>
       <Container>
         <Header>
           <SectionTitle as='h2' id='impact-section-title'>
@@ -205,13 +209,9 @@ const ImpactSection: React.FC = () => {
             {t("get_involved.impact.description")}
           </Description>
         </Header>
-        <StatsGrid role='list' aria-label={t("aria.impact_statistics")}>
+        <StatsGrid aria-label={t("aria.impact_statistics")}>
           {stats.map((stat, index) => (
-            <StatCard
-              key={index}
-              role='listitem'
-              aria-label={`${stat.number} ${stat.label}`}
-            >
+            <StatCard key={index} aria-label={`${stat.number} ${stat.label}`}>
               <StatNumber aria-hidden='true'>{stat.number}</StatNumber>
               <StatLabel aria-hidden='true'>{stat.label}</StatLabel>
             </StatCard>

@@ -51,13 +51,16 @@ const IntroText = styled(Typography)({
   fontWeight: 400,
 });
 
-const FactsColumn = styled(Box)({
+const FactsColumn = styled("ul")({
   display: "flex",
   flexDirection: "column",
   gap: "20px",
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
 });
 
-const FactCard = styled(Box)(({ theme }) => ({
+const FactCard = styled("li")(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #e5e7eb",
   borderLeft: "4px solid #00a77f",
@@ -69,6 +72,7 @@ const FactCard = styled(Box)(({ theme }) => ({
   alignItems: "center",
   boxShadow: "0 16px 50px rgba(0, 0, 0, 0.35) !important",
   transition: "all 0.2s ease",
+  listStyle: "none",
   "&:hover": {
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
     transform: "translateY(-2px)",
