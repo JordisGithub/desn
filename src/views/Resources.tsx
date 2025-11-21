@@ -5,8 +5,6 @@ import {
   Box,
   Container,
   Typography,
-  TextField,
-  InputAdornment,
   Chip,
   Card,
   CardMedia,
@@ -18,7 +16,6 @@ import {
   Alert,
 } from "@mui/material";
 import {
-  Search as SearchIcon,
   Download as DownloadIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
@@ -42,7 +39,6 @@ const Resources: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [resources, setResources] = useState<Resource[]>([]);
   const [typeCounts, setTypeCounts] = useState<Record<string, number>>({});
@@ -94,7 +90,7 @@ const Resources: React.FC = () => {
       try {
         const response: ResourcesResponse = await ResourceService.getResources(
           selectedType || undefined,
-          searchQuery || undefined
+          undefined
         );
         if (isMounted) {
           setResources(response.resources);
@@ -117,7 +113,7 @@ const Resources: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [selectedType, searchQuery]);
+  }, [selectedType]);
 
   // Fetch user favorites if authenticated
   useEffect(() => {
