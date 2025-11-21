@@ -168,12 +168,15 @@ const Logo = styled("img")({
   },
 });
 
-const NavLinks = styled(Box)(({ theme }) => ({
+const NavLinks = styled("ul")(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(2.5),
   alignItems: "center",
   flex: 1,
   justifyContent: "flex-start",
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
   [theme.breakpoints.down("lg")]: {
     display: "none", // Hide desktop nav on tablet and mobile
   },
@@ -940,29 +943,30 @@ const Header: React.FC = () => {
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    aria-current={isActive ? "page" : undefined}
-                    sx={{
-                      color: isActive ? "#004c91" : "#333",
-                      fontWeight: isActive ? 600 : 400,
-                      "&::after": isActive
-                        ? {
-                            content: '""',
-                            position: "absolute",
-                            bottom: 0,
-                            left: "12px",
-                            right: "12px",
-                            height: "3px",
-                            backgroundColor: "#004c91",
-                            borderRadius: "2px 2px 0 0",
-                          }
-                        : {},
-                    }}
-                  >
-                    {item.label}
-                  </NavLink>
+                  <li key={item.path}>
+                    <NavLink
+                      to={item.path}
+                      aria-current={isActive ? "page" : undefined}
+                      sx={{
+                        color: isActive ? "#004c91" : "#333",
+                        fontWeight: isActive ? 600 : 400,
+                        "&::after": isActive
+                          ? {
+                              content: '""',
+                              position: "absolute",
+                              bottom: 0,
+                              left: "12px",
+                              right: "12px",
+                              height: "3px",
+                              backgroundColor: "#004c91",
+                              borderRadius: "2px 2px 0 0",
+                            }
+                          : {},
+                      }}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
                 );
               })}
             </NavLinks>
