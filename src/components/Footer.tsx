@@ -306,43 +306,49 @@ export default function Footer() {
                 component='ul'
                 sx={{ listStyle: "none", margin: 0, padding: 0 }}
               >
-                <ContactItem component='li'>
-                  <LocationOnIcon
-                    sx={{ fontSize: "1.25rem", mt: 0.25, flexShrink: 0 }}
-                    aria-label={t("contact_labels.location")}
-                  />
-                  <FooterText>{t("footer_contact_location")}</FooterText>
-                </ContactItem>
-                <ContactItem component='li'>
-                  <PhoneIcon
-                    sx={{ fontSize: "1.25rem", flexShrink: 0 }}
-                    aria-label={t("contact_labels.phone")}
-                  />
-                  <FooterLink
-                    to='tel:+97715709205'
-                    sx={{ display: "inline", marginBottom: 0 }}
-                    aria-label={`${t("contact_labels.phone")}: ${t(
-                      "footer_contact_phone"
-                    )}`}
-                  >
-                    {t("footer_contact_phone")}
-                  </FooterLink>
-                </ContactItem>
-                <ContactItem component='li'>
-                  <EmailIcon
-                    sx={{ fontSize: "1.25rem", flexShrink: 0 }}
-                    aria-label={t("contact_labels.email")}
-                  />
-                  <FooterLink
-                    to='mailto:disabilityemp@gmail.com'
-                    sx={{ display: "inline", marginBottom: 0 }}
-                    aria-label={`${t(
-                      "contact_labels.email"
-                    )}: disabilityemp@gmail.com`}
-                  >
-                    disabilityemp@gmail.com
-                  </FooterLink>
-                </ContactItem>
+                <li>
+                  <ContactItem>
+                    <LocationOnIcon
+                      sx={{ fontSize: "1.25rem", mt: 0.25, flexShrink: 0 }}
+                      aria-label={t("contact_labels.location")}
+                    />
+                    <FooterText>{t("footer_contact_location")}</FooterText>
+                  </ContactItem>
+                </li>
+                <li>
+                  <ContactItem>
+                    <PhoneIcon
+                      sx={{ fontSize: "1.25rem", flexShrink: 0 }}
+                      aria-label={t("contact_labels.phone")}
+                    />
+                    <FooterLink
+                      to='tel:+97715709205'
+                      sx={{ display: "inline", marginBottom: 0 }}
+                      aria-label={`${t("contact_labels.phone")}: ${t(
+                        "footer_contact_phone"
+                      )}`}
+                    >
+                      {t("footer_contact_phone")}
+                    </FooterLink>
+                  </ContactItem>
+                </li>
+                <li>
+                  <ContactItem>
+                    <EmailIcon
+                      sx={{ fontSize: "1.25rem", flexShrink: 0 }}
+                      aria-label={t("contact_labels.email")}
+                    />
+                    <FooterLink
+                      to='mailto:disabilityemp@gmail.com'
+                      sx={{ display: "inline", marginBottom: 0 }}
+                      aria-label={`${t(
+                        "contact_labels.email"
+                      )}: disabilityemp@gmail.com`}
+                    >
+                      disabilityemp@gmail.com
+                    </FooterLink>
+                  </ContactItem>
+                </li>
               </Box>
             </FooterColumn>
           </FooterGrid>
