@@ -258,7 +258,9 @@ export default function AccessibilityStatement() {
 
   return (
     <PageContainer>
-      <SkipLink href='#main-content'>Skip to main content</SkipLink>
+      <SkipLink href='#main-content' aria-label={t("skip_to_content")}>
+        {t("skip_to_content")}
+      </SkipLink>
 
       {/* Hero Section */}
       <HeroSection>

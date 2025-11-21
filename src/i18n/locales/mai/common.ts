@@ -1,4 +1,21 @@
 export default {
+  // Search Results Page
+  search_results_title: "खोज परिणाम",
+  search_results_for: "केर परिणाम",
+  search_results_found: "परिणाम भेटल",
+  search_results_result_singular: "परिणाम भेटल",
+  search_results_no_query: "परिणाम देखबाक लेल खोज शब्द दर्ज करू",
+  search_results_no_results: "अहाँक खोजक लेल कोनो परिणाम नहि भेटल।",
+  search_results_try_other:
+    "विभिन्न कीवर्ड प्रयोग करू वा हमर पन्ना सभ ब्राउज करू।",
+  search_results_searching: "खोजि रहल छी...",
+  search_results_loading: "परिणाम लोड कए रहल छी...",
+  search_results_error: "खोजक दौरान त्रुटि भेल",
+  search_results_type_page: "पन्ना",
+  search_results_type_resource: "संसाधन",
+  search_results_type_event: "कार्यक्रम",
+  search_results_match_label: "मिलान",
+
   // Date locale for formatting
   date_locale: "ne-NP",
 

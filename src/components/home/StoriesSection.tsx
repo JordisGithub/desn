@@ -197,8 +197,15 @@ export default function StoriesSection() {
 
         <TestimonialGrid>
           {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id}>
-              <QuoteIconWrapper aria-hidden='true'>
+            <TestimonialCard
+              key={testimonial.id}
+              role='article'
+              aria-labelledby={`testimonial-name-${testimonial.id}`}
+            >
+              <QuoteIconWrapper
+                aria-hidden='true'
+                style={{ pointerEvents: "none" }}
+              >
                 <FormatQuoteIcon />
               </QuoteIconWrapper>
 
@@ -208,7 +215,9 @@ export default function StoriesSection() {
                   alt={t(`stories_testimonial_${testimonial.id}_alt`)}
                 />
                 <ProfileInfo>
-                  <PersonName>{testimonial.name}</PersonName>
+                  <PersonName id={`testimonial-name-${testimonial.id}`}>
+                    {testimonial.name}
+                  </PersonName>
                   <PersonTitle>{testimonial.title}</PersonTitle>
                 </ProfileInfo>
               </ProfileSection>

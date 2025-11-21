@@ -35,19 +35,22 @@ const UnderlineBar = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(6),
 }));
 
-const ObjectivesGrid = styled(Box)(({ theme }) => ({
+const ObjectivesGrid = styled("ul")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: 0,
   columnGap: theme.spacing(12),
   rowGap: 0,
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     columnGap: 0,
   },
 }));
 
-const ObjectiveItem = styled(Box)(({ theme }) => ({
+const ObjectiveItem = styled("li")(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(1),
   alignItems: "flex-start",
@@ -55,6 +58,7 @@ const ObjectiveItem = styled(Box)(({ theme }) => ({
   padding: "2px 0 !important",
   minHeight: "20px",
   transition: "all 0.2s ease",
+  listStyle: "none",
   "&:focus-visible": {
     outline: "3px solid #f6d469",
     outlineOffset: "2px",

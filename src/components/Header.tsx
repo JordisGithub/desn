@@ -711,12 +711,12 @@ const Header: React.FC = () => {
               }}
             >
               <SearchField
+                id='desktop-site-search'
                 placeholder={t("header.search_placeholder")}
                 variant='outlined'
                 size='small'
-                aria-label={t("aria.search_bar")}
                 inputProps={{
-                  "aria-label": "Search bar",
+                  "aria-label": t("aria.search_bar"),
                 }}
                 sx={{
                   width: { xs: "200px", md: "300px" },
@@ -992,10 +992,10 @@ const Header: React.FC = () => {
               sx={{ display: "flex", alignItems: "center", px: 2, py: 1.5 }}
             >
               <SearchField
+                id='mobile-site-search'
                 placeholder={t("header.search_placeholder")}
                 variant='outlined'
                 size='small'
-                aria-label={t("aria.search_bar")}
                 fullWidth
                 sx={{
                   width: "100%",

@@ -6,7 +6,7 @@ import useLazyBackground from "../../hooks/useLazyBackground";
 import type { MutableRefObject } from "react";
 import getInvolvedHero from "../../assets/GetInvolved/get-involved-hero.png";
 
-const HeroContainer = styled("div")(({ theme }) => ({
+const HeroContainer = styled("section")(({ theme }) => ({
   position: "relative",
   height: "500px",
   overflow: "hidden",

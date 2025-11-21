@@ -123,7 +123,6 @@ export default function IntegratedMissionVisionSection() {
   return (
     <SectionContainer
       role='region'
-      aria-labelledby='mission-vision-heading'
       aria-label='Our Mission, Vision, and Community'
     >
       <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
