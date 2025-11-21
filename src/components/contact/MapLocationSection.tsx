@@ -86,16 +86,19 @@ const DirectionsButton = styled(Button, {
   },
   "&:hover": {
     backgroundColor: "#003d73",
+    color: "white",
   },
   "&:focus": {
-    outline: "4px solid #f6d469",
+    outline: "4px solid #004c91",
     outlineOffset: "3px",
-    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
+    color: "white",
+    boxShadow: "0 0 0 7px rgba(0, 76, 145, 0.3)",
   },
   "&:focus-visible": {
-    outline: "4px solid #f6d469",
+    outline: "4px solid #004c91",
     outlineOffset: "3px",
-    boxShadow: "0 0 0 7px rgba(246, 212, 105, 0.3)",
+    color: "white",
+    boxShadow: "0 0 0 7px rgba(0, 76, 145, 0.3)",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem",
