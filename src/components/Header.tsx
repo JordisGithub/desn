@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button"; // No longer used
 import ButtonBase from "@mui/material/ButtonBase";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
@@ -231,15 +231,16 @@ const PlainButton = styled(ButtonBase)(({ theme }) => ({
   MozAppearance: "none",
 }));
 
-const DonateButton = styled(ButtonBase)(({ theme }) => ({
+// Donate link (desktop styles)
+const DonateLink = styled("a")(({ theme }) => ({
   backgroundColor: "#f6d469",
   color: "#003d73",
+  textDecoration: "none",
   textTransform: "uppercase",
   fontSize: "1rem",
   fontWeight: 700,
   padding: theme.spacing(1.5, 4),
   borderRadius: "100px",
-  border: "none",
   cursor: "pointer",
   letterSpacing: "0.02em",
   display: "inline-flex",
@@ -252,7 +253,14 @@ const DonateButton = styled(ButtonBase)(({ theme }) => ({
   "&:focus": {
     outline: "3px solid #004c91",
     outlineOffset: "2px",
-    color: "white",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(1.25, 3),
@@ -283,22 +291,61 @@ const MobileLogo = styled("img")(({ theme }) => ({
 const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   display: "none",
   color: "#333",
+  // Hover matches focus background and icon color
+  "&:hover": {
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  "&:hover svg": {
+    color: "#ffffff",
+  },
+  // Add accessible focus outline for keyboard users
+  "&:focus": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #003d73",
+    outlineOffset: "2px",
+    backgroundColor: "rgba(0, 76, 145, 0.9)",
+  },
+  // Ensure icon turns white on focus for visibility
+  "&:focus svg, &:focus-visible svg": {
+    color: "#ffffff",
+  },
   [theme.breakpoints.down("lg")]: {
     display: "flex",
   },
 }));
 
-const MobileDonateButton = styled(Button)(({ theme }) => ({
+// Donate link (mobile styles)
+const MobileDonateLink = styled("a")(({ theme }) => ({
   backgroundColor: theme.palette.warning.main,
   color: "#003d73",
+  textDecoration: "none",
   fontWeight: 700,
   fontSize: "0.875rem",
   textTransform: "uppercase",
   padding: theme.spacing(1, 2.5),
   borderRadius: "100px",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
   "&:hover": {
-    backgroundColor: "#e6b800",
-    color: "#003d73",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#004c91",
+    color: "#ffffff",
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "0.8125rem",
@@ -867,14 +914,14 @@ const Header: React.FC = () => {
             />
           </LogoLink>
 
-          <MobileDonateButton
-            onClick={() =>
-              window.open("https://www.paypal.com/us/home", "_blank")
-            }
+          <MobileDonateLink
+            href='https://www.paypal.com/us/home'
+            target='_blank'
+            rel='noopener noreferrer'
             aria-label={t("aria.donate_header")}
           >
             {t("header.donate")}
-          </MobileDonateButton>
+          </MobileDonateLink>
         </MobileNavBar>
 
         {/* Main Navigation Bar - Hidden on mobile/tablet */}
@@ -901,14 +948,14 @@ const Header: React.FC = () => {
                 right: "32px",
               }}
             >
-              <DonateButton
-                onClick={() =>
-                  window.open("https://www.paypal.com/us/home", "_blank")
-                }
+              <DonateLink
+                href='https://www.paypal.com/us/home'
+                target='_blank'
+                rel='noopener noreferrer'
                 aria-label={t("aria.donate_header")}
               >
                 {t("header.donate")}
-              </DonateButton>
+              </DonateLink>
             </Box>
           </NavBar>
         </AppBar>
@@ -1164,15 +1211,15 @@ const Header: React.FC = () => {
             )}
           </List>
           <Box sx={{ p: 2 }}>
-            <DonateButton
-              onClick={() => {
-                window.open("https://www.paypal.com/us/home", "_blank");
-                setMobileMenuOpen(false);
-              }}
-              sx={{ width: "100%" }}
+            <DonateLink
+              href='https://www.paypal.com/us/home'
+              target='_blank'
+              rel='noopener noreferrer'
+              onClick={() => setMobileMenuOpen(false)}
+              style={{ width: "100%" }}
             >
               {t("header.donate")}
-            </DonateButton>
+            </DonateLink>
           </Box>
         </DrawerContent>
       </Drawer>

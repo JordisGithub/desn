@@ -203,7 +203,10 @@ export default function SearchResults() {
     };
 
     performSearch();
-  }, [query, announce, t]);
+    // Only run when the query changes to avoid re-render loops
+    // announce and t are stable enough for this usage; announcements are informational
+    // and not critical if skipped on language switch mid-search
+  }, [query]);
 
   return (
     <PageContainer maxWidth='lg'>
@@ -255,8 +258,6 @@ export default function SearchResults() {
           ref={resultsRef}
           role='region'
           aria-label='Search results'
-          aria-live='polite'
-          aria-atomic='false'
         >
           <ResultsGrid>
             {results.map((result, index) => (
