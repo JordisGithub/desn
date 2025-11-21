@@ -269,7 +269,7 @@ const VolunteerSection: React.FC = () => {
       ),
       time: t("get_involved.volunteer.opportunities.education.time"),
       image: educationSupportImg,
-      alt: "Education Support",
+      alt: t("get_involved.volunteer.opportunities.education.alt"),
     },
     {
       icon: (
@@ -284,7 +284,7 @@ const VolunteerSection: React.FC = () => {
       ),
       time: t("get_involved.volunteer.opportunities.outreach.time"),
       image: communityOutreachImg,
-      alt: "Community Outreach",
+      alt: t("get_involved.volunteer.opportunities.outreach.alt"),
     },
     {
       icon: (
@@ -297,7 +297,7 @@ const VolunteerSection: React.FC = () => {
       description: t("get_involved.volunteer.opportunities.tech.description"),
       time: t("get_involved.volunteer.opportunities.tech.time"),
       image: techSupportImg,
-      alt: "Tech Training",
+      alt: t("get_involved.volunteer.opportunities.tech.alt"),
     },
     {
       icon: (
@@ -307,7 +307,7 @@ const VolunteerSection: React.FC = () => {
       description: t("get_involved.volunteer.opportunities.events.description"),
       time: t("get_involved.volunteer.opportunities.events.time"),
       image: eventSupportImg,
-      alt: "Event Support",
+      alt: t("get_involved.volunteer.opportunities.events.alt"),
     },
   ];
 
@@ -402,6 +402,10 @@ const VolunteerSection: React.FC = () => {
           </Typography>
         </Alert>
       )}
+
+      <SectionTitle as='h2' sx={{ textAlign: "center", mb: 4 }}>
+        {t("get_involved.volunteer.opportunities_heading")}
+      </SectionTitle>
 
       <OpportunitiesGrid
         role='list'

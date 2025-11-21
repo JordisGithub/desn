@@ -123,11 +123,14 @@ const ImpactTitle = styled(Typography)({
   fontFamily: "'Poppins', sans-serif",
 });
 
-const ImpactGrid = styled(Box)(({ theme }) => ({
+const ImpactGrid = styled("ul")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
   gap: "24px",
   width: "100%",
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
   },
@@ -136,7 +139,7 @@ const ImpactGrid = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ImpactItem = styled(Box)(({ theme }) => ({
+const ImpactItem = styled("li")(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "16px",
   padding: theme.spacing(4),
@@ -147,6 +150,7 @@ const ImpactItem = styled(Box)(({ theme }) => ({
   boxShadow: "0px 4px 12px rgba(0, 76, 145, 0.1)",
   border: "2px solid transparent",
   transition: "all 0.3s ease",
+  listStyle: "none",
   "&:hover": {
     borderColor: "#00a77f",
     transform: "translateY(-4px)",
@@ -251,10 +255,7 @@ const DonationSection: React.FC = () => {
     >
       <IntroContainer>
         <ImageContainer>
-          <img
-            src={donationImg}
-            alt='Community members benefiting from donation-funded programs and services'
-          />
+          <img src={donationImg} alt={t("get_involved.donation.image_alt")} />
         </ImageContainer>
         <TextContent>
           <Box sx={{ position: "relative" }}>
@@ -292,13 +293,11 @@ const DonationSection: React.FC = () => {
           {t("get_involved.donation.impact.title")}
         </ImpactTitle>
         <ImpactGrid
-          role='list'
           aria-label={t("get_involved.donation.impact_list_aria_label")}
         >
           {impactExamples.map((example, index) => (
             <ImpactItem
               key={index}
-              role='listitem'
               aria-label={`${example.amount}: ${example.description}`}
             >
               <ImpactIconCircle aria-hidden='true'>

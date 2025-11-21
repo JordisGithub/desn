@@ -209,13 +209,9 @@ const ImpactSection: React.FC = () => {
             {t("get_involved.impact.description")}
           </Description>
         </Header>
-        <StatsGrid role='list' aria-label={t("aria.impact_statistics")}>
+        <StatsGrid aria-label={t("aria.impact_statistics")}>
           {stats.map((stat, index) => (
-            <StatCard
-              key={index}
-              role='listitem'
-              aria-label={`${stat.number} ${stat.label}`}
-            >
+            <StatCard key={index} aria-label={`${stat.number} ${stat.label}`}>
               <StatNumber aria-hidden='true'>{stat.number}</StatNumber>
               <StatLabel aria-hidden='true'>{stat.label}</StatLabel>
             </StatCard>

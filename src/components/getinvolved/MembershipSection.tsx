@@ -154,23 +154,27 @@ const BenefitsTitle = styled(Typography)({
   fontFamily: "'Open Sans', sans-serif",
 });
 
-const BenefitsGrid = styled(Box)(({ theme }) => ({
+const BenefitsGrid = styled("ul")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: "24px",
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "1fr",
     gap: "16px",
   },
 }));
 
-const BenefitCard = styled(Box)(({ theme }) => ({
+const BenefitCard = styled("li")(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "10px",
   padding: theme.spacing(2, 6),
   display: "flex",
   alignItems: "center",
   gap: theme.spacing(2),
+  listStyle: "none",
 }));
 
 const BenefitText = styled(Typography)({
@@ -570,12 +574,9 @@ const MembershipSection: React.FC = () => {
         <BenefitsTitle as='h3'>
           {t("get_involved.membership.benefits.title")}
         </BenefitsTitle>
-        <BenefitsGrid
-          role='list'
-          aria-label={t("get_involved.membership.benefits.title")}
-        >
+        <BenefitsGrid aria-label={t("get_involved.membership.benefits.title")}>
           {benefits.map((benefit, index) => (
-            <BenefitCard key={index} role='listitem'>
+            <BenefitCard key={index}>
               <CheckCircleIcon sx={{ color: "#00a77f", fontSize: 24 }} />
               <BenefitText>{benefit}</BenefitText>
             </BenefitCard>
