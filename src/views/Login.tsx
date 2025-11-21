@@ -55,20 +55,72 @@ const StyledTextField = styled(TextField)({
   marginBottom: "20px",
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
+    transition: "all 0.2s ease",
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor: "#d1d5db",
+      borderWidth: "1px",
     },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
+    "&:hover:not(.Mui-disabled) .MuiOutlinedInput-notchedOutline": {
       borderColor: "#004c91",
+      borderWidth: "2px",
     },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderWidth: "3px",
-      borderColor: "#004c91",
+    "&.Mui-focused": {
+      outline: "3px solid #004c91 !important",
+      outlineOffset: "2px",
+      boxShadow: "none !important",
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderWidth: "3px",
+        borderColor: "#004c91 !important",
+        boxShadow: "none !important",
+      },
+    },
+    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#b71c1c",
+      borderWidth: "2px",
+    },
+    "&.Mui-error:hover:not(.Mui-disabled) .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#8b0000",
+      borderWidth: "2px",
+    },
+    "&.Mui-error.Mui-focused": {
+      outline: "3px solid #b71c1c !important",
+      outlineOffset: "2px",
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#b71c1c !important",
+        borderWidth: "3px",
+        boxShadow: "0 0 0 1px #b71c1c",
+      },
     },
   },
   "& .MuiOutlinedInput-input": {
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none !important",
+    },
     "&:focus-visible": {
       outline: "none",
+      boxShadow: "none !important",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    fontWeight: 500,
+    "&.Mui-focused": {
+      color: "#004c91",
+      fontWeight: 600,
+    },
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
+    },
+  },
+  "& .MuiFormHelperText-root": {
+    margin: "4px 0 0 0",
+    padding: "4px 8px",
+    borderRadius: "4px",
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
+      backgroundColor: "#ffebee",
     },
   },
 });
@@ -101,6 +153,11 @@ const SubmitButton = styled(Button)({
   "&:disabled": {
     backgroundColor: "#d1d5db",
     color: "#6b7280",
+  },
+  "&.MuiButtonBase-root": {
+    "&:focus .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 
@@ -145,19 +202,59 @@ const Login: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{
+    username?: string;
+    password?: string;
+  }>({});
+  const errorSummaryRef = React.useRef<HTMLDivElement>(null);
+
+  const validateForm = (): boolean => {
+    const errors: { username?: string; password?: string } = {};
+
+    if (!formData.username.trim()) {
+      errors.username = t("login_error_username_required");
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = t("login_error_password_required");
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-    setError(null);
+    // Clear field-specific validation error when user starts typing
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name as keyof typeof validationErrors];
+        return updated;
+      });
+    }
+    // Clear general errors when user starts typing
+    if (error) setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    // Client-side validation
+    if (!validateForm()) {
+      // Focus the error summary for screen readers
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 100);
+      return;
+    }
+
+    setLoading(true);
 
     try {
       interface LoginResponse {
@@ -208,6 +305,108 @@ const Login: React.FC = () => {
           <Title>{t("login_title")}</Title>
           <Subtitle>{t("login_subtitle")}</Subtitle>
 
+          {Object.keys(validationErrors).length > 0 && (
+            <Alert
+              severity='error'
+              role='alert'
+              aria-live='assertive'
+              aria-atomic='true'
+              sx={{
+                mb: 3,
+                backgroundColor: "#ffebee",
+                border: "2px solid #b71c1c",
+                "& .MuiAlert-icon": {
+                  color: "#b71c1c",
+                },
+              }}
+              ref={errorSummaryRef}
+              tabIndex={-1}
+            >
+              <Box
+                component='div'
+                sx={{ fontWeight: 700, mb: 1, color: "#b71c1c" }}
+              >
+                {t("login_error_summary_title")}
+              </Box>
+              <Box component='ul' sx={{ m: 0, pl: 2 }}>
+                {validationErrors.username && (
+                  <li>
+                    <a
+                      href='#login-username'
+                      style={{
+                        color: "#b71c1c",
+                        textDecoration: "underline",
+                        fontWeight: 600,
+                        padding: "2px 4px",
+                        borderRadius: "2px",
+                        display: "inline-block",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(183, 28, 28, 0.1)";
+                        e.currentTarget.style.color = "#8b0000";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = "#b71c1c";
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.outline = "3px solid #004c91";
+                        e.currentTarget.style.outlineOffset = "2px";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.outline = "none";
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("login-username")?.focus();
+                      }}
+                    >
+                      {validationErrors.username}
+                    </a>
+                  </li>
+                )}
+                {validationErrors.password && (
+                  <li>
+                    <a
+                      href='#login-password'
+                      style={{
+                        color: "#b71c1c",
+                        textDecoration: "underline",
+                        fontWeight: 600,
+                        padding: "2px 4px",
+                        borderRadius: "2px",
+                        display: "inline-block",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          "rgba(183, 28, 28, 0.1)";
+                        e.currentTarget.style.color = "#8b0000";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = "#b71c1c";
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.outline = "3px solid #004c91";
+                        e.currentTarget.style.outlineOffset = "2px";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.outline = "none";
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("login-password")?.focus();
+                      }}
+                    >
+                      {validationErrors.password}
+                    </a>
+                  </li>
+                )}
+              </Box>
+            </Alert>
+          )}
+
           {error && (
             <Alert
               severity='error'
@@ -219,8 +418,9 @@ const Login: React.FC = () => {
             </Alert>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <StyledTextField
+              id='login-username'
               fullWidth
               label={t("login_username")}
               name='username'
@@ -228,12 +428,23 @@ const Login: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              inputProps={{
-                "aria-label": t("login_username"),
-                "aria-required": true,
+              error={!!validationErrors.username}
+              helperText={validationErrors.username}
+              slotProps={{
+                htmlInput: {
+                  "aria-invalid": !!validationErrors.username,
+                  "aria-describedby": validationErrors.username
+                    ? "login-username-error"
+                    : undefined,
+                },
+              }}
+              FormHelperTextProps={{
+                id: "login-username-error",
+                role: "alert",
               }}
             />
             <StyledTextField
+              id='login-password'
               fullWidth
               label={t("login_password")}
               name='password'
@@ -242,9 +453,19 @@ const Login: React.FC = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              inputProps={{
-                "aria-label": t("login_password"),
-                "aria-required": true,
+              error={!!validationErrors.password}
+              helperText={validationErrors.password}
+              slotProps={{
+                htmlInput: {
+                  "aria-invalid": !!validationErrors.password,
+                  "aria-describedby": validationErrors.password
+                    ? "login-password-error"
+                    : undefined,
+                },
+              }}
+              FormHelperTextProps={{
+                id: "login-password-error",
+                role: "alert",
               }}
             />
 

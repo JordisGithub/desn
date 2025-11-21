@@ -26,4 +26,17 @@ export default {
   auth_error_login_failed: "Login failed. Please try again.",
   auth_required_field: "This field is required",
   auth_invalid_email: "Please enter a valid email address",
+
+  // Login Form Errors
+  login_error_summary_title: "There are errors in the form:",
+  login_error_username_required: "Username is required",
+  login_error_password_required: "Password is required",
+
+  // Register Form Errors
+  register_error_summary_title: "There are errors in the form:",
+  register_error_fullname_required: "Full name is required",
+  register_error_username_required: "Username is required",
+  register_error_email_required: "Email is required",
+  register_error_email_invalid: "Please enter a valid email address",
+  register_error_password_required: "Password is required",
 };
