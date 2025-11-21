@@ -136,6 +136,22 @@ export default {
   cancel_registration_message:
     "Are you sure you want to cancel your registration for",
 
+  // Search Results Page
+  search_results_title: "Search Results",
+  search_results_for: "Results for",
+  search_results_found: "results found",
+  search_results_result_singular: "result found",
+  search_results_no_query: "Enter a search term to see results",
+  search_results_no_results: "No results found for your search.",
+  search_results_try_other: "Try different keywords or browse our pages.",
+  search_results_searching: "Searching...",
+  search_results_loading: "Loading results...",
+  search_results_error: "An error occurred during search",
+  search_results_type_page: "Page",
+  search_results_type_resource: "Resource",
+  search_results_type_event: "Event",
+  search_results_match_label: "Match",
+
   // Resources Page
   resources: {
     hero_title: "Knowledge Library",

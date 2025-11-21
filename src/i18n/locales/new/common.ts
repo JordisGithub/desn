@@ -1,4 +1,21 @@
 export default {
+  // Search Results Page
+  search_results_title: "म्हायेगु नतिजा",
+  search_results_for: "नतिजा",
+  search_results_found: "नतिजा ज्याःगु",
+  search_results_result_singular: "नतिजा ज्याःगु",
+  search_results_no_query: "नतिजा स्वयेत म्हायेगु शब्द ज्या बिइ",
+  search_results_no_results: "छिगु म्हायेगु दुगु नतिजा मदु।",
+  search_results_try_other:
+    "मेगु कीवर्ड म्हायादिसँ वा झीगु पाना ब्राउज यादिसँ।",
+  search_results_searching: "म्हायेदै...",
+  search_results_loading: "नतिजा लोड यानादै...",
+  search_results_error: "म्हायेगु धइगु त्रुटि जुल",
+  search_results_type_page: "पाना",
+  search_results_type_resource: "स्रोत",
+  search_results_type_event: "कार्यक्रम",
+  search_results_match_label: "मिलल",
+
   // Date locale for formatting
   date_locale: "ne-NP",
 
