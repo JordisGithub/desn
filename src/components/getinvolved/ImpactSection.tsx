@@ -28,14 +28,27 @@ const Header = styled(Box)({
 });
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "32px",
+  fontSize: "34px", // base (small laptops)
   fontWeight: 400,
   color: "#004c91",
-  marginBottom: "20px",
+  marginBottom: "24px",
   fontFamily: "'Open Sans', sans-serif",
+  lineHeight: 1.15,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "36px",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "40px", // tablet / mid-size screens
+  },
+  [theme.breakpoints.up("lg")]: {
+    fontSize: "44px",
+  },
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "48px",
+  },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "24px",
-    marginBottom: "16px",
+    fontSize: "26px",
+    marginBottom: "18px",
   },
 }));
 
@@ -44,8 +57,22 @@ const Description = styled(Typography)(({ theme }) => ({
   fontWeight: 400,
   color: "#374151",
   lineHeight: 1.6,
-  maxWidth: "900px",
+  maxWidth: "980px",
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "19px",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "20px",
+    maxWidth: "1040px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    fontSize: "22px",
+    maxWidth: "1100px",
+  },
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "24px",
+  },
   [theme.breakpoints.down("sm")]: {
     fontSize: "16px",
   },
@@ -70,7 +97,7 @@ const StatCard = styled(Box)(({ theme }) => ({
   background: "linear-gradient(135deg, #e5f3ff, #ffffff)",
   borderTop: "5px solid #f6d469",
   borderRadius: "16px",
-  padding: "40px 32px",
+  padding: "38px 30px",
   display: "flex",
   flexDirection: "column",
   gap: "16px",
@@ -96,29 +123,57 @@ const StatCard = styled(Box)(({ theme }) => ({
   "&:hover::before": {
     opacity: 1,
   },
+  [theme.breakpoints.up("md")]: {
+    padding: "40px 34px",
+    gap: "18px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    padding: "44px 36px",
+  },
   [theme.breakpoints.down("sm")]: {
     padding: "32px 24px",
   },
 }));
 
 const StatNumber = styled(Typography)(({ theme }) => ({
-  fontSize: "48px",
+  fontSize: "46px",
   fontWeight: 800,
   color: "var(--color-primary-dark)",
   textAlign: "center",
   transition: "all 0.3s ease",
-  lineHeight: 1.1,
+  lineHeight: 1.05,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "50px",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "54px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    fontSize: "60px",
+  },
+  [theme.breakpoints.up("xl")]: {
+    fontSize: "64px",
+  },
   [theme.breakpoints.down("sm")]: {
     fontSize: "36px",
   },
 }));
 
-const StatLabel = styled(Typography)({
+const StatLabel = styled(Typography)(({ theme }) => ({
   fontSize: "16px",
   fontWeight: 400,
   color: "#374151",
   textAlign: "center",
-});
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "17px",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "18px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    fontSize: "20px",
+  },
+}));
 
 const ImpactSection: React.FC = () => {
   const { t } = useTranslation();
