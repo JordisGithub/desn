@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   Stack,
+  Alert,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
@@ -57,9 +58,9 @@ const InfoCard = styled(Card)(({ theme }) => ({
     boxShadow: "0 28px 70px rgba(0, 0, 0, 0.5) !important",
   },
   "&:focus-within": {
-    borderColor: "#f6d469",
+    borderColor: "#004c91",
     boxShadow:
-      "0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 3px rgba(246, 212, 105, 0.3) !important",
+      "0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 3px rgba(0, 76, 145, 0.3) !important",
   },
 }));
 
@@ -114,13 +115,13 @@ const InfoLink = styled("a")({
     color: "#003d73",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
+    outline: "3px solid #004c91",
     outlineOffset: "2px",
     textDecorationColor: "#004c91",
-    backgroundColor: "rgba(246, 212, 105, 0.15)",
+    backgroundColor: "rgba(0, 76, 145, 0.05)",
   },
   "&:focus-visible": {
-    outline: "3px solid #f6d469",
+    outline: "3px solid #004c91",
     outlineOffset: "2px",
   },
   "&:visited": {
@@ -152,7 +153,10 @@ const MapContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const DirectionsButton = styled(Button)(({ theme }) => ({
+const DirectionsButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "disableRipple" && prop !== "disableTouchRipple",
+})(({ theme }) => ({
   backgroundColor: "#004c91",
   color: "white",
   fontWeight: 600,
@@ -164,19 +168,26 @@ const DirectionsButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
   boxShadow: "0 4px 12px rgba(0, 76, 145, 0.2)",
   transition: "all 0.2s ease",
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
   "&:hover": {
     backgroundColor: "#003d73",
     boxShadow: "0 6px 16px rgba(0, 76, 145, 0.3)",
     transform: "translateY(-1px)",
   },
   "&:focus": {
-    outline: "3px solid #f6d469",
+    outline: "4px solid #f6d469",
     outlineOffset: "3px",
     backgroundColor: "#003d73",
+    boxShadow:
+      "0 0 0 7px rgba(246, 212, 105, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
   },
   "&:focus-visible": {
-    outline: "3px solid #f6d469",
+    outline: "4px solid #f6d469",
     outlineOffset: "3px",
+    boxShadow:
+      "0 0 0 7px rgba(246, 212, 105, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
   },
   "&:active": {
     backgroundColor: "#002952",
@@ -229,12 +240,16 @@ const MinimalistTextField = styled(TextField)(({ theme }) => ({
       borderWidth: "2px",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "var(--color-accent) !important",
+      borderColor: "#004c91 !important",
       borderWidth: "3px !important",
-      boxShadow: "0 0 0 4px rgba(246, 212, 105, 0.6) !important",
     },
     "&.Mui-focused:hover fieldset": {
-      borderColor: "var(--color-accent) !important",
+      borderColor: "#004c91 !important",
+    },
+    "&.Mui-focused": {
+      outline: "3px solid #004c91",
+      outlineOffset: "2px",
+      borderRadius: "12px",
     },
   },
   "& .MuiInputLabel-root": {
@@ -257,12 +272,18 @@ const MinimalistTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const SubmitButton = styled(Button)({
+const SubmitButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "disableRipple" && prop !== "disableTouchRipple",
+})({
   backgroundColor: "var(--color-accent-dark) !important",
   color: "var(--color-primary-dark) !important",
   fontWeight: "800 !important",
   fontSize: "1.25rem",
   padding: "16px 32px",
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
   borderRadius: "12px",
   textTransform: "uppercase",
   letterSpacing: "0.5px",
@@ -275,14 +296,16 @@ const SubmitButton = styled(Button)({
     filter: "brightness(1.05)",
   },
   "&:focus": {
-    outline: "3px solid #004c91",
+    outline: "4px solid #004c91",
     outlineOffset: "4px",
     boxShadow:
-      "0 12px 32px rgba(246, 212, 105, 0.5), 0 0 0 3px rgba(0, 76, 145, 0.2)",
+      "0 12px 32px rgba(246, 212, 105, 0.5), 0 0 0 8px rgba(0, 76, 145, 0.3)",
   },
   "&:focus-visible": {
-    outline: "3px solid #004c91",
+    outline: "4px solid #004c91",
     outlineOffset: "4px",
+    boxShadow:
+      "0 12px 32px rgba(246, 212, 105, 0.5), 0 0 0 8px rgba(0, 76, 145, 0.3)",
   },
   "&:active": {
     transform: "translateY(0)",
@@ -311,11 +334,13 @@ export default function IntegratedContactSection() {
   });
   const [formStatus, setFormStatus] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [validationErrors, setValidationErrors] = useState<{
     fullName?: string;
     email?: string;
     message?: string;
   }>({});
+  const successMessageRef = useRef<HTMLDivElement | null>(null);
 
   const validateForm = (): boolean => {
     const errors: {
@@ -358,6 +383,11 @@ export default function IntegratedContactSection() {
         return updated;
       });
     }
+    // Clear success message when user starts typing
+    if (submitSuccess) {
+      setSubmitSuccess(false);
+      setFormStatus("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -378,10 +408,15 @@ export default function IntegratedContactSection() {
       setFormStatus(
         "Message sent successfully! We will respond within 24 hours."
       );
+      setSubmitSuccess(true);
       setIsSubmitting(false);
       // Reset form
       setFormData({ fullName: "", email: "", message: "" });
       setValidationErrors({});
+      // Focus success message for screen readers
+      setTimeout(() => {
+        successMessageRef.current?.focus();
+      }, 100);
     }, 1000);
   };
 
@@ -391,11 +426,7 @@ export default function IntegratedContactSection() {
   return (
     <>
       {/* Main Contact Section: [MAP | FORM] */}
-      <ContactSection
-        id='contact-section'
-        aria-labelledby='contact-heading'
-        role='main'
-      >
+      <ContactSection id='contact-section' aria-labelledby='contact-heading'>
         <Container maxWidth='xl'>
           <TwoColumnLayout>
             {/* LEFT COLUMN: MAP & Location Details */}
@@ -410,9 +441,7 @@ export default function IntegratedContactSection() {
                   allowFullScreen
                   loading='lazy'
                   referrerPolicy='no-referrer-when-downgrade'
-                  title={t("contact.map.iframe_title")}
-                  tabIndex={-1}
-                  aria-label={t("aria.decorative_map")}
+                  title='The interactive Google Map provides precise location details for the DESN office. It is located on Siddhi Road, Mahalaxmi Municipality, Lalitpur 44700, Nepal. Refer to the location data table for complete location details.'
                 />
               </MapContainer>
 
@@ -453,6 +482,8 @@ export default function IntegratedContactSection() {
                   target='_blank'
                   rel='noopener noreferrer'
                   startIcon={<DirectionsIcon />}
+                  disableRipple
+                  disableTouchRipple
                   aria-label={`${t(
                     "contact.map.get_directions"
                   )} - Opens in new window`}
@@ -474,7 +505,7 @@ export default function IntegratedContactSection() {
               {/* Live region for screen reader announcements */}
               <Box
                 role='status'
-                aria-live='polite'
+                aria-live='assertive'
                 aria-atomic='true'
                 sx={{
                   position: "absolute",
@@ -501,6 +532,27 @@ export default function IntegratedContactSection() {
                   <legend style={{ position: "absolute", left: "-10000px" }}>
                     Contact form with 3 required fields
                   </legend>
+
+                  {/* Success Message */}
+                  {submitSuccess && (
+                    <Alert
+                      severity='success'
+                      role='status'
+                      aria-live='assertive'
+                      aria-atomic='true'
+                      ref={successMessageRef}
+                      tabIndex={-1}
+                      sx={{
+                        "&:focus": {
+                          outline: "3px solid #00a77f",
+                          outlineOffset: "2px",
+                        },
+                      }}
+                    >
+                      {t("contact.form.success_message") ||
+                        "Thank you for your message! We will get back to you soon."}
+                    </Alert>
+                  )}
 
                   <MinimalistTextField
                     fullWidth
@@ -556,6 +608,8 @@ export default function IntegratedContactSection() {
                     type='submit'
                     startIcon={<SendIcon />}
                     disabled={isSubmitting}
+                    disableRipple
+                    disableTouchRipple
                     aria-label={
                       isSubmitting
                         ? "Sending message, please wait"
