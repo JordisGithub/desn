@@ -17,7 +17,7 @@ export default {
   footer_link_events: "Events",
   footer_link_resources: "Resources",
   footer_link_get_involved: "Get Involved",
-  footer_contact_heading: "Contact Us",
+  footer_contact_heading: "Contact Information",
   footer_legal_heading: "Legal",
   footer_link_privacy: "Privacy Policy",
   footer_link_terms: "Terms of Service",

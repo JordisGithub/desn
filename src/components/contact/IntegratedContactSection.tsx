@@ -445,6 +445,7 @@ export default function IntegratedContactSection() {
                   loading='lazy'
                   referrerPolicy='no-referrer-when-downgrade'
                   title='The interactive Google Map provides precise location details for the DESN office. It is located on Siddhi Road, Mahalaxmi Municipality, Lalitpur 44700, Nepal. Refer to the location data table for complete location details.'
+                  lang='en'
                 />
               </MapContainer>
 
@@ -601,6 +602,7 @@ export default function IntegratedContactSection() {
                     onChange={handleChange}
                     error={!!validationErrors.message}
                     helperText={validationErrors.message}
+                    autoComplete='off'
                     inputProps={{
                       "aria-required": "true",
                       "aria-invalid": !!validationErrors.message,

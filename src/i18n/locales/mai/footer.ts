@@ -17,7 +17,7 @@ export default {
   footer_link_events: "कार्यक्रम सभ",
   footer_link_resources: "संसाधन सभ",
   footer_link_get_involved: "शामिल होई",
-  footer_contact_heading: "हमरऽ सऽ संपर्क करी",
+  footer_contact_heading: "संपर्क जानकारी",
   footer_legal_heading: "कानूनी",
   footer_link_privacy: "गोपनीयता नीति",
   footer_link_terms: "सेवा शर्त सभ",
