@@ -287,7 +287,7 @@ const DonationSection: React.FC = () => {
 
       {/* Secure Payment via PayPal section intentionally removed per request */}
 
-      <ImpactBox aria-labelledby='donation-impact-title'>
+      <ImpactBox role='region' aria-labelledby='donation-impact-title'>
         <ImpactTitle as='h3' id='donation-impact-title'>
           {t("get_involved.donation.impact.title")}
         </ImpactTitle>

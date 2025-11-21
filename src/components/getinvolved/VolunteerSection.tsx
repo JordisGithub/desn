@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
@@ -157,12 +158,15 @@ const ImageContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const OpportunitiesGrid = styled(Box)(({ theme }) => ({
+const OpportunitiesGrid = styled("ul")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(4, 1fr)",
   gap: "24px",
   marginBottom: "64px",
   justifyContent: "center",
+  listStyle: "none",
+  padding: 0,
+  margin: "0 0 64px 0",
   [theme.breakpoints.down("lg")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
   },
@@ -173,13 +177,14 @@ const OpportunitiesGrid = styled(Box)(({ theme }) => ({
   },
 }));
 
-const OpportunityCard = styled(Box)(({ theme }) => ({
+const OpportunityCard = styled("li")(({ theme }) => ({
   border: "1px solid #e5e7eb",
   borderRadius: "14px",
   overflow: "hidden",
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(2),
+  listStyle: "none",
 }));
 
 const CardImage = styled(Box)({
@@ -235,12 +240,14 @@ const TimeCommitment = styled(Box)(({ theme }) => ({
 const TimeText = styled(Typography)({
   fontSize: "14px",
   fontWeight: 400,
-  color: "#00a77f",
+  color: "#007056",
 });
 
 const VolunteerSection: React.FC = () => {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const successMessageRef = React.useRef<HTMLDivElement>(null);
 
   const benefits = [
     t("get_involved.volunteer.benefits.flexible"),
@@ -306,10 +313,24 @@ const VolunteerSection: React.FC = () => {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    setShowSuccessMessage(false);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleFormSuccess = () => {
+    setIsModalOpen(false);
+    setShowSuccessMessage(true);
+    // Focus the success message for screen readers
+    setTimeout(() => {
+      successMessageRef.current?.focus();
+    }, 100);
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+    }, 10000);
   };
 
   return (
@@ -350,6 +371,37 @@ const VolunteerSection: React.FC = () => {
           />
         </ImageContainer>
       </IntroContainer>
+
+      {showSuccessMessage && (
+        <Alert
+          severity='success'
+          role='status'
+          aria-live='polite'
+          aria-atomic='true'
+          ref={successMessageRef}
+          tabIndex={-1}
+          sx={{
+            mb: 4,
+            maxWidth: "768px",
+            margin: "0 auto 32px",
+            backgroundColor: "#e8f5e9",
+            border: "2px solid #2e7d32",
+            borderRadius: "8px",
+            "& .MuiAlert-icon": {
+              color: "#2e7d32",
+            },
+          }}
+          onClose={() => setShowSuccessMessage(false)}
+        >
+          <Typography
+            variant='body1'
+            sx={{ color: "#1b5e20", fontWeight: 600 }}
+          >
+            {t("get_involved.volunteer.form.success_message") ||
+              "Thank you for your volunteer application! We will contact you soon."}
+          </Typography>
+        </Alert>
+      )}
 
       <OpportunitiesGrid
         role='list'
@@ -395,8 +447,31 @@ const VolunteerSection: React.FC = () => {
             position: "absolute",
             right: 16,
             top: 16,
-            color: "#6b7280",
+            color: "#4b5563",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
             zIndex: 1,
+            transition: "all 0.2s ease",
+            "&:hover": {
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+              transform: "scale(1.05)",
+            },
+            "&:focus": {
+              outline: "3px solid #f6d469",
+              outlineOffset: "2px",
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+            },
+            "&:focus-visible": {
+              outline: "3px solid #f6d469",
+              outlineOffset: "2px",
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+            },
+            "&:active": {
+              transform: "scale(0.95)",
+              backgroundColor: "#e5e7eb",
+            },
           }}
           aria-label={t("aria.close")}
         >
@@ -404,7 +479,7 @@ const VolunteerSection: React.FC = () => {
         </IconButton>
         <DialogContent sx={{ p: 0 }}>
           <VolunteerForm
-            onSuccess={handleCloseModal}
+            onSuccess={handleFormSuccess}
             dialogDescId='volunteer-dialog-desc'
             dialogTitleId='volunteer-dialog-title'
           />

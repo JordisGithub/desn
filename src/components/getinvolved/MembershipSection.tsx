@@ -236,28 +236,63 @@ const StyledTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     borderRadius: "10px",
+    transition: "all 0.2s ease",
     "& fieldset": {
       borderColor: "rgba(255, 255, 255, 0.3)",
       borderWidth: "1px",
     },
-    "&:hover fieldset": {
-      borderColor: "rgba(0, 76, 145, 0.5)",
+    "&:hover:not(.Mui-disabled) fieldset": {
+      borderColor: "#004c91",
+      borderWidth: "2px",
     },
     "&.Mui-focused fieldset": {
       borderColor: "#f6d469",
       borderWidth: "3px",
+      boxShadow: "0 0 0 1px #f6d469",
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#b71c1c",
+      borderWidth: "2px",
+    },
+    "&.Mui-error:hover:not(.Mui-disabled) fieldset": {
+      borderColor: "#8b0000",
+      borderWidth: "2px",
+    },
+    "&.Mui-error.Mui-focused fieldset": {
+      borderColor: "#b71c1c",
+      borderWidth: "3px",
+      boxShadow: "0 0 0 1px #b71c1c",
     },
   },
   "& .MuiInputLabel-root": {
     color: "rgba(16, 24, 40, 0.7)",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     padding: "0 4px",
+    fontWeight: 500,
     "&.Mui-focused": {
       color: "#004c91",
+      fontWeight: 600,
+    },
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
     },
   },
   "& .MuiInputBase-input": {
     color: "#1f2937",
+    "&:focus": {
+      outline: "none",
+    },
+  },
+  "& .MuiFormHelperText-root": {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    margin: "4px 0 0 0",
+    padding: "4px 8px",
+    borderRadius: "4px",
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
+    },
   },
 });
 
@@ -270,15 +305,33 @@ const SubmitButton = styled(Button)(({ theme }) => ({
   borderRadius: "12px",
   textTransform: "none",
   boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-  "&:hover": {
+  transition: "all 0.2s ease",
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+  "&:hover:not(:disabled)": {
     backgroundColor: "#f5ca4a",
-    transform: "translateY(-3px)",
+    transform: "translateY(-1px)",
     boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+  },
+  "&:active:not(:disabled)": {
+    transform: "translateY(0)",
+    boxShadow: "0px 4px 16px rgba(246, 212, 105, 0.4)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "3px",
+    backgroundColor: "#f5ca4a",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "3px",
+    backgroundColor: "#f5ca4a",
   },
   "&:disabled": {
     backgroundColor: "#d1d5db",
     color: "#6b7280",
+    opacity: 0.6,
   },
   [theme.breakpoints.down("sm")]: {
     fontSize: "16px",
@@ -290,6 +343,7 @@ const MembershipSection: React.FC = () => {
   const { t } = useTranslation();
   const { lang } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showPageSuccessMessage, setShowPageSuccessMessage] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -304,6 +358,7 @@ const MembershipSection: React.FC = () => {
     phone?: string;
   }>({});
   const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+  const pageSuccessMessageRef = useRef<HTMLDivElement | null>(null);
 
   const benefits = [
     t("get_involved.membership.benefits.updates"),
@@ -396,9 +451,18 @@ const MembershipSection: React.FC = () => {
           email: "",
           phone: "",
         });
-        // Close modal after showing success message
+        // Close modal and show page success message
         setTimeout(() => {
-          handleCloseModal();
+          setIsModalOpen(false);
+          setShowPageSuccessMessage(true);
+          // Focus the success message for screen readers
+          setTimeout(() => {
+            pageSuccessMessageRef.current?.focus();
+          }, 100);
+          // Auto-hide after 10 seconds
+          setTimeout(() => {
+            setShowPageSuccessMessage(false);
+          }, 10000);
         }, 2000);
       } else {
         setSubmitError(response.message || "Failed to submit application");
@@ -416,6 +480,7 @@ const MembershipSection: React.FC = () => {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    setShowPageSuccessMessage(false);
   };
 
   const handleCloseModal = () => {
@@ -470,6 +535,37 @@ const MembershipSection: React.FC = () => {
         </ImageContainer>
       </IntroContainer>
 
+      {showPageSuccessMessage && (
+        <Alert
+          severity='success'
+          role='status'
+          aria-live='polite'
+          aria-atomic='true'
+          ref={pageSuccessMessageRef}
+          tabIndex={-1}
+          sx={{
+            mb: 4,
+            maxWidth: "768px",
+            margin: "0 auto 32px",
+            backgroundColor: "#e8f5e9",
+            border: "2px solid #2e7d32",
+            borderRadius: "8px",
+            "& .MuiAlert-icon": {
+              color: "#2e7d32",
+            },
+          }}
+          onClose={() => setShowPageSuccessMessage(false)}
+        >
+          <Typography
+            variant='body1'
+            sx={{ color: "#1b5e20", fontWeight: 600 }}
+          >
+            {t("get_involved.membership.form.success_message") ||
+              "Thank you for your membership application! We will contact you soon."}
+          </Typography>
+        </Alert>
+      )}
+
       <BenefitsSection>
         <BenefitsTitle as='h3'>
           {t("get_involved.membership.benefits.title")}
@@ -508,15 +604,38 @@ const MembershipSection: React.FC = () => {
             position: "absolute",
             right: 16,
             top: 16,
-            color: "#6b7280",
+            color: "#4b5563",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
             zIndex: 1,
+            transition: "all 0.2s ease",
+            "&:hover": {
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+              transform: "scale(1.05)",
+            },
+            "&:focus": {
+              outline: "3px solid #f6d469",
+              outlineOffset: "2px",
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+            },
+            "&:focus-visible": {
+              outline: "3px solid #f6d469",
+              outlineOffset: "2px",
+              backgroundColor: "#f3f4f6",
+              color: "#1f2937",
+            },
+            "&:active": {
+              transform: "scale(0.95)",
+              backgroundColor: "#e5e7eb",
+            },
           }}
           aria-label={t("aria.close")}
         >
           <CloseIcon />
         </IconButton>
         <DialogContent sx={{ p: 0 }}>
-          <FormSection>
+          <FormSection role='region'>
             <FormTitle as='h3' id='membership-dialog-title'>
               {t("get_involved.membership.form.title")}
             </FormTitle>
@@ -555,13 +674,19 @@ const MembershipSection: React.FC = () => {
                   mb: 3,
                   maxWidth: "768px",
                   margin: "0 auto 24px",
-                  backgroundColor: "#fee",
-                  border: "2px solid #c00",
+                  backgroundColor: "#ffebee",
+                  border: "2px solid #b71c1c",
+                  "& .MuiAlert-icon": {
+                    color: "#b71c1c",
+                  },
                 }}
                 ref={errorSummaryRef}
                 tabIndex={-1}
               >
-                <Box component='div' sx={{ fontWeight: 700, mb: 1 }}>
+                <Box
+                  component='div'
+                  sx={{ fontWeight: 700, mb: 1, color: "#b71c1c" }}
+                >
                   {t("get_involved.membership.form.errors.summary_title")}
                 </Box>
                 <Box component='ul' sx={{ m: 0, pl: 2 }}>
@@ -569,7 +694,30 @@ const MembershipSection: React.FC = () => {
                     <li>
                       <a
                         href='#membership-fullName'
-                        style={{ color: "#c00", textDecoration: "underline" }}
+                        style={{
+                          color: "#b71c1c",
+                          textDecoration: "underline",
+                          fontWeight: 600,
+                          padding: "2px 4px",
+                          borderRadius: "2px",
+                          display: "inline-block",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor =
+                            "rgba(183, 28, 28, 0.1)";
+                          e.currentTarget.style.color = "#8b0000";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                          e.currentTarget.style.color = "#b71c1c";
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.outline = "3px solid #f6d469";
+                          e.currentTarget.style.outlineOffset = "2px";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.outline = "none";
+                        }}
                         onClick={(e) => {
                           e.preventDefault();
                           document
@@ -585,7 +733,30 @@ const MembershipSection: React.FC = () => {
                     <li>
                       <a
                         href='#membership-email'
-                        style={{ color: "#c00", textDecoration: "underline" }}
+                        style={{
+                          color: "#b71c1c",
+                          textDecoration: "underline",
+                          fontWeight: 600,
+                          padding: "2px 4px",
+                          borderRadius: "2px",
+                          display: "inline-block",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor =
+                            "rgba(183, 28, 28, 0.1)";
+                          e.currentTarget.style.color = "#8b0000";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                          e.currentTarget.style.color = "#b71c1c";
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.outline = "3px solid #f6d469";
+                          e.currentTarget.style.outlineOffset = "2px";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.outline = "none";
+                        }}
                         onClick={(e) => {
                           e.preventDefault();
                           document.getElementById("membership-email")?.focus();
@@ -599,7 +770,30 @@ const MembershipSection: React.FC = () => {
                     <li>
                       <a
                         href='#membership-phone'
-                        style={{ color: "#c00", textDecoration: "underline" }}
+                        style={{
+                          color: "#b71c1c",
+                          textDecoration: "underline",
+                          fontWeight: 600,
+                          padding: "2px 4px",
+                          borderRadius: "2px",
+                          display: "inline-block",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor =
+                            "rgba(183, 28, 28, 0.1)";
+                          e.currentTarget.style.color = "#8b0000";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                          e.currentTarget.style.color = "#b71c1c";
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.outline = "3px solid #f6d469";
+                          e.currentTarget.style.outlineOffset = "2px";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.outline = "none";
+                        }}
                         onClick={(e) => {
                           e.preventDefault();
                           document.getElementById("membership-phone")?.focus();
@@ -634,7 +828,7 @@ const MembershipSection: React.FC = () => {
               </Alert>
             )}
 
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} noValidate>
               <InputRow>
                 <StyledTextField
                   id='membership-fullName'
@@ -643,11 +837,12 @@ const MembershipSection: React.FC = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   fullWidth
+                  required
                   disabled={isSubmitting}
                   error={!!validationErrors.fullName}
                   helperText={validationErrors.fullName}
                   slotProps={{
-                    input: {
+                    htmlInput: {
                       "aria-label": "Full Name",
                       "aria-required": "true",
                       "aria-invalid": !!validationErrors.fullName,
@@ -669,11 +864,12 @@ const MembershipSection: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   fullWidth
+                  required
                   disabled={isSubmitting}
                   error={!!validationErrors.email}
                   helperText={validationErrors.email}
                   slotProps={{
-                    input: {
+                    htmlInput: {
                       "aria-label": "Email Address",
                       "aria-required": "true",
                       "aria-invalid": !!validationErrors.email,
@@ -695,12 +891,13 @@ const MembershipSection: React.FC = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 fullWidth
+                required
                 sx={{ maxWidth: "376px" }}
                 disabled={isSubmitting}
                 error={!!validationErrors.phone}
                 helperText={validationErrors.phone}
                 slotProps={{
-                  input: {
+                  htmlInput: {
                     "aria-label": "Phone Number",
                     "aria-required": "true",
                     "aria-invalid": !!validationErrors.phone,

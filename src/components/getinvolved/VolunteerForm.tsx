@@ -60,28 +60,63 @@ const StyledTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     borderRadius: "10px",
+    transition: "all 0.2s ease",
     "& fieldset": {
       borderColor: "rgba(255, 255, 255, 0.3)",
       borderWidth: "1px",
     },
-    "&:hover fieldset": {
-      borderColor: "rgba(0, 76, 145, 0.5)",
+    "&:hover:not(.Mui-disabled) fieldset": {
+      borderColor: "#004c91",
+      borderWidth: "2px",
     },
     "&.Mui-focused fieldset": {
       borderColor: "#f6d469",
       borderWidth: "3px",
+      boxShadow: "0 0 0 1px #f6d469",
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#b71c1c",
+      borderWidth: "2px",
+    },
+    "&.Mui-error:hover:not(.Mui-disabled) fieldset": {
+      borderColor: "#8b0000",
+      borderWidth: "2px",
+    },
+    "&.Mui-error.Mui-focused fieldset": {
+      borderColor: "#b71c1c",
+      borderWidth: "3px",
+      boxShadow: "0 0 0 1px #b71c1c",
     },
   },
   "& .MuiInputLabel-root": {
     color: "rgba(16, 24, 40, 0.7)",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     padding: "0 4px",
+    fontWeight: 500,
     "&.Mui-focused": {
       color: "#004c91",
+      fontWeight: 600,
+    },
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
     },
   },
   "& .MuiInputBase-input": {
     color: "#1f2937",
+    "&:focus": {
+      outline: "none",
+    },
+  },
+  "& .MuiFormHelperText-root": {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    margin: "4px 0 0 0",
+    padding: "4px 8px",
+    borderRadius: "4px",
+    "&.Mui-error": {
+      color: "#b71c1c",
+      fontWeight: 600,
+    },
   },
 });
 
@@ -97,23 +132,32 @@ const SubmitButton = styled(Button)({
   letterSpacing: "0.02em",
   transition: "all 0.2s ease",
   boxShadow: "none",
-  "&:hover": {
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+  "&:hover:not(:disabled)": {
     backgroundColor: "#003d73",
-    boxShadow: "0 4px 12px rgba(0, 76, 145, 0.3)",
+    boxShadow: "0 4px 12px rgba(0, 76, 145, 0.5)",
+    transform: "translateY(-1px)",
+  },
+  "&:active:not(:disabled)": {
+    transform: "translateY(0)",
+    boxShadow: "0 2px 8px rgba(0, 76, 145, 0.4)",
   },
   "&:focus": {
-    outline: "3px solid #004c91",
-    outlineOffset: "2px",
+    outline: "3px solid #f6d469",
+    outlineOffset: "3px",
     backgroundColor: "#003d73",
   },
   "&:focus-visible": {
-    outline: "3px solid #004c91",
-    outlineOffset: "2px",
+    outline: "3px solid #f6d469",
+    outlineOffset: "3px",
     backgroundColor: "#003d73",
   },
   "&:disabled": {
     backgroundColor: "#d1d5db",
     color: "#6b7280",
+    opacity: 0.6,
   },
 });
 
@@ -261,6 +305,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
 
   return (
     <FormContainer
+      role='region'
       id='volunteer-form'
       aria-labelledby={dialogTitleId}
       aria-describedby={dialogDescId}
@@ -304,13 +349,19 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             mb: 3,
             maxWidth: "768px",
             margin: "0 auto 24px",
-            backgroundColor: "#fee",
-            border: "2px solid #c00",
+            backgroundColor: "#ffebee",
+            border: "2px solid #b71c1c",
+            "& .MuiAlert-icon": {
+              color: "#b71c1c",
+            },
           }}
           ref={errorSummaryRef}
           tabIndex={-1}
         >
-          <Box component='div' sx={{ fontWeight: 700, mb: 1 }}>
+          <Box
+            component='div'
+            sx={{ fontWeight: 700, mb: 1, color: "#b71c1c" }}
+          >
             {t("get_involved.volunteer.form.errors.summary_title")}
           </Box>
           <Box component='ul' sx={{ m: 0, pl: 2 }}>
@@ -318,7 +369,30 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
               <li>
                 <a
                   href='#volunteer-fullName'
-                  style={{ color: "#c00", textDecoration: "underline" }}
+                  style={{
+                    color: "#b71c1c",
+                    textDecoration: "underline",
+                    fontWeight: 600,
+                    padding: "2px 4px",
+                    borderRadius: "2px",
+                    display: "inline-block",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "rgba(183, 28, 28, 0.1)";
+                    e.currentTarget.style.color = "#8b0000";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "#b71c1c";
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = "3px solid #f6d469";
+                    e.currentTarget.style.outlineOffset = "2px";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.outline = "none";
+                  }}
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById("volunteer-fullName")?.focus();
@@ -332,7 +406,30 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
               <li>
                 <a
                   href='#volunteer-email'
-                  style={{ color: "#c00", textDecoration: "underline" }}
+                  style={{
+                    color: "#b71c1c",
+                    textDecoration: "underline",
+                    fontWeight: 600,
+                    padding: "2px 4px",
+                    borderRadius: "2px",
+                    display: "inline-block",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      "rgba(183, 28, 28, 0.1)";
+                    e.currentTarget.style.color = "#8b0000";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                    e.currentTarget.style.color = "#b71c1c";
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = "3px solid #f6d469";
+                    e.currentTarget.style.outlineOffset = "2px";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.outline = "none";
+                  }}
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById("volunteer-email")?.focus();
@@ -367,7 +464,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
         </Alert>
       )}
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} noValidate>
         <InputRow>
           <StyledTextField
             id='volunteer-fullName'
@@ -376,14 +473,13 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             value={formData.fullName}
             onChange={handleChange}
             fullWidth
+            required
             disabled={isSubmitting}
             error={!!validationErrors.fullName}
             helperText={validationErrors.fullName}
             inputRef={firstInputRef}
             slotProps={{
-              input: {
-                "aria-label": "Full Name",
-                "aria-required": "true",
+              htmlInput: {
                 "aria-invalid": !!validationErrors.fullName,
                 "aria-describedby": validationErrors.fullName
                   ? "volunteer-fullName-error"
@@ -403,13 +499,12 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
             value={formData.email}
             onChange={handleChange}
             fullWidth
+            required
             disabled={isSubmitting}
             error={!!validationErrors.email}
             helperText={validationErrors.email}
             slotProps={{
-              input: {
-                "aria-label": "Email Address",
-                "aria-required": "true",
+              htmlInput: {
                 "aria-invalid": !!validationErrors.email,
                 "aria-describedby": validationErrors.email
                   ? "volunteer-email-error"
