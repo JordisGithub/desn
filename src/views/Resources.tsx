@@ -29,6 +29,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ResourceService from "../services/ResourceService";
 import type { Resource, ResourcesResponse } from "../services/ResourceService";
 import { getResourceTranslation } from "../utils/resourceTranslations";
+import { red } from "@mui/material/colors";
 
 const Resources: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -350,6 +351,7 @@ const Resources: React.FC = () => {
           <Button
             variant='contained'
             fullWidth
+            disableRipple
             startIcon={
               isVideo ? (
                 <PlayArrowIcon aria-hidden='true' />
@@ -363,6 +365,16 @@ const Resources: React.FC = () => {
                 ? `${t("resources.watch")} ${translated.title}`
                 : `${t("resources.download")} ${translated.title}`
             }
+            sx={{
+              "&:focus": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+              },
+              "&:focus-visible": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+              },
+            }}
           >
             {isVideo ? t("resources.watch") : t("resources.download")}
           </Button>
@@ -377,6 +389,40 @@ const Resources: React.FC = () => {
                 : t("resources.add_favorite") ||
                   `Add ${translated.title} to favorites`
             }
+            sx={{
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+              "&:focus": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+              "&:focus-visible": {
+                outline: "3px solid #004c91",
+                outlineOffset: "2px",
+                backgroundColor: "rgba(0, 76, 145, 0.12)",
+                transform: "scale(1.1)",
+                "& svg": {
+                  stroke: "#004c91",
+                  strokeWidth: 2,
+                  filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))",
+                },
+              },
+            }}
           >
             {isFavorited ? (
               <FavoriteIcon aria-hidden='true' />
@@ -594,7 +640,44 @@ const Resources: React.FC = () => {
                   onClick={() => setSelectedType(type.key)}
                   color={selectedType === type.key ? "primary" : "default"}
                   variant={selectedType === type.key ? "filled" : "outlined"}
-                  sx={{ fontSize: "1rem", py: 2.5 }}
+                  sx={{
+                    fontSize: "1rem",
+                    py: 2.5,
+                    transition: "all 0.3s ease",
+                    cursor: "pointer",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow:
+                        selectedType === type.key
+                          ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                          : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                      backgroundColor:
+                        selectedType === type.key
+                          ? "#003d73"
+                          : "rgba(0, 76, 145, 0.08)",
+                      borderColor:
+                        selectedType === type.key ? "#003d73" : "#004c91",
+                    },
+                    "&:focus": {
+                      outline: "3px solid #004c91",
+                      outlineOffset: "2px",
+                      boxShadow:
+                        selectedType === type.key
+                          ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                          : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                    },
+                    "&:focus-visible": {
+                      outline: "3px solid #004c91",
+                      outlineOffset: "2px",
+                      boxShadow:
+                        selectedType === type.key
+                          ? "0px 4px 12px rgba(0, 76, 145, 0.4)"
+                          : "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                    },
+                    "& .MuiTouchRipple-root": {
+                      display: "none",
+                    },
+                  }}
                 />
               ))}
             </Box>
