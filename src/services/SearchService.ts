@@ -64,7 +64,7 @@ class SearchService {
               type: "resource",
               title: String(rr["title"] ?? "Untitled Resource"),
               excerpt: String(rr["description"] ?? ""),
-              url: `/resources/${String(rr["id"])}`,
+              url: `/resources`, // Link to resources page, not individual resource
               date: String(rr["publishDate"] ?? ""),
             } as SearchItem;
           });
@@ -216,89 +216,42 @@ class SearchService {
         ];
 
         // Document/Publication items - actual resources
-        const documentItems: SearchItem[] = [
-          {
-            id: "doc-communication-policy",
-            type: "document",
-            title: "Communication Policy",
-            url: "/resources",
-            excerpt: "Official communication policy of DESN",
-          },
-          {
-            id: "doc-computer-usage-policy",
-            type: "document",
-            title: "Computer Usage Policy",
-            url: "/resources",
-            excerpt: "Computer usage policy and guidelines of DESN",
-          },
-          {
-            id: "doc-annual-report",
-            type: "document",
-            title: "Annual Report",
-            url: "/resources",
-            excerpt: "DESN Annual Report - Strategic initiatives and impact",
-          },
-          {
-            id: "doc-policy-brief",
-            type: "document",
-            title: "Policy Brief",
-            url: "/resources",
-            excerpt: "Policy briefs on disability rights and inclusion",
-          },
-          {
-            id: "doc-guidelines",
-            type: "document",
-            title: "Accessibility Guidelines",
-            url: "/resources",
-            excerpt: "Guidelines for accessible environment and services",
-          },
-          {
-            id: "doc-training-materials",
-            type: "document",
-            title: "Training Materials",
-            url: "/resources",
-            excerpt:
-              "Educational materials for disability awareness and inclusion",
-          },
-          {
-            id: "doc-research-papers",
-            type: "document",
-            title: "Research Papers",
-            url: "/resources",
-            excerpt: "Research and studies on disability empowerment in Nepal",
-          },
-          {
-            id: "doc-publications",
-            type: "document",
-            title: "Publications",
-            url: "/resources",
-            excerpt: "DESN publications and articles on disability issues",
-          },
-          {
-            id: "doc-protection-policy",
-            type: "document",
-            title: "Protection from Sexual Exploitation and Abuse Policy",
-            url: "/resources",
-            excerpt:
-              "Protection from Sexual Exploitation and Abuse (PSEA) policy",
-          },
-          {
-            id: "doc-data-protection-policy",
-            type: "document",
-            title: "Data Protection Policy",
-            url: "/resources",
-            excerpt:
-              "Data protection and privacy policy for DESN beneficiaries and staff",
-          },
-          {
-            id: "doc-financial-policy",
-            type: "document",
-            title: "Financial Policy and Procedures",
-            url: "/resources",
-            excerpt:
-              "Financial management policies and procedures for organizational accountability",
-          },
-        ];
+        // These serve as fallback when API is unavailable
+        const documentItems: SearchItem[] = [];
+
+        // If API failed, add some sample resources to search index
+        // This ensures users can still search for resources when backend is unavailable
+        if (resourceItems.length === 0 && import.meta.env.DEV) {
+          resourceItems = [
+            {
+              id: "resource-sample-1",
+              type: "resource",
+              title: "Disability Inclusion Toolkit",
+              excerpt:
+                "Comprehensive toolkit for implementing disability inclusion in organizations",
+              url: "/resources",
+              date: "2024-01-15",
+            },
+            {
+              id: "resource-sample-2",
+              type: "resource",
+              title: "Employment Support Guide",
+              excerpt:
+                "Guide for job placement support and employment opportunities for persons with disabilities",
+              url: "/resources",
+              date: "2024-02-20",
+            },
+            {
+              id: "resource-sample-3",
+              type: "resource",
+              title: "Accessibility Standards",
+              excerpt:
+                "Standards and best practices for creating accessible digital and physical environments",
+              url: "/resources",
+              date: "2024-03-10",
+            },
+          ];
+        }
 
         this.items = [
           ...resourceItems,
