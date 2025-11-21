@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
-import SendIcon from "@mui/icons-material/Send";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { postWithAuth } from "../../services/ApiService";
@@ -86,30 +85,37 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const SubmitButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#f6d469",
-  color: "#004c91",
-  fontSize: "20px",
-  fontWeight: 700,
-  padding: "14px 32px",
-  borderRadius: "12px",
+const SubmitButton = styled(Button)({
+  backgroundColor: "#004c91",
+  color: "#ffffff",
+  fontSize: "16px",
+  fontWeight: 600,
+  padding: "12px",
+  borderRadius: "10px",
   textTransform: "none",
-  boxShadow: "0px 6px 20px rgba(246, 212, 105, 0.4)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  marginTop: "20px",
+  letterSpacing: "0.02em",
+  transition: "all 0.2s ease",
+  boxShadow: "none",
   "&:hover": {
-    backgroundColor: "#f5ca4a",
-    transform: "translateY(-3px)",
-    boxShadow: "0px 10px 28px rgba(246, 212, 105, 0.5)",
+    backgroundColor: "#003d73",
+    boxShadow: "0 4px 12px rgba(0, 76, 145, 0.3)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
   },
   "&:disabled": {
     backgroundColor: "#d1d5db",
     color: "#6b7280",
   },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "16px",
-    padding: "12px 24px",
-  },
-}));
+});
 
 const RequiredNote = styled(Typography)(({ theme }) => ({
   fontSize: "20px",
@@ -418,11 +424,18 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
         </InputRow>
         <SubmitButton
           type='submit'
-          endIcon={isSubmitting ? <CircularProgress size={20} /> : <SendIcon />}
+          fullWidth
           disabled={isSubmitting}
+          endIcon={
+            isSubmitting ? (
+              <CircularProgress size={20} color='inherit' />
+            ) : undefined
+          }
           aria-label={t("get_involved.volunteer.form.submit_aria_label")}
         >
-          {isSubmitting ? "Submitting..." : "SUBMIT VOLUNTEER INQUIRY"}
+          {isSubmitting
+            ? t("get_involved.volunteer.form.submitting")
+            : t("get_involved.volunteer.form.submit")}
         </SubmitButton>
       </Form>
     </FormContainer>

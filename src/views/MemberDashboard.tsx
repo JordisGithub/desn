@@ -323,7 +323,7 @@ interface FavoriteResource {
 export default function MemberDashboard() {
   const { t } = useTranslation();
   usePageTitle("page_titles.member_dashboard");
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isAuthReady } = useAuth();
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [favorites, setFavorites] = useState<FavoriteResource[]>([]);
@@ -335,6 +335,10 @@ export default function MemberDashboard() {
   const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
+    if (!isAuthReady) {
+      return;
+    }
+
     if (!isAuthenticated) {
       navigate("/login");
       return;
@@ -405,7 +409,7 @@ export default function MemberDashboard() {
     return () => {
       isMounted = false;
     };
-  }, [isAuthenticated, navigate, user]);
+  }, [isAuthReady, isAuthenticated, navigate, user]);
 
   const handleCancelClick = (registration: Registration) => {
     setEventToCancel(registration);
