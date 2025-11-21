@@ -123,6 +123,10 @@ const MetaText = styled(Typography)({
 const StatusChip = styled(Chip)({
   marginBottom: "1rem",
   fontWeight: 500,
+  "&.MuiChip-colorSuccess": {
+    backgroundColor: "#008766", // Darker success color for better contrast
+    color: "#ffffff",
+  },
 });
 
 const CancelButton = styled(Button)({
@@ -134,8 +138,26 @@ const CancelButton = styled(Button)({
   fontSize: "1rem",
   fontWeight: 600,
   padding: "10px",
+  border: "2px solid #d32f2f",
   "&:hover": {
     backgroundColor: "#ffebee",
+    color: "#b71c1c",
+    borderColor: "#b71c1c",
+  },
+  "&:focus": {
+    outline: "3px solid #d32f2f",
+    outlineOffset: "2px",
+    backgroundColor: "#ffebee",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #d32f2f",
+    outlineOffset: "2px",
+    backgroundColor: "#ffebee",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 
@@ -167,6 +189,21 @@ const BrowseEventsButton = styled(Button)({
   "&:hover": {
     backgroundColor: "#003d73",
   },
+  "&:focus": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #f6d469",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
+  },
 });
 
 const SectionTitle = styled(Typography)({
@@ -193,6 +230,8 @@ const ResourceCardContent = styled(CardContent)({
   padding: "1.5rem",
   display: "flex",
   gap: "1rem",
+  flexWrap: "wrap",
+  alignItems: "flex-start",
 });
 
 const ResourceIcon = styled(Box)({
@@ -212,6 +251,8 @@ const ResourceIcon = styled(Box)({
 
 const ResourceInfo = styled(Box)({
   flex: 1,
+  minWidth: 0, // Allow flex item to shrink below content size
+  overflow: "hidden",
 });
 
 const ResourceTitle = styled(Typography)({
@@ -220,6 +261,9 @@ const ResourceTitle = styled(Typography)({
   color: "#004c91",
   marginBottom: "0.5rem",
   fontFamily: "'Poppins', sans-serif",
+  wordWrap: "break-word",
+  overflowWrap: "break-word",
+  hyphens: "auto",
 });
 
 const ResourceDescription = styled(Typography)({
@@ -254,6 +298,7 @@ const ResourceActions = styled(Box)({
   flexDirection: "column",
   gap: "0.5rem",
   alignItems: "flex-end",
+  flexShrink: 0,
 });
 
 const DownloadButton = styled(Button)({
@@ -265,8 +310,26 @@ const DownloadButton = styled(Button)({
   textTransform: "none",
   fontWeight: 600,
   minWidth: "120px",
+  transition: "all 0.3s ease",
   "&:hover": {
+    backgroundColor: "#002d5a",
+    transform: "translateY(-2px)",
+    boxShadow: "0px 4px 12px rgba(0, 76, 145, 0.4)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
     backgroundColor: "#003d73",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#003d73",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 
@@ -280,6 +343,22 @@ const RemoveFavoriteButton = styled(Button)({
   minWidth: "120px",
   "&:hover": {
     backgroundColor: "#ffebee",
+    color: "#b71c1c",
+  },
+  "&:focus": {
+    outline: "3px solid #d32f2f",
+    outlineOffset: "2px",
+    backgroundColor: "#ffebee",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #d32f2f",
+    outlineOffset: "2px",
+    backgroundColor: "#ffebee",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 

@@ -154,7 +154,8 @@ export default {
 
   // Resources Page
   resources: {
-    hero_title: "ज्ञान पुस्तकालय",
+    knowledge_library: "ज्ञान पुस्तकालय",
+    hero_title: "स्रोत आ प्रकाशन",
     hero_description:
       "अपांगता अधिकार आ समावेशीकरणपर रिपोर्ट, अनुसन्धान पत्र, तालिम सामग्री आ मल्टिमिडिया स्रोतसभक हमर व्यापक संग्रह पहुँच करू।",
     browse_resources: "स्रोतसभ देखू",
