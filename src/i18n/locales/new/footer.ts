@@ -17,7 +17,7 @@ export default {
   footer_link_events: "कार्यक्रमहरू",
   footer_link_resources: "स्रोतहरू",
   footer_link_get_involved: "संलग्न बनू",
-  footer_contact_heading: "सम्पर्क यानू",
+  footer_contact_heading: "सम्पर्क जानकारी",
   footer_legal_heading: "कानूनी",
   footer_link_privacy: "गोपनीयता नीति",
   footer_link_terms: "सेवा सर्तहरू",

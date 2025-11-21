@@ -51,7 +51,7 @@ export default function ContactHero() {
   const { t } = useTranslation();
 
   return (
-    <HeroSection aria-labelledby='contact-hero-heading' role='banner'>
+    <HeroSection aria-labelledby='contact-hero-heading'>
       <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
         <Box sx={{ maxWidth: "733px" }}>
           <Badge>
