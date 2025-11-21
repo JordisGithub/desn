@@ -326,11 +326,17 @@ const SubmitButton = styled(Button)(({ theme }) => ({
     outline: "3px solid #004c91",
     outlineOffset: "3px",
     backgroundColor: "#f5ca4a",
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
   "&:focus-visible": {
     outline: "3px solid #004c91",
     outlineOffset: "3px",
     backgroundColor: "#f5ca4a",
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
   "&:disabled": {
     backgroundColor: "#d1d5db",

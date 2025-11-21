@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -168,12 +168,15 @@ const Logo = styled("img")({
   },
 });
 
-const NavLinks = styled(Box)(({ theme }) => ({
+const NavLinks = styled("ul")(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(2.5),
   alignItems: "center",
   flex: 1,
   justifyContent: "flex-start",
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
   [theme.breakpoints.down("lg")]: {
     display: "none", // Hide desktop nav on tablet and mobile
   },
@@ -383,6 +386,7 @@ const Header: React.FC = () => {
   const { user, isAdmin, logout, isAuthenticated } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(
     null
@@ -936,11 +940,35 @@ const Header: React.FC = () => {
         >
           <NavBar>
             <NavLinks>
-              {navItems.map((item) => (
-                <NavLink key={item.path} to={item.path}>
-                  {item.label}
-                </NavLink>
-              ))}
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <li key={item.path}>
+                    <NavLink
+                      to={item.path}
+                      aria-current={isActive ? "page" : undefined}
+                      sx={{
+                        color: isActive ? "#004c91" : "#333",
+                        fontWeight: isActive ? 600 : 400,
+                        "&::after": isActive
+                          ? {
+                              content: '""',
+                              position: "absolute",
+                              bottom: 0,
+                              left: "12px",
+                              right: "12px",
+                              height: "3px",
+                              backgroundColor: "#004c91",
+                              borderRadius: "2px 2px 0 0",
+                            }
+                          : {},
+                      }}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                );
+              })}
             </NavLinks>
             <Box
               sx={{
@@ -1145,13 +1173,29 @@ const Header: React.FC = () => {
 
           <Divider />
           <List>
-            {navItems.map((item) => (
-              <ListItem key={item.path} disablePadding>
-                <ListItemButton onClick={() => handleMobileNavClick(item.path)}>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <ListItem key={item.path} disablePadding>
+                  <ListItemButton
+                    onClick={() => handleMobileNavClick(item.path)}
+                    aria-current={isActive ? "page" : undefined}
+                    sx={{
+                      backgroundColor: isActive
+                        ? "rgba(0, 76, 145, 0.08)"
+                        : "transparent",
+                      borderLeft: isActive ? "4px solid #004c91" : "none",
+                      "& .MuiListItemText-primary": {
+                        color: isActive ? "#004c91" : "inherit",
+                        fontWeight: isActive ? 600 : 400,
+                      },
+                    }}
+                  >
+                    <ListItemText primary={item.label} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
           </List>
           <Divider />
           <List>

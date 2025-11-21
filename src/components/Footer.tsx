@@ -69,7 +69,7 @@ const FooterGrid = styled(Box)(({ theme }) => ({
 
 const FooterColumn = styled(Box)({});
 
-const FooterHeading = styled(Typography)(({ theme }) => ({
+const FooterHeading = styled("h2")(({ theme }) => ({
   fontSize: "1.125rem",
   fontWeight: 700,
   color: "#1a1a1a",
@@ -263,17 +263,34 @@ export default function Footer() {
             {/* Quick Links */}
             <FooterColumn>
               <FooterHeading>{t("footer_quick_links")}</FooterHeading>
-              <FooterLink to='/about'>{t("footer_link_about")}</FooterLink>
-              <FooterLink to='/programs'>
-                {t("footer_link_programs")}
-              </FooterLink>
-              <FooterLink to='/events'>{t("footer_link_events")}</FooterLink>
-              <FooterLink to='/resources'>
-                {t("footer_link_resources")}
-              </FooterLink>
-              <FooterLink to='/get-involved'>
-                {t("footer_link_get_involved")}
-              </FooterLink>
+              <Box
+                component='ul'
+                sx={{ listStyle: "none", margin: 0, padding: 0 }}
+              >
+                <li>
+                  <FooterLink to='/about'>{t("footer_link_about")}</FooterLink>
+                </li>
+                <li>
+                  <FooterLink to='/programs'>
+                    {t("footer_link_programs")}
+                  </FooterLink>
+                </li>
+                <li>
+                  <FooterLink to='/events'>
+                    {t("footer_link_events")}
+                  </FooterLink>
+                </li>
+                <li>
+                  <FooterLink to='/resources'>
+                    {t("footer_link_resources")}
+                  </FooterLink>
+                </li>
+                <li>
+                  <FooterLink to='/get-involved'>
+                    {t("footer_link_get_involved")}
+                  </FooterLink>
+                </li>
+              </Box>
             </FooterColumn>
 
             {/* Contact Us */}
@@ -285,82 +302,110 @@ export default function Footer() {
               }}
             >
               <FooterHeading>{t("footer_contact_heading")}</FooterHeading>
-              <ContactItem>
-                <LocationOnIcon
-                  sx={{ fontSize: "1.25rem", mt: 0.25, flexShrink: 0 }}
-                  aria-label={t("contact_labels.location")}
-                />
-                <FooterText>{t("footer_contact_location")}</FooterText>
-              </ContactItem>
-              <ContactItem>
-                <PhoneIcon
-                  sx={{ fontSize: "1.25rem", flexShrink: 0 }}
-                  aria-label={t("contact_labels.phone")}
-                />
-                <FooterLink
-                  to='tel:+97715709205'
-                  sx={{ display: "inline", marginBottom: 0 }}
-                  aria-label={`${t("contact_labels.phone")}: ${t(
-                    "footer_contact_phone"
-                  )}`}
-                >
-                  {t("footer_contact_phone")}
-                </FooterLink>
-              </ContactItem>
-              <ContactItem>
-                <EmailIcon
-                  sx={{ fontSize: "1.25rem", flexShrink: 0 }}
-                  aria-label={t("contact_labels.email")}
-                />
-                <FooterLink
-                  to='mailto:disabilityemp@gmail.com'
-                  sx={{ display: "inline", marginBottom: 0 }}
-                  aria-label={`${t(
-                    "contact_labels.email"
-                  )}: disabilityemp@gmail.com`}
-                >
-                  disabilityemp@gmail.com
-                </FooterLink>
-              </ContactItem>
+              <Box
+                component='ul'
+                sx={{ listStyle: "none", margin: 0, padding: 0 }}
+              >
+                <li>
+                  <ContactItem>
+                    <LocationOnIcon
+                      sx={{ fontSize: "1.25rem", mt: 0.25, flexShrink: 0 }}
+                      aria-label={t("contact_labels.location")}
+                    />
+                    <FooterText>{t("footer_contact_location")}</FooterText>
+                  </ContactItem>
+                </li>
+                <li>
+                  <ContactItem>
+                    <PhoneIcon
+                      sx={{ fontSize: "1.25rem", flexShrink: 0 }}
+                      aria-label={t("contact_labels.phone")}
+                    />
+                    <FooterLink
+                      to='tel:+97715709205'
+                      sx={{ display: "inline", marginBottom: 0 }}
+                      aria-label={`${t("contact_labels.phone")}: ${t(
+                        "footer_contact_phone"
+                      )}`}
+                    >
+                      {t("footer_contact_phone")}
+                    </FooterLink>
+                  </ContactItem>
+                </li>
+                <li>
+                  <ContactItem>
+                    <EmailIcon
+                      sx={{ fontSize: "1.25rem", flexShrink: 0 }}
+                      aria-label={t("contact_labels.email")}
+                    />
+                    <FooterLink
+                      to='mailto:disabilityemp@gmail.com'
+                      sx={{ display: "inline", marginBottom: 0 }}
+                      aria-label={`${t(
+                        "contact_labels.email"
+                      )}: disabilityemp@gmail.com`}
+                    >
+                      disabilityemp@gmail.com
+                    </FooterLink>
+                  </ContactItem>
+                </li>
+              </Box>
             </FooterColumn>
           </FooterGrid>
 
           {/* Social Media Section */}
           <SocialSection>
             <SocialHeading>{t("footer_stay_connected")}</SocialHeading>
-            <SocialIcon
-              href='https://facebook.com'
-              aria-label={t("aria.facebook")}
-              target='_blank'
-              rel='noopener noreferrer'
+            <Box
+              component='ul'
+              sx={{
+                listStyle: "none",
+                margin: 0,
+                padding: 0,
+                display: "flex",
+                gap: 3,
+              }}
             >
-              <FacebookIcon
-                aria-hidden='false'
-                titleAccess={t("aria.facebook").split(" (")[0]}
-              />
-            </SocialIcon>
-            <SocialIcon
-              href='https://twitter.com'
-              aria-label={t("aria.twitter")}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <XIcon
-                aria-hidden='false'
-                titleAccess={t("aria.twitter").split(" (")[0]}
-              />
-            </SocialIcon>
-            <SocialIcon
-              href='https://linkedin.com'
-              aria-label={t("aria.linkedin")}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              <LinkedInIcon
-                aria-hidden='false'
-                titleAccess={t("aria.linkedin").split(" (")[0]}
-              />
-            </SocialIcon>
+              <li>
+                <SocialIcon
+                  href='https://facebook.com'
+                  aria-label={t("aria.facebook")}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <FacebookIcon
+                    aria-hidden='false'
+                    titleAccess={t("aria.facebook").split(" (")[0]}
+                  />
+                </SocialIcon>
+              </li>
+              <li>
+                <SocialIcon
+                  href='https://twitter.com'
+                  aria-label={t("aria.twitter")}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <XIcon
+                    aria-hidden='false'
+                    titleAccess={t("aria.twitter").split(" (")[0]}
+                  />
+                </SocialIcon>
+              </li>
+              <li>
+                <SocialIcon
+                  href='https://linkedin.com'
+                  aria-label={t("aria.linkedin")}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <LinkedInIcon
+                    aria-hidden='false'
+                    titleAccess={t("aria.linkedin").split(" (")[0]}
+                  />
+                </SocialIcon>
+              </li>
+            </Box>
           </SocialSection>
         </Container>
       </TopSection>
