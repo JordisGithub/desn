@@ -173,21 +173,24 @@ const DirectionsButton = styled(Button, {
   },
   "&:hover": {
     backgroundColor: "#003d73",
+    color: "white",
     boxShadow: "0 6px 16px rgba(0, 76, 145, 0.3)",
     transform: "translateY(-1px)",
   },
   "&:focus": {
-    outline: "4px solid #f6d469",
+    outline: "4px solid #004c91",
     outlineOffset: "3px",
     backgroundColor: "#003d73",
+    color: "white",
     boxShadow:
-      "0 0 0 7px rgba(246, 212, 105, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
+      "0 0 0 7px rgba(0, 76, 145, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
   },
   "&:focus-visible": {
-    outline: "4px solid #f6d469",
+    outline: "4px solid #004c91",
     outlineOffset: "3px",
+    color: "white",
     boxShadow:
-      "0 0 0 7px rgba(246, 212, 105, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
+      "0 0 0 7px rgba(0, 76, 145, 0.3), 0 6px 16px rgba(0, 76, 145, 0.3)",
   },
   "&:active": {
     backgroundColor: "#002952",
