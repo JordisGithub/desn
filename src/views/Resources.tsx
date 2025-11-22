@@ -691,9 +691,6 @@ const Resources: React.FC = () => {
                     <Chip
                       label={
                         <>
-                          <span aria-hidden='true' style={{ marginRight: 8 }}>
-                            {type.icon}
-                          </span>
                           {type.label}
                           {typeCounts[type.key] !== undefined &&
                             type.key !== "" && (

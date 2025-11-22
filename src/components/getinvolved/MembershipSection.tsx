@@ -531,7 +531,7 @@ const MembershipSection: React.FC = () => {
           <BecomeaMemberButton
             onClick={handleOpenModal}
             aria-haspopup='dialog'
-            aria-controls='membership-dialog'
+            aria-expanded={isModalOpen}
             aria-label={t("get_involved.membership.become_member_aria_label")}
           >
             {t("get_involved.membership.become_member")}
@@ -591,7 +591,6 @@ const MembershipSection: React.FC = () => {
       </BenefitsSection>
 
       <Dialog
-        id='membership-dialog'
         open={isModalOpen}
         onClose={handleCloseModal}
         aria-labelledby='membership-dialog-title'
@@ -599,6 +598,7 @@ const MembershipSection: React.FC = () => {
         maxWidth='md'
         fullWidth
         PaperProps={{
+          id: "membership-dialog",
           sx: {
             borderRadius: "16px",
             maxWidth: "900px",
