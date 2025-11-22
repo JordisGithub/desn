@@ -235,10 +235,7 @@ export default function ProgramPillarCategory({
           </PillarSubtitle>
         </PillarHeader>
 
-        <ProgramsGrid
-          role='list'
-          aria-label={t(`programs.categories.${pillarType}.title`)}
-        >
+        <ProgramsGrid>
           {programs.map((program) => (
             <ProgramCard
               key={program.id}
