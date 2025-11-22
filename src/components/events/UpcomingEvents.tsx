@@ -157,7 +157,7 @@ const CalendarGrid = styled(Box)(({ theme }) => ({
 
 const DayHeader = styled(Typography)({
   fontSize: "0.8rem",
-  color: "#717182",
+  color: "#000000", // Set weekday header text to black
   textAlign: "center",
   padding: "0.25rem",
   marginBottom: "0.25rem",
