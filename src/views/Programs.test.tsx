@@ -7,6 +7,13 @@ describe("Programs Page Accessibility", () => {
     const { container } = renderWithProviders(<Programs />);
     const results = await testAccessibility(container);
 
+    if (results.violations.length > 0) {
+      console.log(
+        "Accessibility Violations:",
+        JSON.stringify(results.violations, null, 2)
+      );
+    }
+
     expect(results.violations).toHaveLength(0);
   });
 
