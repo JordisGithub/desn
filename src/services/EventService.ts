@@ -49,6 +49,12 @@ interface EventRegistration {
   }>;
 }
 
+interface RegistrationWithEvent {
+  registrationId: number;
+  registeredAt: string;
+  event: EventResponse;
+}
+
 const EventService = {
   /**
    * Register a user for an event
@@ -165,9 +171,9 @@ const EventService = {
   async getUserRegistrations(
     username: string,
     token: string
-  ): Promise<EventResponse[]> {
+  ): Promise<RegistrationWithEvent[]> {
     try {
-      const response = await ApiService.get<EventResponse[]>(
+      const response = await ApiService.get<RegistrationWithEvent[]>(
         `/api/events/user/${username}/registrations`,
         {
           headers: {
@@ -226,4 +232,5 @@ const EventService = {
   },
 };
 
+export type { EventResponse, RegistrationWithEvent };
 export default EventService;

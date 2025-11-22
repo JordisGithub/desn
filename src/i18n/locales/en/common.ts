@@ -120,6 +120,8 @@ export default {
   browse_events: "Browse Events",
   no_keep_registration: "No, Keep Registration",
   yes_cancel_registration: "Yes, Cancel Registration",
+  view: "View",
+  remove: "Remove",
 
   // Member Dashboard
   member_dashboard_title: "My Dashboard",
@@ -127,6 +129,7 @@ export default {
     "View and manage your event registrations and favorite publications",
   member_dashboard_no_registrations:
     "You haven't registered for any events yet.",
+  registration_confirmed: "Confirmed",
   favorite_publications: "Favorite Publications",
   no_favorite_publications: "You haven't favorited any publications yet.",
   browse_publications: "Browse Publications",

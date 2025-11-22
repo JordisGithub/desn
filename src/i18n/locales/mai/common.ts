@@ -129,13 +129,15 @@ export default {
 
   // Buttons
   cancel: "रद्द करू",
-  create_account: "खाता सिर्जना करू",
-  login: "लगइन",
+  create_account: "खाता बनाउ",
+  login: "लॉगिन",
   confirm_registration: "दर्ता पुष्टि करू",
   cancel_registration: "दर्ता रद्द करू",
   browse_events: "कार्यक्रमसभ देखू",
   no_keep_registration: "नै, दर्ता राखू",
   yes_cancel_registration: "हँ, दर्ता रद्द करू",
+  view: "देखू",
+  remove: "हटाउ",
 
   // Member Dashboard
   member_dashboard_title: "हमर ड्यासबोर्ड",
@@ -143,6 +145,7 @@ export default {
     "अप्पन कार्यक्रम दर्तासभ आ मनपसंद प्रकाशनसभ देखू आ व्यवस्थापन करू",
   member_dashboard_no_registrations:
     "अहाँ अखन धरि कोनो कार्यक्रममे दर्ता नै कएलहुँ अछि।",
+  registration_confirmed: "पुष्टि भेल",
   favorite_publications: "मनपसंद प्रकाशनसभ",
   no_favorite_publications: "अहाँ अखन धरि कोनो प्रकाशन मनपसंद नै कएलहुँ अछि।",
   browse_publications: "प्रकाशनसभ देखू",

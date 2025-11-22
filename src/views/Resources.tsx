@@ -451,7 +451,7 @@ const Resources: React.FC = () => {
             ) : (
               <>
                 <DescriptionIcon aria-hidden='true' sx={{ fontSize: 20 }} />
-                {t("resources.view_pdf")}
+                {t("view")}
                 <Box
                   component='span'
                   sx={{
@@ -691,9 +691,6 @@ const Resources: React.FC = () => {
                     <Chip
                       label={
                         <>
-                          <span aria-hidden='true' style={{ marginRight: 8 }}>
-                            {type.icon}
-                          </span>
                           {type.label}
                           {typeCounts[type.key] !== undefined &&
                             type.key !== "" && (
