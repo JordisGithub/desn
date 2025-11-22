@@ -45,39 +45,6 @@ const GradientOverlay2 = styled(Box)({
   left: "160px",
 });
 
-const Badge = styled(Box)(({ theme }) => ({
-  display: "inline-block",
-  backgroundColor: "rgba(255, 255, 255, 0.2)",
-  border: "1px solid rgba(0, 0, 0, 0)",
-  borderRadius: "8px",
-  padding: "10px 20px",
-  marginBottom: "20px",
-  [theme.breakpoints.up("sm")]: {
-    padding: "12px 24px",
-    marginBottom: "28px",
-  },
-  [theme.breakpoints.up("md")]: {
-    padding: "13px 25px",
-    marginBottom: "32px",
-  },
-}));
-
-const BadgeText = styled(Typography)(({ theme }) => ({
-  fontSize: "14px",
-  fontWeight: 500,
-  color: "white",
-  lineHeight: "24px",
-  fontFamily: "Roboto, sans-serif",
-  [theme.breakpoints.up("sm")]: {
-    fontSize: "16px",
-    lineHeight: "26px",
-  },
-  [theme.breakpoints.up("md")]: {
-    fontSize: "18px",
-    lineHeight: "28px",
-  },
-}));
-
 const Title = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
     fontSize: "28px",

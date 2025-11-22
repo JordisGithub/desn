@@ -65,21 +65,23 @@ const PillarTitle = styled(Typography)<{
   },
 }));
 
-const PillarSubtitle = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
-  fontSize: "0.95rem",
-  color: "#374151",
-  maxWidth: "800px",
-  margin: "0 auto",
-  lineHeight: 1.6,
-  padding: theme.spacing(0, 1),
-  [theme.breakpoints.up("sm")]: {
-    fontSize: "1rem",
-    padding: 0,
-  },
-  [theme.breakpoints.up("md")]: {
-    fontSize: "1.125rem",
-  },
-}));
+const PillarSubtitle = styled(Typography)<{ component?: React.ElementType }>(
+  ({ theme }) => ({
+    fontSize: "0.95rem",
+    color: "#374151",
+    maxWidth: "800px",
+    margin: "0 auto",
+    lineHeight: 1.6,
+    padding: theme.spacing(0, 1),
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1rem",
+      padding: 0,
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.125rem",
+    },
+  })
+);
 
 const ProgramsGrid = styled(Box)(({ theme }) => ({
   display: "grid",
@@ -242,7 +244,6 @@ export default function ProgramPillarCategory({
               key={program.id}
               pillartype={pillarType}
               component='article'
-              role='listitem'
               aria-labelledby={`${program.id}-title`}
               aria-describedby={`${program.id}-outcome`}
             >
