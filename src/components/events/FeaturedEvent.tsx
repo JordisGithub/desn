@@ -217,11 +217,7 @@ export default function FeaturedEvent() {
           >
             <ContentColumn>
               <Box>
-                <FeaturedLabel
-                  aria-label={`Event category: ${t("featured_event_title")}`}
-                >
-                  {t("featured_event_title")}
-                </FeaturedLabel>
+                <FeaturedLabel>{t("featured_event_title")}</FeaturedLabel>
                 <FeaturedTitle variant='h2' id='featured-event-heading'>
                   {t("featured_event_heading")}
                 </FeaturedTitle>
@@ -265,15 +261,6 @@ export default function FeaturedEvent() {
                 {t("event_register_button")}
               </LearnMoreButton>
             </ContentColumn>
-
-            <ImageColumn aria-hidden='true'>
-              <FeaturedImage
-                src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
-                alt=''
-                loading='lazy'
-                role='presentation'
-              />
-            </ImageColumn>
           </ContentGrid>
         </Container>
       </SectionContainer>
@@ -304,11 +291,7 @@ export default function FeaturedEvent() {
         >
           <ContentColumn>
             <Box>
-              <FeaturedLabel
-                aria-label={`Event category: ${t("featured_event_title")}`}
-              >
-                {t("featured_event_title")}
-              </FeaturedLabel>
+              <FeaturedLabel>{t("featured_event_title")}</FeaturedLabel>
               <FeaturedTitle variant='h2' id='featured-event-heading'>
                 {translatedTitle}
               </FeaturedTitle>
