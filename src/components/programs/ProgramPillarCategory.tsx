@@ -212,7 +212,7 @@ export default function ProgramPillarCategory({
   pillarType,
   programs,
 }: ProgramPillarProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <PillarSection

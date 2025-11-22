@@ -1,4 +1,5 @@
 export default {
+  programs: {
   hero: {
     badge: "Solutions",
     title: "Our Programs: Solutions for Empowerment",
@@ -215,5 +216,6 @@ export default {
       "Join us in creating opportunities for persons with disabilities. Whether through volunteering, donating, or partnering, your support drives real change.",
     get_involved_button: "Get Involved",
     donate_button: "Donate Now",
+  },
   },
 };

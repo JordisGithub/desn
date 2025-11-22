@@ -350,7 +350,7 @@ const SubmitButton = styled(Button)(({ theme }) => ({
 }));
 
 const MembershipSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
   const { lang } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPageSuccessMessage, setShowPageSuccessMessage] = useState(false);

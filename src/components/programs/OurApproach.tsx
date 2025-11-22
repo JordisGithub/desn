@@ -96,7 +96,7 @@ const CardDescription = styled(Typography)({
 });
 
 export default function OurApproach() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   const approaches = [
     {

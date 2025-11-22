@@ -83,7 +83,7 @@ const Tagline = styled(Typography)(({ theme }) => ({
 }));
 
 const HeroSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
   const bgRef = useLazyBackground() as MutableRefObject<HTMLDivElement | null>;
 
   return (

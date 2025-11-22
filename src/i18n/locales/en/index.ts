@@ -11,15 +11,17 @@ import programs from "./programs";
 import events from "./events";
 
 export default {
-  ...common,
-  ...home,
-  ...about,
-  ...footer,
-  ...auth,
-  ...payment,
-  ...accessibility,
-  ...events,
+  translation: {
+    ...common,
+    ...home,
+    ...about,
+    ...footer,
+    ...auth,
+    ...payment,
+    ...events,
+  },
   get_involved,
   contact,
   programs,
+  accessibility,
 };

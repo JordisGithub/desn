@@ -98,7 +98,7 @@ const SecondaryButton = styled(Button)({
 });
 
 export default function ProgramsCTA() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <CTASection aria-labelledby='programs-cta-title'>

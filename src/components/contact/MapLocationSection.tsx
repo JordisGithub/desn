@@ -120,7 +120,7 @@ const AccessibilityNote = styled(Box)(({ theme }) => ({
 }));
 
 export default function MapLocationSection() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
 
   // Direct Google Maps directions link with URL-encoded address
   const directionsUrl =

@@ -48,7 +48,7 @@ const HeroDescription = styled(Typography)(({ theme }) => ({
 }));
 
 export default function ContactHero() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
 
   return (
     <HeroSection aria-labelledby='contact-hero-heading'>

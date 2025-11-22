@@ -135,7 +135,7 @@ const BackgroundDecoration = styled(Box)({
 });
 
 export default function ProgramsCTA() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <CTASection aria-label='Get Involved Call to Action'>

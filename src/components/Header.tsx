@@ -72,7 +72,7 @@ const SearchField = styled(TextField)({
       transition: "color 0.2s ease",
     },
 
-    // hover: stronger blue border, darker icons, and background change for WCAG AAA contrast
+    // hover: stronger blue border, darker icons, and background change for WCAG WCAG 2.2 AA contrast
     "&:hover": {
       backgroundColor: "#f0f7ff",
       "& .MuiOutlinedInput-notchedOutline": {
