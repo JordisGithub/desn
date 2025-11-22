@@ -49,14 +49,17 @@ const DayCell = styled(Box)<{
   cursor: "pointer",
   borderRadius: "8px",
   position: "relative",
-  transition: "all 0.2s",
+  transition: "background-color 0.2s",
   backgroundColor: isSelected ? "#004c91" : isToday ? "#e3f2fd" : "transparent",
   color: isSelected ? "white" : isToday ? "#004c91" : "#333",
   fontWeight: isToday || isSelected ? 600 : 400,
-  border: hasEvent && !isSelected ? "2px solid #f6d469" : "none",
+  border: hasEvent && !isSelected ? "2px solid #004c91" : "none",
   "&:hover": {
     backgroundColor: isSelected ? "#003d73" : "#f5f5f5",
-    transform: "scale(1.05)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
   },
   "&::after":
     hasEvent && !isSelected
@@ -294,9 +297,17 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 hasEvent={hasEventOnDate(date)}
                 isSelected={isSelected(date)}
                 onClick={() => handleDateClick(date)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleDateClick(date);
+                  }
+                }}
                 role='button'
                 tabIndex={0}
-                aria-label={`${date.getDate()} ${monthNames[date.getMonth()]}`}
+                aria-label={`${monthNames[date.getMonth()]} ${date.getDate()}${
+                  hasEventOnDate(date) ? ", has scheduled event" : ""
+                }${isToday(date) ? ", today" : ""}`}
               >
                 {date.getDate()}
               </DayCell>

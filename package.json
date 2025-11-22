@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@axe-core/react": "^4.11.0",
+    "@axe-core/cli": "^4.11.0",
     "@eslint/js": "^9.36.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -39,7 +40,8 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "npm:rolldown-vite@7.1.14",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "lighthouse": "^12.0.0"
   },
   "scripts": {
     "dev": "vite",
@@ -60,7 +62,9 @@
     "a11y:audit:involved": "npx a11y-mcp audit http://localhost:5173/get-involved --tags wcag2a,wcag2aa,wcag22aa",
     "a11y:audit:resources": "npx a11y-mcp audit http://localhost:5173/resources --tags wcag2a,wcag2aa,wcag22aa",
     "a11y:audit:contact": "npx a11y-mcp audit http://localhost:5173/contact --tags wcag2a,wcag2aa,wcag22aa",
-    "a11y:summary": "npx a11y-mcp get_summary http://localhost:5173"
+    "a11y:summary": "npx a11y-mcp get_summary http://localhost:5173",
+    "audit:axe:events": "npx @axe-core/cli http://localhost:5173/events --exit --timeout 20000 --json axe-events.json",
+    "audit:lighthouse:events": "lighthouse http://localhost:5173/events --quiet --only-categories=accessibility,performance,best-practices,seo --output html --output-path=./lighthouse-events.html"
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.1.14"

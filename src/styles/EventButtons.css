@@ -1,0 +1,58 @@
+/* Register Now Button Custom Styles */
+.register-button-custom:not(:disabled):hover {
+  background-color: #00295a !important;
+  border: 3px solid #00a77f !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 36px rgba(0, 76, 145, 0.6) !important;
+}
+
+.register-button-custom:not(:disabled):focus {
+  background-color: #00295a !important;
+}
+
+.register-button-custom:disabled:hover {
+  background-color: #e0e0e0 !important;
+  border-color: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Calendar Navigation Button Custom Styles */
+.calendar-nav-button:hover,
+.calendar-nav-button.MuiButton-root:hover {
+  background-color: #00295a !important;
+  border-color: #00a77f !important;
+  border: 2px solid #00a77f !important;
+}
+
+/* Calendar Day Cell Selected State */
+.calendar-day-selected,
+.calendar-day-selected.MuiButton-root,
+.calendar-day-selected.MuiButtonBase-root {
+  background-color: #e8f5e9 !important;
+  border: 3px solid #00875f !important;
+  color: #004c91 !important;
+  font-weight: 700 !important;
+}
+
+.calendar-day-selected:hover,
+.calendar-day-selected.MuiButton-root:hover,
+.calendar-day-selected.MuiButtonBase-root:hover {
+  background-color: #c8e6c9 !important;
+  color: #004c91 !important;
+}
+
+/* Attribute selector for robustness in case class is lost */
+.MuiButton-root[data-selected="true"],
+.MuiButtonBase-root[data-selected="true"] {
+  background-color: #e8f5e9 !important;
+  border: 3px solid #00875f !important;
+  color: #004c91 !important;
+  font-weight: 700 !important;
+}
+
+.MuiButton-root[data-selected="true"]:hover,
+.MuiButtonBase-root[data-selected="true"]:hover {
+  background-color: #c8e6c9 !important;
+  color: #004c91 !important;
+}

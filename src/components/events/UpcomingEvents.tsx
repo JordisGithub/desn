@@ -16,6 +16,7 @@ import {
   translateEventLocation,
 } from "../../utils/eventTranslations";
 import { formatDate, formatTimeRange } from "../../utils/dateLocalization";
+import "../../styles/EventButtons.css";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -60,13 +61,17 @@ const ContentGrid = styled(Box)(({ theme }) => ({
 
 const CalendarCard = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
-  border: "none",
+  border: "1px solid #004c91", // Added dark blue border
   borderRadius: "16px",
   padding: theme.spacing(2.5),
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
   maxWidth: "380px",
   margin: "0 auto",
   alignSelf: "flex-start",
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+  },
   [theme.breakpoints.down("md")]: {
     maxWidth: "100%",
   },
@@ -119,11 +124,21 @@ const NavButton = styled(Button)({
   borderRadius: "8px",
   backgroundColor: "#004c91",
   cursor: "pointer",
-  transition: "all 0.2s ease",
+  transition: "background-color 0.2s ease, border-color 0.2s ease",
   "&:hover": {
-    backgroundColor: "#003d73",
-    borderColor: "#003d73",
-    transform: "scale(1.05)",
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+  },
+  "&.MuiButton-root:hover": {
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
   },
   "& .MuiSvgIcon-root": {
     fontSize: "1.25rem",
@@ -142,7 +157,7 @@ const CalendarGrid = styled(Box)(({ theme }) => ({
 
 const DayHeader = styled(Typography)({
   fontSize: "0.8rem",
-  color: "#717182",
+  color: "#000000", // Set weekday header text to black
   textAlign: "center",
   padding: "0.25rem",
   marginBottom: "0.25rem",
@@ -150,34 +165,105 @@ const DayHeader = styled(Typography)({
 
 const DayCell = styled(Button, {
   shouldForwardProp: (prop) =>
-    prop !== "isToday" && prop !== "hasEvent" && prop !== "isOtherMonth",
+    prop !== "isToday" &&
+    prop !== "hasEvent" &&
+    prop !== "isOtherMonth" &&
+    prop !== "isSelected" &&
+    prop !== "hasSelection" &&
+    prop !== "isPast",
 })<{
   isToday?: boolean;
   hasEvent?: boolean;
   isOtherMonth?: boolean;
-}>(({ isToday, hasEvent, isOtherMonth, theme }) => ({
-  minWidth: "32px",
-  width: "32px",
-  height: "32px",
-  padding: "0",
-  fontSize: "0.875rem",
-  color: hasEvent ? "#ffffff" : isOtherMonth ? "#717182" : "#004c91",
-  backgroundColor: hasEvent ? "#00875f" : "transparent",
-  borderRadius: "8px",
-  border: isToday && !hasEvent ? "2px solid #004c91" : "none",
-  "&:hover": {
-    backgroundColor: hasEvent ? "#006644" : "#f3f4f6",
-  },
-  ...(hasEvent && {
-    fontWeight: 700,
-  }),
-  [theme.breakpoints.down("sm")]: {
-    minWidth: "28px",
-    width: "28px",
-    height: "28px",
-    fontSize: "0.75rem",
-  },
-}));
+  isSelected?: boolean;
+  hasSelection?: boolean; // indicates any date is selected in calendar
+  isPast?: boolean;
+}>(
+  ({
+    isToday,
+    hasEvent,
+    isOtherMonth,
+    isSelected,
+    hasSelection,
+    isPast,
+    theme,
+  }) => ({
+    minWidth: "32px",
+    width: "32px",
+    height: "32px",
+    padding: "0",
+    fontSize: "0.875rem",
+    // Strict WCAG 2.2 AAA palette (≥7:1 for normal text):
+    // - Normal/current month day: #004c91 text on white (≈8.7:1)
+    // - Event day: #005339 background with white text (≈7.6:1)
+    // - Event hover: darken to #00472d (maintains >7:1)
+    // - Selected day: keep white background + bold + green border for clarity (no tinted bg that lowers contrast)
+    // - Today: subtle light blue (#e3f2fd) retains ≈7.3:1 contrast with #004c91
+    // - Past day: muted #495662 (≈7+:1 on white) italic for distinction
+    // - Other-month day: #55636d (≈7+:1 on white) with light gray background and 200 font weight
+    position: "relative",
+    color: hasEvent
+      ? "#ffffff"
+      : isOtherMonth
+      ? "#55636d"
+      : isPast
+      ? "#495662"
+      : "#004c91",
+    backgroundColor: hasEvent
+      ? "#005339"
+      : isSelected
+      ? "#ffffff"
+      : isToday
+      ? "#e3f2fd"
+      : isOtherMonth
+      ? "#f5f5f5"
+      : "transparent",
+    fontWeight: isOtherMonth ? 200 : "normal",
+    borderRadius: "8px",
+    border: isSelected
+      ? "3px solid #00875f"
+      : isToday && !hasSelection
+      ? "2px solid #64b5f6"
+      : hasEvent
+      ? "2px solid #005339"
+      : "none",
+    "&:hover": {
+      backgroundColor: hasEvent
+        ? "#00472d"
+        : isSelected
+        ? "#f2f6fa"
+        : isOtherMonth
+        ? "#eef2f5"
+        : isPast
+        ? "#f2f4f6"
+        : "#f3f4f6",
+    },
+    "&:focus": {
+      outline: "3px solid #004c91",
+      outlineOffset: "2px",
+    },
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
+    ...(hasEvent && {
+      fontWeight: 700,
+      boxShadow: "0 0 0 2px rgba(0,83,57,0.35)",
+    }),
+    ...(isSelected && {
+      fontWeight: 700,
+    }),
+    ...(isPast &&
+      !isSelected && {
+        fontStyle: "italic",
+      }),
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "28px",
+      width: "28px",
+      height: "28px",
+      fontSize: "0.75rem",
+    },
+  })
+);
 
 const Note = styled(Box)({
   backgroundColor: "rgba(246, 212, 105, 0.15)",
@@ -215,10 +301,15 @@ const EventCard = styled(Box)(({ theme }) => ({
   borderRadius: "16px",
   padding: theme.spacing(3),
   boxShadow: "0 18px 48px rgba(0, 0, 0, 0.45)",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  transition:
+    "box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     boxShadow: "0 24px 60px rgba(0, 0, 0, 0.65)",
-    transform: "translateY(-6px) scale(1.02)",
+    transform: "translateY(-6px)",
+  },
+  "&:focus-within": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),
@@ -226,7 +317,7 @@ const EventCard = styled(Box)(({ theme }) => ({
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
     "&:hover": {
       boxShadow: "0 12px 32px rgba(0, 0, 0, 0.45)",
-      transform: "translateY(-4px) scale(1.01)",
+      transform: "translateY(-4px)",
     },
   },
 }));
@@ -288,20 +379,62 @@ const MetaText = styled(Typography)({
 });
 
 const RegisterButton = styled(Button)({
-  backgroundColor: "#004c91",
-  color: "white",
-  width: "100%",
-  height: "52px",
-  borderRadius: "12px",
+  // backgroundColor: "#004c91",
+  // color: "white",
+  // width: "100%",
+  // height: "52px",
+  // borderRadius: "12px",
   fontSize: "1rem",
   fontWeight: 600,
   textTransform: "none",
-  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.35)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  // border: "3px solid transparent",
+  // boxShadow: "0 8px 24px rgba(0, 76, 145, 0.4)",
+  // transition:
+  //   "background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003366",
-    boxShadow: "0 12px 32px rgba(0, 76, 145, 0.5)",
-    transform: "translateY(-2px)",
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#00295a",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
+  },
+});
+
+// Clear Filter button styled to share hover/focus CSS with RegisterButton
+const ClearFilterButton = styled(Button)({
+  textTransform: "none",
+  color: "#004c91",
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  backgroundColor: "transparent",
+  transition:
+    "background-color 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s cubic-bezier(0.4,0,0.2,1)",
+  border: "3px solid transparent",
+  borderRadius: "8px",
+  "&:hover": {
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
+    color: "white",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#00295a",
+    color: "white",
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
   },
 });
 
@@ -323,6 +456,8 @@ interface EventData {
   time: string;
   location: string;
   calendarDate: number | null;
+  startMonth: number;
+  startYear: number;
 }
 
 export default function UpcomingEvents() {
@@ -335,6 +470,8 @@ export default function UpcomingEvents() {
     Record<number, EventStatus>
   >({});
   const [events, setEvents] = useState<EventData[]>([]);
+  // focusedDate no longer needed with full tab sequence; removed
+  const [announcement, setAnnouncement] = useState<string>("");
 
   // Fetch events from backend
   useEffect(() => {
@@ -358,6 +495,8 @@ export default function UpcomingEvents() {
             time: formatTimeRange(startDate, endDate, i18n.language),
             location: event.location,
             calendarDate: startDate.getDate(),
+            startMonth: startDate.getMonth(),
+            startYear: startDate.getFullYear(),
           };
         });
 
@@ -436,6 +575,40 @@ export default function UpcomingEvents() {
     refreshEventStatus();
   };
 
+  // Custom keyboard handling: after Register button, Tab moves to previous month button
+  const handleRegisterButtonKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>
+  ) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      // Move focus to previous month navigation button instead of default next element
+      e.preventDefault();
+      const prevBtn = document.getElementById("calendar-prev-month");
+      prevBtn?.focus();
+    }
+  };
+
+  // When tabbing from the next month button, focus today's date if visible; else first active day
+  const handleNextMonthButtonKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>
+  ) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      e.preventDefault();
+      // aria-current="date" marks today if in current displayed month
+      const todayCell = document.querySelector(
+        '[role="gridcell"][aria-current="date"]'
+      ) as HTMLElement | null;
+      if (todayCell) {
+        todayCell.focus();
+        return;
+      }
+      // Fallback: first enabled gridcell
+      const firstEnabled = document.querySelector(
+        '[role="gridcell"]:not([aria-disabled="true"])'
+      ) as HTMLElement | null;
+      firstEnabled?.focus();
+    }
+  };
+
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -456,16 +629,14 @@ export default function UpcomingEvents() {
     ).getDate();
 
     // Get all event dates for the CURRENT DISPLAYED month and year only
+    // Use original month/year fields to avoid locale parsing issues
     const eventDates = new Set(
       events
-        .filter((event) => {
-          // Parse the event date to check if it matches current displayed month/year
-          const eventDate = new Date(event.date);
-          return (
-            eventDate.getMonth() === currentDate.getMonth() &&
-            eventDate.getFullYear() === currentDate.getFullYear()
-          );
-        })
+        .filter(
+          (event) =>
+            event.startMonth === currentDate.getMonth() &&
+            event.startYear === currentDate.getFullYear()
+        )
         .map((event) => event.calendarDate)
         .filter((date) => date !== null)
     );
@@ -492,6 +663,7 @@ export default function UpcomingEvents() {
         isOtherMonth: false,
         isToday: isCurrentMonth && i === today.getDate(),
         hasEvent: eventDates.has(i),
+        isPast: isCurrentMonth && i < today.getDate(),
       });
     }
 
@@ -514,6 +686,10 @@ export default function UpcomingEvents() {
     year: "numeric",
   });
 
+  const getEventsForDate = (day: number) => {
+    return events.filter((event) => event.calendarDate === day);
+  };
+
   const handlePreviousMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
@@ -528,6 +704,135 @@ export default function UpcomingEvents() {
     setSelectedDate(null);
   };
 
+  const handleKeyDown = (
+    e: React.KeyboardEvent,
+    dayInfo: {
+      day: number;
+      isOtherMonth: boolean;
+      isToday: boolean;
+      hasEvent: boolean;
+    },
+    weekIndex: number,
+    dayIndex: number
+  ) => {
+    const totalDays = generateCalendarDays();
+    const currentIndex = weekIndex * 7 + dayIndex;
+
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault();
+        if (currentIndex >= 7) {
+          const newIndex = currentIndex - 7;
+          const newDay = totalDays[newIndex];
+          if (!newDay.isOtherMonth) {
+            const dayEvents = getEventsForDate(newDay.day);
+            if (dayEvents.length > 0) {
+              setAnnouncement(
+                `${dayEvents.length} event${
+                  dayEvents.length > 1 ? "s" : ""
+                } scheduled on this date`
+              );
+            } else {
+              setAnnouncement("");
+            }
+            document.getElementById(`day-${newDay.day}`)?.focus();
+          }
+        }
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        if (currentIndex + 7 < totalDays.length) {
+          const newIndex = currentIndex + 7;
+          const newDay = totalDays[newIndex];
+          if (!newDay.isOtherMonth) {
+            const dayEvents = getEventsForDate(newDay.day);
+            if (dayEvents.length > 0) {
+              setAnnouncement(
+                `${dayEvents.length} event${
+                  dayEvents.length > 1 ? "s" : ""
+                } scheduled on this date`
+              );
+            } else {
+              setAnnouncement("");
+            }
+            document.getElementById(`day-${newDay.day}`)?.focus();
+          }
+        }
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        if (currentIndex > 0) {
+          const newIndex = currentIndex - 1;
+          const newDay = totalDays[newIndex];
+          if (!newDay.isOtherMonth) {
+            const dayEvents = getEventsForDate(newDay.day);
+            if (dayEvents.length > 0) {
+              setAnnouncement(
+                `${dayEvents.length} event${
+                  dayEvents.length > 1 ? "s" : ""
+                } scheduled on this date`
+              );
+            } else {
+              setAnnouncement("");
+            }
+            document.getElementById(`day-${newDay.day}`)?.focus();
+          }
+        }
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        if (currentIndex + 1 < totalDays.length) {
+          const newIndex = currentIndex + 1;
+          const newDay = totalDays[newIndex];
+          if (!newDay.isOtherMonth) {
+            const dayEvents = getEventsForDate(newDay.day);
+            if (dayEvents.length > 0) {
+              setAnnouncement(
+                `${dayEvents.length} event${
+                  dayEvents.length > 1 ? "s" : ""
+                } scheduled on this date`
+              );
+            } else {
+              setAnnouncement("");
+            }
+            document.getElementById(`day-${newDay.day}`)?.focus();
+          }
+        }
+        break;
+      case "Home": {
+        e.preventDefault();
+        const firstDay = totalDays.find((d) => !d.isOtherMonth);
+        if (firstDay) {
+          document.getElementById(`day-${firstDay.day}`)?.focus();
+        }
+        break;
+      }
+      case "End": {
+        e.preventDefault();
+        const lastDay = [...totalDays].reverse().find((d) => !d.isOtherMonth);
+        if (lastDay) {
+          document.getElementById(`day-${lastDay.day}`)?.focus();
+        }
+        break;
+      }
+      case "PageUp":
+        e.preventDefault();
+        handlePreviousMonth();
+        break;
+      case "PageDown":
+        e.preventDefault();
+        handleNextMonth();
+        break;
+      case " ":
+      case "Enter":
+        e.preventDefault();
+        if (!dayInfo.isOtherMonth) {
+          setSelectedDate(dayInfo.day);
+        }
+        break;
+    }
+  };
+
   return (
     <SectionContainer
       aria-labelledby='upcoming-events-heading'
@@ -540,20 +845,37 @@ export default function UpcomingEvents() {
         </SectionTitle>
         <SectionSubtitle>{t("events_upcoming_subtitle")}</SectionSubtitle>
 
+        {/* Live region for calendar navigation announcements */}
+        <div
+          role='status'
+          aria-live='polite'
+          aria-atomic='true'
+          className='sr-only'
+        >
+          {announcement}
+        </div>
+
         <ContentGrid
           role='group'
           aria-label='Event calendar and event listings'
         >
           {/* Calendar */}
-          <CalendarCard role='region' aria-label='Event calendar' tabIndex={0}>
+          <CalendarCard role='region' aria-label='Event calendar'>
             <CalendarHeader id='calendar-heading'>
               {t("calendar_heading")}
             </CalendarHeader>
             <Calendar role='application' aria-labelledby='calendar-heading'>
-              <CalendarNav role='group' aria-label='Calendar navigation'>
+              <CalendarNav
+                role='heading'
+                aria-level={3}
+                aria-label='Calendar navigation'
+              >
                 <NavButton
+                  id='calendar-prev-month'
+                  className='calendar-nav-button'
                   onClick={handlePreviousMonth}
                   aria-label={`Previous month. Current month is ${monthYear}`}
+                  role='button'
                 >
                   <ChevronLeftIcon aria-hidden='true' />
                 </NavButton>
@@ -561,8 +883,11 @@ export default function UpcomingEvents() {
                   {monthYear}
                 </MonthYear>
                 <NavButton
+                  className='calendar-nav-button'
                   onClick={handleNextMonth}
+                  onKeyDown={handleNextMonthButtonKeyDown}
                   aria-label={`Next month. Current month is ${monthYear}`}
+                  role='button'
                 >
                   <ChevronRightIcon aria-hidden='true' />
                 </NavButton>
@@ -570,8 +895,17 @@ export default function UpcomingEvents() {
 
               <CalendarGrid
                 role='grid'
-                aria-label={`Calendar for ${monthYear}`}
+                aria-label={`Event Calendar for ${monthYear}`}
+                aria-readonly='false'
+                aria-multiselectable='false'
+                aria-describedby='calendar-description'
               >
+                <span id='calendar-description' className='sr-only'>
+                  Interactive data grid showing calendar dates for {monthYear}.
+                  Days with scheduled events are marked. Use arrow keys to
+                  navigate, Enter or Space to select a date and view event
+                  details.
+                </span>
                 <Box role='row' sx={{ display: "contents" }}>
                   {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
                     <DayHeader key={day} role='columnheader'>
@@ -589,38 +923,93 @@ export default function UpcomingEvents() {
                     >
                       {generateCalendarDays()
                         .slice(weekIndex * 7, (weekIndex + 1) * 7)
-                        .map((dayInfo, index) => (
-                          <DayCell
-                            key={weekIndex * 7 + index}
-                            isToday={dayInfo.isToday}
-                            hasEvent={dayInfo.hasEvent}
-                            isOtherMonth={dayInfo.isOtherMonth}
-                            onClick={() =>
-                              !dayInfo.isOtherMonth &&
-                              setSelectedDate(dayInfo.day)
-                            }
-                            aria-label={
-                              dayInfo.isOtherMonth
-                                ? `${dayInfo.day}, not in current month`
-                                : `${monthYear.split(" ")[0]} ${dayInfo.day}${
-                                    dayInfo.hasEvent
-                                      ? ", has scheduled event"
-                                      : ", no events"
-                                  }${dayInfo.isToday ? ", today" : ""}`
-                            }
-                            aria-current={dayInfo.isToday ? "date" : undefined}
-                            disabled={dayInfo.isOtherMonth}
-                            role='gridcell'
-                            tabIndex={dayInfo.isOtherMonth ? -1 : 0}
-                            sx={{
-                              cursor: dayInfo.isOtherMonth
-                                ? "default"
-                                : "pointer",
-                            }}
-                          >
-                            {dayInfo.day}
-                          </DayCell>
-                        ))}
+                        .map((dayInfo, index) => {
+                          const isSelected =
+                            selectedDate === dayInfo.day &&
+                            !dayInfo.isOtherMonth;
+                          const hasSelection = selectedDate !== null;
+                          return (
+                            <DayCell
+                              key={weekIndex * 7 + index}
+                              className={
+                                isSelected ? "calendar-day-selected" : ""
+                              }
+                              id={
+                                !dayInfo.isOtherMonth
+                                  ? `day-${dayInfo.day}`
+                                  : undefined
+                              }
+                              isToday={dayInfo.isToday}
+                              hasEvent={dayInfo.hasEvent}
+                              isOtherMonth={dayInfo.isOtherMonth}
+                              isSelected={isSelected}
+                              hasSelection={hasSelection}
+                              isPast={dayInfo.isPast}
+                              data-selected={isSelected ? "true" : undefined}
+                              data-other-month={
+                                dayInfo.isOtherMonth ? "true" : undefined
+                              }
+                              data-past={dayInfo.isPast ? "true" : undefined}
+                              onClick={() =>
+                                !dayInfo.isOtherMonth &&
+                                setSelectedDate(dayInfo.day)
+                              }
+                              onKeyDown={(e) =>
+                                handleKeyDown(e, dayInfo, weekIndex, index)
+                              }
+                              aria-label={
+                                dayInfo.isOtherMonth
+                                  ? `${dayInfo.day}, not in current month`
+                                  : (() => {
+                                      const dayEvents = getEventsForDate(
+                                        dayInfo.day
+                                      );
+                                      const eventCount = dayEvents.length;
+                                      return `${monthYear.split(" ")[0]} ${
+                                        dayInfo.day
+                                      }${dayInfo.isToday ? ", today" : ""}${
+                                        dayInfo.isPast ? ", past date" : ""
+                                      }${isSelected ? ", selected" : ""}. ${
+                                        eventCount > 0
+                                          ? `${eventCount} event${
+                                              eventCount > 1 ? "s" : ""
+                                            } scheduled`
+                                          : "No events scheduled"
+                                      }`;
+                                    })()
+                              }
+                              aria-current={
+                                dayInfo.isToday ? "date" : undefined
+                              }
+                              aria-selected={isSelected}
+                              aria-disabled={dayInfo.isOtherMonth}
+                              disabled={dayInfo.isOtherMonth}
+                              role='gridcell'
+                              tabIndex={dayInfo.isOtherMonth ? -1 : 0}
+                              sx={{
+                                cursor: dayInfo.isOtherMonth
+                                  ? "default"
+                                  : "pointer",
+                                ...(dayInfo.isOtherMonth && {
+                                  fontWeight: "200 !important",
+                                  backgroundColor: "#f5f5f5 !important",
+                                }),
+                                ...(isSelected && {
+                                  backgroundColor: "#ffffff",
+                                  border: "3px solid #00875f",
+                                  color: "#004c91",
+                                  fontWeight: 700,
+                                  "&:hover": {
+                                    backgroundColor: "#f2f6fa",
+                                    color: "#004c91",
+                                  },
+                                }),
+                              }}
+                            >
+                              {dayInfo.day}
+                            </DayCell>
+                          );
+                        })}
                     </Box>
                   )
                 )}
@@ -629,7 +1018,7 @@ export default function UpcomingEvents() {
 
             <Note>
               <NoteText>
-                <strong>Note:</strong> {t("calendar_note")}
+                <strong>Calendar legend:</strong> Dark green filled dates = event days (white bold text; darken on hover). Selected non-event day = white background with bold green border. Today = light blue background with a blue border (unless selected). Past days = muted italic text. Gray background days = previous/next month (disabled and not focusable). All other days use dark blue text on white. Use arrow keys to navigate; Enter or Space selects a day.
               </NoteText>
             </Note>
           </CalendarCard>
@@ -652,23 +1041,14 @@ export default function UpcomingEvents() {
                   : t("event_details_heading")}
               </EventsHeader>
               {selectedDate && (
-                <Button
+                <ClearFilterButton
                   onClick={() => setSelectedDate(null)}
                   aria-label={`Clear date filter. Currently showing events for ${
                     monthYear.split(" ")[0]
                   } ${selectedDate}`}
-                  sx={{
-                    textTransform: "none",
-                    color: "#004c91",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                    "&:hover": {
-                      backgroundColor: "rgba(0, 76, 145, 0.08)",
-                    },
-                  }}
                 >
                   {t("clear_filter")}
-                </Button>
+                </ClearFilterButton>
               )}
             </Box>
             <div role='status' aria-live='polite' className='sr-only'>
@@ -697,7 +1077,6 @@ export default function UpcomingEvents() {
                         role='article'
                         aria-labelledby={`event-title-${event.id}`}
                         aria-describedby={`event-desc-${event.id} event-meta-${event.id}`}
-                        tabIndex={0}
                       >
                         <BadgeContainer
                           role='group'
@@ -783,6 +1162,8 @@ export default function UpcomingEvents() {
                         </EventMeta>
 
                         <RegisterButton
+                          onKeyDown={handleRegisterButtonKeyDown}
+                          className='register-button-custom'
                           endIcon={
                             !isFull ? (
                               <ArrowForwardIcon aria-hidden='true' />
@@ -801,14 +1182,6 @@ export default function UpcomingEvents() {
                                   t
                                 )} - ${event.date} ${event.time}`
                           }
-                          sx={{
-                            backgroundColor: isFull ? "#e0e0e0" : "#004c91",
-                            color: isFull ? "#9e9e9e" : "white",
-                            cursor: isFull ? "not-allowed" : "pointer",
-                            "&:hover": {
-                              backgroundColor: isFull ? "#e0e0e0" : "#003d73",
-                            },
-                          }}
                         >
                           {isFull ? t("event_full") : t("register_now")}
                         </RegisterButton>
@@ -875,6 +1248,8 @@ export default function UpcomingEvents() {
                       </EventMeta>
 
                       <RegisterButton
+                        onKeyDown={handleRegisterButtonKeyDown}
+                        className='register-button-custom'
                         endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
                         onClick={() => handleRegisterClick(event)}
                         disabled={isFull}
@@ -882,9 +1257,6 @@ export default function UpcomingEvents() {
                           backgroundColor: isFull ? "#e0e0e0" : "#004c91",
                           color: isFull ? "#9e9e9e" : "white",
                           cursor: isFull ? "not-allowed" : "pointer",
-                          "&:hover": {
-                            backgroundColor: isFull ? "#e0e0e0" : "#003d73",
-                          },
                         }}
                       >
                         {isFull ? t("event_full") : t("register_now")}

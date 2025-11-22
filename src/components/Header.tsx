@@ -183,7 +183,7 @@ const NavLinks = styled("ul")(({ theme }) => ({
 }));
 
 const NavLink = styled(RouterLink)(() => ({
-  color: "#333",
+  color: "#000000",
   textDecoration: "none",
   fontSize: "16px",
   fontWeight: 400,
@@ -210,7 +210,7 @@ const PlainButton = styled(ButtonBase)(({ theme }) => ({
   padding: theme.spacing(1, 2),
   background: "transparent",
   border: "none",
-  color: "#333",
+  color: "#1a1a1a",
   textTransform: "none",
   fontSize: "16px",
   cursor: "pointer",
@@ -293,7 +293,7 @@ const MobileLogo = styled("img")(({ theme }) => ({
 
 const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   display: "none",
-  color: "#333",
+  color: "#1a1a1a",
   // Hover matches focus background and icon color
   "&:hover": {
     backgroundColor: "rgba(0, 76, 145, 0.9)",
