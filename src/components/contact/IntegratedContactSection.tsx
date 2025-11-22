@@ -329,7 +329,7 @@ const LocationText = styled(Typography)({
 });
 
 export default function IntegratedContactSection() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",

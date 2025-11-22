@@ -68,7 +68,7 @@ const StatLabel = styled(Typography)({
 });
 
 export default function ProgramStats() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   const stats = [
     {

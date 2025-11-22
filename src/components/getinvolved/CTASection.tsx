@@ -64,7 +64,7 @@ const SecondaryButton = styled(Button)({
 });
 
 const CTASection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
 
   return (
     <CTAContainer>

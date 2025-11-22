@@ -303,7 +303,7 @@ const IconBadge = styled(Box)<{ bgcolor: string; borderColor?: string }>(
 );
 
 export default function CorePrograms() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <CoreProgramsSection

@@ -1,4 +1,5 @@
 export default {
+  get_involved: {
   hero: {
     title: "एकटा जीवन बदलू। आइये शुरू करी।",
     subtitle:
@@ -159,4 +160,5 @@ export default {
     donate: "दान करू",
   },
   donate_button: "दान करू",
+  },
 };

@@ -1,4 +1,5 @@
 export default {
+  get_involved: {
   hero: {
     title: "Change a Life. Start Today.",
     subtitle:
@@ -163,4 +164,5 @@ export default {
   },
   donate_button: "Donate",
   submit_aria_label: "Submit volunteer inquiry",
+  },
 };

@@ -180,7 +180,7 @@ const StatLabel = styled(Typography)(({ theme }) => ({
 }));
 
 const ImpactSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
 
   const stats = [
     {

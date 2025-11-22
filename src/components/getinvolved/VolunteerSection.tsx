@@ -244,7 +244,7 @@ const TimeText = styled(Typography)({
 });
 
 const VolunteerSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const successMessageRef = React.useRef<HTMLDivElement>(null);

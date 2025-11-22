@@ -94,10 +94,10 @@ const HeroSubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
-// Hero copy heading - WCAG 2.2 AAA compliant (7:1 contrast on light backgrounds)
+// Hero copy heading - WCAG 2.2 AA compliant (7:1 contrast on light backgrounds)
 // Use this component when rendering hero_copy_heading translation key
 const HeroCopyHeading = styled(Typography)(({ theme }) => ({
-  color: "#001a33", // Very dark blue: 12.6:1 contrast on white background (WCAG AAA)
+  color: "#001a33", // Very dark blue: 12.6:1 contrast on white background (WCAG AA)
   fontSize: "2.25rem", // Desktop: 36px
   fontWeight: 700,
   lineHeight: 1.3,

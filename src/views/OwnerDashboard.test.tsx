@@ -238,7 +238,7 @@ describe("OwnerDashboard Accessibility", () => {
     });
   });
 
-  it("should pass axe color-contrast-enhanced (AAA) check", async () => {
+  it("should pass axe color-contrast-enhanced AA check", async () => {
     const { container } = renderWithProviders(<OwnerDashboard />);
     const results = await axe(container, {
       rules: {

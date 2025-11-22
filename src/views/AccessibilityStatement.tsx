@@ -51,8 +51,14 @@ const HeroSection = styled(Box)(({ theme }) => ({
     borderRadius: "50%",
     filter: "blur(100px)",
   },
+  [theme.breakpoints.down("lg")]: {
+    padding: theme.spacing(12, 4),
+  },
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(8, 3),
+    padding: theme.spacing(10, 3),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(8, 2),
   },
 }));
 
@@ -71,6 +77,11 @@ const Badge = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   fontSize: "1.125rem",
   fontWeight: 500,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    padding: theme.spacing(1.25, 2.5),
+    gap: theme.spacing(1),
+  },
 }));
 
 const PageTitle = styled(Typography)(({ theme }) => ({
@@ -79,22 +90,32 @@ const PageTitle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(3),
   lineHeight: 1.2,
   fontFamily: "Poppins, sans-serif",
+  color: "#ffffff",
+  [theme.breakpoints.down("lg")]: {
+    fontSize: "3.25rem",
+  },
   [theme.breakpoints.down("md")]: {
-    fontSize: "3rem",
+    fontSize: "2.75rem",
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "2.5rem",
+    fontSize: "2rem",
+  },
+  [theme.breakpoints.down("xs")]: {
+    fontSize: "1.75rem",
   },
 }));
 
 const PageIntro = styled(Typography)(({ theme }) => ({
   fontSize: "1.5rem",
-  lineHeight: 1.6,
+  lineHeight: 1.5,
   marginBottom: theme.spacing(3),
   color: "rgba(255, 255, 255, 0.95)",
   maxWidth: "928px",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.35rem",
+  },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.25rem",
+    fontSize: "1.125rem",
   },
 }));
 
@@ -105,12 +126,21 @@ const LastUpdated = styled(Typography)(({ theme }) => ({
   "& strong": {
     fontWeight: 700,
   },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.125rem",
+  },
 }));
 
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 4),
+  [theme.breakpoints.down("lg")]: {
+    padding: theme.spacing(10, 3),
+  },
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(8, 3),
+    padding: theme.spacing(8, 2.5),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(6, 2),
   },
 }));
 
@@ -121,18 +151,31 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   marginBottom: theme.spacing(3),
   fontFamily: "Poppins, sans-serif",
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     fontSize: "2.5rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2rem",
   },
 }));
 
 const SectionSubtitle = styled(Typography)(({ theme }) => ({
   fontSize: "1.25rem",
-  color: "#4a5565",
+  lineHeight: 1.5,
+  color: "#333333",
   textAlign: "center",
   maxWidth: "896px",
   margin: "0 auto",
   marginBottom: theme.spacing(6),
+  padding: theme.spacing(0, 2),
+  [theme.breakpoints.down("md")]: {
+    fontSize: "1.125rem",
+    marginBottom: theme.spacing(5),
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 const CommitmentCard = styled(Box)(({ theme }) => ({
@@ -144,6 +187,13 @@ const CommitmentCard = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(3),
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(5),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4),
+    gap: theme.spacing(2.5),
+  },
 }));
 
 const CardIconContainer = styled(Box)(({ theme }) => ({
@@ -154,20 +204,31 @@ const CardIconContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   fontSize: "2.5rem",
+  [theme.breakpoints.down("sm")]: {
+    width: "64px",
+    height: "64px",
+    fontSize: "2rem",
+  },
 }));
 
-const CardTitle = styled(Typography)({
+const CardTitle = styled(Typography)(({ theme }) => ({
   fontSize: "1.5rem",
   fontWeight: 400,
   color: "#004c91",
   fontFamily: "Poppins, sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.35rem",
+  },
+}));
 
-const CardText = styled(Typography)({
+const CardText = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
-  color: "#364153",
-  lineHeight: 1.6,
-});
+  color: "#333333",
+  lineHeight: 1.5,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+  },
+}));
 
 const FeatureCard = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
@@ -177,6 +238,12 @@ const FeatureCard = styled(Box)(({ theme }) => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(4),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(3.5),
+  },
 }));
 
 const FeatureList = styled(List)(({ theme }) => ({
@@ -198,6 +265,10 @@ const ContactCard = styled(Box)(({ theme }) => ({
   alignItems: "center",
   textAlign: "center",
   gap: theme.spacing(3),
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(4),
+    gap: theme.spacing(2.5),
+  },
 }));
 
 const ContactIconContainer = styled(Box)(({ theme }) => ({
@@ -208,25 +279,39 @@ const ContactIconContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   fontSize: "2.5rem",
+  [theme.breakpoints.down("sm")]: {
+    width: "64px",
+    height: "64px",
+    fontSize: "2rem",
+  },
 }));
 
-const ContactTitle = styled(Typography)({
+const ContactTitle = styled(Typography)(({ theme }) => ({
   fontSize: "1.5rem",
   fontWeight: 400,
   color: "#004c91",
   fontFamily: "Poppins, sans-serif",
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.35rem",
+  },
+}));
 
-const ContactSubtitle = styled(Typography)({
+const ContactSubtitle = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
-  color: "#364153",
-});
+  color: "#333333",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+  },
+}));
 
-const ContactLink = styled(Typography)({
+const ContactLink = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
-  color: "#00a77f",
+  color: "#008060",
   fontWeight: 500,
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1rem",
+  },
+}));
 
 const InfoBox = styled(Box)(({ theme }) => ({
   backgroundColor: "rgba(0, 76, 145, 0.05)",
@@ -237,24 +322,42 @@ const InfoBox = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   marginTop: theme.spacing(6),
   alignItems: "flex-start",
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(4),
+    gap: theme.spacing(2.5),
+  },
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column",
+    padding: theme.spacing(3),
+    gap: theme.spacing(2),
+    alignItems: "center",
+    textAlign: "center",
+  },
 }));
 
-const SkipLink = styled("a")({
+const SkipLink = styled("a")(({ theme }) => ({
   position: "absolute",
   top: "-40px",
   left: 0,
   background: "#004c91",
   color: "white",
-  padding: "8px",
+  padding: "8px 16px",
   textDecoration: "none",
   zIndex: 9999,
+  fontSize: "1rem",
+  fontWeight: 500,
+  borderRadius: "0 0 4px 0",
   "&:focus": {
     top: 0,
   },
-});
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.875rem",
+    padding: "6px 12px",
+  },
+}));
 
 export default function AccessibilityStatement() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("accessibility");
 
   return (
     <PageContainer>
@@ -264,15 +367,15 @@ export default function AccessibilityStatement() {
 
       {/* Hero Section */}
       <HeroSection>
-        <HeroContent id='main-content'>
+        <HeroContent>
           <Badge>
             <VerifiedIcon sx={{ fontSize: "0.75rem" }} />
-            WCAG 2.2 AA Compliant
+            {t("wcag_badge")}
           </Badge>
           <PageTitle variant='h1'>{t("accessibility_title")}</PageTitle>
           <PageIntro>{t("accessibility_intro")}</PageIntro>
           <LastUpdated>
-            <strong>Last Updated:</strong> November 3, 2024
+            <strong>{t("last_updated_label")}</strong> {t("last_updated_date")}
           </LastUpdated>
         </HeroContent>
       </HeroSection>
@@ -280,17 +383,16 @@ export default function AccessibilityStatement() {
       {/* Commitment Section */}
       <Section sx={{ backgroundColor: "#ffffff" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-          <SectionTitle variant='h2'>Our Accessibility Commitment</SectionTitle>
-          <SectionSubtitle>
-            As an organization dedicated to disability empowerment,
-            accessibility is at the core of everything we do.
-          </SectionSubtitle>
+          <SectionTitle variant='h2'>
+            {t("commitment_section_title")}
+          </SectionTitle>
+          <SectionSubtitle>{t("commitment_section_subtitle")}</SectionSubtitle>
 
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: 6,
+              gap: { xs: 3, sm: 4, md: 6 },
             }}
           >
             <CommitmentCard>
@@ -300,12 +402,8 @@ export default function AccessibilityStatement() {
                 <ShieldIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
               </CardIconContainer>
               <Box>
-                <CardTitle>Standards Compliance</CardTitle>
-                <CardText sx={{ mt: 2, mb: 3 }}>
-                  Fully compliant with WCAG 2.2 AA accessibility standards,
-                  ensuring our website is accessible to all users regardless of
-                  ability.
-                </CardText>
+                <CardTitle>{t("standards_title")}</CardTitle>
+                <CardText sx={{ mt: 2, mb: 3 }}>{t("standards_text")}</CardText>
                 <FeatureList disablePadding>
                   <ListItem>
                     <CheckCircleIcon
@@ -316,8 +414,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Perceivable content for all users
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("standards_item_1")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -329,8 +433,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Operable user interface
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("standards_item_2")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -342,8 +452,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Understandable information
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("standards_item_3")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -355,8 +471,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Robust technical implementation
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("standards_item_4")}
                     </Typography>
                   </ListItem>
                 </FeatureList>
@@ -370,11 +492,8 @@ export default function AccessibilityStatement() {
                 <GroupsIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
               </CardIconContainer>
               <Box>
-                <CardTitle>Inclusive Design</CardTitle>
-                <CardText sx={{ mt: 2, mb: 3 }}>
-                  Designed with input from persons with disabilities to ensure
-                  genuine accessibility and usability.
-                </CardText>
+                <CardTitle>{t("inclusive_title")}</CardTitle>
+                <CardText sx={{ mt: 2, mb: 3 }}>{t("inclusive_text")}</CardText>
                 <FeatureList disablePadding>
                   <ListItem>
                     <CheckCircleIcon
@@ -385,8 +504,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      User testing with diverse abilities
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("inclusive_item_1")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -398,8 +523,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Continuous improvement process
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("inclusive_item_2")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -411,8 +542,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Feedback-driven enhancements
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("inclusive_item_3")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -424,8 +561,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      Regular accessibility audits
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("inclusive_item_4")}
                     </Typography>
                   </ListItem>
                 </FeatureList>
@@ -438,17 +581,20 @@ export default function AccessibilityStatement() {
       {/* Features Section */}
       <Section id='features' sx={{ backgroundColor: "#f9fafb" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-          <SectionTitle variant='h2'>Accessibility Features</SectionTitle>
-          <SectionSubtitle>
-            Our website includes comprehensive accessibility features to ensure
-            everyone can access our content and services.
-          </SectionSubtitle>
+          <SectionTitle variant='h2'>
+            {t("features_section_title")}
+          </SectionTitle>
+          <SectionSubtitle>{t("features_section_subtitle")}</SectionSubtitle>
 
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
-              gap: 6,
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                lg: "1fr 1fr 1fr",
+              },
+              gap: { xs: 3, sm: 4, md: 5, lg: 6 },
             }}
           >
             {/* Screen Reader Support */}
@@ -458,10 +604,9 @@ export default function AccessibilityStatement() {
               >
                 <VolumeUpIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Screen Reader Support</CardTitle>
+              <CardTitle sx={{ mt: 2 }}>{t("screen_reader_title")}</CardTitle>
               <CardText sx={{ mt: 2, mb: 2 }}>
-                Fully compatible with NVDA, JAWS, VoiceOver, and other popular
-                screen readers.
+                {t("screen_reader_text")}
               </CardText>
               <FeatureList disablePadding>
                 <ListItem>
@@ -473,8 +618,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Semantic HTML markup
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -486,8 +633,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    ARIA labels and landmarks
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -499,8 +648,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Descriptive alt text for images
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -512,8 +663,40 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Skip navigation links
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_4")}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <CheckCircleIcon
+                    sx={{
+                      color: "#00a77f",
+                      mr: 1.5,
+                      fontSize: "1.25rem",
+                      mt: 0.25,
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_5")}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <CheckCircleIcon
+                    sx={{
+                      color: "#00a77f",
+                      mr: 1.5,
+                      fontSize: "1.25rem",
+                      mt: 0.25,
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("screen_reader_item_6")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -526,9 +709,9 @@ export default function AccessibilityStatement() {
               >
                 <LanguageIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Multilingual Support</CardTitle>
+              <CardTitle sx={{ mt: 2 }}>{t("multilingual_title")}</CardTitle>
               <CardText sx={{ mt: 2, mb: 2 }}>
-                Content available in English and Nepali (नेपाली) languages.
+                {t("multilingual_text")}
               </CardText>
               <FeatureList disablePadding>
                 <ListItem>
@@ -540,8 +723,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Easy language switching
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("multilingual_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -553,8 +738,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Consistent translation quality
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("multilingual_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -566,8 +753,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Language-specific formatting
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("multilingual_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -579,8 +768,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    UTF-8 character encoding
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("multilingual_item_4")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -593,9 +784,9 @@ export default function AccessibilityStatement() {
               >
                 <TextFieldsIcon sx={{ fontSize: "2.5rem", color: "#965595" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Text Customization</CardTitle>
+              <CardTitle sx={{ mt: 2 }}>{t("text_customization_title")}</CardTitle>
               <CardText sx={{ mt: 2, mb: 2 }}>
-                Adjustable font sizes and text spacing for improved readability.
+                {t("text_customization_text")}
               </CardText>
               <FeatureList disablePadding>
                 <ListItem>
@@ -607,8 +798,8 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Browser zoom up to 200%
+                  <Typography sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}>
+                    {t("text_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -620,8 +811,8 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Responsive text sizing
+                  <Typography sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}>
+                    {t("text_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -633,8 +824,8 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Clear typography hierarchy
+                  <Typography sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}>
+                    {t("text_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -646,8 +837,8 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Sufficient line height
+                  <Typography sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}>
+                    {t("text_item_4")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -660,10 +851,8 @@ export default function AccessibilityStatement() {
               >
                 <ContrastIcon sx={{ fontSize: "2.5rem", color: "#f6d469" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Contrast & Colors</CardTitle>
-              <CardText sx={{ mt: 2, mb: 2 }}>
-                High contrast ratios meeting WCAG 2.2 AA standards.
-              </CardText>
+              <CardTitle sx={{ mt: 2 }}>{t("contrast_title")}</CardTitle>
+              <CardText sx={{ mt: 2, mb: 2 }}>{t("contrast_text")}</CardText>
               <FeatureList disablePadding>
                 <ListItem>
                   <CheckCircleIcon
@@ -674,8 +863,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Minimum 4.5:1 contrast for text
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("contrast_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -687,8 +878,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Color not sole indicator
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("contrast_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -700,8 +893,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Focus indicators visible
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("contrast_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -713,8 +908,25 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Accessible color palette
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("contrast_item_4")}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <CheckCircleIcon
+                    sx={{
+                      color: "#00a77f",
+                      mr: 1.5,
+                      fontSize: "1.25rem",
+                      mt: 0.25,
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("contrast_item_5")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -727,10 +939,8 @@ export default function AccessibilityStatement() {
               >
                 <KeyboardIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Keyboard Navigation</CardTitle>
-              <CardText sx={{ mt: 2, mb: 2 }}>
-                Full keyboard accessibility without requiring a mouse.
-              </CardText>
+              <CardTitle sx={{ mt: 2 }}>{t("keyboard_title")}</CardTitle>
+              <CardText sx={{ mt: 2, mb: 2 }}>{t("keyboard_text")}</CardText>
               <FeatureList disablePadding>
                 <ListItem>
                   <CheckCircleIcon
@@ -741,8 +951,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Logical tab order
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("keyboard_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -754,8 +966,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Visible focus indicators
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("keyboard_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -767,8 +981,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Keyboard shortcuts available
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("keyboard_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -780,8 +996,25 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    No keyboard traps
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("keyboard_item_4")}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <CheckCircleIcon
+                    sx={{
+                      color: "#00a77f",
+                      mr: 1.5,
+                      fontSize: "1.25rem",
+                      mt: 0.25,
+                    }}
+                  />
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("keyboard_item_5")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -794,10 +1027,8 @@ export default function AccessibilityStatement() {
               >
                 <DevicesIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Responsive Design</CardTitle>
-              <CardText sx={{ mt: 2, mb: 2 }}>
-                Optimized for all devices and screen sizes.
-              </CardText>
+              <CardTitle sx={{ mt: 2 }}>{t("responsive_title")}</CardTitle>
+              <CardText sx={{ mt: 2, mb: 2 }}>{t("responsive_text")}</CardText>
               <FeatureList disablePadding>
                 <ListItem>
                   <CheckCircleIcon
@@ -808,8 +1039,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Mobile-friendly layouts
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("responsive_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -821,8 +1054,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Touch-friendly targets
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("responsive_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -834,8 +1069,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Orientation support
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("responsive_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -847,8 +1084,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Zoom without loss of functionality
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("responsive_item_4")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -863,10 +1102,8 @@ export default function AccessibilityStatement() {
                   sx={{ fontSize: "2.5rem", color: "#965595" }}
                 />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Document Accessibility</CardTitle>
-              <CardText sx={{ mt: 2, mb: 2 }}>
-                All documents tagged and accessible for assistive technology.
-              </CardText>
+              <CardTitle sx={{ mt: 2 }}>{t("document_title")}</CardTitle>
+              <CardText sx={{ mt: 2, mb: 2 }}>{t("document_text")}</CardText>
               <FeatureList disablePadding>
                 <ListItem>
                   <CheckCircleIcon
@@ -877,8 +1114,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    PDF accessibility tagging
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("document_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -890,8 +1129,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Alternative formats available
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("document_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -903,8 +1144,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Captions for videos
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("document_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -916,8 +1159,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Transcripts for audio
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("document_item_4")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -930,10 +1175,8 @@ export default function AccessibilityStatement() {
               >
                 <VideocamIcon sx={{ fontSize: "2.5rem", color: "#f6d469" }} />
               </CardIconContainer>
-              <CardTitle sx={{ mt: 2 }}>Media Accessibility</CardTitle>
-              <CardText sx={{ mt: 2, mb: 2 }}>
-                All multimedia content includes captions and descriptions.
-              </CardText>
+              <CardTitle sx={{ mt: 2 }}>{t("media_title")}</CardTitle>
+              <CardText sx={{ mt: 2, mb: 2 }}>{t("media_text")}</CardText>
               <FeatureList disablePadding>
                 <ListItem>
                   <CheckCircleIcon
@@ -944,8 +1187,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Video captions (closed)
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("media_item_1")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -957,8 +1202,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Audio descriptions
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("media_item_2")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -970,8 +1217,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Transcript downloads
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("media_item_3")}
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -983,8 +1232,10 @@ export default function AccessibilityStatement() {
                       mt: 0.25,
                     }}
                   />
-                  <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                    Sign language interpretation
+                  <Typography
+                    sx={{ fontSize: "1rem", lineHeight: 1.5, color: "#333333" }}
+                  >
+                    {t("media_item_4")}
                   </Typography>
                 </ListItem>
               </FeatureList>
@@ -996,19 +1247,14 @@ export default function AccessibilityStatement() {
       {/* Testing Section */}
       <Section sx={{ backgroundColor: "#ffffff" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-          <SectionTitle variant='h2'>
-            Accessibility Testing & Monitoring
-          </SectionTitle>
-          <SectionSubtitle>
-            We employ comprehensive testing strategies to ensure and maintain
-            WCAG 2.2 AA compliance
-          </SectionSubtitle>
+          <SectionTitle variant='h2'>{t("testing_section_title")}</SectionTitle>
+          <SectionSubtitle>{t("testing_section_subtitle")}</SectionSubtitle>
 
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: 6,
+              gap: { xs: 3, sm: 4, md: 6 },
             }}
           >
             <CommitmentCard>
@@ -1018,10 +1264,9 @@ export default function AccessibilityStatement() {
                 <VerifiedIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
               </CardIconContainer>
               <Box>
-                <CardTitle>Automated Testing</CardTitle>
+                <CardTitle>{t("automated_testing_title")}</CardTitle>
                 <CardText sx={{ mt: 2, mb: 3 }}>
-                  Continuous accessibility testing integrated into our
-                  development workflow
+                  {t("automated_testing_text")}
                 </CardText>
                 <FeatureList disablePadding>
                   <ListItem>
@@ -1033,9 +1278,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>61 automated tests</strong> covering all pages
-                      using Vitest and jest-axe
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("automated_item_1")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1047,9 +1297,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>axe-core integration</strong> with 25+ WCAG 2.2 AA
-                      rules enforced
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("automated_item_2")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1061,9 +1316,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>a11y-mcp audits</strong> for detailed violation
-                      analysis with HTML snippets
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("automated_item_3")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1075,9 +1335,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>Lighthouse CI</strong> running accessibility
-                      audits on every PR
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("automated_item_4")}
                     </Typography>
                   </ListItem>
                 </FeatureList>
@@ -1091,9 +1356,9 @@ export default function AccessibilityStatement() {
                 <ShieldIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
               </CardIconContainer>
               <Box>
-                <CardTitle>Continuous Monitoring</CardTitle>
+                <CardTitle>{t("monitoring_title")}</CardTitle>
                 <CardText sx={{ mt: 2, mb: 3 }}>
-                  Production site monitored daily for accessibility regressions
+                  {t("monitoring_text")}
                 </CardText>
                 <FeatureList disablePadding>
                   <ListItem>
@@ -1105,9 +1370,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>Daily scans</strong> of production site at 2 AM
-                      UTC
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("monitoring_item_1")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1119,9 +1389,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>Automated alerts</strong> for critical
-                      accessibility issues
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("monitoring_item_2")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1133,9 +1408,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>Pre-deployment validation</strong> blocks releases
-                      with critical violations
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("monitoring_item_3")}
                     </Typography>
                   </ListItem>
                   <ListItem>
@@ -1147,8 +1427,14 @@ export default function AccessibilityStatement() {
                         mt: 0.25,
                       }}
                     />
-                    <Typography sx={{ fontSize: "1rem", color: "#364153" }}>
-                      <strong>Audit history</strong> maintained for 90 days
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        lineHeight: 1.5,
+                        color: "#333333",
+                      }}
+                    >
+                      {t("monitoring_item_4")}
                     </Typography>
                   </ListItem>
                 </FeatureList>
@@ -1167,18 +1453,8 @@ export default function AccessibilityStatement() {
               <CheckCircleIcon sx={{ fontSize: "2rem", color: "#004c91" }} />
             </CardIconContainer>
             <Box>
-              <CardTitle>Testing Coverage</CardTitle>
-              <CardText sx={{ mt: 1.5 }}>
-                Our testing infrastructure validates:{" "}
-                <strong>
-                  color contrast (WCAG 4.5:1), heading hierarchy, ARIA
-                  attributes, form labels, keyboard navigation, focus
-                  management, screen reader compatibility, semantic HTML
-                  structure, image alt text, button accessibility, link names,
-                  and landmark regions.
-                </strong>{" "}
-                All tests must pass before code reaches production.
-              </CardText>
+              <CardTitle>{t("coverage_title")}</CardTitle>
+              <CardText sx={{ mt: 1.5 }}>{t("coverage_text")}</CardText>
             </Box>
           </InfoBox>
         </Container>
@@ -1187,17 +1463,18 @@ export default function AccessibilityStatement() {
       {/* Contact Section */}
       <Section id='contact' sx={{ backgroundColor: "#f9fafb" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
-          <SectionTitle variant='h2'>Report Accessibility Issues</SectionTitle>
-          <SectionSubtitle>
-            We welcome your feedback on the accessibility of our website. Please
-            let us know if you encounter any barriers.
-          </SectionSubtitle>
+          <SectionTitle variant='h2'>{t("contact_section_title")}</SectionTitle>
+          <SectionSubtitle>{t("contact_section_subtitle")}</SectionSubtitle>
 
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
-              gap: 6,
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                md: "1fr 1fr 1fr",
+              },
+              gap: { xs: 3, sm: 4, md: 6 },
             }}
           >
             <ContactCard>
@@ -1206,9 +1483,9 @@ export default function AccessibilityStatement() {
               >
                 <EmailIcon sx={{ fontSize: "2.5rem", color: "#004c91" }} />
               </ContactIconContainer>
-              <ContactTitle>Email Us</ContactTitle>
-              <ContactSubtitle>Send accessibility feedback</ContactSubtitle>
-              <ContactLink>disabilityemp@gmail.com</ContactLink>
+              <ContactTitle>{t("contact_email_title")}</ContactTitle>
+              <ContactSubtitle>{t("contact_email_subtitle")}</ContactSubtitle>
+              <ContactLink>{t("contact_email")}</ContactLink>
             </ContactCard>
 
             <ContactCard>
@@ -1217,9 +1494,9 @@ export default function AccessibilityStatement() {
               >
                 <PhoneIcon sx={{ fontSize: "2.5rem", color: "#00a77f" }} />
               </ContactIconContainer>
-              <ContactTitle>Call Us</ContactTitle>
-              <ContactSubtitle>Speak to our team</ContactSubtitle>
-              <ContactLink>+977-15709205</ContactLink>
+              <ContactTitle>{t("contact_phone_title")}</ContactTitle>
+              <ContactSubtitle>{t("contact_phone_subtitle")}</ContactSubtitle>
+              <ContactLink>{t("contact_phone")}</ContactLink>
             </ContactCard>
 
             <ContactCard>
@@ -1230,14 +1507,14 @@ export default function AccessibilityStatement() {
                   sx={{ fontSize: "2.5rem", color: "#965595" }}
                 />
               </ContactIconContainer>
-              <ContactTitle>Contact Form</ContactTitle>
-              <ContactSubtitle>Fill out our form</ContactSubtitle>
+              <ContactTitle>{t("contact_form_title")}</ContactTitle>
+              <ContactSubtitle>{t("contact_form_subtitle")}</ContactSubtitle>
               <Box
                 component={Link}
-                to='/get-involved'
+                to='/contact#contact-form'
                 sx={{ textDecoration: "none" }}
               >
-                <ContactLink>Contact Page</ContactLink>
+                <ContactLink>{t("contact_form_link")}</ContactLink>
               </Box>
             </ContactCard>
           </Box>
@@ -1253,14 +1530,8 @@ export default function AccessibilityStatement() {
               <VerifiedIcon sx={{ fontSize: "2rem", color: "#004c91" }} />
             </CardIconContainer>
             <Box>
-              <CardTitle>Response Time</CardTitle>
-              <CardText sx={{ mt: 1.5 }}>
-                We aim to respond to all accessibility feedback within{" "}
-                <strong>3 business days</strong>. Critical accessibility
-                barriers will be addressed as a priority. You will receive a
-                confirmation of receipt and regular updates on the status of
-                your report.
-              </CardText>
+              <CardTitle>{t("response_title")}</CardTitle>
+              <CardText sx={{ mt: 1.5 }}>{t("response_text")}</CardText>
             </Box>
           </InfoBox>
         </Container>

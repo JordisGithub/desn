@@ -1,4 +1,5 @@
 export default {
+  contact: {
   // Hero Section
   hero: {
     badge: "सम्पर्कमा रहनुहोस्",
@@ -184,5 +185,6 @@ export default {
     directions_title: "यहाँ पुग्न",
     directions_description:
       "हाम्रो कार्यालय सार्वजनिक यातायात र निजी सवारी साधनबाट सजिलै पहुँचयोग्य छ। साइटमा पार्किङ उपलब्ध छ।",
+  },
   },
 };

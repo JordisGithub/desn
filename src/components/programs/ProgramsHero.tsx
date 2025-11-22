@@ -89,7 +89,7 @@ const Description = styled(Typography)<{ component?: React.ElementType }>(
 );
 
 export default function ProgramsHero() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <HeroSection role='region' aria-labelledby='programs-hero-title'>
