@@ -13,10 +13,10 @@ import maiTranslations from "./locales/mai";
 // Load translations synchronously
 const loadResources = () => {
   const resources = {
-    en: { translation: enTranslations },
-    ne: { translation: neTranslations },
-    new: { translation: newTranslations },
-    mai: { translation: maiTranslations },
+    en: enTranslations,
+    ne: neTranslations,
+    new: newTranslations,
+    mai: maiTranslations,
   };
 
   return resources;
@@ -27,6 +27,8 @@ const resources = loadResources();
 i18n.use(initReactI18next).init({
   lng: savedLanguage,
   fallbackLng: "en",
+  defaultNS: "translation",
+  ns: ["translation", "accessibility", "get_involved", "contact", "programs"],
   interpolation: {
     escapeValue: false,
   },
