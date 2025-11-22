@@ -671,10 +671,56 @@ section[aria-labelledby="upcoming-events-heading"]
 
 /* Calendar date cells - minimalist with clear event indicators */
 section[aria-labelledby="upcoming-events-heading"] [role="gridcell"] {
+  /* Base (unselected, no event) calendar day appearance */
   background-color: transparent !important;
   position: relative !important;
   color: var(--color-primary) !important;
   font-weight: 600 !important;
+}
+
+/* Override for previous/next month days */
+section[aria-labelledby="upcoming-events-heading"] [role="gridcell"][data-other-month="true"] {
+  background-color: #f5f5f5 !important;
+  color: #55636d !important;
+  font-weight: 200 !important;
+  font-style: normal !important;
+  border-radius: 8px !important;
+}
+section[aria-labelledby="upcoming-events-heading"] [role="gridcell"][data-other-month="true"]:hover {
+  background-color: #f0f0f0 !important;
+  color: #55636d !important;
+  transform: none !important;
+  border-radius: 8px !important;
+}
+
+/* Override for past days in current month (non-selected) */
+section[aria-labelledby="upcoming-events-heading"] [role="gridcell"][data-past="true"]:not([data-selected="true"]) {
+  color: #495662 !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+}
+
+/* Selected day override (single date selection) */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"][data-selected="true"],
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"].calendar-day-selected {
+  background-color: #e8f5e9 !important; /* light green */
+  border: 3px solid #00875f !important; /* dark green border */
+  color: #004c91 !important; /* dark blue text for better contrast */
+  font-weight: 700 !important;
+  border-radius: 8px !important; /* keep square shape instead of circle when selected */
+  transform: none !important; /* prevent scale from hover so outline is stable */
+}
+
+/* Selected day hover refinement */
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"][data-selected="true"]:hover,
+section[aria-labelledby="upcoming-events-heading"]
+  [role="gridcell"].calendar-day-selected:hover {
+  background-color: #c8e6c9 !important; /* slightly darker green on hover */
+  color: #004c91 !important;
+  transform: none !important; /* avoid motion for accessibility */
 }
 
 /* Event days - highlighted with background color and bold text */

@@ -34,7 +34,6 @@ const ContentGrid = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: "20px",
   padding: theme.spacing(6),
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
     gap: theme.spacing(4),
@@ -107,12 +106,25 @@ const LearnMoreButton = styled(Button)({
   paddingLeft: "2.5rem",
   paddingRight: "2.5rem",
   alignSelf: "flex-start",
+  border: "3px solid transparent",
   boxShadow: "0 8px 24px rgba(0, 76, 145, 0.4)",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  transition:
+    "background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003366",
-    transform: "translateY(-3px) scale(1.05)",
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+    transform: "translateY(-3px)",
     boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#00295a",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 
@@ -128,10 +140,11 @@ const FeaturedImage = styled("img")(({ theme }) => ({
   objectFit: "cover",
   borderRadius: "16px",
   boxShadow: "0 30px 80px rgba(0, 0, 0, 0.75)",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  transition:
+    "box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     boxShadow: "0 40px 100px rgba(0, 0, 0, 0.85)",
-    transform: "scale(1.02) translateY(-6px)",
+    transform: "translateY(-6px)",
   },
   [theme.breakpoints.down("md")]: {
     height: "300px",
@@ -204,11 +217,7 @@ export default function FeaturedEvent() {
           >
             <ContentColumn>
               <Box>
-                <FeaturedLabel
-                  aria-label={`Event category: ${t("featured_event_title")}`}
-                >
-                  {t("featured_event_title")}
-                </FeaturedLabel>
+                <FeaturedLabel>{t("featured_event_title")}</FeaturedLabel>
                 <FeaturedTitle variant='h2' id='featured-event-heading'>
                   {t("featured_event_heading")}
                 </FeaturedTitle>
@@ -244,7 +253,7 @@ export default function FeaturedEvent() {
 
               <LearnMoreButton
                 endIcon={<ArrowForwardIcon aria-hidden='true' />}
-                aria-label={`Register for ${t(
+                aria-label={`${t("event_register_button")} for ${t(
                   "featured_event_heading"
                 )} event on ${t("featured_event_date")}`}
                 disabled
@@ -252,15 +261,6 @@ export default function FeaturedEvent() {
                 {t("event_register_button")}
               </LearnMoreButton>
             </ContentColumn>
-
-            <ImageColumn aria-hidden='true'>
-              <FeaturedImage
-                src='https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop'
-                alt=''
-                loading='lazy'
-                role='presentation'
-              />
-            </ImageColumn>
           </ContentGrid>
         </Container>
       </SectionContainer>
@@ -291,11 +291,7 @@ export default function FeaturedEvent() {
         >
           <ContentColumn>
             <Box>
-              <FeaturedLabel
-                aria-label={`Event category: ${t("featured_event_title")}`}
-              >
-                {t("featured_event_title")}
-              </FeaturedLabel>
+              <FeaturedLabel>{t("featured_event_title")}</FeaturedLabel>
               <FeaturedTitle variant='h2' id='featured-event-heading'>
                 {translatedTitle}
               </FeaturedTitle>
