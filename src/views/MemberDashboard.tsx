@@ -20,6 +20,14 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import EventService from "../services/EventService";
+import {
+  translateEventTitle,
+  translateEventLocation,
+} from "../utils/eventTranslations";
+import {
+  formatDate as formatDateLocalized,
+  formatTimeRange,
+} from "../utils/dateLocalization";
 import ResourceService from "../services/ResourceService";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -28,7 +36,7 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import CancelIcon from "@mui/icons-material/Cancel";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DescriptionIcon from "@mui/icons-material/Description";
-import DownloadIcon from "@mui/icons-material/Download";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ArticleIcon from "@mui/icons-material/Article";
 
 const PageContainer = styled("div")({
@@ -301,7 +309,7 @@ const ResourceActions = styled(Box)({
   flexShrink: 0,
 });
 
-const DownloadButton = styled(Button)({
+const ViewButton = styled(Button)({
   backgroundColor: "#004c91",
   color: "white",
   borderRadius: "8px",
@@ -400,7 +408,7 @@ interface FavoriteResource {
 }
 
 export default function MemberDashboard() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   usePageTitle("page_titles.member_dashboard");
   const { user, isAuthenticated, isAuthReady } = useAuth();
   const navigate = useNavigate();
@@ -430,25 +438,26 @@ export default function MemberDashboard() {
 
       try {
         if (isMounted) setLoading(true);
-        const eventResponses = await EventService.getUserRegistrations(
+        const registrationsData = await EventService.getUserRegistrations(
           user.username,
           user.token
         );
-        // Transform EventResponse[] to Registration[] format
-        const transformedRegistrations: Registration[] = eventResponses.map(
-          (event, index) => ({
-            registrationId: index, // Placeholder since API doesn't return registration ID
-            registeredAt: new Date().toISOString(), // Placeholder
+
+        // Transform backend response to Registration[] format
+        const transformedRegistrations: Registration[] = registrationsData.map(
+          (registration) => ({
+            registrationId: registration.registrationId,
+            registeredAt: registration.registeredAt,
             event: {
-              id: event.id,
-              title: event.title,
-              description: event.description,
-              startDate: event.startDate,
-              endDate: event.endDate,
-              location: event.location,
-              maxAttendees: event.maxAttendees,
-              currentAttendees: event.currentAttendees,
-              featured: false, // Placeholder
+              id: registration.event.id,
+              title: registration.event.title,
+              description: registration.event.description,
+              startDate: registration.event.startDate,
+              endDate: registration.event.endDate,
+              location: registration.event.location,
+              maxAttendees: registration.event.maxAttendees,
+              currentAttendees: registration.event.currentAttendees,
+              featured: registration.event.featured || false,
             },
           })
         );
@@ -547,14 +556,9 @@ export default function MemberDashboard() {
     }
   };
 
-  const handleDownload = (fileUrl: string, title: string) => {
-    // Create a link and trigger download
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.download = title;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleViewResource = (fileUrl: string) => {
+    // Open resource in new tab
+    window.open(fileUrl, "_blank", "noopener,noreferrer");
   };
 
   const getResourceTypeLabel = (type: string): string => {
@@ -629,33 +633,35 @@ export default function MemberDashboard() {
                 <EventCard key={registration.event.id}>
                   <EventCardContent>
                     <StatusChip
-                      label='Confirmed'
+                      label={t("registration_confirmed")}
                       color='success'
                       size='small'
                     />
-                    <EventTitle>{event.title}</EventTitle>
+                    <EventTitle>
+                      {translateEventTitle(event.title, t)}
+                    </EventTitle>
                     <EventMeta>
                       <MetaItem>
                         <CalendarTodayIcon />
-                        <MetaText>{eventDate.toLocaleDateString()}</MetaText>
+                        <MetaText>
+                          {formatDateLocalized(eventDate, i18n.language)}
+                        </MetaText>
                       </MetaItem>
                       <MetaItem>
                         <AccessTimeIcon />
                         <MetaText>
-                          {eventDate.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}{" "}
-                          -{" "}
-                          {eventEndDate.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                          {formatTimeRange(
+                            eventDate,
+                            eventEndDate,
+                            i18n.language
+                          )}
                         </MetaText>
                       </MetaItem>
                       <MetaItem>
                         <LocationOnIcon />
-                        <MetaText>{event.location}</MetaText>
+                        <MetaText>
+                          {translateEventLocation(event.location, t)}
+                        </MetaText>
                       </MetaItem>
                     </EventMeta>
                     <CancelButton
@@ -717,22 +723,19 @@ export default function MemberDashboard() {
                     </ResourceMeta>
                   </ResourceInfo>
                   <ResourceActions>
-                    <DownloadButton
-                      startIcon={<DownloadIcon />}
+                    <ViewButton
+                      startIcon={<VisibilityIcon />}
                       onClick={() =>
-                        handleDownload(
-                          favorite.resource.fileUrl,
-                          favorite.resource.title
-                        )
+                        handleViewResource(favorite.resource.fileUrl)
                       }
                     >
-                      Download
-                    </DownloadButton>
+                      {t("view")}
+                    </ViewButton>
                     <RemoveFavoriteButton
                       startIcon={<CancelIcon />}
                       onClick={() => handleRemoveFavorite(favorite.resource.id)}
                     >
-                      Remove
+                      {t("remove")}
                     </RemoveFavoriteButton>
                   </ResourceActions>
                 </ResourceCardContent>

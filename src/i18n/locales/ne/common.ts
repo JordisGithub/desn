@@ -131,13 +131,15 @@ export default {
 
   // Buttons
   cancel: "रद्द गर्नुहोस्",
-  create_account: "खाता सिर्जना गर्नुहोस्",
+  create_account: "खाता बनाउनुहोस्",
   login: "लगइन",
   confirm_registration: "दर्ता पुष्टि गर्नुहोस्",
   cancel_registration: "दर्ता रद्द गर्नुहोस्",
   browse_events: "कार्यक्रमहरू हेर्नुहोस्",
   no_keep_registration: "होइन, दर्ता राख्नुहोस्",
   yes_cancel_registration: "हो, दर्ता रद्द गर्नुहोस्",
+  view: "हेर्नुहोस्",
+  remove: "हटाउनुहोस्",
 
   // Member Dashboard
   member_dashboard_title: "मेरो ड्यासबोर्ड",
@@ -145,6 +147,7 @@ export default {
     "आफ्नो कार्यक्रम दर्ताहरू र मनपर्ने प्रकाशनहरू हेर्नुहोस् र व्यवस्थापन गर्नुहोस्",
   member_dashboard_no_registrations:
     "तपाईंले अहिलेसम्म कुनै कार्यक्रममा दर्ता गर्नुभएको छैन।",
+  registration_confirmed: "पुष्टि भयो",
   favorite_publications: "मनपर्ने प्रकाशनहरू",
   no_favorite_publications: "तपाईंले अहिलेसम्म कुनै प्रकाशन मनपराउनुभएको छैन।",
   browse_publications: "प्रकाशनहरू हेर्नुहोस्",
