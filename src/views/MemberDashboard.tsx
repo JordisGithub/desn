@@ -24,7 +24,10 @@ import {
   translateEventTitle,
   translateEventLocation,
 } from "../utils/eventTranslations";
-import { formatDate, formatTimeRange } from "../utils/dateLocalization";
+import {
+  formatDate as formatDateLocalized,
+  formatTimeRange,
+} from "../utils/dateLocalization";
 import ResourceService from "../services/ResourceService";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -405,7 +408,7 @@ interface FavoriteResource {
 }
 
 export default function MemberDashboard() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   usePageTitle("page_titles.member_dashboard");
   const { user, isAuthenticated, isAuthReady } = useAuth();
   const navigate = useNavigate();
@@ -641,7 +644,7 @@ export default function MemberDashboard() {
                       <MetaItem>
                         <CalendarTodayIcon />
                         <MetaText>
-                          {formatDate(eventDate, i18n.language)}
+                          {formatDateLocalized(eventDate, i18n.language)}
                         </MetaText>
                       </MetaItem>
                       <MetaItem>
