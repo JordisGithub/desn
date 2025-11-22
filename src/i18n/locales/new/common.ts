@@ -129,19 +129,22 @@ export default {
 
   // Buttons
   cancel: "रद्द यायेगु",
-  create_account: "खाता सिर्जना यायेगु",
+  create_account: "खाता बनायेगु",
   login: "लगइन",
   confirm_registration: "दर्ता पुष्टि यायेगु",
   cancel_registration: "दर्ता रद्द यायेगु",
   browse_events: "कार्यक्रमफु च्वयेगु",
-  no_keep_registration: "मखु, दर्ता थयेगु",
-  yes_cancel_registration: "व, दर्ता रद्द यायेगु",
+  no_keep_registration: "मखु, दर्ता थायेगु",
+  yes_cancel_registration: "दु, दर्ता रद्द यायेगु",
+  view: "च्वयेगु",
+  remove: "तिकायेगु",
 
   // Member Dashboard
   member_dashboard_title: "जिगु ड्यासबोर्ड",
   member_dashboard_subtitle:
     "छिगु कार्यक्रम दर्ताफु व मन परे प्रकाशनफु च्वन व व्यवस्थापन यायेगु",
   member_dashboard_no_registrations: "छिं अलेलिकं थ्व कार्यक्रमय दर्ता मयात।",
+  registration_confirmed: "पुष्टि जूगु",
   favorite_publications: "मन परे प्रकाशनफु",
   no_favorite_publications: "छिं अलेलिकं थ्व प्रकाशन मन मपरात।",
   browse_publications: "प्रकाशनफु च्वयेगु",

@@ -451,7 +451,7 @@ const Resources: React.FC = () => {
             ) : (
               <>
                 <DescriptionIcon aria-hidden='true' sx={{ fontSize: 20 }} />
-                {t("resources.view_pdf")}
+                {t("view")}
                 <Box
                   component='span'
                   sx={{
