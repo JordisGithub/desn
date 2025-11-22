@@ -221,7 +221,7 @@ const DonateNowButton = styled("a")(({ theme }) => ({
 }));
 
 const DonationSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
 
   const benefits = [
     t("get_involved.donation.benefits.impact"),

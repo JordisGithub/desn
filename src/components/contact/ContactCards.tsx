@@ -88,7 +88,7 @@ const SecondaryInfo = styled(Typography)({
 });
 
 export default function ContactCards() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
 
   return (
     <CardsSection aria-labelledby='contact-methods-heading'>

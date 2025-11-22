@@ -306,7 +306,7 @@ const ContactSubtitle = styled(Typography)(({ theme }) => ({
 
 const ContactLink = styled(Typography)(({ theme }) => ({
   fontSize: "1.125rem",
-  color: "#00a77f",
+  color: "#008060",
   fontWeight: 500,
   [theme.breakpoints.down("sm")]: {
     fontSize: "1rem",
@@ -367,7 +367,7 @@ export default function AccessibilityStatement() {
 
       {/* Hero Section */}
       <HeroSection>
-        <HeroContent id='main-content'>
+        <HeroContent>
           <Badge>
             <VerifiedIcon sx={{ fontSize: "0.75rem" }} />
             {t("wcag_badge")}
@@ -1511,7 +1511,7 @@ export default function AccessibilityStatement() {
               <ContactSubtitle>{t("contact_form_subtitle")}</ContactSubtitle>
               <Box
                 component={Link}
-                to='/get-involved'
+                to='/contact#contact-form'
                 sx={{ textDecoration: "none" }}
               >
                 <ContactLink>{t("contact_form_link")}</ContactLink>

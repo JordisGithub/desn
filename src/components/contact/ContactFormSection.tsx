@@ -206,7 +206,7 @@ const TimeLabel = styled(Typography)({
 });
 
 export default function ContactFormSection() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
   const { lang } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: "",

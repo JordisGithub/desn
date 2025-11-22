@@ -179,7 +179,7 @@ const pillarsData = [
 ];
 
 export default function ProgramPillarsSection() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("programs");
 
   return (
     <PillarsSection aria-label='Program Pillars Overview'>

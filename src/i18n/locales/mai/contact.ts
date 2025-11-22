@@ -1,4 +1,5 @@
 export default {
+  contact: {
   hero: {
     badge: "संपर्क करी",
     title: "संपर्क में रही",
@@ -194,5 +195,6 @@ export default {
 
     // Additional legacy keys
     heading: "हमरा खोजी",
+  },
   },
 };

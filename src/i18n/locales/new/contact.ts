@@ -1,4 +1,5 @@
 export default {
+  contact: {
   hero: {
     badge: "सम्पर्क यानू",
     title: "सम्पर्कमे बनू",
@@ -195,5 +196,6 @@ export default {
 
     // Additional legacy keys
     heading: "झीं भेट्टनू",
+  },
   },
 };

@@ -182,7 +182,7 @@ const VolunteerForm: React.FC<VolunteerFormProps> = ({
   dialogTitleId,
   dialogDescId,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("get_involved");
   const { lang } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: "",

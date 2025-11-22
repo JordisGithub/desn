@@ -1,4 +1,5 @@
 export default {
+  get_involved: {
   hero: {
     title: "जीवन बदलू। आजे थुगु।",
     subtitle:
@@ -162,4 +163,5 @@ export default {
   },
   donate_button: "दान बियानू",
   submit_aria_label: "स्वयंसेवक आवेदन पेश यानू",
+  },
 };
