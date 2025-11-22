@@ -22,7 +22,6 @@ import { useNavigate } from "react-router-dom";
 import EventService from "../services/EventService";
 import {
   translateEventTitle,
-  translateEventDescription,
   translateEventLocation,
 } from "../utils/eventTranslations";
 import { formatDate, formatTimeRange } from "../utils/dateLocalization";
@@ -641,12 +640,18 @@ export default function MemberDashboard() {
                     <EventMeta>
                       <MetaItem>
                         <CalendarTodayIcon />
-                        <MetaText>{formatDate(eventDate)}</MetaText>
+                        <MetaText>
+                          {formatDate(eventDate, i18n.language)}
+                        </MetaText>
                       </MetaItem>
                       <MetaItem>
                         <AccessTimeIcon />
                         <MetaText>
-                          {formatTimeRange(eventDate, eventEndDate)}
+                          {formatTimeRange(
+                            eventDate,
+                            eventEndDate,
+                            i18n.language
+                          )}
                         </MetaText>
                       </MetaItem>
                       <MetaItem>
