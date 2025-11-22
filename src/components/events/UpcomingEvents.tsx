@@ -16,6 +16,7 @@ import {
   translateEventLocation,
 } from "../../utils/eventTranslations";
 import { formatDate, formatTimeRange } from "../../utils/dateLocalization";
+import "../../styles/EventButtons.css";
 
 const SectionContainer = styled("section")(({ theme }) => ({
   backgroundColor: "white",
@@ -67,6 +68,10 @@ const CalendarCard = styled(Box)(({ theme }) => ({
   maxWidth: "380px",
   margin: "0 auto",
   alignSelf: "flex-start",
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+  },
   [theme.breakpoints.down("md")]: {
     maxWidth: "100%",
   },
@@ -119,11 +124,14 @@ const NavButton = styled(Button)({
   borderRadius: "8px",
   backgroundColor: "#004c91",
   cursor: "pointer",
-  transition: "all 0.2s ease",
+  transition: "background-color 0.2s ease, border-color 0.2s ease",
   "&:hover": {
     backgroundColor: "#003d73",
     borderColor: "#003d73",
-    transform: "scale(1.05)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
   },
   "& .MuiSvgIcon-root": {
     fontSize: "1.25rem",
@@ -215,10 +223,15 @@ const EventCard = styled(Box)(({ theme }) => ({
   borderRadius: "16px",
   padding: theme.spacing(3),
   boxShadow: "0 18px 48px rgba(0, 0, 0, 0.45)",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  transition:
+    "box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
     boxShadow: "0 24px 60px rgba(0, 0, 0, 0.65)",
-    transform: "translateY(-6px) scale(1.02)",
+    transform: "translateY(-6px)",
+  },
+  "&:focus-within": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),
@@ -226,7 +239,7 @@ const EventCard = styled(Box)(({ theme }) => ({
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
     "&:hover": {
       boxShadow: "0 12px 32px rgba(0, 0, 0, 0.45)",
-      transform: "translateY(-4px) scale(1.01)",
+      transform: "translateY(-4px)",
     },
   },
 }));
@@ -288,20 +301,33 @@ const MetaText = styled(Typography)({
 });
 
 const RegisterButton = styled(Button)({
-  backgroundColor: "#004c91",
-  color: "white",
-  width: "100%",
-  height: "52px",
-  borderRadius: "12px",
+  // backgroundColor: "#004c91",
+  // color: "white",
+  // width: "100%",
+  // height: "52px",
+  // borderRadius: "12px",
   fontSize: "1rem",
   fontWeight: 600,
   textTransform: "none",
-  boxShadow: "0 8px 24px rgba(0, 76, 145, 0.35)",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  // border: "3px solid transparent",
+  // boxShadow: "0 8px 24px rgba(0, 76, 145, 0.4)",
+  // transition:
+  //   "background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    backgroundColor: "#003366",
-    boxShadow: "0 12px 32px rgba(0, 76, 145, 0.5)",
-    transform: "translateY(-2px)",
+    backgroundColor: "#00295a",
+    borderColor: "#00a77f",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 36px rgba(0, 76, 145, 0.6)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#00295a",
+  },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
   },
 });
 
@@ -783,6 +809,7 @@ export default function UpcomingEvents() {
                         </EventMeta>
 
                         <RegisterButton
+                          className='register-button-custom'
                           endIcon={
                             !isFull ? (
                               <ArrowForwardIcon aria-hidden='true' />
@@ -801,14 +828,6 @@ export default function UpcomingEvents() {
                                   t
                                 )} - ${event.date} ${event.time}`
                           }
-                          sx={{
-                            backgroundColor: isFull ? "#e0e0e0" : "#004c91",
-                            color: isFull ? "#9e9e9e" : "white",
-                            cursor: isFull ? "not-allowed" : "pointer",
-                            "&:hover": {
-                              backgroundColor: isFull ? "#e0e0e0" : "#003d73",
-                            },
-                          }}
                         >
                           {isFull ? t("event_full") : t("register_now")}
                         </RegisterButton>
@@ -875,6 +894,7 @@ export default function UpcomingEvents() {
                       </EventMeta>
 
                       <RegisterButton
+                        className='register-button-custom'
                         endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
                         onClick={() => handleRegisterClick(event)}
                         disabled={isFull}
@@ -882,9 +902,6 @@ export default function UpcomingEvents() {
                           backgroundColor: isFull ? "#e0e0e0" : "#004c91",
                           color: isFull ? "#9e9e9e" : "white",
                           cursor: isFull ? "not-allowed" : "pointer",
-                          "&:hover": {
-                            backgroundColor: isFull ? "#e0e0e0" : "#003d73",
-                          },
                         }}
                       >
                         {isFull ? t("event_full") : t("register_now")}

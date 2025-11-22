@@ -1,0 +1,18 @@
+/* Register Now Button Custom Styles */
+.register-button-custom:not(:disabled):hover {
+  background-color: #00295a !important;
+  border: 3px solid #00a77f !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 36px rgba(0, 76, 145, 0.6) !important;
+}
+
+.register-button-custom:not(:disabled):focus {
+  background-color: #00295a !important;
+}
+
+.register-button-custom:disabled:hover {
+  background-color: #e0e0e0 !important;
+  border-color: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
