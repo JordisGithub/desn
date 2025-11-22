@@ -65,12 +65,21 @@ const PillarTitle = styled(Typography)<{
   },
 }));
 
-const PillarSubtitle = styled(Typography)<{ component?: React.ElementType }>({
-  fontSize: "1.125rem",
+const PillarSubtitle = styled(Typography)<{ component?: React.ElementType }>(({ theme }) => ({
+  fontSize: "0.95rem",
   color: "#374151",
   maxWidth: "800px",
   margin: "0 auto",
-});
+  lineHeight: 1.6,
+  padding: theme.spacing(0, 1),
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "1rem",
+    padding: 0,
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.125rem",
+  },
+}));
 
 const ProgramsGrid = styled(Box)(({ theme }) => ({
   display: "grid",
@@ -87,15 +96,25 @@ const ProgramsGrid = styled(Box)(({ theme }) => ({
 const ProgramCard = styled(Box)<{
   pillartype: ProgramType;
   component?: React.ElementType;
-}>(({ pillartype }) => ({
+}>(({ pillartype, theme }) => ({
   backgroundColor: "#ffffff",
-  borderRadius: "16px",
+  borderRadius: "12px",
   overflow: "hidden",
-  borderTop: `5px solid ${pillarColors[pillartype]}`,
-  boxShadow: "0 16px 40px rgba(0, 0, 0, 0.35)",
+  borderTop: `4px solid ${pillarColors[pillartype]}`,
+  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
   display: "flex",
   flexDirection: "column",
   transition: "all 0.3s ease",
+  [theme.breakpoints.up("sm")]: {
+    borderRadius: "14px",
+    borderTop: `4.5px solid ${pillarColors[pillartype]}`,
+    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.25)",
+  },
+  [theme.breakpoints.up("md")]: {
+    borderRadius: "16px",
+    borderTop: `5px solid ${pillarColors[pillartype]}`,
+    boxShadow: "0 16px 40px rgba(0, 0, 0, 0.35)",
+  },
   "&:hover": {
     transform: "translateY(-8px)",
     boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
@@ -129,21 +148,29 @@ const ImageGradient = styled(Box)({
 });
 
 const CardBody = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4, 3),
+  padding: theme.spacing(2.5, 2),
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.5),
+  [theme.breakpoints.up("sm")]: {
+    padding: theme.spacing(3, 2.5),
+    gap: theme.spacing(1.75),
+  },
+  [theme.breakpoints.up("md")]: {
+    padding: theme.spacing(4, 3),
+    gap: theme.spacing(2),
+  },
 }));
 
 const CardTitle = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "1.25rem",
+    fontSize: "1.1rem",
     fontWeight: 700,
     color: "#0f172a",
     fontFamily: "Poppins, sans-serif",
     lineHeight: 1.3,
     [theme.breakpoints.up("sm")]: {
-      fontSize: "1.375rem",
+      fontSize: "1.25rem",
     },
     [theme.breakpoints.up("md")]: {
       fontSize: "1.5rem",
@@ -151,26 +178,33 @@ const CardTitle = styled(Typography)<{ component?: React.ElementType }>(
   })
 );
 
-const ImpactMetric = styled(Typography)<{ pillartype: ProgramType }>(
-  ({ pillartype, theme }) => ({
+const ImpactMetric = styled(Typography)<{
+  pillartype: ProgramType;
+  component?: React.ElementType;
+}>(({ pillartype, theme }) => ({
+  fontSize: "0.9rem",
+  fontWeight: 700,
+  color: pillarColors[pillartype],
+  fontFamily: "Roboto, sans-serif",
+  [theme.breakpoints.up("sm")]: {
     fontSize: "1rem",
-    fontWeight: 700,
-    color: pillarColors[pillartype],
-    fontFamily: "Roboto, sans-serif",
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.125rem",
-    },
-    [theme.breakpoints.up("md")]: {
-      fontSize: "1.25rem",
-    },
-  })
-);
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1.125rem",
+  },
+}));
 
-const OutcomeText = styled(Typography)({
-  fontSize: "1rem",
+const OutcomeText = styled(Typography)(({ theme }) => ({
+  fontSize: "0.9rem",
   color: "#374151",
   lineHeight: 1.6,
-});
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "0.95rem",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "1rem",
+  },
+}));
 
 export default function ProgramPillarCategory({
   pillarType,
@@ -207,6 +241,7 @@ export default function ProgramPillarCategory({
             <ProgramCard
               key={program.id}
               pillartype={pillarType}
+              component='article'
               role='listitem'
               aria-labelledby={`${program.id}-title`}
               aria-describedby={`${program.id}-outcome`}
@@ -224,7 +259,9 @@ export default function ProgramPillarCategory({
                   {t(program.titleKey)}
                 </CardTitle>
                 <ImpactMetric
+                  component='div'
                   pillartype={pillarType}
+                  role='status'
                   aria-label={`Impact: ${t(program.impactKey)}`}
                 >
                   {t(program.impactKey)}

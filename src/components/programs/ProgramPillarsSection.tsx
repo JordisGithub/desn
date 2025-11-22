@@ -6,46 +6,65 @@ import WorkIcon from "@mui/icons-material/Work";
 import CampaignIcon from "@mui/icons-material/Campaign";
 
 const PillarsSection = styled("section")(({ theme }) => ({
-  padding: theme.spacing(6, 2),
+  padding: theme.spacing(4, 2),
   backgroundColor: "#ffffff",
   [theme.breakpoints.up("sm")]: {
-    padding: theme.spacing(8, 3),
+    padding: theme.spacing(5, 3),
   },
   [theme.breakpoints.up("md")]: {
-    padding: theme.spacing(12, 4),
+    padding: theme.spacing(6, 4),
   },
 }));
 
 const SectionTitle = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "2.5rem",
+    fontSize: "1.5rem",
     fontWeight: 700,
     color: "#004c91",
     textAlign: "center",
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1.5),
     fontFamily: "Poppins, sans-serif",
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.75rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2rem",
+    },
   })
 );
 
 const SectionSubtitle = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "1.25rem",
+    fontSize: "0.9rem",
     color: "#374151",
     textAlign: "center",
     maxWidth: "800px",
-    margin: `0 auto ${theme.spacing(8)}`,
+    margin: `0 auto ${theme.spacing(3)}`,
+    lineHeight: 1.6,
+    padding: theme.spacing(0, 1),
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1rem",
+      margin: `0 auto ${theme.spacing(4)}`,
+      padding: 0,
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.1rem",
+      margin: `0 auto ${theme.spacing(5)}`,
+    },
   })
 );
 
 const PillarsGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr",
-  gap: theme.spacing(4),
+  gap: theme.spacing(2.5),
   [theme.breakpoints.up("sm")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
+    gap: theme.spacing(3),
   },
   [theme.breakpoints.up("md")]: {
     gridTemplateColumns: "repeat(3, 1fr)",
+    gap: theme.spacing(3.5),
   },
 }));
 
@@ -56,56 +75,86 @@ const PillarCard = styled(Box, {
   component?: React.ElementType;
 }>(({ theme, pillarColor }) => ({
   backgroundColor: "#ffffff",
-  borderRadius: "16px",
-  padding: theme.spacing(5, 4),
-  border: `3px solid ${pillarColor}`,
-  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.08)",
+  borderRadius: "10px",
+  padding: theme.spacing(2.5, 2),
+  border: `2px solid ${pillarColor}`,
+  boxShadow: "0 3px 12px rgba(0, 0, 0, 0.08)",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
   transition: "all 0.3s ease",
+  [theme.breakpoints.up("sm")]: {
+    padding: theme.spacing(3, 2.5),
+    borderRadius: "12px",
+    border: `2px solid ${pillarColor}`,
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)",
+  },
+  [theme.breakpoints.up("md")]: {
+    padding: theme.spacing(3.5, 3),
+    borderRadius: "14px",
+    border: `2.5px solid ${pillarColor}`,
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.08)",
+  },
   "&:hover": {
-    transform: "translateY(-8px)",
-    boxShadow: "0 16px 40px rgba(0, 0, 0, 0.12)",
+    transform: "translateY(-6px)",
+    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.12)",
   },
 }));
 
 const IconWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "bgColor",
-})<{ bgColor: string }>(({ bgColor }) => ({
-  width: "80px",
-  height: "80px",
+})<{ bgColor: string }>(({ bgColor, theme }) => ({
+  width: "50px",
+  height: "50px",
   borderRadius: "50%",
   backgroundColor: bgColor,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginBottom: "24px",
+  marginBottom: "12px",
+  [theme.breakpoints.up("sm")]: {
+    width: "55px",
+    height: "55px",
+    marginBottom: "14px",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "60px",
+    height: "60px",
+    marginBottom: "16px",
+  },
 }));
 
 const PillarTitle = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "1.5rem",
+    fontSize: "1.1rem",
     fontWeight: 700,
     color: "#0f172a",
-    marginBottom: "12px",
+    marginBottom: "6px",
     fontFamily: "Poppins, sans-serif",
     [theme.breakpoints.up("sm")]: {
-      fontSize: "1.75rem",
+      fontSize: "1.2rem",
+      marginBottom: "8px",
     },
     [theme.breakpoints.up("md")]: {
-      fontSize: "2.25rem",
+      fontSize: "1.35rem",
+      marginBottom: "10px",
     },
   })
 );
 
 const PillarDescription = styled(Typography)<{ component?: React.ElementType }>(
-  {
-    fontSize: "1rem",
+  ({ theme }) => ({
+    fontSize: "0.9rem",
     color: "#374151",
     lineHeight: 1.6,
-  }
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "0.95rem",
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
+    },
+  })
 );
 
 const pillarsData = [
@@ -149,26 +198,24 @@ export default function ProgramPillarsSection() {
               <PillarCard
                 key={pillar.id}
                 pillarColor={pillar.color}
-                aria-labelledby={`pillar-${pillar.id}-title`}
-                aria-describedby={`pillar-${pillar.id}-desc`}
+                component='article'
+                aria-labelledby={`pillar-overview-${pillar.id}-title`}
+                aria-describedby={`pillar-overview-${pillar.id}-desc`}
               >
-                <IconWrapper
-                  bgColor={pillar.bgColor}
-                  role='img'
-                  aria-label={`${t(
-                    `programs.pillars.${pillar.id}.title`
-                  )} icon`}
-                >
+                <IconWrapper bgColor={pillar.bgColor} aria-hidden='true'>
                   <Icon
-                    sx={{ fontSize: 40, color: pillar.color }}
+                    sx={{ fontSize: 32, color: pillar.color }}
                     aria-hidden='true'
                   />
                 </IconWrapper>
-                <PillarTitle id={`pillar-${pillar.id}-title`} component='h3'>
+                <PillarTitle
+                  id={`pillar-overview-${pillar.id}-title`}
+                  component='h3'
+                >
                   {t(`programs.pillars.${pillar.id}.title`)}
                 </PillarTitle>
                 <PillarDescription
-                  id={`pillar-${pillar.id}-desc`}
+                  id={`pillar-overview-${pillar.id}-desc`}
                   component='p'
                 >
                   {t(`programs.pillars.${pillar.id}.description`)}

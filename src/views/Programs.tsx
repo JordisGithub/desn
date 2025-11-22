@@ -3,7 +3,6 @@ import { useSearchHighlight } from "../hooks/useSearchHighlight";
 import ProgramsHero from "../components/programs/ProgramsHero";
 import ProgramPillarsSection from "../components/programs/ProgramPillarsSection";
 import ProgramPillarCategory from "../components/programs/ProgramPillarCategory";
-import ProgramsCTAFooter from "../components/programs/ProgramsCTAFooter";
 
 // Import program images
 import ictTraining from "../assets/ProgramsAndServices/ICT expert training the project beneficiaries.jpg";
@@ -120,7 +119,6 @@ export default function Programs() {
         pillarType='advocacy'
         programs={advocacyPrograms}
       />
-      <ProgramsCTAFooter />
     </>
   );
 }

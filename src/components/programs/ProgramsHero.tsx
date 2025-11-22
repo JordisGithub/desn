@@ -5,14 +5,20 @@ import { useTranslation } from "react-i18next";
 const HeroSection = styled("div")<{ component?: React.ElementType }>(
   ({ theme }) => ({
     position: "relative",
-    minHeight: "400px",
+    minHeight: "500px",
     background:
       "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
+    padding: theme.spacing(3, 0),
+    [theme.breakpoints.up("sm")]: {
+      minHeight: "550px",
+      padding: theme.spacing(4, 0),
+    },
     [theme.breakpoints.up("md")]: {
       minHeight: "686px",
+      padding: theme.spacing(6, 0),
     },
   })
 );
@@ -39,14 +45,22 @@ const GradientOverlay2 = styled(Box)({
   left: "160px",
 });
 
-const Badge = styled(Box)({
+const Badge = styled(Box)(({ theme }) => ({
   display: "inline-block",
   backgroundColor: "rgba(255, 255, 255, 0.2)",
   border: "1px solid rgba(0, 0, 0, 0)",
   borderRadius: "8px",
-  padding: "13px 25px",
-  marginBottom: "32px",
-});
+  padding: "10px 20px",
+  marginBottom: "20px",
+  [theme.breakpoints.up("sm")]: {
+    padding: "12px 24px",
+    marginBottom: "28px",
+  },
+  [theme.breakpoints.up("md")]: {
+    padding: "13px 25px",
+    marginBottom: "32px",
+  },
+}));
 
 const BadgeText = styled(Typography)(({ theme }) => ({
   fontSize: "14px",
@@ -66,15 +80,16 @@ const BadgeText = styled(Typography)(({ theme }) => ({
 
 const Title = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "32px",
+    fontSize: "28px",
     fontWeight: 700,
-    lineHeight: "40px",
+    lineHeight: "36px",
     color: "white",
-    marginBottom: "16px",
+    marginBottom: "12px",
     fontFamily: "Poppins, sans-serif",
     [theme.breakpoints.up("sm")]: {
       fontSize: "40px",
       lineHeight: "50px",
+      marginBottom: "16px",
     },
     [theme.breakpoints.up("md")]: {
       fontSize: "60px",
@@ -86,16 +101,17 @@ const Title = styled(Typography)<{ component?: React.ElementType }>(
 
 const Description = styled(Typography)<{ component?: React.ElementType }>(
   ({ theme }) => ({
-    fontSize: "16px",
+    fontSize: "15px",
     fontWeight: 400,
-    lineHeight: "26px",
+    lineHeight: "24px",
     color: "rgba(255, 255, 255, 0.95)",
-    marginBottom: "32px",
+    marginBottom: "0",
     maxWidth: "780px",
     fontFamily: "Roboto, sans-serif",
     [theme.breakpoints.up("sm")]: {
       fontSize: "18px",
       lineHeight: "30px",
+      marginBottom: "16px",
     },
     [theme.breakpoints.up("md")]: {
       fontSize: "22px",
@@ -109,17 +125,11 @@ export default function ProgramsHero() {
   const { t } = useTranslation();
 
   return (
-    <HeroSection component='header' aria-labelledby='programs-hero-title'>
+    <HeroSection role='region' aria-labelledby='programs-hero-title'>
       <GradientOverlay1 aria-hidden='true' />
       <GradientOverlay2 aria-hidden='true' />
       <Container maxWidth='lg' sx={{ position: "relative", zIndex: 1 }}>
         <Box maxWidth='800px'>
-          <Badge
-            role='note'
-            aria-label={`Category: ${t("programs.hero.badge")}`}
-          >
-            <BadgeText>{t("programs.hero.badge")}</BadgeText>
-          </Badge>
           <Title id='programs-hero-title' variant='h1' component='h1'>
             {t("programs.hero.title")}
           </Title>
