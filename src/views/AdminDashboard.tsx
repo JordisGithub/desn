@@ -100,19 +100,6 @@ interface VolunteerApplication {
   language?: string;
 }
 
-interface PaymentTransaction {
-  transactionId: string;
-  paymentGateway: string;
-  amount: number;
-  currency: string;
-  status: string;
-  donorName: string;
-  donorEmail: string;
-  donorPhone?: string;
-  createdAt: string;
-  completedAt?: string;
-}
-
 interface EventRegistrationData {
   eventId: number;
   eventTitle: string;
@@ -138,9 +125,6 @@ const AdminDashboard: React.FC = () => {
   >([]);
   const [volunteerApplications, setVolunteerApplications] = useState<
     VolunteerApplication[]
-  >([]);
-  const [paymentTransactions, setPaymentTransactions] = useState<
-    PaymentTransaction[]
   >([]);
   const [eventsData, setEventsData] = useState<EventRegistrationData[]>([]);
   const [eventsCount, setEventsCount] = useState(0);
@@ -170,7 +154,7 @@ const AdminDashboard: React.FC = () => {
 
       // Note: These endpoints are not yet implemented in the backend
       // They will return 404 until the backend API is created
-      const [membershipRes, volunteerRes, donationsRes] = await Promise.all([
+      const [membershipRes, volunteerRes] = await Promise.all([
         ApiService.get("/api/forms/membership", { headers }).catch((err) => {
           if (err?.status !== 429)
             console.error("Error fetching membership:", err);
@@ -181,13 +165,6 @@ const AdminDashboard: React.FC = () => {
             console.error("Error fetching volunteer:", err);
           return null;
         }),
-        ApiService.get("/api/payment/transactions", { headers }).catch(
-          (err) => {
-            if (err?.status !== 429)
-              console.error("Error fetching transactions:", err);
-            return null;
-          }
-        ),
       ]);
 
       if (membershipRes) {
@@ -207,16 +184,6 @@ const AdminDashboard: React.FC = () => {
           );
         } catch (e) {
           console.error("Error parsing volunteer data:", e);
-        }
-      }
-
-      if (donationsRes) {
-        try {
-          setPaymentTransactions(
-            Array.isArray(donationsRes) ? donationsRes : []
-          );
-        } catch (e) {
-          console.error("Error parsing donations data:", e);
         }
       }
 
@@ -248,7 +215,9 @@ const AdminDashboard: React.FC = () => {
 
         // Fetch resources count for Resources tab
         try {
-          const resourcesResponse = await ApiService.get("/api/resources");
+          const resourcesResponse = await ApiService.get<{ resources: any[] }>(
+            "/api/resources"
+          );
           const resourcesArray = resourcesResponse?.resources || [];
           setResourcesCount(
             Array.isArray(resourcesArray) ? resourcesArray.length : 0
