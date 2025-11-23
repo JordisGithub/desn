@@ -23,7 +23,11 @@ import {
   Stack,
   Tabs,
   Tab,
+  FormControl,
   FormControlLabel,
+  InputLabel,
+  Select,
+  MenuItem,
   Checkbox,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -66,9 +70,10 @@ interface EventFormData {
 }
 
 const StyledTableCell = styled(TableCell)({
-  fontWeight: 500,
-  backgroundColor: "#f8f9fa",
-  color: "#004c91",
+  fontWeight: 600,
+  backgroundColor: "#e8f4f8",
+  color: "#002855",
+  fontSize: "0.9375rem",
 });
 
 const ActionButton = styled(IconButton)({
@@ -80,10 +85,16 @@ const ActionButton = styled(IconButton)({
 const EmptyState = styled(Box)({
   textAlign: "center",
   py: 6,
-  color: "#666",
+  color: "#595959",
 });
 
-export default function EventManagementPanel() {
+interface EventManagementPanelProps {
+  onCountChange?: (count: number) => void;
+}
+
+export default function EventManagementPanel({
+  onCountChange,
+}: EventManagementPanelProps) {
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,6 +105,7 @@ export default function EventManagementPanel() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState<string>("en");
+  const [primaryLanguage, setPrimaryLanguage] = useState<string>("en");
   const [formData, setFormData] = useState<EventFormData>({
     title: "",
     description: "",
@@ -112,6 +124,10 @@ export default function EventManagementPanel() {
     fetchEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    onCountChange?.(events.length);
+  }, [events, onCountChange]);
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -137,7 +153,8 @@ export default function EventManagementPanel() {
         response = await ApiService.get("/api/events");
       }
 
-      setEvents(Array.isArray(response) ? response : []);
+      const eventsArray = Array.isArray(response) ? response : [];
+      setEvents(eventsArray);
     } catch {
       setError("Failed to load events. Please try again.");
       setEvents([]);
@@ -249,17 +266,25 @@ export default function EventManagementPanel() {
   };
 
   const handleSaveEvent = async () => {
-    // Validate that at least English title and description are provided
+    // Get language name for display
+    const languageNames: Record<string, string> = {
+      en: "English",
+      ne: "Nepali",
+      new: "Newari",
+      mai: "Maithili",
+    };
+
+    // Validate that primary language title and description are provided
     if (
-      !formData.titleTranslations.en ||
-      !formData.descriptionTranslations.en ||
+      !formData.titleTranslations[primaryLanguage] ||
+      !formData.descriptionTranslations[primaryLanguage] ||
       !formData.startDate ||
       !formData.endDate ||
       !formData.location ||
       formData.maxAttendees === ""
     ) {
       setError(
-        "Please fill in all required fields, including English title and description"
+        `Please fill in all required fields, including ${languageNames[primaryLanguage]} title and description`
       );
       return;
     }
@@ -268,6 +293,34 @@ export default function EventManagementPanel() {
     setError(null);
 
     try {
+      // Auto-populate empty translations with primary language content
+      const primaryTitle = formData.titleTranslations[primaryLanguage];
+      const primaryDescription =
+        formData.descriptionTranslations[primaryLanguage];
+      const primaryAltText =
+        formData.altTextTranslations[primaryLanguage] || "";
+
+      const titleTranslations = {
+        en: formData.titleTranslations.en || primaryTitle,
+        ne: formData.titleTranslations.ne || primaryTitle,
+        new: formData.titleTranslations.new || primaryTitle,
+        mai: formData.titleTranslations.mai || primaryTitle,
+      };
+
+      const descriptionTranslations = {
+        en: formData.descriptionTranslations.en || primaryDescription,
+        ne: formData.descriptionTranslations.ne || primaryDescription,
+        new: formData.descriptionTranslations.new || primaryDescription,
+        mai: formData.descriptionTranslations.mai || primaryDescription,
+      };
+
+      const altTextTranslations = {
+        en: formData.altTextTranslations.en || primaryAltText,
+        ne: formData.altTextTranslations.ne || primaryAltText,
+        new: formData.altTextTranslations.new || primaryAltText,
+        mai: formData.altTextTranslations.mai || primaryAltText,
+      };
+
       // Convert date strings to ISO 8601 format with time
       const startDateTime = new Date(formData.startDate);
       startDateTime.setHours(9, 0, 0, 0); // Default 9 AM
@@ -276,14 +329,12 @@ export default function EventManagementPanel() {
       endDateTime.setHours(17, 0, 0, 0); // Default 5 PM
 
       const eventData = {
-        title: formData.titleTranslations.en,
-        description: formData.descriptionTranslations.en,
-        altText: formData.altTextTranslations.en || "",
-        titleTranslations: JSON.stringify(formData.titleTranslations),
-        descriptionTranslations: JSON.stringify(
-          formData.descriptionTranslations
-        ),
-        altTextTranslations: JSON.stringify(formData.altTextTranslations),
+        title: titleTranslations.en,
+        description: descriptionTranslations.en,
+        altText: altTextTranslations.en,
+        titleTranslations: JSON.stringify(titleTranslations),
+        descriptionTranslations: JSON.stringify(descriptionTranslations),
+        altTextTranslations: JSON.stringify(altTextTranslations),
         startDate: startDateTime.toISOString(),
         endDate: endDateTime.toISOString(),
         location: formData.location,
@@ -298,13 +349,13 @@ export default function EventManagementPanel() {
           eventData
         );
         setSuccess(
-          `Event "${formData.titleTranslations.en}" updated successfully`
+          `Event "${formData.titleTranslations[primaryLanguage]}" updated successfully`
         );
       } else {
         // Create new event
         await ApiService.postWithAuth("/api/admin/events", eventData);
         setSuccess(
-          `Event "${formData.titleTranslations.en}" created successfully`
+          `Event "${formData.titleTranslations[primaryLanguage]}" created successfully`
         );
       }
 
@@ -362,7 +413,13 @@ export default function EventManagementPanel() {
   return (
     <Box>
       {error && (
-        <Alert severity='error' sx={{ mb: 3 }} onClose={() => setError(null)}>
+        <Alert
+          severity='error'
+          sx={{ mb: 3 }}
+          onClose={() => setError(null)}
+          role='alert'
+          aria-live='assertive'
+        >
           {error}
         </Alert>
       )}
@@ -372,6 +429,8 @@ export default function EventManagementPanel() {
           severity='success'
           sx={{ mb: 3 }}
           onClose={() => setSuccess(null)}
+          role='status'
+          aria-live='polite'
         >
           {success}
         </Alert>
@@ -382,10 +441,15 @@ export default function EventManagementPanel() {
           variant='contained'
           startIcon={<AddIcon />}
           onClick={() => handleOpenDialog()}
+          aria-label='Add new event'
           sx={{
-            backgroundColor: "#004c91",
+            backgroundColor: "#002855",
             "&:hover": {
-              backgroundColor: "#003a6b",
+              backgroundColor: "#001a3d",
+            },
+            "&:focus": {
+              outline: "3px solid #4a90e2",
+              outlineOffset: "2px",
             },
           }}
         >
@@ -394,8 +458,15 @@ export default function EventManagementPanel() {
       </Box>
 
       {loading && events.length === 0 ? (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", py: 8 }}
+          role='status'
+          aria-live='polite'
+        >
           <CircularProgress aria-label='Loading events' />
+          <Typography sx={{ position: "absolute", left: "-10000px" }}>
+            Loading events, please wait...
+          </Typography>
         </Box>
       ) : events.length === 0 ? (
         <EmptyState>
@@ -408,16 +479,29 @@ export default function EventManagementPanel() {
         </EmptyState>
       ) : (
         <TableContainer component={Paper}>
-          <Table>
+          <Table aria-label='Events management table'>
+            <caption
+              style={{
+                position: "absolute",
+                left: "-10000px",
+                width: "1px",
+                height: "1px",
+                overflow: "hidden",
+              }}
+            >
+              Events management with {events.length} total events
+            </caption>
             <TableHead>
               <TableRow>
-                <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell>Start Date</StyledTableCell>
-                <StyledTableCell>End Date</StyledTableCell>
-                <StyledTableCell>Location</StyledTableCell>
-                <StyledTableCell>Capacity</StyledTableCell>
-                <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell align='center'>Actions</StyledTableCell>
+                <StyledTableCell scope='col'>Title</StyledTableCell>
+                <StyledTableCell scope='col'>Start Date</StyledTableCell>
+                <StyledTableCell scope='col'>End Date</StyledTableCell>
+                <StyledTableCell scope='col'>Location</StyledTableCell>
+                <StyledTableCell scope='col'>Capacity</StyledTableCell>
+                <StyledTableCell scope='col'>Status</StyledTableCell>
+                <StyledTableCell scope='col' align='center'>
+                  Actions
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -516,32 +600,77 @@ export default function EventManagementPanel() {
         onClose={handleCloseDialog}
         maxWidth='md'
         fullWidth
+        aria-labelledby='event-dialog-title'
+        aria-describedby='event-dialog-description'
       >
-        <DialogTitle sx={{ color: "#004c91", fontWeight: 600 }}>
+        <DialogTitle
+          id='event-dialog-title'
+          sx={{ color: "#002855", fontWeight: 600 }}
+        >
           {selectedEvent ? "Edit Event" : "Add New Event"}
         </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
+          <Typography
+            id='event-dialog-description'
+            sx={{ mb: 2, color: "#595959" }}
+          >
+            {selectedEvent
+              ? "Edit event details. Select your primary language and fill in the required fields. Other languages will be auto-filled."
+              : "Create a new event. Select your primary language and fill in the required fields. Other languages will be auto-filled with the same content."}
+          </Typography>
           <Stack spacing={2.5}>
+            {/* Primary Language Selector */}
+            <FormControl fullWidth>
+              <InputLabel id='primary-language-label'>
+                Primary Language *
+              </InputLabel>
+              <Select
+                labelId='primary-language-label'
+                id='primary-language-select'
+                value={primaryLanguage}
+                label='Primary Language *'
+                onChange={(e) => setPrimaryLanguage(e.target.value)}
+                sx={{
+                  "&:focus": {
+                    outline: "3px solid #4a90e2",
+                    outlineOffset: "2px",
+                  },
+                }}
+              >
+                <MenuItem value='en'>English</MenuItem>
+                <MenuItem value='ne'>नेपाली (Nepali)</MenuItem>
+                <MenuItem value='new'>नेवारी (Newari)</MenuItem>
+                <MenuItem value='mai'>मैथिली (Maithili)</MenuItem>
+              </Select>
+            </FormControl>
             {/* Image Upload Section */}
             <Box
               sx={{
-                border: "2px dashed #004c91",
+                border: "2px dashed #002855",
                 borderRadius: 1,
                 p: 2,
                 textAlign: "center",
                 cursor: "pointer",
                 transition: "all 0.3s",
                 "&:hover": {
-                  backgroundColor: "rgba(0, 76, 145, 0.05)",
+                  backgroundColor: "rgba(0, 40, 85, 0.05)",
+                },
+                "&:focus-within": {
+                  outline: "3px solid #4a90e2",
+                  outlineOffset: "2px",
                 },
               }}
               component='label'
+              role='button'
+              tabIndex={0}
+              aria-label='Upload event image'
             >
               <input
                 type='file'
                 accept='image/*'
                 hidden
                 onChange={handleImageUpload}
+                aria-label='Select event image file'
               />
               <Stack spacing={1} alignItems='center'>
                 <CloudUploadIcon sx={{ fontSize: 32, color: "#004c91" }} />
@@ -583,22 +712,37 @@ export default function EventManagementPanel() {
             <Tabs
               value={currentLanguage}
               onChange={(_e, newValue) => setCurrentLanguage(newValue)}
+              aria-label='Select language for event details'
               sx={{
                 borderBottom: 1,
                 borderColor: "divider",
                 mb: 2,
               }}
             >
-              <Tab label='English' value='en' />
-              <Tab label='नेपाली' value='ne' />
-              <Tab label='नेवारी' value='new' />
-              <Tab label='मैथिली' value='mai' />
+              <Tab
+                label='English'
+                value='en'
+                aria-label='English language tab'
+              />
+              <Tab label='नेपाली' value='ne' aria-label='Nepali language tab' />
+              <Tab
+                label='नेवारी'
+                value='new'
+                aria-label='Newari language tab'
+              />
+              <Tab
+                label='मैथिली'
+                value='mai'
+                aria-label='Maithili language tab'
+              />
             </Tabs>
 
             {/* Language-Specific Fields */}
             <TextField
               fullWidth
-              label={`Event Title (${currentLanguage.toUpperCase()})`}
+              label={`Event Title (${currentLanguage.toUpperCase()})${
+                currentLanguage === primaryLanguage ? " *" : ""
+              }`}
               value={formData.titleTranslations[currentLanguage] || ""}
               onChange={(e) =>
                 setFormData({
@@ -609,8 +753,18 @@ export default function EventManagementPanel() {
                   },
                 })
               }
-              required
-              inputProps={{ maxLength: 200 }}
+              required={currentLanguage === primaryLanguage}
+              inputProps={{
+                maxLength: 200,
+                "aria-required":
+                  currentLanguage === primaryLanguage ? "true" : "false",
+                "aria-label": `Event title in ${currentLanguage.toUpperCase()}`,
+              }}
+              helperText={
+                currentLanguage === primaryLanguage
+                  ? "Required - Maximum 200 characters"
+                  : `Optional - If empty, will use ${primaryLanguage.toUpperCase()} content - Maximum 200 characters`
+              }
             />
             <TextField
               fullWidth
@@ -695,10 +849,15 @@ export default function EventManagementPanel() {
           <Button
             onClick={handleSaveEvent}
             variant='contained'
+            aria-label={selectedEvent ? "Update event" : "Create event"}
             sx={{
-              backgroundColor: "#004c91",
+              backgroundColor: "#002855",
               "&:hover": {
-                backgroundColor: "#003a6b",
+                backgroundColor: "#001a3d",
+              },
+              "&:focus": {
+                outline: "3px solid #4a90e2",
+                outlineOffset: "2px",
               },
             }}
             disabled={loading}
@@ -712,12 +871,17 @@ export default function EventManagementPanel() {
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
+        aria-labelledby='delete-dialog-title'
+        aria-describedby='delete-dialog-description'
       >
-        <DialogTitle sx={{ color: "#d32f2f", fontWeight: 600 }}>
+        <DialogTitle
+          id='delete-dialog-title'
+          sx={{ color: "#b71c1c", fontWeight: 600 }}
+        >
           Delete Event?
         </DialogTitle>
         <DialogContent sx={{ pt: 2 }}>
-          <Typography>
+          <Typography id='delete-dialog-description'>
             Are you sure you want to delete{" "}
             <strong>{selectedEvent?.title}</strong>? This action cannot be
             undone.
