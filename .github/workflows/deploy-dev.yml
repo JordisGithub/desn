@@ -1,0 +1,227 @@
+name: Deploy to Dev (dev.desnepal.org)
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test -- --run
+
+      - name: Build frontend
+        env:
+          VITE_API_BASE_URL: "https://dev.desnepal.org"
+        run: npm run build
+
+      - name: Build backend
+        working-directory: ./backend
+        run: mvn clean package -DskipTests
+
+      - name: Package deployment
+        run: |
+          mkdir -p deployment
+          cp -r dist deployment/frontend
+          mkdir -p deployment/backend
+          cp backend/target/*.jar deployment/backend/app-dev.jar
+          tar -czf deployment-dev.tar.gz deployment/
+
+      - name: Check server connectivity
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Dev Environment Health Check ==="
+            echo "Hostname: $(hostname)"
+            echo "Uptime: $(uptime -p)"
+            echo "Current SSH sessions: $(who | wc -l)"
+            echo "Load average: $(uptime | awk -F'load average:' '{print $2}')"
+            echo "Memory usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+            echo "Disk usage: $(df -h / | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')"
+            echo "===================================="
+
+      - name: Deploy to dev server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "deployment-dev.tar.gz"
+          target: "/home/ubuntu/"
+          timeout: 60s
+          command_timeout: 15m
+
+      - name: Execute deployment on dev server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 15m
+          script: |
+            echo "=== Starting Dev Deployment ==="
+            echo "Time: $(date)"
+            cd /home/ubuntu
+            tar -xzf deployment-dev.tar.gz
+
+            # Deploy frontend to dev directory
+            echo "Cleaning old dev frontend files..."
+            sudo rm -rf /var/www/desnepal-dev/assets
+            sudo rm -f /var/www/desnepal-dev/index.html /var/www/desnepal-dev/*.js /var/www/desnepal-dev/*.css
+
+            # Create dev directory if it doesn't exist
+            sudo mkdir -p /var/www/desnepal-dev
+
+            echo "Deploying new dev frontend files..."
+            sudo cp -r deployment/frontend/* /var/www/desnepal-dev/
+            echo "✅ Dev Frontend deployed (old assets cleaned)"
+
+            # Restart nginx to clear cache
+            sudo systemctl restart nginx
+            echo "✅ Nginx restarted (Dev cache cleared)"
+
+            # Deploy backend to dev location
+            mkdir -p ~/desn-app/backend-dev
+            cp deployment/backend/app-dev.jar ~/desn-app/backend-dev/
+            echo "✅ Dev Backend deployed"
+
+            # Update systemd service for dev backend (runs on port 8081)
+            sudo tee /etc/systemd/system/desn-backend-dev.service > /dev/null <<EOF
+            [Unit]
+            Description=DESN Backend Service - Dev Environment
+            After=network.target postgresql.service
+
+            [Service]
+            Type=simple
+            User=ubuntu
+            WorkingDirectory=/home/ubuntu/desn-app/backend-dev
+            Environment="JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+            Environment="SERVER_PORT=8081"
+            ExecStart=/usr/bin/java \$JAVA_OPTS -jar /home/ubuntu/desn-app/backend-dev/app-dev.jar
+            Restart=always
+            RestartSec=10
+            Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn_dev"
+            Environment="SPRING_DATASOURCE_USERNAME=desn_user"
+            Environment="SPRING_DATASOURCE_PASSWORD=desn2025"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_BATCH_SIZE=20"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_INSERTS=true"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_UPDATES=true"
+            Environment="SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=5"
+            Environment="SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=2"
+            Environment="SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=20000"
+            StandardOutput=journal
+            StandardError=journal
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            echo "✅ Dev service configuration updated"
+
+            # Reload systemd and restart dev backend service
+            sudo systemctl daemon-reload
+            sudo systemctl enable desn-backend-dev
+            sudo systemctl restart desn-backend-dev
+            echo "✅ Dev Backend restarted"
+
+            # Clean up
+            rm -rf deployment deployment-dev.tar.gz
+
+            # Verify deployment
+            sleep 5
+            if sudo systemctl is-active --quiet desn-backend-dev; then
+              echo "✅ Dev Deployment successful!"
+            else
+              echo "❌ Dev Backend failed to start"
+              echo "Last 20 lines of dev backend logs:"
+              sudo journalctl -u desn-backend-dev -n 20 --no-pager
+              exit 1
+            fi
+
+            echo "=== Dev Deployment Complete ==="
+            echo "Dev Backend status: $(sudo systemctl is-active desn-backend-dev)"
+            echo "Dev Backend port: 8081"
+            echo "===================================="
+
+      - name: Post-deployment health check
+        if: success()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Dev Environment Health Check ==="
+            echo "Dev Backend status: $(sudo systemctl is-active desn-backend-dev)"
+            echo "Dev Backend port check: $(sudo netstat -tlnp | grep :8081 || echo 'Port 8081 not listening')"
+            echo "Production Backend status: $(sudo systemctl is-active desn-backend)"
+            echo "Nginx status: $(sudo systemctl is-active nginx)"
+            echo "========================================"
+
+      - name: Cleanup on failure
+        if: failure()
+        uses: appleboy/ssh-action@master
+        continue-on-error: true
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Dev Deployment Failed - Cleanup ==="
+            rm -f /home/ubuntu/deployment-dev.tar.gz
+            rm -rf /home/ubuntu/deployment
+            echo "========================================"
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "## 🎉 Dev Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 Dev Website: https://dev.desnepal.org" >> $GITHUB_STEP_SUMMARY
+          echo "🔧 Dev API: https://dev.desnepal.org/api" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changes Deployed to Dev" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Time: $(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Server Status" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Dev Backend: Running on port 8081" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Nginx: Active" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Dev Database: desn_dev" >> $GITHUB_STEP_SUMMARY
+
+      - name: Deployment failure summary
+        if: failure()
+        run: |
+          echo "## ❌ Dev Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The dev deployment encountered errors. Please check the logs above." >> $GITHUB_STEP_SUMMARY

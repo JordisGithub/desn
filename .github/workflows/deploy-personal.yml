@@ -35,7 +35,7 @@ jobs:
 
       - name: Build frontend
         env:
-          VITE_API_BASE_URL: "http://98.81.50.37"
+          VITE_API_BASE_URL: "https://desnepal.org"
         run: npm run build
 
       - name: Build backend
@@ -222,8 +222,8 @@ jobs:
         run: |
           echo "## 🎉 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🌐 Website: http://98.81.50.37" >> $GITHUB_STEP_SUMMARY
-          echo "🔧 API: http://98.81.50.37/api" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 Website: https://desnepal.org" >> $GITHUB_STEP_SUMMARY
+          echo "🔧 API: https://desnepal.org/api" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Changes Deployed" >> $GITHUB_STEP_SUMMARY
           echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
