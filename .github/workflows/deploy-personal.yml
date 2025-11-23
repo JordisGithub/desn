@@ -108,29 +108,49 @@ jobs:
             cp deployment/backend/app.jar ~/desn-app/backend/
             echo "✅ Backend deployed"
 
-            # Update systemd service with correct database credentials
+            # Ensure swap is configured (idempotent)
+            if [ ! -f /swapfile ]; then
+              echo "Creating swap..."
+              sudo fallocate -l 1G /swapfile
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+              echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+              echo "✅ Swap created"
+            else
+              echo "✅ Swap already configured"
+            fi
+
+            # Update systemd service with optimized JVM settings
             sudo tee /etc/systemd/system/desn-backend.service > /dev/null <<EOF
             [Unit]
-            Description=DESN Backend Service
+            Description=DESN Backend Service (Optimized)
             After=network.target postgresql.service
 
             [Service]
             Type=simple
             User=ubuntu
             WorkingDirectory=/home/ubuntu/desn-app/backend
-            ExecStart=/usr/bin/java -jar /home/ubuntu/desn-app/backend/app.jar
+            Environment="JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xlog:gc*:file=/home/ubuntu/desn-app/backend/gc.log:time,uptime,level,tags"
+            ExecStart=/usr/bin/java \$JAVA_OPTS -jar /home/ubuntu/desn-app/backend/app.jar
             Restart=always
             RestartSec=10
             Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn"
             Environment="SPRING_DATASOURCE_USERNAME=desn_user"
             Environment="SPRING_DATASOURCE_PASSWORD=desn2025"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_BATCH_SIZE=20"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_INSERTS=true"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_UPDATES=true"
+            Environment="SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=5"
+            Environment="SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=2"
+            Environment="SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=20000"
             StandardOutput=journal
             StandardError=journal
 
             [Install]
             WantedBy=multi-user.target
             EOF
-            echo "✅ Service configuration updated"
+            echo "✅ Service configuration updated with JVM optimization"
 
             # Reload systemd and restart backend service
             sudo systemctl daemon-reload

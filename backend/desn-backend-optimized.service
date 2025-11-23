@@ -1,0 +1,34 @@
+[Unit]
+Description=DESN Backend Service (Optimized)
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/desn-app/backend
+# Limit JVM heap to prevent OOM
+Environment="JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xlog:gc*:file=/home/ubuntu/desn-app/backend/gc.log:time,uptime,level,tags"
+ExecStart=/usr/bin/java $JAVA_OPTS -jar /home/ubuntu/desn-app/backend/app.jar
+Restart=always
+RestartSec=10
+
+# Database credentials
+Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn"
+Environment="SPRING_DATASOURCE_USERNAME=desn_user"
+Environment="SPRING_DATASOURCE_PASSWORD=desn2025"
+
+# JPA optimizations
+Environment="SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_BATCH_SIZE=20"
+Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_INSERTS=true"
+Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_UPDATES=true"
+
+# Connection pool tuning for small instance
+Environment="SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=5"
+Environment="SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=2"
+Environment="SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=20000"
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
