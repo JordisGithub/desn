@@ -221,7 +221,7 @@ const DonateNowButton = styled("a")(({ theme }) => ({
 }));
 
 const DonationSection: React.FC = () => {
-  const { t } = useTranslation("get_involved");
+  const { t } = useTranslation(["get_involved", "footer"]);
 
   const benefits = [
     t("get_involved.donation.benefits.impact"),
@@ -281,7 +281,7 @@ const DonationSection: React.FC = () => {
             aria-label={t("get_involved.donation.paypal_aria_label")}
           >
             <PaymentIcon sx={{ fontSize: 20 }} />
-            {t("footer_donate_button")}
+            {t("footer:footer_donate_button")}
           </DonateNowButton>
         </TextContent>
       </IntroContainer>
