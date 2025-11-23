@@ -96,10 +96,10 @@ jobs:
             echo "Cleaning old dev frontend files..."
             sudo rm -rf /var/www/desnepal-dev/assets
             sudo rm -f /var/www/desnepal-dev/index.html /var/www/desnepal-dev/*.js /var/www/desnepal-dev/*.css
-            
+
             # Create dev directory if it doesn't exist
             sudo mkdir -p /var/www/desnepal-dev
-            
+
             echo "Deploying new dev frontend files..."
             sudo cp -r deployment/frontend/* /var/www/desnepal-dev/
             echo "✅ Dev Frontend deployed (old assets cleaned)"

@@ -5,6 +5,7 @@ This guide explains how to set up and use the dev.desnepal.org development envir
 ## Architecture
 
 ### Production (desnepal.org)
+
 - **Branch:** `master`
 - **Frontend:** `/var/www/desnepal/`
 - **Backend:** Port 8080, systemd service `desn-backend`
@@ -12,6 +13,7 @@ This guide explains how to set up and use the dev.desnepal.org development envir
 - **Deployment:** Auto-deploys on push to `master` branch
 
 ### Development (dev.desnepal.org)
+
 - **Branch:** `develop`
 - **Frontend:** `/var/www/desnepal-dev/`
 - **Backend:** Port 8081, systemd service `desn-backend-dev`
@@ -32,6 +34,7 @@ TTL: 300
 ```
 
 Wait 5-10 minutes for DNS propagation. Verify with:
+
 ```bash
 nslookup dev.desnepal.org
 ```
@@ -99,6 +102,7 @@ git push origin develop
 ```
 
 GitHub Actions will automatically:
+
 1. Run tests
 2. Build frontend and backend
 3. Deploy to `/var/www/desnepal-dev/`
@@ -110,10 +114,11 @@ GitHub Actions will automatically:
 1. Visit: http://dev.desnepal.org (or https:// if SSL is configured)
 2. Test your changes
 3. Check logs if needed:
+
    ```bash
    # Dev backend logs
    sudo journalctl -u desn-backend-dev -f
-   
+
    # Nginx logs
    sudo tail -f /var/log/nginx/error.log
    sudo tail -f /var/log/nginx/access.log
@@ -237,11 +242,13 @@ sudo systemctl status desn-backend
 ## GitHub Actions Workflows
 
 ### Production Deployment
+
 - **File:** `.github/workflows/deploy-personal.yml`
 - **Trigger:** Push to `master` branch
 - **Deploys to:** desnepal.org
 
 ### Dev Deployment
+
 - **File:** `.github/workflows/deploy-dev.yml`
 - **Trigger:** Push to `develop` branch
 - **Deploys to:** dev.desnepal.org
@@ -249,11 +256,13 @@ sudo systemctl status desn-backend
 ## Environment Variables
 
 ### Production Backend (Port 8080)
+
 - `SERVER_PORT`: 8080 (default)
 - `SPRING_DATASOURCE_URL`: jdbc:postgresql://localhost:5432/desn
 - `VITE_API_BASE_URL`: http://98.81.50.37
 
 ### Dev Backend (Port 8081)
+
 - `SERVER_PORT`: 8081
 - `SPRING_DATASOURCE_URL`: jdbc:postgresql://localhost:5432/desn_dev
 - `VITE_API_BASE_URL`: http://dev.desnepal.org
@@ -268,7 +277,7 @@ sudo systemctl status desn-backend
 
 ## Quick Reference
 
-| Environment | Domain | Branch | Frontend Path | Backend Port | Database |
-|-------------|--------|--------|--------------|--------------|----------|
-| Production | desnepal.org | master | /var/www/desnepal | 8080 | desn |
-| Development | dev.desnepal.org | develop | /var/www/desnepal-dev | 8081 | desn_dev |
+| Environment | Domain           | Branch  | Frontend Path         | Backend Port | Database |
+| ----------- | ---------------- | ------- | --------------------- | ------------ | -------- |
+| Production  | desnepal.org     | master  | /var/www/desnepal     | 8080         | desn     |
+| Development | dev.desnepal.org | develop | /var/www/desnepal-dev | 8081         | desn_dev |
