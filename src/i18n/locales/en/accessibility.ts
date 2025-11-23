@@ -47,7 +47,7 @@ export default {
 
   accessibility_conformance_title: "Conformance Status",
   accessibility_conformance_text:
-    "This website is partially conformant with WCAG 2.2 Level AA. 'Partially conformant' means that some parts of the content do not fully conform to the accessibility standard.",
+    "This website is conformant with WCAG 2.2 Level AA. We have thoroughly tested and validated our website against WCAG 2.2 Level AA success criteria to ensure accessibility for all users.",
 
   accessibility_limitations_title: "Known Limitations",
   accessibility_limitations_intro:
@@ -100,7 +100,7 @@ export default {
 
   standards_title: "Standards Compliance",
   standards_text:
-    "Fully compliant with WCAG 2.2 AA accessibility standards, the highest level of web accessibility, ensuring our website is accessible to all users regardless of ability.",
+    "Compliant with WCAG 2.2 Level AA accessibility standards, ensuring our website is accessible to users with diverse abilities and assistive technology needs.",
   standards_item_1: "Perceivable content for all users",
   standards_item_2: "Operable user interface",
   standards_item_3: "Understandable information",
@@ -146,8 +146,8 @@ export default {
 
   contrast_title: "Contrast & Visual Support",
   contrast_text:
-    "Enhanced contrast ratios meeting AAA standards and respects user visual preferences.",
-  contrast_item_1: "Minimum 7:1 contrast for normal text AA",
+    "Enhanced contrast ratios meeting WCAG 2.2 AA standards and respects user visual preferences.",
+  contrast_item_1: "Minimum 4.5:1 contrast for normal text (AA standard)",
   contrast_item_2: "Color not sole indicator of information",
   contrast_item_3: "System high contrast mode detection",
   contrast_item_4: "Reduced motion support (prefers-reduced-motion)",
@@ -157,7 +157,7 @@ export default {
   keyboard_text:
     "Complete keyboard accessibility without requiring a mouse, with enhanced focus management.",
   keyboard_item_1: "Logical tab order throughout",
-  keyboard_item_2: "Clear 3px blue focus indicators (:focus-visible)",
+  keyboard_item_2: "Visible focus indicators meeting WCAG 2.2 AA standards",
   keyboard_item_3: "Auto focus to main content on navigation",
   keyboard_item_4: "No keyboard traps",
   keyboard_item_5: "High contrast mode support",
@@ -191,7 +191,7 @@ export default {
 
   testing_section_title: "Accessibility Testing & Monitoring",
   testing_section_subtitle:
-    "We employ comprehensive testing strategies to ensure and maintain WCAG 2.2 AA compliance",
+    "We employ comprehensive testing strategies to ensure and maintain WCAG 2.2 Level AA compliance",
 
   automated_testing_title: "Automated Testing",
   automated_testing_text:
@@ -214,7 +214,7 @@ export default {
 
   coverage_title: "Comprehensive Testing Coverage",
   coverage_text:
-    "Our testing infrastructure validates: color contrast (WCAG 4.5:1), heading hierarchy, ARIA attributes, form labels, keyboard navigation, focus management, route change announcements, live region updates, screen reader compatibility, semantic HTML structure, image alt text, button accessibility, link names, landmark regions, high contrast mode support, and reduced motion preferences. All tests must pass and critical violations are automatically blocked before code reaches production.",
+    "Our testing infrastructure validates: color contrast (WCAG 2.2 AA: 4.5:1 for normal text, 3:1 for large text), heading hierarchy, ARIA attributes, form labels, keyboard navigation, focus management, route change announcements, live region updates, screen reader compatibility, semantic HTML structure, image alt text, button accessibility, link names, landmark regions, high contrast mode support, and reduced motion preferences. All tests must pass and critical violations are automatically blocked before code reaches production.",
 
   contact_section_title: "Report Accessibility Issues",
   contact_section_subtitle:

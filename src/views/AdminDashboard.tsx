@@ -132,17 +132,42 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Use ref to track if data has been fetched to prevent duplicate calls
+  const isFetchingRef = React.useRef(false);
+  const hasFetchedRef = React.useRef(false);
+  const isMountedRef = React.useRef(true);
+
   useEffect(() => {
     if (!isAdmin) {
       navigate("/");
       return;
     }
 
-    fetchApplications();
+    // Skip if already fetching or already fetched
+    if (isFetchingRef.current || hasFetchedRef.current) {
+      return;
+    }
+
+    // Mark as fetching
+    isFetchingRef.current = true;
+
+    fetchApplications().finally(() => {
+      if (isMountedRef.current) {
+        isFetchingRef.current = false;
+        hasFetchedRef.current = true;
+      }
+    });
+
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMountedRef.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin, navigate]);
 
   const fetchApplications = async () => {
+    if (!isMountedRef.current) return;
+
     setLoading(true);
     setError(null);
 
@@ -156,16 +181,18 @@ const AdminDashboard: React.FC = () => {
       // They will return 404 until the backend API is created
       const [membershipRes, volunteerRes] = await Promise.all([
         ApiService.get("/api/forms/membership", { headers }).catch((err) => {
-          if (err?.status !== 429)
+          if (err?.status !== 404)
             console.error("Error fetching membership:", err);
           return null;
         }),
         ApiService.get("/api/forms/volunteer", { headers }).catch((err) => {
-          if (err?.status !== 429)
+          if (err?.status !== 404)
             console.error("Error fetching volunteer:", err);
           return null;
         }),
       ]);
+
+      if (!isMountedRef.current) return;
 
       if (membershipRes) {
         try {
@@ -193,9 +220,10 @@ const AdminDashboard: React.FC = () => {
           const eventsResponse = await EventService.getAllEventsRegistrations(
             token
           );
+          if (!isMountedRef.current) return;
           // EventService now returns data directly, not wrapped in {success, events}
           setEventsData(Array.isArray(eventsResponse) ? eventsResponse : []);
-        } catch (err) {
+        } catch (err: any) {
           console.error("Error fetching events data:", err);
         }
 
@@ -204,11 +232,12 @@ const AdminDashboard: React.FC = () => {
           const eventsListResponse = await ApiService.get("/api/events", {
             headers: { Authorization: `Bearer ${token}` },
           });
+          if (!isMountedRef.current) return;
           setEventsCount(
             Array.isArray(eventsListResponse) ? eventsListResponse.length : 0
           );
         } catch (err: any) {
-          if (err?.status !== 429) {
+          if (err?.status !== 404) {
             console.error("Error fetching events count:", err);
           }
         }
@@ -218,12 +247,13 @@ const AdminDashboard: React.FC = () => {
           const resourcesResponse = await ApiService.get<{ resources: any[] }>(
             "/api/resources"
           );
+          if (!isMountedRef.current) return;
           const resourcesArray = resourcesResponse?.resources || [];
           setResourcesCount(
             Array.isArray(resourcesArray) ? resourcesArray.length : 0
           );
         } catch (err: any) {
-          if (err?.status !== 429) {
+          if (err?.status !== 404) {
             console.error("Error fetching resources count:", err);
           }
         }
@@ -238,7 +268,9 @@ const AdminDashboard: React.FC = () => {
       // Don't show error to user if endpoints don't exist yet
       // setError("An error occurred while fetching applications");
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 

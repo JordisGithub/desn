@@ -136,28 +136,29 @@ export default function EventManagementPanel({
     try {
       const token = user?.token;
 
-      // Try admin endpoint first if user has token, fall back to public endpoint
-      let response;
-      if (token) {
-        try {
-          response = await ApiService.get("/api/admin/events", {
+      // Use public endpoint with optional auth header
+      const response = token
+        ? await ApiService.get("/api/events", {
             headers: { Authorization: `Bearer ${token}` },
-          });
-        } catch {
-          // Fall back to public endpoint if admin endpoint fails
-          response = await ApiService.get("/api/events", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-        }
-      } else {
-        response = await ApiService.get("/api/events");
-      }
+          })
+        : await ApiService.get("/api/events");
 
       const eventsArray = Array.isArray(response) ? response : [];
       setEvents(eventsArray);
-    } catch {
-      setError("Failed to load events. Please try again.");
+    } catch (err: unknown) {
+      let errorMessage = "Failed to load events. Please try again.";
+
+      if (err && typeof err === "object" && "status" in err) {
+        const apiError = err as { status?: number };
+        if (apiError.status === 0) {
+          errorMessage =
+            "Network error. Please check your connection and ensure the backend server is running.";
+        }
+      }
+
+      setError(errorMessage);
       setEvents([]);
+      console.error("Error fetching events:", err);
     } finally {
       setLoading(false);
     }
@@ -289,6 +290,26 @@ export default function EventManagementPanel({
       return;
     }
 
+    // Validate dates
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+    if (endDate < startDate) {
+      setError("End date must be after start date");
+      return;
+    }
+
+    // Validate max attendees
+    if (formData.maxAttendees < 1) {
+      setError("Maximum attendees must be at least 1");
+      return;
+    }
+
+    // Check authentication
+    if (!user?.token) {
+      setError("You must be logged in to create or edit events");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -345,7 +366,7 @@ export default function EventManagementPanel({
       if (selectedEvent) {
         // Edit existing event
         await ApiService.putWithAuth(
-          `/api/admin/events/${selectedEvent.id}`,
+          `/api/events/${selectedEvent.id}`,
           eventData
         );
         setSuccess(
@@ -353,7 +374,7 @@ export default function EventManagementPanel({
         );
       } else {
         // Create new event
-        await ApiService.postWithAuth("/api/admin/events", eventData);
+        await ApiService.postWithAuth("/api/events", eventData);
         setSuccess(
           `Event "${formData.titleTranslations[primaryLanguage]}" created successfully`
         );
@@ -364,8 +385,34 @@ export default function EventManagementPanel({
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
-    } catch {
-      setError("Failed to save event. Please try again.");
+    } catch (err: unknown) {
+      // Enhanced error handling with specific messages
+      let errorMessage = "Failed to save event. Please try again.";
+
+      if (err && typeof err === "object" && "status" in err) {
+        const apiError = err as {
+          status?: number;
+          data?: { message?: string };
+        };
+
+        if (apiError.status === 401 || apiError.status === 403) {
+          errorMessage =
+            "You do not have permission to perform this action. Please log in as an admin.";
+        } else if (apiError.status === 404) {
+          errorMessage = "Event not found. It may have been deleted.";
+        } else if (apiError.status === 400) {
+          errorMessage =
+            apiError.data?.message ||
+            "Invalid event data. Please check all fields.";
+        } else if (apiError.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        } else if (apiError.status === 0) {
+          errorMessage = "Network error. Please check your connection.";
+        }
+      }
+
+      setError(errorMessage);
+      console.error("Error saving event:", err);
     } finally {
       setLoading(false);
     }
@@ -382,8 +429,15 @@ export default function EventManagementPanel({
     setLoading(true);
     setError(null);
 
+    // Check authentication
+    if (!user?.token) {
+      setError("You must be logged in to delete events");
+      setDeleteDialogOpen(false);
+      return;
+    }
+
     try {
-      await ApiService.deleteWithAuth(`/api/admin/events/${selectedEvent.id}`);
+      await ApiService.deleteWithAuth(`/api/events/${selectedEvent.id}`);
 
       setSuccess(`Event "${selectedEvent.title}" deleted successfully`);
       setDeleteDialogOpen(false);
@@ -392,8 +446,24 @@ export default function EventManagementPanel({
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
-    } catch {
-      setError("Failed to delete event. Please try again.");
+    } catch (err: unknown) {
+      let errorMessage = "Failed to delete event. Please try again.";
+
+      if (err && typeof err === "object" && "status" in err) {
+        const apiError = err as { status?: number };
+
+        if (apiError.status === 401 || apiError.status === 403) {
+          errorMessage = "You do not have permission to delete this event.";
+        } else if (apiError.status === 404) {
+          errorMessage = "Event not found. It may have already been deleted.";
+        } else if (apiError.status === 0) {
+          errorMessage = "Network error. Please check your connection.";
+        }
+      }
+
+      setError(errorMessage);
+      setDeleteDialogOpen(false);
+      console.error("Error deleting event:", err);
     } finally {
       setLoading(false);
     }

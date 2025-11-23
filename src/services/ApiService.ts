@@ -19,6 +19,7 @@ interface ApiError extends Error {
 
 interface GetOptions {
   headers?: Record<string, string>;
+  signal?: AbortSignal; // Support request cancellation
 }
 
 async function request<T = unknown>(
@@ -30,6 +31,10 @@ async function request<T = unknown>(
   try {
     res = await fetch(url, options);
   } catch (error) {
+    // Re-throw abort errors as-is so they can be handled properly
+    if (error instanceof Error && error.name === "AbortError") {
+      throw error;
+    }
     // Network error (e.g., connection refused, CORS issue)
     const err: ApiError = new Error("Network request failed");
     err.status = 0;
@@ -80,17 +85,22 @@ async function get<T = unknown>(
   endpoint: string,
   options: GetOptions = {}
 ): Promise<T> {
-  // GETs can now accept optional headers for authenticated requests
-  const headers = options.headers || {};
-  return request<T>(endpoint, { method: "GET", headers });
+  // GETs can now accept optional headers and abort signal for authenticated requests
+  const { headers = {}, signal } = options;
+  return request<T>(endpoint, { method: "GET", headers, signal });
 }
 
 async function postWithAuth<T = unknown>(
   endpoint: string,
   data?: unknown
 ): Promise<T> {
-  // The backend proxy should attach the server-side API key. Client must not include it.
-  const opts = buildJsonOptions("POST", data);
+  // Get JWT token from localStorage
+  const user = localStorage.getItem("user");
+  const token = user ? JSON.parse(user).token : null;
+  const headers: Record<string, string> = token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+  const opts = buildJsonOptions("POST", data, headers);
   return request<T>(endpoint, opts);
 }
 
@@ -98,7 +108,12 @@ async function putWithAuth<T = unknown>(
   endpoint: string,
   data?: unknown
 ): Promise<T> {
-  const opts = buildJsonOptions("PUT", data);
+  const user = localStorage.getItem("user");
+  const token = user ? JSON.parse(user).token : null;
+  const headers: Record<string, string> = token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+  const opts = buildJsonOptions("PUT", data, headers);
   return request<T>(endpoint, opts);
 }
 
@@ -106,8 +121,14 @@ async function deleteWithAuth<T = unknown>(
   endpoint: string,
   data?: unknown
 ): Promise<T> {
+  // Get JWT token from localStorage
+  const user = localStorage.getItem("user");
+  const token = user ? JSON.parse(user).token : null;
+  const headers: Record<string, string> = token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
   // Some APIs accept a body on DELETE; include it if provided
-  const opts = buildJsonOptions("DELETE", data);
+  const opts = buildJsonOptions("DELETE", data, headers);
   return request<T>(endpoint, opts);
 }
 
