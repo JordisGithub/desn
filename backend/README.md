@@ -69,9 +69,21 @@ APP_BASE_URL=http://localhost:5173
 - `UPSTREAM_BASE_URL` - base URL of the upstream API (e.g. `https://api.example.com`). Defaults to `http://localhost:4000` when not set.
 - `SERVER_API_KEY` - the secret API key that will be sent in the `X-API-Key` header for POST/PUT/DELETE requests.
 - `DATABASE_URL` - database connection URL (defaults to H2 file-based database)
-- `CORS_ALLOWED_ORIGINS` - allowed CORS origins (defaults to `http://localhost:5173,http://localhost:5174`)
+- `APP_CORS_ALLOWED_ORIGINS` - allowed CORS origins (defaults to `http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org`)
+- `APP_CORS_MAX_AGE` - preflight cache duration in seconds (defaults to `86400` = 24h)
 - `JWT_SECRET` - secret key for JWT token generation
 - See `.env.example` for all available options
+
+#### Production CORS Tightening
+
+Set **only** the canonical domains in production to reduce attack surface:
+
+```bash
+APP_CORS_ALLOWED_ORIGINS=https://desnepal.org,https://www.desnepal.org
+APP_CORS_MAX_AGE=86400
+```
+
+No need for credentials (cookies) since JWT tokens are sent via `Authorization` header; this is already enforced in the CORS configuration.
 
 ## Setting Up Khalti Payment Integration
 
