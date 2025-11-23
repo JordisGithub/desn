@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { Container, Typography, Box, Button, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../contexts/AuthContext";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 import EventRegistrationModal from "./EventRegistrationModal";
 import EventService from "../../services/EventService";
 import {
@@ -438,11 +441,75 @@ const ClearFilterButton = styled(Button)({
   },
 });
 
+const RegisteredButton = styled(Button)({
+  textTransform: "none",
+  fontWeight: 700,
+  fontSize: "1rem",
+  padding: "12px 24px",
+  backgroundColor: "#00a77f",
+  color: "#ffffff",
+  border: "3px solid #00a77f",
+  borderRadius: "12px",
+  minHeight: "52px",
+  cursor: "default",
+  boxShadow: "0 4px 12px rgba(0, 167, 127, 0.3)",
+  "&:hover": {
+    backgroundColor: "#00a77f",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+});
+
+const CancelButton = styled(Button)({
+  textTransform: "none",
+  fontWeight: 700,
+  fontSize: "0.95rem",
+  padding: "12px 20px",
+  backgroundColor: "#ffffff",
+  color: "#c62828",
+  border: "3px solid #c62828",
+  borderRadius: "12px",
+  minHeight: "52px",
+  boxShadow: "0 4px 12px rgba(198, 40, 40, 0.2)",
+  transition:
+    "background-color 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s cubic-bezier(0.4,0,0.2,1)",
+  "&:hover": {
+    backgroundColor: "#8b0000",
+    color: "#ffffff",
+    borderColor: "#ff6b6b",
+    transform: "translateY(-3px)",
+    boxShadow: "0 12px 36px rgba(139, 0, 0, 0.5)",
+  },
+  "&:focus": {
+    outline: "3px solid #004c91",
+    outlineOffset: "2px",
+    backgroundColor: "#8b0000",
+    color: "#ffffff",
+    borderColor: "#ff6b6b",
+  },
+  "&:disabled": {
+    backgroundColor: "#e0e0e0",
+    color: "#9e9e9e",
+    borderColor: "#9e9e9e",
+    cursor: "not-allowed",
+    boxShadow: "none",
+  },
+  "& .MuiTouchRipple-root": {
+    display: "none",
+  },
+});
+
 interface EventStatus {
   isFull: boolean;
   currentRegistrations: number;
   maxCapacity: number;
   availableSpots: number;
+  isRegistered?: boolean;
 }
 
 interface EventData {
@@ -462,6 +529,7 @@ interface EventData {
 
 export default function UpcomingEvents() {
   const { t, i18n } = useTranslation();
+  const { user, isAuthenticated } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date(2025, 10, 1)); // November 2025
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
@@ -472,6 +540,9 @@ export default function UpcomingEvents() {
   const [events, setEvents] = useState<EventData[]>([]);
   // focusedDate no longer needed with full tab sequence; removed
   const [announcement, setAnnouncement] = useState<string>("");
+  const [cancellingEventId, setCancellingEventId] = useState<number | null>(
+    null
+  );
 
   // Fetch events from backend
   useEffect(() => {
@@ -519,11 +590,32 @@ export default function UpcomingEvents() {
       for (const event of events) {
         try {
           const response = await EventService.getEventById(event.eventId);
+
+          // Check if user is registered for this event
+          let isRegistered = false;
+          if (isAuthenticated && user?.username && user?.token) {
+            try {
+              const registrationStatus =
+                await EventService.getRegistrationStatus(
+                  event.eventId,
+                  user.username,
+                  user.token
+                );
+              isRegistered = registrationStatus.isRegistered;
+            } catch (error) {
+              console.error(
+                `Error checking registration status for event ${event.eventId}:`,
+                error
+              );
+            }
+          }
+
           statuses[event.eventId] = {
             isFull: response.currentAttendees >= response.maxAttendees,
             currentRegistrations: response.currentAttendees,
             maxCapacity: response.maxAttendees,
             availableSpots: response.maxAttendees - response.currentAttendees,
+            isRegistered,
           };
         } catch (error) {
           console.error(
@@ -537,7 +629,40 @@ export default function UpcomingEvents() {
     };
 
     fetchEventStatuses();
-  }, [events]);
+  }, [events, isAuthenticated, user]);
+
+  const handleCancelRegistration = async (eventId: number) => {
+    if (!user?.username || !user?.token) return;
+
+    setCancellingEventId(eventId);
+
+    try {
+      await EventService.cancelRegistration(eventId, user.username, user.token);
+
+      // Refresh event status after cancellation
+      const response = await EventService.getEventById(eventId);
+      const registrationStatus = await EventService.getRegistrationStatus(
+        eventId,
+        user.username,
+        user.token
+      );
+
+      setEventStatuses((prev) => ({
+        ...prev,
+        [eventId]: {
+          isFull: response.currentAttendees >= response.maxAttendees,
+          currentRegistrations: response.currentAttendees,
+          maxCapacity: response.maxAttendees,
+          availableSpots: response.maxAttendees - response.currentAttendees,
+          isRegistered: registrationStatus.isRegistered,
+        },
+      }));
+    } catch (error) {
+      console.error("Error cancelling registration:", error);
+    } finally {
+      setCancellingEventId(null);
+    }
+  };
 
   const handleRegisterClick = (event: EventData) => {
     setSelectedEvent(event);
@@ -552,11 +677,17 @@ export default function UpcomingEvents() {
   const handleRegistrationSuccess = () => {
     // Refresh event statuses after successful registration
     const refreshEventStatus = async () => {
-      if (selectedEvent) {
+      if (selectedEvent && user?.username && user?.token) {
         try {
           const response = await EventService.getEventById(
             selectedEvent.eventId
           );
+          const registrationStatus = await EventService.getRegistrationStatus(
+            selectedEvent.eventId,
+            user.username,
+            user.token
+          );
+
           setEventStatuses((prev) => ({
             ...prev,
             [selectedEvent.eventId]: {
@@ -564,6 +695,7 @@ export default function UpcomingEvents() {
               currentRegistrations: response.currentAttendees,
               maxCapacity: response.maxAttendees,
               availableSpots: response.maxAttendees - response.currentAttendees,
+              isRegistered: registrationStatus.isRegistered,
             },
           }));
         } catch (error) {
@@ -1175,30 +1307,64 @@ export default function UpcomingEvents() {
                           </MetaItem>
                         </EventMeta>
 
-                        <RegisterButton
-                          onKeyDown={handleRegisterButtonKeyDown}
-                          className='register-button-custom'
-                          endIcon={
-                            !isFull ? (
-                              <ArrowForwardIcon aria-hidden='true' />
-                            ) : undefined
-                          }
-                          onClick={() => handleRegisterClick(event)}
-                          disabled={isFull}
-                          aria-label={
-                            isFull
-                              ? `${t("event_full")} - ${translateEventTitle(
-                                  event.title,
-                                  t
-                                )}`
-                              : `${t("register_now")} - ${translateEventTitle(
-                                  event.title,
-                                  t
-                                )} - ${event.date} ${event.time}`
-                          }
-                        >
-                          {isFull ? t("event_full") : t("register_now")}
-                        </RegisterButton>
+                        {status?.isRegistered ? (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "60px",
+                              alignItems: "center",
+                            }}
+                          >
+                            <RegisteredButton
+                              startIcon={<CheckCircleIcon aria-hidden='true' />}
+                              disabled
+                              aria-label={`${t(
+                                "registered"
+                              )} - ${translateEventTitle(event.title, t)}`}
+                            >
+                              {t("registered")}
+                            </RegisteredButton>
+                            <CancelButton
+                              startIcon={<CancelIcon aria-hidden='true' />}
+                              onClick={() =>
+                                handleCancelRegistration(event.eventId)
+                              }
+                              disabled={cancellingEventId === event.eventId}
+                              aria-label={`${t(
+                                "cancel_registration"
+                              )} - ${translateEventTitle(event.title, t)}`}
+                            >
+                              {cancellingEventId === event.eventId
+                                ? t("cancel") + "..."
+                                : t("cancel_registration")}
+                            </CancelButton>
+                          </Box>
+                        ) : (
+                          <RegisterButton
+                            onKeyDown={handleRegisterButtonKeyDown}
+                            className='register-button-custom'
+                            endIcon={
+                              !isFull ? (
+                                <ArrowForwardIcon aria-hidden='true' />
+                              ) : undefined
+                            }
+                            onClick={() => handleRegisterClick(event)}
+                            disabled={isFull}
+                            aria-label={
+                              isFull
+                                ? `${t("event_full")} - ${translateEventTitle(
+                                    event.title,
+                                    t
+                                  )}`
+                                : `${t("register_now")} - ${translateEventTitle(
+                                    event.title,
+                                    t
+                                  )} - ${event.date} ${event.time}`
+                            }
+                          >
+                            {isFull ? t("event_full") : t("register_now")}
+                          </RegisterButton>
+                        )}
                       </EventCard>
                     );
                   })
@@ -1261,20 +1427,54 @@ export default function UpcomingEvents() {
                         </MetaItem>
                       </EventMeta>
 
-                      <RegisterButton
-                        onKeyDown={handleRegisterButtonKeyDown}
-                        className='register-button-custom'
-                        endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
-                        onClick={() => handleRegisterClick(event)}
-                        disabled={isFull}
-                        sx={{
-                          backgroundColor: isFull ? "#e0e0e0" : "#004c91",
-                          color: isFull ? "#9e9e9e" : "white",
-                          cursor: isFull ? "not-allowed" : "pointer",
-                        }}
-                      >
-                        {isFull ? t("event_full") : t("register_now")}
-                      </RegisterButton>
+                      {status?.isRegistered ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            gap: "60px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <RegisteredButton
+                            startIcon={<CheckCircleIcon aria-hidden='true' />}
+                            disabled
+                            aria-label={`${t(
+                              "registered"
+                            )} - ${translateEventTitle(event.title, t)}`}
+                          >
+                            {t("registered")}
+                          </RegisteredButton>
+                          <CancelButton
+                            startIcon={<CancelIcon aria-hidden='true' />}
+                            onClick={() =>
+                              handleCancelRegistration(event.eventId)
+                            }
+                            disabled={cancellingEventId === event.eventId}
+                            aria-label={`${t(
+                              "cancel_registration"
+                            )} - ${translateEventTitle(event.title, t)}`}
+                          >
+                            {cancellingEventId === event.eventId
+                              ? t("cancel") + "..."
+                              : t("cancel_registration")}
+                          </CancelButton>
+                        </Box>
+                      ) : (
+                        <RegisterButton
+                          onKeyDown={handleRegisterButtonKeyDown}
+                          className='register-button-custom'
+                          endIcon={!isFull ? <ArrowForwardIcon /> : undefined}
+                          onClick={() => handleRegisterClick(event)}
+                          disabled={isFull}
+                          sx={{
+                            backgroundColor: isFull ? "#e0e0e0" : "#004c91",
+                            color: isFull ? "#9e9e9e" : "white",
+                            cursor: isFull ? "not-allowed" : "pointer",
+                          }}
+                        >
+                          {isFull ? t("event_full") : t("register_now")}
+                        </RegisterButton>
+                      )}
                     </EventCard>
                   );
                 })}
