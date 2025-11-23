@@ -472,6 +472,7 @@ sudo nginx -t && sudo systemctl reload nginx
   bash scripts/verify-redirects.sh
   ```
 - Optional periodic health check:
+
   ```bash
   curl -fsS https://desnepal.org/actuator/health || echo "health fail"
   curl -fsS https://desnepal.org/api/resources | head -c 200
