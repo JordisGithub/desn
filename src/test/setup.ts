@@ -14,6 +14,12 @@ afterEach(() => {
   cleanup();
 });
 
+// Ensure a window object exists (defensive for non-jsdom accidental runs)
+if (typeof window === "undefined") {
+  // @ts-expect-error assigning for test environment safeguard
+  globalThis.window = globalThis as unknown as Window;
+}
+
 // Mock window.matchMedia
 Object.defineProperty(window, "matchMedia", {
   writable: true,
