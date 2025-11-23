@@ -3,15 +3,14 @@ set -euo pipefail
 
 # post-merge-cutover.sh
 # End-to-end production cutover steps after merging domain migration to master.
-# Performs: pull master, build frontend/backend, deploy nginx config, issue certs if missing,
-# verify redirects & headers.
+# Performs: build frontend/backend, deploy nginx config, issue certs if missing,
+# verify security headers (no legacy domain handling).
 
 SERVER_IP="98.81.50.37"
 SSH_USER="ubuntu"
 SSH_KEY="${HOME}/.ssh/desn-app-key.pem"
 CANONICAL_DOMAIN="desnepal.org"
 CANONICAL_WWW="www.desnepal.org"
-LEGACY_DOMAIN="desnepal.com"
 REMOTE_APP_ROOT="/home/ubuntu/desn-app"
 REMOTE_FRONTEND="/var/www/desnepal"
 NGINX_CONF_LOCAL="nginx-recommended.conf"
@@ -50,7 +49,6 @@ remote_steps() {
 set -euo pipefail
 CANONICAL_DOMAIN="desnepal.org"
 CANONICAL_WWW="www.desnepal.org"
-LEGACY_DOMAIN="desnepal.com"
 REMOTE_APP_ROOT="/home/ubuntu/desn-app"
 REMOTE_FRONTEND="/var/www/desnepal"
 NGINX_CONF_REMOTE="/etc/nginx/sites-available/desn.conf"
@@ -71,13 +69,9 @@ if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
 fi
 sudo nginx -t && sudo systemctl reload nginx
 
-# Issue certs if absent
+# Issue certs for canonical domain only if absent
 if [ ! -d "/etc/letsencrypt/live/${CANONICAL_DOMAIN}" ]; then
   sudo certbot --nginx -d "$CANONICAL_DOMAIN" -d "$CANONICAL_WWW" --agree-tos -m admin@${CANONICAL_DOMAIN} --redirect --no-eff-email || true
-  sudo nginx -t && sudo systemctl reload nginx
-fi
-if [ ! -d "/etc/letsencrypt/live/${LEGACY_DOMAIN}" ]; then
-  sudo certbot --nginx -d "$LEGACY_DOMAIN" -d "www.${LEGACY_DOMAIN}" --agree-tos -m admin@${CANONICAL_DOMAIN} --redirect --no-eff-email || true
   sudo nginx -t && sudo systemctl reload nginx
 fi
 
@@ -109,7 +103,6 @@ sudo find "$REMOTE_FRONTEND" -type f -exec chmod 644 {} +
 sudo find "$REMOTE_FRONTEND" -type d -exec chmod 755 {} +
 
 curl -I https://desnepal.org || true
-curl -I https://desnepal.com || true
 REMOTE
 }
 

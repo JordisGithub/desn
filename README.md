@@ -5,7 +5,6 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 ## 🌐 Live Application
 
 - **Canonical Domain**: https://desnepal.org
-- **Legacy Domain Redirect**: https://desnepal.com → https://desnepal.org
 - **API Base**: https://desnepal.org/api
 - **Health Check**: https://desnepal.org/actuator/health
 
@@ -395,7 +394,6 @@ curl http://15.206.210.71/api/resources
 - [x] SSH key-based authentication
 - [x] DNS A records desnepal.org / www.desnepal.org → 98.81.50.37
 - [ ] SSL certificate (Let’s Encrypt) for desnepal.org + www
-- [ ] Legacy desnepal.com permanent 301 redirect in Nginx
 
 ### SSL Certificates (Initial Issuance & Renewal)
 
@@ -413,9 +411,6 @@ sudo bash issue-certs.sh
 curl -I https://desnepal.org
 curl -I https://www.desnepal.org
 
-# Verify legacy redirects (should 301 to https://desnepal.org)
-curl -I https://desnepal.com
-curl -I https://www.desnepal.com
 
 # Inspect cert expiry (Not Before / Not After)
 openssl x509 -in /etc/letsencrypt/live/desnepal.org/fullchain.pem -noout -dates
@@ -429,13 +424,12 @@ sudo certbot renew --dry-run
 
 If renewal succeeds you will see messages indicating simulated success; no changes to live certs are made.
 
-### Redirect Verification & Hardening
+### Security Header Verification
 
-Post-cert issuance ensure the following:
+Post-cert issuance ensure the following on the canonical domain:
 
 - HTTP `desnepal.org` -> HTTPS `https://desnepal.org` (301)
-- `desnepal.com` + `www.desnepal.com` -> `https://desnepal.org` (single 301 hop)
-- HSTS header present on `https://desnepal.org` responses: `Strict-Transport-Security` includes `max-age` and `includeSubDomains`
+- HSTS header present: `Strict-Transport-Security` includes `max-age` and `includeSubDomains`
 - Security headers: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`
 
 Sample combined header check:
@@ -450,11 +444,11 @@ If any are missing compare with `nginx-recommended.conf` and reload:
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-### Domain Migration Notes
+### Domain Notes
 
-- All public links should now reference `https://desnepal.org`.
-- Configure Nginx to 301 redirect `desnepal.com` and `www.desnepal.com` to `https://desnepal.org`.
-- After issuing new cert, submit updated sitemap to search engines.
+- All public links should reference `https://desnepal.org`.
+- Legacy domain `desnepal.com` is no longer under management/access; focus on canonical .org.
+- After issuing cert, submit sitemap to search engines.
 - Monitor 404s and traffic for 2 weeks after cutover.
 
 ### SEO & Monitoring Additions

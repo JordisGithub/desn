@@ -10,11 +10,9 @@ set -euo pipefail
 #   3. Run: sudo bash issue-certs.sh
 #   4. Verify: curl -I https://desnepal.org
 # Domains covered:
-#   - desnepal.org, www.desnepal.org (canonical)
-#   - desnepal.com, www.desnepal.com (legacy redirect)
+#   - desnepal.org, www.desnepal.org (canonical only)
 
 CANONICAL_DOMAINS=(desnepal.org www.desnepal.org)
-LEGACY_DOMAINS=(desnepal.com www.desnepal.com)
 EMAIL="admin@desnepal.org"
 NGINX_CONF="/etc/nginx/sites-available/desn.conf"
 WEBROOT="/var/www/desnepal"  # used for HTTP-01 fallback if needed
@@ -60,16 +58,15 @@ ensure_nginx() {
 
 test_dns() {
   local fail=0
-  for d in "${CANONICAL_DOMAINS[@]}" "${LEGACY_DOMAINS[@]}"; do
-    local ip
-    ip=$(dig +short A "$d" | head -n1 || true)
+  for d in "${CANONICAL_DOMAINS[@]}"; do
+    local ip=$(dig +short A "$d" | head -n1 || true)
     if [[ -z "$ip" ]]; then
       err "No A record resolved for $d"; fail=1; continue
     fi
     log "DNS $d -> $ip"
   done
   if [[ $fail -eq 1 ]]; then
-    err "Fix DNS before issuing certs."; exit 1; fi
+    err "Fix DNS before issuing canonical certs."; exit 1; fi
 }
 
 issue_group_cert() {
@@ -116,11 +113,10 @@ main() {
   systemctl reload nginx || true
 
   issue_group_cert "canonical" "${CANONICAL_DOMAINS[@]}"
-  issue_group_cert "legacy" "${LEGACY_DOMAINS[@]}"
 
   post_checks
   log "Certificate issuance flow complete."
-  log "Next: verify 301 redirects from desnepal.com to https://desnepal.org, then proceed with deployment."
+  log "Next: deploy application assets and verify security headers on https://desnepal.org."
 }
 
 main "$@"
