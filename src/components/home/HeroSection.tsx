@@ -54,7 +54,7 @@ const HeroContent = styled(Box)(({ theme }) => ({
 
 // Massive, bold headline
 const HeroHeading = styled(Typography)(({ theme }) => ({
-  color: "#f6d469",
+  color: "#ffffff",
   fontSize: "4.5rem", // Desktop: 72px
   fontWeight: 900,
   lineHeight: 1.1,
@@ -87,7 +87,7 @@ const HeroHeading = styled(Typography)(({ theme }) => ({
 
 // Sub-headline with strong readability
 const HeroSubHeading = styled(Typography)(({ theme }) => ({
-  color: "#f6d469",
+  color: "#ffffff",
   fontSize: "2.25rem", // Desktop: 36px
   fontWeight: 700,
   lineHeight: 1.3,
