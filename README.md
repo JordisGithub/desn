@@ -396,6 +396,7 @@ curl http://15.206.210.71/api/resources
 - [x] DNS A records desnepal.org / www.desnepal.org → 98.81.50.37
 - [ ] SSL certificate (Let’s Encrypt) for desnepal.org + www
 - [ ] Legacy desnepal.com permanent 301 redirect in Nginx
+
 ### Domain Migration Notes
 
 - All public links should now reference `https://desnepal.org`.

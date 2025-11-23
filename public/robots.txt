@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /owner/
+Disallow: /member/
+Disallow: /login
+Disallow: /register
+
+Allow: /
+
+Sitemap: https://desnepal.org/sitemap.xml
+Host: https://desnepal.org
