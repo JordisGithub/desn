@@ -135,6 +135,7 @@ const AdminDashboard: React.FC = () => {
   // Use ref to track if data has been fetched to prevent duplicate calls
   const isFetchingRef = React.useRef(false);
   const hasFetchedRef = React.useRef(false);
+  const isMountedRef = React.useRef(true);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -151,13 +152,22 @@ const AdminDashboard: React.FC = () => {
     isFetchingRef.current = true;
 
     fetchApplications().finally(() => {
-      isFetchingRef.current = false;
-      hasFetchedRef.current = true;
+      if (isMountedRef.current) {
+        isFetchingRef.current = false;
+        hasFetchedRef.current = true;
+      }
     });
+
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMountedRef.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin, navigate]);
 
   const fetchApplications = async () => {
+    if (!isMountedRef.current) return;
+
     setLoading(true);
     setError(null);
 
@@ -181,6 +191,8 @@ const AdminDashboard: React.FC = () => {
           return null;
         }),
       ]);
+
+      if (!isMountedRef.current) return;
 
       if (membershipRes) {
         try {
@@ -208,6 +220,7 @@ const AdminDashboard: React.FC = () => {
           const eventsResponse = await EventService.getAllEventsRegistrations(
             token
           );
+          if (!isMountedRef.current) return;
           // EventService now returns data directly, not wrapped in {success, events}
           setEventsData(Array.isArray(eventsResponse) ? eventsResponse : []);
         } catch (err: any) {
@@ -219,6 +232,7 @@ const AdminDashboard: React.FC = () => {
           const eventsListResponse = await ApiService.get("/api/events", {
             headers: { Authorization: `Bearer ${token}` },
           });
+          if (!isMountedRef.current) return;
           setEventsCount(
             Array.isArray(eventsListResponse) ? eventsListResponse.length : 0
           );
@@ -233,6 +247,7 @@ const AdminDashboard: React.FC = () => {
           const resourcesResponse = await ApiService.get<{ resources: any[] }>(
             "/api/resources"
           );
+          if (!isMountedRef.current) return;
           const resourcesArray = resourcesResponse?.resources || [];
           setResourcesCount(
             Array.isArray(resourcesArray) ? resourcesArray.length : 0
@@ -253,7 +268,9 @@ const AdminDashboard: React.FC = () => {
       // Don't show error to user if endpoints don't exist yet
       // setError("An error occurred while fetching applications");
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
