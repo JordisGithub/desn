@@ -396,6 +396,60 @@ curl http://15.206.210.71/api/resources
 - [x] DNS A records desnepal.org / www.desnepal.org → 98.81.50.37
 - [ ] SSL certificate (Let’s Encrypt) for desnepal.org + www
 - [ ] Legacy desnepal.com permanent 301 redirect in Nginx
+
+### SSL Certificates (Initial Issuance & Renewal)
+
+Use the dedicated script for first-time issuance (idempotent) before full deployment, then rely on the integrated certificate logic inside `deploy-production.sh` for subsequent runs.
+
+```bash
+# Upload cert issuance script
+scp -i ~/.ssh/desn-app-key.pem scripts/issue-certs.sh ubuntu@98.81.50.37:~/
+
+# SSH into server and run (must be root or use sudo)
+ssh -i ~/.ssh/desn-app-key.pem ubuntu@98.81.50.37
+sudo bash issue-certs.sh
+
+# Verify canonical domain certificate
+curl -I https://desnepal.org
+curl -I https://www.desnepal.org
+
+# Verify legacy redirects (should 301 to https://desnepal.org)
+curl -I https://desnepal.com
+curl -I https://www.desnepal.com
+
+# Inspect cert expiry (Not Before / Not After)
+openssl x509 -in /etc/letsencrypt/live/desnepal.org/fullchain.pem -noout -dates
+```
+
+After initial issuance the automated renew cron (twice daily) managed by Certbot handles future renewals. You can manually test renewal dry-run:
+
+```bash
+sudo certbot renew --dry-run
+```
+
+If renewal succeeds you will see messages indicating simulated success; no changes to live certs are made.
+
+### Redirect Verification & Hardening
+
+Post-cert issuance ensure the following:
+
+- HTTP `desnepal.org` -> HTTPS `https://desnepal.org` (301)
+- `desnepal.com` + `www.desnepal.com` -> `https://desnepal.org` (single 301 hop)
+- HSTS header present on `https://desnepal.org` responses: `Strict-Transport-Security` includes `max-age` and `includeSubDomains`
+- Security headers: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`
+
+Sample combined header check:
+
+```bash
+curl -s -D - https://desnepal.org -o /dev/null | grep -Ei 'strict|frame|content-type|referrer|permissions'
+```
+
+If any are missing compare with `nginx-recommended.conf` and reload:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
 ### Domain Migration Notes
 
 - All public links should now reference `https://desnepal.org`.
