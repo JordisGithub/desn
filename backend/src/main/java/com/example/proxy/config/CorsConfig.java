@@ -1,5 +1,7 @@
 package com.example.proxy.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,9 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org,https://dev.desnepal.org}")
+    private static final Logger log = LoggerFactory.getLogger(CorsConfig.class);
+
+    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org}")
     private String allowedOrigins;
 
     @Value("${app.cors.max-age:86400}") // default 24h preflight cache
@@ -29,6 +33,7 @@ public class CorsConfig {
             .filter(s -> !s.isEmpty())
             .toList();
         configuration.setAllowedOrigins(origins);
+        log.info("CORS allowed origins configured: {}", origins);
         
         // Allow specific methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

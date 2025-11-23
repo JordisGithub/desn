@@ -5,7 +5,6 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 ## 🌐 Live Application
 
 - **Canonical Domain**: https://desnepal.org
-- **Legacy Domain Redirect**: https://desnepal.com → https://desnepal.org
 - **API Base**: https://desnepal.org/api
 - **Health Check**: https://desnepal.org/actuator/health
 
@@ -395,13 +394,61 @@ curl http://15.206.210.71/api/resources
 - [x] SSH key-based authentication
 - [x] DNS A records desnepal.org / www.desnepal.org → 98.81.50.37
 - [ ] SSL certificate (Let’s Encrypt) for desnepal.org + www
-- [ ] Legacy desnepal.com permanent 301 redirect in Nginx
 
-### Domain Migration Notes
+### SSL Certificates (Initial Issuance & Renewal)
 
-- All public links should now reference `https://desnepal.org`.
-- Configure Nginx to 301 redirect `desnepal.com` and `www.desnepal.com` to `https://desnepal.org`.
-- After issuing new cert, submit updated sitemap to search engines.
+Use the dedicated script for first-time issuance (idempotent) before full deployment, then rely on the integrated certificate logic inside `deploy-production.sh` for subsequent runs.
+
+```bash
+# Upload cert issuance script
+scp -i ~/.ssh/desn-app-key.pem scripts/issue-certs.sh ubuntu@98.81.50.37:~/
+
+# SSH into server and run (must be root or use sudo)
+ssh -i ~/.ssh/desn-app-key.pem ubuntu@98.81.50.37
+sudo bash issue-certs.sh
+
+# Verify canonical domain certificate
+curl -I https://desnepal.org
+curl -I https://www.desnepal.org
+
+
+# Inspect cert expiry (Not Before / Not After)
+openssl x509 -in /etc/letsencrypt/live/desnepal.org/fullchain.pem -noout -dates
+```
+
+After initial issuance the automated renew cron (twice daily) managed by Certbot handles future renewals. You can manually test renewal dry-run:
+
+```bash
+sudo certbot renew --dry-run
+```
+
+If renewal succeeds you will see messages indicating simulated success; no changes to live certs are made.
+
+### Security Header Verification
+
+Post-cert issuance ensure the following on the canonical domain:
+
+- HTTP `desnepal.org` -> HTTPS `https://desnepal.org` (301)
+- HSTS header present: `Strict-Transport-Security` includes `max-age` and `includeSubDomains`
+- Security headers: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`
+
+Sample combined header check:
+
+```bash
+curl -s -D - https://desnepal.org -o /dev/null | grep -Ei 'strict|frame|content-type|referrer|permissions'
+```
+
+If any are missing compare with `nginx-recommended.conf` and reload:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Domain Notes
+
+- All public links should reference `https://desnepal.org`.
+- Legacy domain `desnepal.com` is no longer under management/access; focus on canonical .org.
+- After issuing cert, submit sitemap to search engines.
 - Monitor 404s and traffic for 2 weeks after cutover.
 
 - [ ] Khalti credentials updated to production keys
