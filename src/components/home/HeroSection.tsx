@@ -54,13 +54,25 @@ const HeroContent = styled(Box)(({ theme }) => ({
 
 // Massive, bold headline
 const HeroHeading = styled(Typography)(({ theme }) => ({
-  color: "#ffffff",
+  color: "#f6d469",
   fontSize: "4.5rem", // Desktop: 72px
-  fontWeight: 800,
+  fontWeight: 900,
   lineHeight: 1.1,
-  letterSpacing: "-0.03em",
-  marginBottom: theme.spacing(3),
-  textShadow: "0px 4px 12px rgba(0, 0, 0, 0.5)",
+  letterSpacing: "-0.02em",
+  marginBottom: theme.spacing(2),
+  textShadow:
+    "0px 6px 20px rgba(0, 0, 0, 0.6), 0px 2px 8px rgba(0, 76, 145, 0.5)",
+  animation: "fadeInUp 0.8s ease-out",
+  "@keyframes fadeInUp": {
+    from: {
+      opacity: 0,
+      transform: "translateY(30px)",
+    },
+    to: {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  },
   [theme.breakpoints.down("lg")]: {
     fontSize: "3.5rem", // 56px
   },
@@ -75,22 +87,46 @@ const HeroHeading = styled(Typography)(({ theme }) => ({
 
 // Sub-headline with strong readability
 const HeroSubHeading = styled(Typography)(({ theme }) => ({
-  color: "#ffffff",
-  fontSize: "1.75rem", // Desktop: 28px
-  fontWeight: 600,
-  lineHeight: 1.5,
-  textShadow: "0px 3px 10px rgba(0, 0, 0, 0.6)",
-  letterSpacing: "0.01em",
+  color: "#f6d469",
+  fontSize: "2.25rem", // Desktop: 36px
+  fontWeight: 700,
+  lineHeight: 1.3,
+  textShadow:
+    "0px 4px 16px rgba(0, 0, 0, 0.7), 0px 2px 4px rgba(0, 76, 145, 0.5)",
+  letterSpacing: "-0.01em",
   maxWidth: "900px",
   margin: "0 auto",
-  marginBottom: theme.spacing(5),
+  marginBottom: theme.spacing(3),
+  animation: "fadeInUp 0.8s ease-out 0.2s both",
+  position: "relative",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    bottom: "-12px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "120px",
+    height: "4px",
+    background: "linear-gradient(90deg, transparent, #00a77f, transparent)",
+    borderRadius: "2px",
+  },
+  "@keyframes fadeInUp": {
+    from: {
+      opacity: 0,
+      transform: "translateY(30px)",
+    },
+    to: {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  },
   [theme.breakpoints.down("md")]: {
-    fontSize: "1.375rem", // 22px
-    marginBottom: theme.spacing(4),
+    fontSize: "1.75rem", // 28px
+    marginBottom: theme.spacing(3),
   },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.125rem", // 18px - mobile
-    marginBottom: theme.spacing(3),
+    fontSize: "1.375rem", // 22px - mobile
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -122,13 +158,43 @@ export default function HeroSection() {
     <>
       <HeroContainer as='section' id='hero' aria-labelledby='hero-heading'>
         <HeroContent>
-          {/* Massive Headline */}
+          {/* Main Headline - Organization Name */}
           <HeroHeading as='h1' id='hero-heading' variant='h1' tabIndex={-1}>
             {t("hero_heading")}
           </HeroHeading>
 
-          {/* Sub-Headline */}
-          <HeroSubHeading as='p'>{t("hero_description")}</HeroSubHeading>
+          {/* Sub-Headline - Mission Statement */}
+          <HeroSubHeading as='h2' variant='h2'>
+            {t("hero_subheading")}
+          </HeroSubHeading>
+
+          {/* Description */}
+          <Typography
+            sx={{
+              color: "#ffffff",
+              fontSize: "1.35rem",
+              fontWeight: 500,
+              lineHeight: 1.7,
+              textShadow: "0px 3px 12px rgba(0, 0, 0, 0.6)",
+              maxWidth: "800px",
+              margin: "0 auto",
+              marginTop: 5,
+              letterSpacing: "0.02em",
+              animation: "fadeInUp 0.8s ease-out 0.4s both",
+              "@keyframes fadeInUp": {
+                from: {
+                  opacity: 0,
+                  transform: "translateY(30px)",
+                },
+                to: {
+                  opacity: 1,
+                  transform: "translateY(0)",
+                },
+              },
+            }}
+          >
+            {t("hero_description")}
+          </Typography>
         </HeroContent>
       </HeroContainer>
     </>

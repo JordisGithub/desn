@@ -132,13 +132,28 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Use ref to track if data has been fetched to prevent duplicate calls
+  const isFetchingRef = React.useRef(false);
+  const hasFetchedRef = React.useRef(false);
+
   useEffect(() => {
     if (!isAdmin) {
       navigate("/");
       return;
     }
 
-    fetchApplications();
+    // Skip if already fetching or already fetched
+    if (isFetchingRef.current || hasFetchedRef.current) {
+      return;
+    }
+
+    // Mark as fetching
+    isFetchingRef.current = true;
+
+    fetchApplications().finally(() => {
+      isFetchingRef.current = false;
+      hasFetchedRef.current = true;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin, navigate]);
 
@@ -156,12 +171,12 @@ const AdminDashboard: React.FC = () => {
       // They will return 404 until the backend API is created
       const [membershipRes, volunteerRes] = await Promise.all([
         ApiService.get("/api/forms/membership", { headers }).catch((err) => {
-          if (err?.status !== 429)
+          if (err?.status !== 404)
             console.error("Error fetching membership:", err);
           return null;
         }),
         ApiService.get("/api/forms/volunteer", { headers }).catch((err) => {
-          if (err?.status !== 429)
+          if (err?.status !== 404)
             console.error("Error fetching volunteer:", err);
           return null;
         }),
@@ -195,7 +210,7 @@ const AdminDashboard: React.FC = () => {
           );
           // EventService now returns data directly, not wrapped in {success, events}
           setEventsData(Array.isArray(eventsResponse) ? eventsResponse : []);
-        } catch (err) {
+        } catch (err: any) {
           console.error("Error fetching events data:", err);
         }
 
@@ -208,7 +223,7 @@ const AdminDashboard: React.FC = () => {
             Array.isArray(eventsListResponse) ? eventsListResponse.length : 0
           );
         } catch (err: any) {
-          if (err?.status !== 429) {
+          if (err?.status !== 404) {
             console.error("Error fetching events count:", err);
           }
         }
@@ -223,7 +238,7 @@ const AdminDashboard: React.FC = () => {
             Array.isArray(resourcesArray) ? resourcesArray.length : 0
           );
         } catch (err: any) {
-          if (err?.status !== 429) {
+          if (err?.status !== 404) {
             console.error("Error fetching resources count:", err);
           }
         }
