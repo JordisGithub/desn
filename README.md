@@ -4,9 +4,10 @@ Website for Disabled Environment Service Nepal, a non-profit organization suppor
 
 ## 🌐 Live Application
 
-- **Production Website**: http://98.81.50.37
-- **Production API**: http://98.81.50.37/api
-- **Health Check**: http://98.81.50.37/actuator/health
+- **Canonical Domain**: https://desnepal.org
+- **Legacy Domain Redirect**: https://desnepal.com → https://desnepal.org
+- **API Base**: https://desnepal.org/api
+- **Health Check**: https://desnepal.org/actuator/health
 
 ## 🚀 Quick Start for New Developers
 
@@ -218,10 +219,10 @@ VITE_DEV_API_KEY=your_dev_key_here
 
 ```bash
 # Required: API base URL for production builds
-VITE_API_BASE_URL=https://desnepal.com
+VITE_API_BASE_URL=https://desnepal.org
 
 # Build command example:
-# VITE_API_BASE_URL=https://desnepal.com npm run build
+VITE_API_BASE_URL=https://desnepal.org npm run build
 ```
 
 ### Backend (Environment Variables)
@@ -384,7 +385,7 @@ curl http://15.206.210.71/actuator/health
 curl http://15.206.210.71/api/resources
 ```
 
-### Production Checklist
+### Production Checklist (Domain Migration Updated)
 
 - [x] PostgreSQL database configured and running
 - [x] JWT secret set to secure base64 value
@@ -392,7 +393,70 @@ curl http://15.206.210.71/api/resources
 - [x] Automated daily backups (2 AM UTC)
 - [x] Firewall configured (UFW)
 - [x] SSH key-based authentication
-- [ ] SSL certificate (pending domain setup)
+- [x] DNS A records desnepal.org / www.desnepal.org → 98.81.50.37
+- [ ] SSL certificate (Let’s Encrypt) for desnepal.org + www
+- [ ] Legacy desnepal.com permanent 301 redirect in Nginx
+
+### SSL Certificates (Initial Issuance & Renewal)
+
+Use the dedicated script for first-time issuance (idempotent) before full deployment, then rely on the integrated certificate logic inside `deploy-production.sh` for subsequent runs.
+
+```bash
+# Upload cert issuance script
+scp -i ~/.ssh/desn-app-key.pem scripts/issue-certs.sh ubuntu@98.81.50.37:~/
+
+# SSH into server and run (must be root or use sudo)
+ssh -i ~/.ssh/desn-app-key.pem ubuntu@98.81.50.37
+sudo bash issue-certs.sh
+
+# Verify canonical domain certificate
+curl -I https://desnepal.org
+curl -I https://www.desnepal.org
+
+# Verify legacy redirects (should 301 to https://desnepal.org)
+curl -I https://desnepal.com
+curl -I https://www.desnepal.com
+
+# Inspect cert expiry (Not Before / Not After)
+openssl x509 -in /etc/letsencrypt/live/desnepal.org/fullchain.pem -noout -dates
+```
+
+After initial issuance the automated renew cron (twice daily) managed by Certbot handles future renewals. You can manually test renewal dry-run:
+
+```bash
+sudo certbot renew --dry-run
+```
+
+If renewal succeeds you will see messages indicating simulated success; no changes to live certs are made.
+
+### Redirect Verification & Hardening
+
+Post-cert issuance ensure the following:
+
+- HTTP `desnepal.org` -> HTTPS `https://desnepal.org` (301)
+- `desnepal.com` + `www.desnepal.com` -> `https://desnepal.org` (single 301 hop)
+- HSTS header present on `https://desnepal.org` responses: `Strict-Transport-Security` includes `max-age` and `includeSubDomains`
+- Security headers: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`
+
+Sample combined header check:
+
+```bash
+curl -s -D - https://desnepal.org -o /dev/null | grep -Ei 'strict|frame|content-type|referrer|permissions'
+```
+
+If any are missing compare with `nginx-recommended.conf` and reload:
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Domain Migration Notes
+
+- All public links should now reference `https://desnepal.org`.
+- Configure Nginx to 301 redirect `desnepal.com` and `www.desnepal.com` to `https://desnepal.org`.
+- After issuing new cert, submit updated sitemap to search engines.
+- Monitor 404s and traffic for 2 weeks after cutover.
+
 - [ ] Khalti credentials updated to production keys
 - [ ] Default user passwords changed
 - [ ] Email notifications configured (currently disabled)

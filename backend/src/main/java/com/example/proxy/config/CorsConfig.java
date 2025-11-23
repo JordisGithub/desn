@@ -13,18 +13,21 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174}")
+    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org}")
     private String allowedOrigins;
 
-    @Value("${app.cors.max-age:3600}")
+    @Value("${app.cors.max-age:86400}") // default 24h preflight cache
     private Long maxAge;
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Parse allowed origins from comma-separated string
-        List<String> origins = Arrays.asList(allowedOrigins.split(","));
+        // Parse allowed origins from comma-separated string (trim whitespace)
+        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .toList();
         configuration.setAllowedOrigins(origins);
         
         // Allow specific methods
@@ -38,8 +41,14 @@ public class CorsConfig {
             "X-Requested-With"
         ));
         
-        // Allow credentials
-        configuration.setAllowCredentials(true);
+        // Credentials disabled (JWT via Authorization header is stateless)
+        configuration.setAllowCredentials(false);
+
+        // Expose headers that the frontend may need to read
+        configuration.setExposedHeaders(List.of(
+            "Authorization",
+            "Content-Type"
+        ));
         
         // Cache preflight response
         configuration.setMaxAge(maxAge);
