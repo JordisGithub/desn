@@ -63,6 +63,8 @@ export default {
   events_for_date: "लेल कार्यक्रम सभ",
   event_full: "कार्यक्रम भरल",
   register_now: "अभी पंजीकरण करी",
+  registered: "पंजीकृत",
+  cancel_registration: "पंजीकरण रद्द करी",
 
   // Dynamic Event Translations (fallback for backend events)
   event_disability_rights_title: "दिव्यांगता अधिकार जागरूकता कार्यशाला",

@@ -62,6 +62,8 @@ export default {
   events_for_date: "या लागि कार्यक्रमहरू",
   event_full: "कार्यक्रम भ्वातःगु",
   register_now: "नं दर्ता यानू",
+  registered: "दर्ता जुगु",
+  cancel_registration: "दर्ता रद्द यानू",
 
   // Dynamic Event Translations (fallback for backend events)
   event_disability_rights_title: "अशक्तता अधिकार जागरूकता कार्यशाला",

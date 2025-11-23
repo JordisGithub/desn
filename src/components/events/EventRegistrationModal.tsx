@@ -9,6 +9,7 @@ import {
   Box,
   Alert,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import EventService from "../../services/EventService";
 import LoginIcon from "@mui/icons-material/Login";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiBackdrop-root": {
@@ -41,9 +43,36 @@ const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
   color: "#002b52",
   textAlign: "center",
   paddingBottom: "1rem",
+  position: "relative",
+  paddingRight: theme.spacing(6),
   [theme.breakpoints.down("sm")]: {
     fontSize: "1.25rem",
-    padding: theme.spacing(1.5, 1, 0.75, 1),
+    padding: theme.spacing(1.5, 6, 0.75, 1),
+  },
+}));
+
+const CloseButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  right: theme.spacing(1),
+  top: theme.spacing(1),
+  color: "#002b52",
+  width: "44px",
+  height: "44px",
+  padding: "10px",
+  transition: "transform 0.2s ease-in-out, background-color 0.2s ease-in-out",
+  "&:hover": {
+    backgroundColor: "#e8eff7",
+    color: "#001f3a",
+    transform: "scale(1.15)",
+  },
+  "&:focus-visible": {
+    outline: "3px solid #002b52",
+    outlineOffset: "2px",
+    backgroundColor: "#e8eff7",
+    transform: "scale(1.15)",
+  },
+  "& .MuiSvgIcon-root": {
+    fontSize: "1.5rem",
   },
 }));
 
@@ -95,6 +124,11 @@ const ActionButton = styled(Button)(({ theme }) => ({
     fontSize: "0.95rem",
     minWidth: "120px",
   },
+  "&.MuiButton-root": {
+    "& .MuiTouchRipple-root": {
+      display: "none",
+    },
+  },
 }));
 
 const PrimaryButton = styled(ActionButton)({
@@ -107,8 +141,10 @@ const PrimaryButton = styled(ActionButton)({
     border: "2px solid #002b52",
   },
   "&:focus-visible": {
-    backgroundColor: "#001f3a",
-    outline: "3px solid #ffffff",
+    backgroundColor: "#ffffff",
+    color: "#002b52",
+    border: "2px solid #002b52",
+    outline: "3px solid #002b52",
     outlineOffset: "2px",
   },
   "&:active": {
@@ -338,18 +374,21 @@ export default function EventRegistrationModal({
             <SecondaryButton
               onClick={onClose}
               aria-label='Cancel and close registration dialog'
+              disableRipple
             >
               {t("cancel")}
             </SecondaryButton>
             <SecondaryButton
               onClick={handleRegisterRedirect}
               aria-label='Create new account to register for events'
+              disableRipple
             >
               {t("create_account")}
             </SecondaryButton>
             <PrimaryButton
               onClick={handleLoginRedirect}
               aria-label='Login to your account to register for this event'
+              disableRipple
             >
               {t("login")}
             </PrimaryButton>
@@ -419,6 +458,7 @@ export default function EventRegistrationModal({
             onClick={onClose}
             disabled={loading}
             aria-label='Cancel registration and close dialog'
+            disableRipple
           >
             {t("cancel")}
           </SecondaryButton>
@@ -431,6 +471,7 @@ export default function EventRegistrationModal({
                 : `Confirm registration for ${eventTitle} on ${eventDate}`
             }
             aria-busy={loading}
+            disableRipple
           >
             {loading ? (
               <>
@@ -467,6 +508,14 @@ export default function EventRegistrationModal({
           : !isAuthenticated
           ? t("event_registration_title")
           : t("confirm_event_registration")}
+        <CloseButton
+          onClick={onClose}
+          aria-label={t("close")}
+          disabled={loading}
+          disableRipple
+        >
+          <CloseIcon />
+        </CloseButton>
       </StyledDialogTitle>
       {renderContent()}
     </StyledDialog>

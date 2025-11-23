@@ -65,6 +65,8 @@ export default {
   events_for_date: "events for",
   event_full: "Event Full",
   register_now: "Register Now",
+  registered: "Registered",
+  cancel_registration: "Cancel Registration",
 
   // Dynamic Event Translations (fallback for backend events)
   event_disability_rights_title: "Disability Rights Awareness Workshop",
