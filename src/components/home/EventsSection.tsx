@@ -326,8 +326,9 @@ export default function EventsSection() {
 
   // Fetch upcoming events from backend
   useEffect(() => {
-    // Skip fetching in non-browser environments (tests, SSR)
+    // Skip fetching in non-browser environments (SSR) or test mode
     if (typeof window === "undefined") return;
+    if (import.meta.env.MODE === "test") return;
 
     const fetchEvents = async () => {
       try {
