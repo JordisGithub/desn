@@ -13,7 +13,7 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org}")
+    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://desnepal.org,https://www.desnepal.org,https://dev.desnepal.org}")
     private String allowedOrigins;
 
     @Value("${app.cors.max-age:86400}") // default 24h preflight cache
