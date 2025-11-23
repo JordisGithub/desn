@@ -1,6 +1,7 @@
 export default {
   // Hero Section
-  hero_heading: "बिना बाधा सभक भविष्य सशक्त बनाबै",
+  hero_heading: "दिव्यांगता सशक्तिकरण समाज नेपाल (DESN)",
+  hero_subheading: "बिना बाधा सभक भविष्य सशक्त बनाबै",
   hero_description:
     "पहुँच, समावेश आ नवाचार केरऽ माध्यम सऽ दिव्यांग लोकनी कें सशक्त बनाबै।",
   hero_button: "आय दान करी",
