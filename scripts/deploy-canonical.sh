@@ -8,7 +8,7 @@ set -euo pipefail
 
 SERVER_IP="98.81.50.37"
 SSH_USER="ubuntu"
-SSH_KEY="${HOME}/.ssh/desn-app-key.pem"
+SSH_KEY="${HOME}/.ssh/desn-personal-key.pem"
 CANONICAL_DOMAIN="desnepal.org"
 CANONICAL_WWW="www.desnepal.org"
 REMOTE_APP_ROOT="/home/ubuntu/desn-app"

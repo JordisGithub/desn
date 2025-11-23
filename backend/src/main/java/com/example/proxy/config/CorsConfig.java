@@ -28,7 +28,7 @@ public class CorsConfig {
             .map(String::trim)
             .filter(s -> !s.isEmpty())
             .toList();
-        configuration.setAllowedOrigins(origins);
+        configuration.setAllowedOriginPatterns(origins); // Use patterns instead of origins for non-credential requests
         
         // Allow specific methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

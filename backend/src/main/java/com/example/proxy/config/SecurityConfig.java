@@ -32,6 +32,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints - authentication/registration
                 .requestMatchers("/api/auth/**").permitAll()
+                // Public endpoints - resources and events (READ access) - must be before admin rules
+                .requestMatchers(HttpMethod.GET, "/api/resources", "/api/resources/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/events", "/api/events/**").permitAll()
                 // Public endpoints - form submission
                 .requestMatchers(HttpMethod.POST, "/api/forms/membership", "/api/forms/volunteer").permitAll()
                 .requestMatchers("/api/forms/health").permitAll()
@@ -47,8 +50,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/forms/membership", "/api/forms/volunteer").hasRole("ADMIN")
                 .requestMatchers("/api/payment/transactions").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // Public endpoints - events
-                .requestMatchers("/api/events/**").permitAll()
                 // All other requests are public (home page, about page, etc.)
                 .anyRequest().permitAll()
             )
