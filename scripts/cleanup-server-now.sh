@@ -1,3 +1,27 @@
+#!/bin/bash
+# Emergency cleanup script for AWS server
+# Run this directly on ubuntu@ip-172-31-9-188
+
+echo "=== DESN Server Cleanup ==="
+echo "Current asset count: $(sudo ls /var/www/html/assets/*.js 2>/dev/null | wc -l)"
+echo ""
+
+# Backup current state (just in case)
+echo "Creating backup..."
+sudo tar -czf /home/ubuntu/html-backup-$(date +%Y%m%d-%H%M%S).tar.gz /var/www/html/
+echo "✅ Backup created in /home/ubuntu/"
+echo ""
+
+# Clean old assets
+echo "Removing old asset files..."
+sudo rm -rf /var/www/html/assets
+sudo rm -f /var/www/html/index.html /var/www/html/*.js /var/www/html/*.css
+echo "✅ Old files removed"
+echo ""
+
+# Update nginx config to prevent index.html caching
+echo "Updating nginx configuration..."
+sudo tee /etc/nginx/sites-enabled/default > /dev/null << 'NGINX_CONFIG'
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -78,3 +102,29 @@ server {
     tcp_nodelay on;
     tcp_nopush on;
 }
+NGINX_CONFIG
+echo "✅ Nginx config updated"
+echo ""
+
+# Test nginx config
+echo "Testing nginx configuration..."
+sudo nginx -t
+if [ $? -eq 0 ]; then
+    echo "✅ Nginx config is valid"
+    echo ""
+    echo "Restarting nginx..."
+    sudo systemctl restart nginx
+    echo "✅ Nginx restarted"
+else
+    echo "❌ Nginx config has errors - not restarting"
+    exit 1
+fi
+echo ""
+
+echo "=== Now trigger a fresh deployment ==="
+echo "The next GitHub Actions deployment will populate the files."
+echo ""
+echo "OR manually redeploy the latest build:"
+echo "  cd /home/ubuntu"
+echo "  # Download latest build from GitHub Actions artifacts"
+echo ""
