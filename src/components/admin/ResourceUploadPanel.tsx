@@ -57,7 +57,13 @@ const CATEGORY_MAP: Record<string, string> = {
   newsletter: "Newsletters",
 };
 
-export default function ResourceUploadPanel() {
+interface ResourceUploadPanelProps {
+  onCountChange?: (count: number) => void;
+}
+
+export default function ResourceUploadPanel({
+  onCountChange,
+}: ResourceUploadPanelProps) {
   const { user } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [category, setCategory] = useState("");
@@ -88,10 +94,12 @@ export default function ResourceUploadPanel() {
         resources: UploadedFile[];
       }
       const data = await ApiService.get<ResourcesResponse>("/api/resources");
-      setResources(data.resources || []);
+      const resourcesArray = data.resources || [];
+      setResources(resourcesArray);
     } catch (error) {
       console.error("Error fetching resources:", error);
       setMessage({ type: "error", text: "Failed to load resources" });
+      setResources([]);
     } finally {
       setLoading(false);
     }
@@ -100,6 +108,10 @@ export default function ResourceUploadPanel() {
   useEffect(() => {
     fetchResources();
   }, [fetchResources]);
+
+  useEffect(() => {
+    onCountChange?.(resources.length);
+  }, [resources, onCountChange]);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -372,10 +384,16 @@ export default function ResourceUploadPanel() {
         <CardContent>
           <Typography
             variant='h5'
+            component='h2'
             gutterBottom
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "#002855",
+            }}
           >
-            <CloudUpload /> Upload New Resource
+            <CloudUpload aria-hidden='true' /> Upload New Resource
           </Typography>
 
           {message && (
@@ -383,6 +401,8 @@ export default function ResourceUploadPanel() {
               severity={message.type}
               sx={{ mb: 2 }}
               onClose={() => setMessage(null)}
+              role={message.type === "error" ? "alert" : "status"}
+              aria-live={message.type === "error" ? "assertive" : "polite"}
             >
               {message.text}
             </Alert>
@@ -390,12 +410,17 @@ export default function ResourceUploadPanel() {
 
           <Box sx={{ mb: 3 }}>
             <FormControl fullWidth sx={{ mb: 2 }}>
-              <InputLabel>Category</InputLabel>
+              <InputLabel id='resource-category-label'>Category *</InputLabel>
               <Select
+                labelId='resource-category-label'
+                id='resource-category-select'
                 value={category}
-                label='Category'
+                label='Category *'
                 onChange={(e) => setCategory(e.target.value)}
                 disabled={uploading}
+                required
+                aria-required='true'
+                aria-label='Select resource category'
               >
                 <MenuItem value='annual-report'>Annual Report</MenuItem>
                 <MenuItem value='policy-brief'>Policy Brief</MenuItem>
@@ -413,20 +438,27 @@ export default function ResourceUploadPanel() {
               onDrop={handleDrop}
               sx={{
                 border: "2px dashed",
-                borderColor: dragActive ? "primary.main" : "grey.300",
+                borderColor: dragActive ? "#002855" : "#757575",
                 borderRadius: 2,
                 p: 4,
                 textAlign: "center",
                 backgroundColor: dragActive
-                  ? "action.hover"
+                  ? "rgba(0, 40, 85, 0.05)"
                   : "background.paper",
                 cursor: "pointer",
                 transition: "all 0.3s",
                 "&:hover": {
-                  borderColor: "primary.main",
-                  backgroundColor: "action.hover",
+                  borderColor: "#002855",
+                  backgroundColor: "rgba(0, 40, 85, 0.05)",
+                },
+                "&:focus-within": {
+                  outline: "3px solid #4a90e2",
+                  outlineOffset: "2px",
                 },
               }}
+              role='button'
+              tabIndex={0}
+              aria-label='Upload PDF file - drag and drop or click to browse'
             >
               <input
                 type='file'
@@ -435,16 +467,30 @@ export default function ResourceUploadPanel() {
                 onChange={handleFileChange}
                 style={{ display: "none" }}
                 disabled={uploading}
+                aria-label='Select PDF file to upload'
+                aria-describedby='file-upload-help'
               />
-              <label htmlFor='file-upload' style={{ cursor: "pointer" }}>
+              <label
+                htmlFor='file-upload'
+                style={{ cursor: "pointer", display: "block" }}
+              >
                 <CloudUpload
-                  sx={{ fontSize: 48, color: "primary.main", mb: 1 }}
+                  sx={{ fontSize: 48, color: "#002855", mb: 1 }}
+                  aria-hidden='true'
                 />
-                <Typography variant='body1' gutterBottom>
+                <Typography
+                  variant='body1'
+                  gutterBottom
+                  sx={{ color: "#212121" }}
+                >
                   Drag & drop your PDF here, or click to browse
                 </Typography>
-                <Typography variant='caption' color='text.secondary'>
-                  Maximum file size: 10MB
+                <Typography
+                  id='file-upload-help'
+                  variant='caption'
+                  sx={{ color: "#595959" }}
+                >
+                  Maximum file size: 10MB. Accepted format: PDF only
                 </Typography>
               </label>
             </Box>
@@ -454,19 +500,29 @@ export default function ResourceUploadPanel() {
                 sx={{
                   mt: 2,
                   p: 2,
-                  backgroundColor: "success.light",
+                  backgroundColor: "#e8f5e9",
                   borderRadius: 1,
+                  border: "1px solid #4caf50",
                 }}
+                role='status'
+                aria-live='polite'
               >
-                <Typography variant='body2'>
-                  <strong>Selected:</strong> {selectedFile.name} (
+                <Typography variant='body2' sx={{ color: "#1b5e20" }}>
+                  <strong>Selected file:</strong> {selectedFile.name} (
                   {formatFileSize(selectedFile.size)})
                 </Typography>
               </Box>
             )}
           </Box>
 
-          {uploading && <LinearProgress sx={{ mb: 2 }} />}
+          {uploading && (
+            <Box role='status' aria-live='polite' aria-label='Uploading file'>
+              <LinearProgress sx={{ mb: 2 }} />
+              <Typography sx={{ position: "absolute", left: "-10000px" }}>
+                Uploading file, please wait...
+              </Typography>
+            </Box>
+          )}
 
           <Box sx={{ display: "flex", gap: 2 }}>
             <Button
@@ -475,6 +531,17 @@ export default function ResourceUploadPanel() {
               disabled={!selectedFile || !category || uploading}
               startIcon={<CloudUpload />}
               fullWidth
+              aria-label='Upload selected resource'
+              sx={{
+                backgroundColor: "#002855",
+                "&:hover": {
+                  backgroundColor: "#001a3d",
+                },
+                "&:focus": {
+                  outline: "3px solid #4a90e2",
+                  outlineOffset: "2px",
+                },
+              }}
             >
               {uploading ? "Uploading..." : "Upload Resource"}
             </Button>
@@ -486,6 +553,19 @@ export default function ResourceUploadPanel() {
                 setMessage(null);
               }}
               disabled={uploading}
+              aria-label='Clear selected file and category'
+              sx={{
+                borderColor: "#002855",
+                color: "#002855",
+                "&:hover": {
+                  borderColor: "#001a3d",
+                  backgroundColor: "rgba(0, 40, 85, 0.05)",
+                },
+                "&:focus": {
+                  outline: "3px solid #4a90e2",
+                  outlineOffset: "2px",
+                },
+              }}
             >
               Clear
             </Button>
@@ -504,47 +584,95 @@ export default function ResourceUploadPanel() {
               mb: 2,
             }}
           >
-            <Typography variant='h5'>
+            <Typography variant='h5' component='h2' sx={{ color: "#002855" }}>
               Uploaded Resources ({resources.length})
             </Typography>
             <Button
-              startIcon={<Refresh />}
+              startIcon={<Refresh aria-hidden='true' />}
               onClick={fetchResources}
               disabled={loading}
+              aria-label='Refresh resources list'
+              sx={{
+                "&:focus": {
+                  outline: "3px solid #4a90e2",
+                  outlineOffset: "2px",
+                },
+              }}
             >
               Refresh
             </Button>
           </Box>
 
           {loading ? (
-            <LinearProgress />
+            <Box
+              role='status'
+              aria-live='polite'
+              aria-label='Loading resources'
+            >
+              <LinearProgress />
+              <Typography sx={{ position: "absolute", left: "-10000px" }}>
+                Loading resources, please wait...
+              </Typography>
+            </Box>
           ) : (
             <TableContainer component={Paper} variant='outlined'>
-              <Table>
+              <Table aria-label='Uploaded resources table'>
+                <caption
+                  style={{
+                    position: "absolute",
+                    left: "-10000px",
+                    width: "1px",
+                    height: "1px",
+                    overflow: "hidden",
+                  }}
+                >
+                  Uploaded resources with {resources.length} total entries
+                </caption>
                 <TableHead>
                   <TableRow>
-                    <TableCell>
-                      <strong>Title</strong>
+                    <TableCell
+                      component='th'
+                      scope='col'
+                      sx={{ fontWeight: 600, color: "#002855" }}
+                    >
+                      Title
                     </TableCell>
-                    <TableCell>
-                      <strong>Category</strong>
+                    <TableCell
+                      component='th'
+                      scope='col'
+                      sx={{ fontWeight: 600, color: "#002855" }}
+                    >
+                      Category
                     </TableCell>
-                    <TableCell>
-                      <strong>Date</strong>
+                    <TableCell
+                      component='th'
+                      scope='col'
+                      sx={{ fontWeight: 600, color: "#002855" }}
+                    >
+                      Date
                     </TableCell>
-                    <TableCell>
-                      <strong>Views</strong>
+                    <TableCell
+                      component='th'
+                      scope='col'
+                      sx={{ fontWeight: 600, color: "#002855" }}
+                    >
+                      Views
                     </TableCell>
-                    <TableCell align='right'>
-                      <strong>Actions</strong>
+                    <TableCell
+                      component='th'
+                      scope='col'
+                      align='right'
+                      sx={{ fontWeight: 600, color: "#002855" }}
+                    >
+                      Actions
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody key={refreshKey}>
                   {resources.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} align='center'>
-                        <Typography color='text.secondary'>
+                      <TableCell colSpan={5} align='center' role='status'>
+                        <Typography sx={{ color: "#595959", fontSize: "1rem" }}>
                           No resources uploaded yet
                         </Typography>
                       </TableCell>
@@ -578,27 +706,45 @@ export default function ResourceUploadPanel() {
                         <TableCell align='right'>
                           <IconButton
                             size='small'
-                            color='primary'
                             onClick={() =>
                               window.open(resource.fileUrl, "_blank")
                             }
-                            title='View/Download'
+                            aria-label={`View or download ${resource.title}`}
+                            sx={{
+                              color: "#002855",
+                              "&:focus": {
+                                outline: "3px solid #4a90e2",
+                                outlineOffset: "2px",
+                              },
+                            }}
                           >
                             <Download />
                           </IconButton>
                           <IconButton
                             size='small'
-                            color='info'
                             onClick={() => handleEditClick(resource)}
-                            title='Edit Resource'
+                            aria-label={`Edit ${resource.title}`}
+                            sx={{
+                              color: "#01579b",
+                              "&:focus": {
+                                outline: "3px solid #4a90e2",
+                                outlineOffset: "2px",
+                              },
+                            }}
                           >
                             <Edit />
                           </IconButton>
                           <IconButton
                             size='small'
-                            color='error'
                             onClick={() => handleDeleteClick(resource)}
-                            title='Delete'
+                            aria-label={`Delete ${resource.title}`}
+                            sx={{
+                              color: "#b71c1c",
+                              "&:focus": {
+                                outline: "3px solid #4a90e2",
+                                outlineOffset: "2px",
+                              },
+                            }}
                           >
                             <Delete />
                           </IconButton>
@@ -617,10 +763,17 @@ export default function ResourceUploadPanel() {
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
+        aria-labelledby='delete-resource-dialog-title'
+        aria-describedby='delete-resource-dialog-description'
       >
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle
+          id='delete-resource-dialog-title'
+          sx={{ color: "#b71c1c", fontWeight: 600 }}
+        >
+          Confirm Deletion
+        </DialogTitle>
         <DialogContent>
-          <Typography>
+          <Typography id='delete-resource-dialog-description'>
             Are you sure you want to delete "{resourceToDelete?.title}"? This
             action cannot be undone.
           </Typography>
@@ -643,26 +796,47 @@ export default function ResourceUploadPanel() {
         onClose={() => setEditDialogOpen(false)}
         maxWidth='sm'
         fullWidth
+        aria-labelledby='edit-resource-dialog-title'
+        aria-describedby='edit-resource-dialog-description'
       >
-        <DialogTitle>Edit Resource</DialogTitle>
+        <DialogTitle
+          id='edit-resource-dialog-title'
+          sx={{ color: "#002855", fontWeight: 600 }}
+        >
+          Edit Resource
+        </DialogTitle>
         <DialogContent>
-          <Typography variant='body2' sx={{ mb: 2, color: "text.secondary" }}>
-            Update the title and category for this resource
+          <Typography
+            id='edit-resource-dialog-description'
+            variant='body2'
+            sx={{ mb: 2, color: "#595959" }}
+          >
+            Update the title and category for this resource. All fields are
+            required.
           </Typography>
           <TextField
             fullWidth
-            label='Title'
+            label='Title *'
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             sx={{ mt: 2, mb: 2 }}
             required
+            inputProps={{
+              "aria-required": "true",
+              "aria-label": "Resource title",
+            }}
+            helperText='Required - Enter the resource title'
           />
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
+          <FormControl fullWidth required>
+            <InputLabel id='edit-category-label'>Category *</InputLabel>
             <Select
+              labelId='edit-category-label'
+              id='edit-category-select'
               value={editCategory}
-              label='Category'
+              label='Category *'
               onChange={(e) => setEditCategory(e.target.value)}
+              aria-required='true'
+              aria-label='Select resource category'
             >
               <MenuItem value='annual-report'>Annual Report</MenuItem>
               <MenuItem value='policy-brief'>Policy Brief</MenuItem>
