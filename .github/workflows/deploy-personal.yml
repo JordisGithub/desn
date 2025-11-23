@@ -94,9 +94,13 @@ jobs:
             cd /home/ubuntu
             tar -xzf deployment.tar.gz
 
-            # Deploy frontend
+            # Deploy frontend - Clean old assets first to prevent accumulation
+            echo "Cleaning old frontend files..."
+            sudo rm -rf /var/www/html/assets
+            sudo rm -f /var/www/html/index.html /var/www/html/*.js /var/www/html/*.css
+            echo "Deploying new frontend files..."
             sudo cp -r deployment/frontend/* /var/www/html/
-            echo "✅ Frontend deployed"
+            echo "✅ Frontend deployed (old assets cleaned)"
 
             # --- CRITICAL FIX ---
             sudo systemctl restart nginx
