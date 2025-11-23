@@ -985,7 +985,14 @@ export default function UpcomingEvents() {
                               aria-disabled={dayInfo.isOtherMonth}
                               disabled={dayInfo.isOtherMonth}
                               role='gridcell'
-                              tabIndex={dayInfo.isOtherMonth ? -1 : 0}
+                              tabIndex={
+                                dayInfo.isOtherMonth
+                                  ? -1
+                                  : isSelected ||
+                                    (selectedDate === null && dayInfo.isToday)
+                                  ? 0
+                                  : -1
+                              }
                               sx={{
                                 cursor: dayInfo.isOtherMonth
                                   ? "default"
@@ -1018,14 +1025,14 @@ export default function UpcomingEvents() {
 
             <Note>
               <NoteText>
-                <strong>Calendar legend:</strong> Dark green filled dates =
-                event days (white bold text; darken on hover). Selected
-                non-event day = white background with bold green border. Today =
-                light blue background with a blue border (unless selected). Past
-                days = muted italic text. Gray background days = previous/next
-                month (disabled and not focusable). All other days use dark blue
-                text on white. Use arrow keys to navigate; Enter or Space
-                selects a day.
+                <strong>Calendar legend:</strong> Dark green outlined dates =
+                event days. Selected event days = light green background with
+                bold green border. Today = light blue background with a blue
+                border (unless selected). Past days = muted italic text. Gray
+                background days = previous/next month (disabled and not
+                focusable). All other days use dark blue text on white
+                background. Use arrow keys to navigate; Enter or Space selects a
+                day.
               </NoteText>
             </Note>
           </CalendarCard>
