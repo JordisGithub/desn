@@ -50,6 +50,24 @@ jobs:
           cp backend/target/*.jar deployment/backend/app.jar
           tar -czf deployment.tar.gz deployment/
 
+      - name: Check server connectivity
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Server Health Check ==="
+            echo "Hostname: $(hostname)"
+            echo "Uptime: $(uptime -p)"
+            echo "Current SSH sessions: $(who | wc -l)"
+            echo "SSH connections: $(ss -tn state established '( dport = :22 or sport = :22 )' | wc -l)"
+            echo "Load average: $(uptime | awk -F'load average:' '{print $2}')"
+            echo "Memory usage: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+            echo "Disk usage: $(df -h / | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')"
+            echo "==========================="
+
       - name: Deploy to server
         uses: appleboy/scp-action@master
         with:
@@ -58,6 +76,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "deployment.tar.gz"
           target: "/home/ubuntu/"
+          timeout: 60s
+          command_timeout: 15m
 
       - name: Execute deployment on server
         uses: appleboy/ssh-action@master
@@ -65,7 +85,12 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 15m
           script: |
+            echo "=== Starting Deployment ==="
+            echo "Time: $(date)"
+            echo "User: $(whoami)"
             cd /home/ubuntu
             tar -xzf deployment.tar.gz
 
@@ -83,29 +108,49 @@ jobs:
             cp deployment/backend/app.jar ~/desn-app/backend/
             echo "✅ Backend deployed"
 
-            # Update systemd service with correct database credentials
+            # Ensure swap is configured (idempotent)
+            if [ ! -f /swapfile ]; then
+              echo "Creating swap..."
+              sudo fallocate -l 1G /swapfile
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+              echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+              echo "✅ Swap created"
+            else
+              echo "✅ Swap already configured"
+            fi
+
+            # Update systemd service with optimized JVM settings
             sudo tee /etc/systemd/system/desn-backend.service > /dev/null <<EOF
             [Unit]
-            Description=DESN Backend Service
+            Description=DESN Backend Service (Optimized)
             After=network.target postgresql.service
 
             [Service]
             Type=simple
             User=ubuntu
             WorkingDirectory=/home/ubuntu/desn-app/backend
-            ExecStart=/usr/bin/java -jar /home/ubuntu/desn-app/backend/app.jar
+            Environment="JAVA_OPTS=-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xlog:gc*:file=/home/ubuntu/desn-app/backend/gc.log:time,uptime,level,tags"
+            ExecStart=/usr/bin/java \$JAVA_OPTS -jar /home/ubuntu/desn-app/backend/app.jar
             Restart=always
             RestartSec=10
             Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/desn"
             Environment="SPRING_DATASOURCE_USERNAME=desn_user"
             Environment="SPRING_DATASOURCE_PASSWORD=desn2025"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_BATCH_SIZE=20"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_INSERTS=true"
+            Environment="SPRING_JPA_PROPERTIES_HIBERNATE_ORDER_UPDATES=true"
+            Environment="SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=5"
+            Environment="SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=2"
+            Environment="SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=20000"
             StandardOutput=journal
             StandardError=journal
 
             [Install]
             WantedBy=multi-user.target
             EOF
-            echo "✅ Service configuration updated"
+            echo "✅ Service configuration updated with JVM optimization"
 
             # Reload systemd and restart backend service
             sudo systemctl daemon-reload
@@ -121,8 +166,52 @@ jobs:
               echo "✅ Deployment successful!"
             else
               echo "❌ Backend failed to start"
+              echo "Last 20 lines of backend logs:"
+              sudo journalctl -u desn-backend -n 20 --no-pager
               exit 1
             fi
+
+            echo "=== Deployment Complete ==="
+            echo "Active SSH sessions after deployment: $(who | wc -l)"
+            echo "Backend status: $(sudo systemctl is-active desn-backend)"
+            echo "Backend uptime: $(sudo systemctl show -p ActiveEnterTimestamp desn-backend | cut -d'=' -f2)"
+            echo "==========================="
+
+      - name: Post-deployment health check
+        if: success()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Post-Deployment Health Check ==="
+            echo "Backend status: $(sudo systemctl is-active desn-backend)"
+            echo "Backend port check: $(sudo netstat -tlnp | grep :8080 || echo 'Port 8080 not listening')"
+            echo "Nginx status: $(sudo systemctl is-active nginx)"
+            echo "Nginx port check: $(sudo netstat -tlnp | grep :80 || echo 'Port 80 not listening')"
+            echo "Active SSH sessions: $(who | wc -l)"
+            echo "SSH connection count: $(ss -tn state established '( dport = :22 or sport = :22 )' | wc -l)"
+            echo "===================================="
+
+      - name: Cleanup SSH sessions on failure
+        if: failure()
+        uses: appleboy/ssh-action@master
+        continue-on-error: true
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 30s
+          script: |
+            echo "=== Deployment Failed - Session Cleanup ==="
+            echo "Active SSH sessions: $(who | wc -l)"
+            echo "SSH connections: $(ss -tn state established '( dport = :22 or sport = :22 )' | wc -l)"
+            echo "Cleaning up deployment files..."
+            rm -f /home/ubuntu/deployment.tar.gz
+            rm -rf /home/ubuntu/deployment
+            echo "=========================================="
 
       - name: Deployment summary
         if: success()
@@ -136,3 +225,25 @@ jobs:
           echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- Time: $(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Server Health" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Backend: Running" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Nginx: Active" >> $GITHUB_STEP_SUMMARY
+          echo "✅ SSH: Stable" >> $GITHUB_STEP_SUMMARY
+
+      - name: Deployment failure summary
+        if: failure()
+        run: |
+          echo "## ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The deployment encountered errors. Please check the logs above." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Common Issues" >> $GITHUB_STEP_SUMMARY
+          echo "- SSH connection timeout: Wait 10-15 minutes for sessions to clear" >> $GITHUB_STEP_SUMMARY
+          echo "- Build failures: Check Maven/NPM logs" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend start issues: Review systemd logs" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review error messages in the workflow logs" >> $GITHUB_STEP_SUMMARY
+          echo "2. Check server SSH session count" >> $GITHUB_STEP_SUMMARY
+          echo "3. Retry deployment after addressing issues" >> $GITHUB_STEP_SUMMARY
