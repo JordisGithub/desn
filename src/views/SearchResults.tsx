@@ -190,7 +190,7 @@ export default function SearchResults() {
             defaultValue: "results found",
           })}`
         );
-      } catch (err) {
+      } catch {
         setResults([]);
         announce(
           t("search_results_error", {
@@ -206,7 +206,7 @@ export default function SearchResults() {
     // Only run when the query changes to avoid re-render loops
     // announce and t are stable enough for this usage; announcements are informational
     // and not critical if skipped on language switch mid-search
-  }, [query]);
+  }, [query, announce, t]);
 
   return (
     <PageContainer maxWidth='lg'>
