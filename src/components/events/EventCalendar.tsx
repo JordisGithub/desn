@@ -129,12 +129,15 @@ interface EventCalendarProps {
 }
 
 export default function EventCalendar({ events }: EventCalendarProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
 
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const daysOfWeek = t("calendar.days_short", {
+    returnObjects: true,
+  }) as string[];
+  const monthNames = t("calendar.months", { returnObjects: true }) as string[];
 
   useEffect(() => {
     if (selectedDate) {
@@ -223,23 +226,11 @@ export default function EventCalendar({ events }: EventCalendarProps) {
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return date.toLocaleTimeString(i18n.language, {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   const days = getDaysInMonth(currentDate);
 
@@ -306,8 +297,12 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 role='button'
                 tabIndex={0}
                 aria-label={`${monthNames[date.getMonth()]} ${date.getDate()}${
-                  hasEventOnDate(date) ? ", has scheduled event" : ""
-                }${isToday(date) ? ", today" : ""}`}
+                  hasEventOnDate(date)
+                    ? `, ${t("calendar.has_scheduled_event")}`
+                    : ""
+                }${
+                  isToday(date) ? `, ${t("calendar.today").toLowerCase()}` : ""
+                }`}
               >
                 {date.getDate()}
               </DayCell>
@@ -330,7 +325,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               }}
             />
             <Typography variant='body2' color='text.secondary'>
-              Has Events
+              {t("calendar.has_events")}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -343,7 +338,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               }}
             />
             <Typography variant='body2' color='text.secondary'>
-              Today
+              {t("calendar.today")}
             </Typography>
           </Box>
         </Box>
@@ -369,7 +364,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   variant='h6'
                   sx={{ color: "#004c91", fontWeight: 600 }}
                 >
-                  {selectedDate.toLocaleDateString("en-US", {
+                  {selectedDate.toLocaleDateString(i18n.language, {
                     weekday: "long",
                     year: "numeric",
                     month: "long",
@@ -403,7 +398,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                       </EventDetail>
                       <Box sx={{ mt: 2 }}>
                         <Chip
-                          label={`${event.currentAttendees}/${event.maxAttendees} attending`}
+                          label={`${event.currentAttendees}/${
+                            event.maxAttendees
+                          } ${t("calendar.attending")}`}
                           size='small'
                           color={
                             event.currentAttendees >= event.maxAttendees
@@ -424,9 +421,11 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   }}
                 >
                   <CalendarToday sx={{ fontSize: "4rem", mb: 2 }} />
-                  <Typography variant='h6'>No events on this day</Typography>
+                  <Typography variant='h6'>
+                    {t("calendar.no_events")}
+                  </Typography>
                   <Typography variant='body2'>
-                    Select a day with events to see details
+                    {t("calendar.no_events_instruction")}
                   </Typography>
                 </Box>
               )}
@@ -440,9 +439,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               }}
             >
               <CalendarToday sx={{ fontSize: "4rem", mb: 2 }} />
-              <Typography variant='h6'>Select a Date</Typography>
+              <Typography variant='h6'>{t("calendar.select_date")}</Typography>
               <Typography variant='body2'>
-                Click on a day in the calendar to see events
+                {t("calendar.select_date_instruction")}
               </Typography>
             </Box>
           )}

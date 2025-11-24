@@ -53,11 +53,11 @@ export default {
   accessibility_limitations_intro:
     "Despite our best efforts, you may encounter some limitations. Known accessibility issues include:",
   accessibility_limitation_1:
-    "Some third-party payment gateway interfaces may have limited accessibility",
+    "Some third-party payment gateway interfaces have limited accessibility we cannot fully control; we are engaging vendors for improvements.",
   accessibility_limitation_2:
-    "PDF documents may not be fully accessible (we are working to improve this)",
+    "Legacy downloadable documents (including older PDFs) are not yet fully tagged or structured for screen readers; remediation for headings, tables, and reading order is in progress.",
   accessibility_limitation_3:
-    "Some legacy images may have generic alt text that we are in the process of updating",
+    "(Removed - legacy image alternative text has been fully remediated)",
 
   accessibility_feedback_title: "Feedback and Contact Information",
   accessibility_feedback_intro:

@@ -1,6 +1,8 @@
 export default {
   // Events Section (shared)
   events_heading: "नापं कार्यक्रमहरू",
+  events_section_intro:
+    "समावेश व् पहुँचया प्रवर्द्धन यानातःगु नापं कार्यक्रम, कार्यशाला व् उत्सवमे झीगु ज्यू संलग्न बनू।",
   event_1_title: "AIR मध्य-बिन्दु जाँच-पास",
   event_1_desc:
     "डिजिटल A11y गठबन्धनन् हे DESN या पहुँचयोग्य वेबसाइट प्रगतिया समीक्षा यानादिसँ।",
@@ -56,6 +58,7 @@ export default {
   event_date_label: "कार्यक्रम मिति:",
   event_time_label: "कार्यक्रम समय:",
   event_location_label: "कार्यक्रम स्थान:",
+  event_image_placeholder: "कार्यक्रमया तस्बिर",
   showing_all_events: "सब धकाबलय",
   upcoming_events_count: "नापं कार्यक्रमहरू",
   showing_events_for: "धकाबलय",

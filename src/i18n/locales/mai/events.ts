@@ -1,6 +1,8 @@
 export default {
   // Events Section (shared)
   events_heading: "आगामी कार्यक्रम सभ",
+  events_section_intro:
+    "समावेश आ पहुँच बढाबै वाला आगामी कार्यक्रम सभ, कार्यशाला सभ आ उत्सव सभ में हमर संगे शामिल होई।",
   event_1_title: "AIR मध्य-बिंदु चेक-इन",
   event_1_desc:
     "डिजिटल A11y गठबंधन सऽ DESN केरऽ पहुँचयोग्य वेबसाइट प्रगति केरऽ समीक्षा करब।",
@@ -57,6 +59,7 @@ export default {
   event_date_label: "कार्यक्रम तिथि:",
   event_time_label: "कार्यक्रम समय:",
   event_location_label: "कार्यक्रम स्थान:",
+  event_image_placeholder: "कार्यक्रम चित्र",
   showing_all_events: "सब देखाबै छी",
   upcoming_events_count: "आगामी कार्यक्रम सभ",
   showing_events_for: "देखाबै छी",

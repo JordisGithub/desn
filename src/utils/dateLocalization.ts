@@ -16,12 +16,111 @@ const localeMap: Record<string, string> = {
 };
 
 /**
+ * Maps English digits to Devanagari numerals for Nepali
+ */
+const devanagariNumerals: Record<string, string> = {
+  "0": "०",
+  "1": "१",
+  "2": "२",
+  "3": "३",
+  "4": "४",
+  "5": "५",
+  "6": "६",
+  "7": "७",
+  "8": "८",
+  "9": "९",
+};
+
+/**
+ * Converts English digits to Devanagari numerals
+ */
+function toDevanagariNumerals(text: string): string {
+  return text.replace(/\d/g, (digit) => devanagariNumerals[digit] || digit);
+}
+
+/**
+ * Maps English month abbreviations to Nepali
+ */
+const nepaliMonths: Record<string, string> = {
+  Jan: "जनवरी",
+  Feb: "फेब्रुअरी",
+  Mar: "मार्च",
+  Apr: "अप्रिल",
+  May: "मे",
+  Jun: "जुन",
+  Jul: "जुलाई",
+  Aug: "अगस्ट",
+  Sep: "सेप्टेम्बर",
+  Oct: "अक्टोबर",
+  Nov: "नोभेम्बर",
+  Dec: "डिसेम्बर",
+};
+
+/**
+ * Maps English month names (full) to Nepali
+ */
+const nepaliMonthsFull: Record<string, string> = {
+  January: "जनवरी",
+  February: "फेब्रुअरी",
+  March: "मार्च",
+  April: "अप्रिल",
+  May: "मे",
+  June: "जुन",
+  July: "जुलाई",
+  August: "अगस्ट",
+  September: "सेप्टेम्बर",
+  October: "अक्टोबर",
+  November: "नोभेम्बर",
+  December: "डिसेम्बर",
+};
+
+/**
+ * Maps English day names to Nepali
+ */
+const nepaliDays: Record<string, string> = {
+  Sunday: "आइतबार",
+  Monday: "सोमबार",
+  Tuesday: "मंगलबार",
+  Wednesday: "बुधबार",
+  Thursday: "बिहिबार",
+  Friday: "शुक्रबार",
+  Saturday: "शनिबार",
+};
+
+/**
  * Gets the BCP 47 locale identifier for the given language code
  * @param language - Our language code (en, ne, mai, new)
  * @returns BCP 47 locale identifier
  */
 function getLocale(language: string): string {
   return localeMap[language] || "en-US";
+}
+
+/**
+ * Converts English date string to Nepali format
+ */
+function convertToNepaliDate(englishDate: string): string {
+  let result = englishDate;
+
+  // Replace month abbreviations
+  Object.entries(nepaliMonths).forEach(([eng, nep]) => {
+    result = result.replace(eng, nep);
+  });
+
+  // Replace full month names
+  Object.entries(nepaliMonthsFull).forEach(([eng, nep]) => {
+    result = result.replace(eng, nep);
+  });
+
+  // Replace day names
+  Object.entries(nepaliDays).forEach(([eng, nep]) => {
+    result = result.replace(eng, nep);
+  });
+
+  // Convert numerals to Devanagari
+  result = toDevanagariNumerals(result);
+
+  return result;
 }
 
 /**
@@ -34,19 +133,36 @@ export function formatDate(date: Date, language: string): string {
   const locale = getLocale(language);
 
   try {
-    return date.toLocaleDateString(locale, {
+    const result = date.toLocaleDateString(locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-  } catch {
-    // Fallback to English if locale is not supported
-    console.warn(`Locale ${locale} not supported, falling back to en-US`);
-    return date.toLocaleDateString("en-US", {
+
+    // Check if browser returned English format (indicates no locale support)
+    const isEnglishFormat = /^[A-Za-z]/.test(result);
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      if (isEnglishFormat) {
+        // Browser doesn't support the locale, manually convert
+        return convertToNepaliDate(result);
+      }
+    }
+
+    return result;
+  } catch (error) {
+    // Fallback: format in English then convert if needed
+    const englishDate = date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      return convertToNepaliDate(englishDate);
+    }
+
+    return englishDate;
   }
 }
 
@@ -60,17 +176,42 @@ export function formatTime(date: Date, language: string): string {
   const locale = getLocale(language);
 
   try {
-    return date.toLocaleTimeString(locale, {
+    const result = date.toLocaleTimeString(locale, {
       hour: "numeric",
       minute: "2-digit",
     });
-  } catch {
-    // Fallback to English if locale is not supported
-    console.warn(`Locale ${locale} not supported, falling back to en-US`);
-    return date.toLocaleTimeString("en-US", {
+
+    // Check if browser returned English format
+    const hasEnglishChars = /[APap][Mm]/.test(result);
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      if (hasEnglishChars) {
+        // Manually convert AM/PM and numerals
+        let nepaliTime = result
+          .replace(/AM/gi, "पूर्वाह्न")
+          .replace(/PM/gi, "अपराह्न");
+        nepaliTime = toDevanagariNumerals(nepaliTime);
+        return nepaliTime;
+      }
+    }
+
+    return result;
+  } catch (error) {
+    // Fallback
+    const englishTime = date.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
     });
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      let nepaliTime = englishTime
+        .replace(/AM/gi, "पूर्वाह्न")
+        .replace(/PM/gi, "अपराह्न");
+      nepaliTime = toDevanagariNumerals(nepaliTime);
+      return nepaliTime;
+    }
+
+    return englishTime;
   }
 }
 
@@ -105,19 +246,35 @@ export function formatDateWithDay(date: Date, language: string): string {
   const locale = getLocale(language);
 
   try {
-    return date.toLocaleDateString(locale, {
+    const result = date.toLocaleDateString(locale, {
       weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric",
     });
+
+    // Check if browser returned English format
+    const isEnglishFormat = /^[A-Za-z]/.test(result);
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      if (isEnglishFormat) {
+        return convertToNepaliDate(result);
+      }
+    }
+
+    return result;
   } catch {
-    console.warn(`Locale ${locale} not supported, falling back to en-US`);
-    return date.toLocaleDateString("en-US", {
+    const englishDate = date.toLocaleDateString("en-US", {
       weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric",
     });
+
+    if (language === "ne" || language === "mai" || language === "new") {
+      return convertToNepaliDate(englishDate);
+    }
+
+    return englishDate;
   }
 }

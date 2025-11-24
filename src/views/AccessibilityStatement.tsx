@@ -1310,6 +1310,45 @@ export default function AccessibilityStatement() {
         </Container>
       </Section>
 
+      {/* Limitations Section (added before Contact Section) */}
+      <Section id='limitations' sx={{ backgroundColor: "#f9fafb" }}>
+        <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>
+          <SectionTitle variant='h2'>
+            {t("accessibility_limitations_title")}
+          </SectionTitle>
+          <SectionSubtitle>
+            {t("accessibility_limitations_intro")}
+          </SectionSubtitle>
+          <List
+            aria-label={t("accessibility_limitations_title")}
+            sx={{ maxWidth: 960, mx: "auto", mb: 4, pt: 0 }}
+          >
+            {[1, 2].map((num) => (
+              <ListItem
+                key={num}
+                sx={{ alignItems: "flex-start", py: 1.25 }}
+                disableGutters
+              >
+                <CheckCircleIcon
+                  sx={{
+                    color: "#00a77f",
+                    mr: 1.5,
+                    fontSize: "1.35rem",
+                    mt: 0.4,
+                  }}
+                />
+                <Typography
+                  component='p'
+                  sx={{ fontSize: "1.125rem", lineHeight: 1.55, color: "#333" }}
+                >
+                  {t(`accessibility_limitation_${num}`)}
+                </Typography>
+              </ListItem>
+            ))}
+          </List>
+        </Container>
+      </Section>
+
       {/* Contact Section */}
       <Section id='contact' sx={{ backgroundColor: "#f9fafb" }}>
         <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3, md: 6 } }}>

@@ -1,6 +1,8 @@
 export default {
   // Events Section (shared)
   events_heading: "Upcoming Events",
+  events_section_intro:
+    "Join us for upcoming events, workshops, and celebrations that promote inclusion and accessibility for all.",
   event_1_title: "AIR Mid-Point Check-In",
   event_1_desc:
     "Reviewing DESN's accessible website progress with the Digital A11y Alliance.",
@@ -46,6 +48,9 @@ export default {
   calendar_heading: "Event Calendar",
   calendar_note:
     "Highlighted dates indicate scheduled events. Click on an event below for more details.",
+  calendar_legend_heading: "Calendar legend:",
+  calendar_legend_text:
+    "Dark green outlined dates = event days. Selected event days = light green background with bold green border. Today = light blue background with a blue border (unless selected). Past days = muted italic text. Gray background days = previous/next month (disabled and not focusable). Use arrow keys to navigate; Enter or Space selects a day.",
   event_details_heading: "Event Details",
   events_on_date: "Events on",
   clear_filter: "Clear Filter",
@@ -59,6 +64,7 @@ export default {
   event_date_label: "Event date:",
   event_time_label: "Event time:",
   event_location_label: "Event location:",
+  event_image_placeholder: "Event Image",
   showing_all_events: "Showing all",
   upcoming_events_count: "upcoming events",
   showing_events_for: "Showing",
