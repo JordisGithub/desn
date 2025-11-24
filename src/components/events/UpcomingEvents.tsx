@@ -813,10 +813,30 @@ export default function UpcomingEvents() {
     return days;
   };
 
-  const monthYear = currentDate.toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
+  // Localized month + year (with Devanagari numerals for supported South Asian langs)
+  const monthYear = (() => {
+    const monthNames = t("calendar.months", {
+      returnObjects: true,
+    }) as string[];
+    const monthName = monthNames[currentDate.getMonth()] || "";
+    let yearStr = currentDate.getFullYear().toString();
+    if (["ne", "mai", "new"].includes(i18n.language)) {
+      const numMap: Record<string, string> = {
+        0: "०",
+        1: "१",
+        2: "२",
+        3: "३",
+        4: "४",
+        5: "५",
+        6: "६",
+        7: "७",
+        8: "८",
+        9: "९",
+      };
+      yearStr = yearStr.replace(/\d/g, (d) => numMap[d] || d);
+    }
+    return `${monthName} ${yearStr}`.trim();
+  })();
 
   const getEventsForDate = (day: number) => {
     return events.filter((event) => event.calendarDate === day);
@@ -1006,7 +1026,7 @@ export default function UpcomingEvents() {
                   id='calendar-prev-month'
                   className='calendar-nav-button'
                   onClick={handlePreviousMonth}
-                  aria-label={`Previous month. Current month is ${monthYear}`}
+                  aria-label={`${t("aria.previous_month")}. ${monthYear}`}
                   role='button'
                 >
                   <ChevronLeftIcon aria-hidden='true' />
@@ -1018,7 +1038,7 @@ export default function UpcomingEvents() {
                   className='calendar-nav-button'
                   onClick={handleNextMonth}
                   onKeyDown={handleNextMonthButtonKeyDown}
-                  aria-label={`Next month. Current month is ${monthYear}`}
+                  aria-label={`${t("aria.next_month")}. ${monthYear}`}
                   role='button'
                 >
                   <ChevronRightIcon aria-hidden='true' />
@@ -1157,14 +1177,8 @@ export default function UpcomingEvents() {
 
             <Note>
               <NoteText>
-                <strong>Calendar legend:</strong> Dark green outlined dates =
-                event days. Selected event days = light green background with
-                bold green border. Today = light blue background with a blue
-                border (unless selected). Past days = muted italic text. Gray
-                background days = previous/next month (disabled and not
-                focusable). All other days use dark blue text on white
-                background. Use arrow keys to navigate; Enter or Space selects a
-                day.
+                <strong>{t("calendar_legend_heading")}</strong>{" "}
+                {t("calendar_legend_text")}
               </NoteText>
             </Note>
           </CalendarCard>

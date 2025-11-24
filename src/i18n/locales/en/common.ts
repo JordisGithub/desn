@@ -47,6 +47,32 @@ export default {
     projects: "Projects",
     contact: "Contact Us",
   },
+  // Calendar
+  calendar: {
+    days_short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    has_events: "Has Events",
+    today: "Today",
+    select_date: "Select a Date",
+    select_date_instruction: "Click on a day in the calendar to see events",
+    no_events: "No events on this day",
+    no_events_instruction: "Select a day with events to see details",
+    has_scheduled_event: "has scheduled event",
+    attending: "attending",
+  },
   // ARIA Labels
   aria: {
     close: "Close",

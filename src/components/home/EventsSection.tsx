@@ -13,6 +13,18 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EventRegistrationModal from "../events/EventRegistrationModal";
 import EventService from "../../services/EventService";
 import { getEventDisplayImageUrl } from "../../utils/eventImages";
+import {
+  translateEventDescription,
+  translateEventDate,
+  translateEventLocation,
+  translateEventTime,
+  translateEventTitle,
+} from "../../utils/eventTranslations";
+import {
+  formatDate,
+  formatDateWithDay,
+  formatTimeRange,
+} from "../../utils/dateLocalization";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -292,24 +304,29 @@ interface EventData {
   imageUrl?: string;
 }
 
-// Map event IDs to imported image URLs
 export default function EventsSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   const [selectedEvent, setSelectedEvent] = useState<{
-    id: string;
+    id: number;
     title: string;
     date: string;
     time: string;
+    location: string;
   } | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [eventStatuses, setEventStatuses] = useState<
     Record<number, EventStatus>
   >({});
   const [events, setEvents] = useState<EventData[]>([]);
+  const [languageKey, setLanguageKey] = useState(i18n.language);
 
-  // Fetch upcoming events from backend
+  // Force re-render when language changes
   useEffect(() => {
-    // Skip fetching in non-browser environments (SSR) or test mode
+    setLanguageKey(i18n.language);
+  }, [i18n.language]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     if (import.meta.env.MODE === "test") return;
 
@@ -319,7 +336,6 @@ export default function EventsSection() {
         setEvents(backendEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
-        // Fallback to empty array if API fails
         setEvents([]);
       }
     };
@@ -327,7 +343,6 @@ export default function EventsSection() {
     fetchEvents();
   }, []);
 
-  // Fetch event statuses after events are loaded
   useEffect(() => {
     if (events.length === 0) return;
 
@@ -356,25 +371,27 @@ export default function EventsSection() {
     fetchEventStatuses();
   }, [events]);
 
-  const handleRegisterClick = (event: EventData) => {
-    const startDate = new Date(event.startDate);
-    const endDate = new Date(event.endDate);
+  const handleRegisterClick = (payload: {
+    event: EventData;
+    localizedTitle: string;
+    localizedDate: string;
+    localizedTime: string;
+    localizedLocation: string;
+  }) => {
+    const {
+      event,
+      localizedTitle,
+      localizedDate,
+      localizedTime,
+      localizedLocation,
+    } = payload;
 
     setSelectedEvent({
-      id: event.id.toString(),
-      title: event.title,
-      date: startDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      time: `${startDate.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })} - ${endDate.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`,
+      id: event.id,
+      title: localizedTitle,
+      date: localizedDate,
+      time: localizedTime,
+      location: localizedLocation,
     });
     setModalOpen(true);
   };
@@ -385,9 +402,8 @@ export default function EventsSection() {
   };
 
   const handleRegistrationSuccess = () => {
-    // Refresh event statuses after successful registration
     if (selectedEvent) {
-      const event = events.find((e) => e.id === parseInt(selectedEvent.id));
+      const event = events.find((e) => e.id === selectedEvent.id);
       if (event) {
         EventService.getEventById(event.id)
           .then((response) => {
@@ -419,10 +435,7 @@ export default function EventsSection() {
           {t("events_heading")}
         </SectionHeading>
 
-        <SectionSubheading>
-          Join us for upcoming events, workshops, and celebrations that promote
-          inclusion and accessibility for all.
-        </SectionSubheading>
+        <SectionSubheading>{t("events_section_intro")}</SectionSubheading>
 
         <EventsGrid>
           {events.length === 0 ? (
@@ -446,13 +459,59 @@ export default function EventsSection() {
                 event.imageUrl
               );
 
+              const translatedTitle = translateEventTitle(event.title, t);
+              const translatedDescription = translateEventDescription(
+                event.description,
+                t
+              );
+              const translatedLocation = translateEventLocation(
+                event.location,
+                t
+              );
+              const currentLanguage = i18n.language || "en";
+              const formattedCardDate = formatDate(startDate, currentLanguage);
+              const formattedTimeRange = formatTimeRange(
+                startDate,
+                endDate,
+                currentLanguage
+              );
+              const formattedModalDate = formatDateWithDay(
+                startDate,
+                currentLanguage
+              );
+
+              // Debug logging
+              if (event.id === 3 && currentLanguage === "ne") {
+                console.log("Event 3 (Annual Meeting) formatting:", {
+                  language: currentLanguage,
+                  startDate: startDate.toISOString(),
+                  formattedCardDate,
+                  formattedTimeRange,
+                });
+              }
+              const localizedCardDate = translateEventDate(
+                event.title,
+                t,
+                formattedCardDate
+              );
+              const localizedModalDate = translateEventDate(
+                event.title,
+                t,
+                formattedModalDate
+              );
+              const localizedTimeRange = translateEventTime(
+                event.title,
+                t,
+                formattedTimeRange
+              );
+
               return (
-                <EventCard key={event.id}>
+                <EventCard key={`${event.id}-${languageKey}`}>
                   <ImageWrapper>
                     {imageSrc ? (
                       <img
                         src={imageSrc}
-                        alt={event.title}
+                        alt={translatedTitle}
                         loading='lazy'
                         className='event-image'
                         style={{
@@ -478,7 +537,7 @@ export default function EventsSection() {
                         }}
                       >
                         <Typography color='text.secondary'>
-                          Event Image
+                          {t("event_image_placeholder")}
                         </Typography>
                       </Box>
                     )}
@@ -486,32 +545,32 @@ export default function EventsSection() {
                   <CardContent>
                     <Stack direction='row' spacing={1} sx={{ mb: 2 }}>
                       <EventDate dateTime={event.startDate}>
-                        {startDate.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {localizedCardDate}
                       </EventDate>
-                      <EventTime>
-                        {startDate.toLocaleTimeString("en-US", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}{" "}
-                        -{" "}
-                        {endDate.toLocaleTimeString("en-US", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </EventTime>
+                      <EventTime>{localizedTimeRange}</EventTime>
                     </Stack>
-                    <EventTitle as='h3'>{event.title}</EventTitle>
-                    <EventDescription>{event.description}</EventDescription>
+                    <EventTitle as='h3'>{translatedTitle}</EventTitle>
+                    <EventDescription>{translatedDescription}</EventDescription>
+                    {translatedLocation && (
+                      <EventOrganizer>
+                        <strong>{t("event_location_label")}</strong>{" "}
+                        {translatedLocation}
+                      </EventOrganizer>
+                    )}
                     <EventOrganizer>
                       <strong>{t("event_organizer")}</strong> DESN
                     </EventOrganizer>
                     <RegisterButton
-                      aria-label={`Register Now for ${event.title}`}
-                      onClick={() => handleRegisterClick(event)}
+                      aria-label={`${t("register_now")}: ${translatedTitle}`}
+                      onClick={() =>
+                        handleRegisterClick({
+                          event,
+                          localizedTitle: translatedTitle,
+                          localizedDate: localizedModalDate,
+                          localizedTime: localizedTimeRange,
+                          localizedLocation: translatedLocation,
+                        })
+                      }
                       disabled={status?.isFull}
                     >
                       {status?.isFull ? t("event_full") : t("register_now")}
@@ -531,16 +590,11 @@ export default function EventsSection() {
         <EventRegistrationModal
           open={modalOpen}
           onClose={handleModalClose}
-          eventId={
-            events.find((e) => e.id === parseInt(selectedEvent.id))?.id || 0
-          }
+          eventId={selectedEvent.id}
           eventTitle={selectedEvent.title}
           eventDate={selectedEvent.date}
           eventTime={selectedEvent.time}
-          eventLocation={
-            events.find((e) => e.id === parseInt(selectedEvent.id))?.location ||
-            ""
-          }
+          eventLocation={selectedEvent.location}
           onRegistrationSuccess={handleRegistrationSuccess}
         />
       )}

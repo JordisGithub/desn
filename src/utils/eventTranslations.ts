@@ -16,6 +16,10 @@ interface TranslationMap {
  * Maps English event titles to their translation keys
  */
 export const eventTitleMap: TranslationMap = {
+  "AIR Mid-Point Check-In": "event_1_title",
+  "International day of persons with disabilities": "event_2_title",
+  "International Day of Persons with Disabilities": "event_2_title",
+  "AIR award ceremony": "event_3_title",
   "Disability Rights Awareness Workshop": "event_disability_rights_title",
   "Accessible Technology Training": "event_accessible_tech_title",
   "Annual General Meeting 2025": "event_annual_meeting_title",
@@ -25,6 +29,11 @@ export const eventTitleMap: TranslationMap = {
  * Maps English event descriptions to their translation keys
  */
 export const eventDescriptionMap: TranslationMap = {
+  "Reviewing DESN's accessible website progress with the Digital A11y Alliance.":
+    "event_1_desc",
+  'Celebrating "innovation for inclusion" through awareness and advocacy.':
+    "event_2_desc",
+  "Recognition of completed accessible website by knowbility.": "event_3_desc",
   "Interactive workshop on understanding and promoting disability rights in communities":
     "event_disability_rights_desc",
   "Hands-on training on assistive technologies and accessible software solutions":
@@ -40,6 +49,20 @@ export const eventLocationMap: TranslationMap = {
   "Kathmandu Community Center": "location_kathmandu_center",
   "DESN Training Center, Lalitpur": "location_desn_training",
   "Hotel Yak & Yeti, Kathmandu": "location_hotel_yak",
+};
+
+const eventDateMap: TranslationMap = {
+  "AIR Mid-Point Check-In": "event_1_date",
+  "International day of persons with disabilities": "event_2_date",
+  "International Day of Persons with Disabilities": "event_2_date",
+  "AIR award ceremony": "event_3_date",
+};
+
+const eventTimeMap: TranslationMap = {
+  "AIR Mid-Point Check-In": "event_1_time",
+  "International day of persons with disabilities": "event_2_time",
+  "International Day of Persons with Disabilities": "event_2_time",
+  "AIR award ceremony": "event_3_time",
 };
 
 /**
@@ -82,4 +105,26 @@ export function translateEventLocation(
 ): string {
   const key = eventLocationMap[location];
   return key ? t(key) : location;
+}
+
+export function translateEventDate(
+  title: string,
+  t: (key: string) => string,
+  fallback: string
+): string {
+  const key = eventDateMap[title];
+  if (!key) return fallback;
+  const translated = t(key);
+  return translated === key ? fallback : translated;
+}
+
+export function translateEventTime(
+  title: string,
+  t: (key: string) => string,
+  fallback: string
+): string {
+  const key = eventTimeMap[title];
+  if (!key) return fallback;
+  const translated = t(key);
+  return translated === key ? fallback : translated;
 }
