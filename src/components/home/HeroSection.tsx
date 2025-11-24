@@ -55,7 +55,7 @@ const HeroContent = styled(Box)(({ theme }) => ({
 // Massive, bold headline
 const HeroHeading = styled(Typography)(({ theme }) => ({
   color: "#ffffff",
-  fontSize: "4.5rem", // Desktop: 72px
+  fontSize: "clamp(2rem, 6vw, 4.5rem)",
   fontWeight: 900,
   lineHeight: 1.1,
   letterSpacing: "-0.02em",
@@ -73,22 +73,16 @@ const HeroHeading = styled(Typography)(({ theme }) => ({
       transform: "translateY(0)",
     },
   },
-  [theme.breakpoints.down("lg")]: {
-    fontSize: "3.5rem", // 56px
-  },
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2.75rem", // 44px
-  },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem", // 32px - mobile
-    marginBottom: theme.spacing(2),
+    lineHeight: 1.15,
+    marginBottom: theme.spacing(1.5),
   },
 }));
 
 // Sub-headline with strong readability
 const HeroSubHeading = styled(Typography)(({ theme }) => ({
   color: "#ffffff",
-  fontSize: "2.25rem", // Desktop: 36px
+  fontSize: "clamp(1.35rem, 4vw, 2.25rem)",
   fontWeight: 700,
   lineHeight: 1.3,
   textShadow:
@@ -120,13 +114,10 @@ const HeroSubHeading = styled(Typography)(({ theme }) => ({
       transform: "translateY(0)",
     },
   },
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.75rem", // 28px
-    marginBottom: theme.spacing(3),
-  },
   [theme.breakpoints.down("sm")]: {
-    fontSize: "1.375rem", // 22px - mobile
+    lineHeight: 1.35,
     marginBottom: theme.spacing(2),
+    paddingInline: theme.spacing(1),
   },
 }));
 
@@ -170,15 +161,15 @@ export default function HeroSection() {
 
           {/* Description */}
           <Typography
-            sx={{
+            sx={(theme) => ({
               color: "#ffffff",
-              fontSize: "1.35rem",
+              fontSize: "clamp(1rem, 3vw, 1.35rem)",
               fontWeight: 500,
               lineHeight: 1.7,
               textShadow: "0px 3px 12px rgba(0, 0, 0, 0.6)",
               maxWidth: "800px",
               margin: "0 auto",
-              marginTop: 5,
+              marginTop: theme.spacing(5),
               letterSpacing: "0.02em",
               animation: "fadeInUp 0.8s ease-out 0.4s both",
               "@keyframes fadeInUp": {
@@ -191,7 +182,12 @@ export default function HeroSection() {
                   transform: "translateY(0)",
                 },
               },
-            }}
+              [theme.breakpoints.down("sm")]: {
+                lineHeight: 1.5,
+                marginTop: theme.spacing(2),
+                paddingInline: theme.spacing(1),
+              },
+            })}
           >
             {t("hero_description")}
           </Typography>
