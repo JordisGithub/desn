@@ -12,9 +12,7 @@ import { useTranslation } from "react-i18next";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EventRegistrationModal from "../events/EventRegistrationModal";
 import EventService from "../../services/EventService";
-import eventImage1 from "../../assets/optimized/home-events1-jpg-800.jpg";
-import eventImage2 from "../../assets/optimized/home-events2-jpg-800.jpg";
-import eventImage3 from "../../assets/optimized/home-events3-jpg-800.jpg";
+import { getEventDisplayImageUrl } from "../../utils/eventImages";
 
 const EventsContainer = styled("section")({
   backgroundColor: "white",
@@ -295,21 +293,6 @@ interface EventData {
 }
 
 // Map event IDs to imported image URLs
-const getEventImageUrl = (eventId: number, event?: EventData): string => {
-  // First try using the backend imageUrl field if it exists and is not an Unsplash URL
-  if (event?.imageUrl && !event.imageUrl.includes("unsplash")) {
-    return event.imageUrl;
-  }
-
-  // Fallback to imported local event images
-  const imageMap: Record<number, string> = {
-    1: eventImage1,
-    2: eventImage2,
-    3: eventImage3,
-  };
-  return imageMap[eventId] || "";
-};
-
 export default function EventsSection() {
   const { t } = useTranslation();
   const [selectedEvent, setSelectedEvent] = useState<{
@@ -458,13 +441,17 @@ export default function EventsSection() {
               const startDate = new Date(event.startDate);
               const endDate = new Date(event.endDate);
               const status = eventStatuses[event.id];
+              const imageSrc = getEventDisplayImageUrl(
+                event.id,
+                event.imageUrl
+              );
 
               return (
                 <EventCard key={event.id}>
                   <ImageWrapper>
-                    {getEventImageUrl(event.id, event) ? (
+                    {imageSrc ? (
                       <img
-                        src={getEventImageUrl(event.id, event)}
+                        src={imageSrc}
                         alt={event.title}
                         loading='lazy'
                         className='event-image'

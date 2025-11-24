@@ -138,6 +138,9 @@ const AdminDashboard: React.FC = () => {
   const isMountedRef = React.useRef(true);
 
   useEffect(() => {
+    // Mark component as mounted before running any logic
+    isMountedRef.current = true;
+
     // Wait until auth state is resolved before deciding access
     if (!isAuthReady) return;
 

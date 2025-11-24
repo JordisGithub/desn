@@ -29,12 +29,16 @@ import {
   Select,
   MenuItem,
   Checkbox,
+  Snackbar,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ApiService from "../../services/ApiService";
+import EventService from "../../services/EventService";
+import type { EventResponse } from "../../services/EventService";
+import { getEventDisplayImageUrl } from "../../utils/eventImages";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface Event {
@@ -42,9 +46,9 @@ interface Event {
   title: string;
   description?: string;
   altText?: string;
-  titleTranslations?: string;
-  descriptionTranslations?: string;
-  altTextTranslations?: string;
+  titleTranslations?: string | Record<string, string>;
+  descriptionTranslations?: string | Record<string, string>;
+  altTextTranslations?: string | Record<string, string>;
   startDate: string;
   endDate: string;
   location: string;
@@ -68,6 +72,52 @@ interface EventFormData {
   maxAttendees: number | "";
   featured: boolean;
 }
+
+const createEmptyTranslations = (initialValue = "") => ({
+  en: initialValue,
+  ne: initialValue,
+  new: initialValue,
+  mai: initialValue,
+});
+
+const createInitialFormData = (): EventFormData => ({
+  title: "",
+  description: "",
+  altText: "",
+  titleTranslations: createEmptyTranslations(),
+  descriptionTranslations: createEmptyTranslations(),
+  altTextTranslations: createEmptyTranslations(),
+  startDate: "",
+  endDate: "",
+  location: "",
+  maxAttendees: "",
+  featured: false,
+});
+
+const parseTranslationMap = (
+  value?: string | Record<string, string>,
+  fallback = ""
+): Record<string, string> => {
+  const base = createEmptyTranslations(fallback || "");
+
+  if (!value) {
+    return base;
+  }
+
+  try {
+    const parsedValue =
+      typeof value === "string"
+        ? (JSON.parse(value) as Record<string, string>)
+        : value;
+    return {
+      ...base,
+      ...parsedValue,
+    };
+  } catch (err) {
+    console.error("Failed to parse translation data:", err);
+    return base;
+  }
+};
 
 const StyledTableCell = styled(TableCell)({
   fontWeight: 600,
@@ -108,19 +158,10 @@ export default function EventManagementPanel({
   const [currentLanguage, setCurrentLanguage] = useState<string>("en");
   const [primaryLanguage, setPrimaryLanguage] = useState<string>("en");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [formData, setFormData] = useState<EventFormData>({
-    title: "",
-    description: "",
-    altText: "",
-    titleTranslations: { en: "", ne: "", new: "", mai: "" },
-    descriptionTranslations: { en: "", ne: "", new: "", mai: "" },
-    altTextTranslations: { en: "", ne: "", new: "", mai: "" },
-    startDate: "",
-    endDate: "",
-    location: "",
-    maxAttendees: "",
-    featured: false,
-  });
+  const [formData, setFormData] = useState<EventFormData>(
+    createInitialFormData()
+  );
+  const [dialogLoading, setDialogLoading] = useState(false);
 
   useEffect(() => {
     fetchEvents();
@@ -166,89 +207,85 @@ export default function EventManagementPanel({
     }
   };
 
-  const handleOpenDialog = (event?: Event) => {
-    if (event) {
-      setSelectedEvent(event);
+  const resetFormState = () => {
+    setFormData(createInitialFormData());
+    setImagePreview(null);
+    setImageFile(null);
+  };
 
-      // Parse translations from JSON strings if they exist
-      let titleTranslations = { en: "", ne: "", new: "", mai: "" };
-      let descriptionTranslations = { en: "", ne: "", new: "", mai: "" };
-      let altTextTranslations = { en: "", ne: "", new: "", mai: "" };
+  const hydrateFormFromEvent = (eventData: Event | EventResponse) => {
+    const titleTranslations = parseTranslationMap(
+      eventData.titleTranslations,
+      eventData.title
+    );
+    const descriptionTranslations = parseTranslationMap(
+      eventData.descriptionTranslations,
+      eventData.description || ""
+    );
+    const altTextTranslations = parseTranslationMap(
+      eventData.altTextTranslations,
+      eventData.altText || ""
+    );
 
-      if (typeof event.titleTranslations === "string") {
-        try {
-          titleTranslations = JSON.parse(event.titleTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.titleTranslations) {
-        titleTranslations = event.titleTranslations;
-      }
+    setFormData({
+      title: titleTranslations.en,
+      description: descriptionTranslations.en,
+      altText: altTextTranslations.en,
+      titleTranslations,
+      descriptionTranslations,
+      altTextTranslations,
+      startDate: eventData.startDate.split("T")[0],
+      endDate: eventData.endDate.split("T")[0],
+      location: eventData.location,
+      maxAttendees: eventData.maxAttendees,
+      featured: eventData.featured || false,
+    });
 
-      if (typeof event.descriptionTranslations === "string") {
-        try {
-          descriptionTranslations = JSON.parse(event.descriptionTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.descriptionTranslations) {
-        descriptionTranslations = event.descriptionTranslations;
-      }
+    const adminImageUrl = getEventDisplayImageUrl(
+      eventData.id,
+      eventData.imageUrl
+    );
 
-      if (typeof event.altTextTranslations === "string") {
-        try {
-          altTextTranslations = JSON.parse(event.altTextTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.altTextTranslations) {
-        altTextTranslations = event.altTextTranslations;
-      }
-
-      setFormData({
-        title: event.title,
-        description: event.description || "",
-        altText: event.altText || "",
-        titleTranslations,
-        descriptionTranslations,
-        altTextTranslations,
-        startDate: event.startDate.split("T")[0],
-        endDate: event.endDate.split("T")[0],
-        location: event.location,
-        maxAttendees: event.maxAttendees,
-        featured: event.featured || false,
-      });
-
-      // Set image preview from existing event URL
-      if (event.imageUrl) {
-        // Construct full URL if imageUrl is relative
-        const fullImageUrl = event.imageUrl.startsWith("http")
-          ? event.imageUrl
-          : `${import.meta.env.VITE_API_BASE_URL || ""}${event.imageUrl}`;
-        setImagePreview(fullImageUrl);
-      }
-      setImageFile(null);
+    if (adminImageUrl) {
+      const isAbsolute = /^(https?:)?\/\//.test(adminImageUrl);
+      const isDataUrl = adminImageUrl.startsWith("data:");
+      const fullImageUrl =
+        isAbsolute || isDataUrl
+          ? adminImageUrl
+          : adminImageUrl.startsWith("/")
+          ? adminImageUrl
+          : `${import.meta.env.VITE_API_BASE_URL || ""}${adminImageUrl}`;
+      setImagePreview(fullImageUrl);
     } else {
-      setSelectedEvent(null);
-      setFormData({
-        title: "",
-        description: "",
-        altText: "",
-        titleTranslations: { en: "", ne: "", new: "", mai: "" },
-        descriptionTranslations: { en: "", ne: "", new: "", mai: "" },
-        altTextTranslations: { en: "", ne: "", new: "", mai: "" },
-        startDate: "",
-        endDate: "",
-        location: "",
-        maxAttendees: "",
-        featured: false,
-      });
       setImagePreview(null);
-      setImageFile(null);
     }
+    setImageFile(null);
+  };
+
+  const handleOpenDialog = async (event?: Event) => {
     setCurrentLanguage("en");
     setFormErrors({});
+
+    if (!event) {
+      setSelectedEvent(null);
+      resetFormState();
+      setOpenDialog(true);
+      return;
+    }
+
+    setSelectedEvent(event);
+    hydrateFormFromEvent(event);
     setOpenDialog(true);
+    setDialogLoading(true);
+
+    try {
+      const detailedEvent = await EventService.getEventById(event.id);
+      hydrateFormFromEvent(detailedEvent);
+    } catch (err) {
+      console.error("Error loading event details:", err);
+    } finally {
+      setDialogLoading(false);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -298,6 +335,12 @@ export default function EventManagementPanel({
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedEvent(null);
+    setDialogLoading(false);
+  };
+
+  const handleSuccessClose = (_event?: unknown, reason?: string) => {
+    if (reason === "clickaway") return;
+    setSuccess(null);
   };
 
   const handleFormChange = (
@@ -311,6 +354,9 @@ export default function EventManagementPanel({
   };
 
   const handleSaveEvent = async () => {
+    if (dialogLoading) {
+      return;
+    }
     // Clear previous errors
     setFormErrors({});
     setError(null);
@@ -523,6 +569,8 @@ export default function EventManagementPanel({
   const handleConfirmDelete = async () => {
     if (!selectedEvent) return;
 
+    const eventToDelete = selectedEvent;
+
     setLoading(true);
     setError(null);
 
@@ -534,12 +582,14 @@ export default function EventManagementPanel({
     }
 
     try {
-      await ApiService.deleteWithAuth(`/api/events/${selectedEvent.id}`);
+      await ApiService.deleteWithAuth(`/api/events/${eventToDelete.id}`);
 
-      setSuccess(`Event "${selectedEvent.title}" deleted successfully`);
+      setEvents((prev) =>
+        prev.filter((event) => event.id !== eventToDelete.id)
+      );
+      setSuccess(`Event "${eventToDelete.title}" deleted successfully`);
       setDeleteDialogOpen(false);
       setSelectedEvent(null);
-      fetchEvents();
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
@@ -591,17 +641,24 @@ export default function EventManagementPanel({
         </Alert>
       )}
 
-      {success && (
+      <Snackbar
+        open={!!success}
+        autoHideDuration={4000}
+        onClose={handleSuccessClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
         <Alert
           severity='success'
-          sx={{ mb: 3 }}
-          onClose={() => setSuccess(null)}
+          onClose={handleSuccessClose}
+          variant='filled'
+          elevation={6}
           role='status'
           aria-live='polite'
+          sx={{ width: "100%" }}
         >
           {success}
         </Alert>
-      )}
+      </Snackbar>
 
       <Box sx={{ mb: 3, display: "flex", justifyContent: "flex-end" }}>
         <Button
@@ -776,7 +833,28 @@ export default function EventManagementPanel({
         >
           {selectedEvent ? "Edit Event" : "Add New Event"}
         </DialogTitle>
-        <DialogContent sx={{ pt: 3 }}>
+        <DialogContent sx={{ pt: 3, position: "relative" }}>
+          {dialogLoading && (
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                bgcolor: "rgba(255,255,255,0.86)",
+                zIndex: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                p: 3,
+              }}
+            >
+              <CircularProgress aria-label='Loading event details' />
+              <Typography variant='body2' sx={{ mt: 2, color: "#004c91" }}>
+                Loading event details...
+              </Typography>
+            </Box>
+          )}
           <Typography
             id='event-dialog-description'
             sx={{ mb: 2, color: "#595959" }}
@@ -785,7 +863,13 @@ export default function EventManagementPanel({
               ? "Edit event details. Select your primary language and fill in the required fields. Other languages will be auto-filled."
               : "Create a new event. Select your primary language and fill in the required fields. Other languages will be auto-filled with the same content."}
           </Typography>
-          <Stack spacing={2.5}>
+          <Stack
+            spacing={2.5}
+            sx={{
+              opacity: dialogLoading ? 0.4 : 1,
+              pointerEvents: dialogLoading ? "none" : "auto",
+            }}
+          >
             {/* Primary Language Selector */}
             <FormControl fullWidth>
               <InputLabel id='primary-language-label'>
@@ -1207,7 +1291,7 @@ export default function EventManagementPanel({
                 outlineOffset: "2px",
               },
             }}
-            disabled={loading}
+            disabled={loading || dialogLoading}
           >
             {loading ? "Saving..." : selectedEvent ? "Update" : "Create"}
           </Button>
