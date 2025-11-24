@@ -22,32 +22,37 @@ const PageContainer = styled(Box)({
 });
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: "linear-gradient(180deg, #004c91 0%, #004c91 50%, #00a77f 100%)",
+  background: "linear-gradient(180deg, #004c91 0%, #004c91 55%, #00a77f 100%)",
   color: "#ffffff",
-  padding: theme.spacing(16, 4),
+  padding: theme.spacing(14, 4),
   position: "relative",
   overflow: "hidden",
+  // Decorative circles made fluid & hidden on very small screens
   "&::before": {
     content: '""',
     position: "absolute",
-    top: "80px",
-    right: "879px",
-    width: "384px",
-    height: "384px",
+    top: "10%",
+    right: "-15%",
+    width: "40vw",
+    maxWidth: 420,
+    aspectRatio: "1 / 1",
     background: "rgba(255, 255, 255, 0.05)",
     borderRadius: "50%",
     filter: "blur(100px)",
+    pointerEvents: "none",
   },
   "&::after": {
     content: '""',
     position: "absolute",
-    top: "62.5px",
-    left: "160px",
-    width: "600px",
-    height: "600px",
-    background: "rgba(246, 212, 105, 0.1)",
+    top: "5%",
+    left: "-10%",
+    width: "55vw",
+    maxWidth: 640,
+    aspectRatio: "1 / 1",
+    background: "rgba(246, 212, 105, 0.12)",
     borderRadius: "50%",
-    filter: "blur(100px)",
+    filter: "blur(120px)",
+    pointerEvents: "none",
   },
   [theme.breakpoints.down("lg")]: {
     padding: theme.spacing(12, 4),
@@ -56,7 +61,12 @@ const HeroSection = styled(Box)(({ theme }) => ({
     padding: theme.spacing(10, 3),
   },
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(8, 2),
+    padding: theme.spacing(8, 2.5),
+    "&::before": { display: "none" },
+    "&::after": { display: "none" },
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: theme.spacing(6, 2),
   },
 }));
 
@@ -83,38 +93,20 @@ const Badge = styled(Box)(({ theme }) => ({
 }));
 
 const PageTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "3.75rem",
+  fontSize: "clamp(2rem, 6vw, 3.5rem)",
   fontWeight: 400,
   marginBottom: theme.spacing(3),
-  lineHeight: 1.2,
+  lineHeight: 1.15,
   fontFamily: "Poppins, sans-serif",
   color: "#ffffff",
-  [theme.breakpoints.down("lg")]: {
-    fontSize: "3.25rem",
-  },
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2.75rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem",
-  },
-  [theme.breakpoints.down("xs")]: {
-    fontSize: "1.75rem",
-  },
 }));
 
 const PageIntro = styled(Typography)(({ theme }) => ({
-  fontSize: "1.5rem",
+  fontSize: "clamp(1rem, 2.2vw, 1.4rem)",
   lineHeight: 1.5,
   marginBottom: theme.spacing(3),
-  color: "rgba(255, 255, 255, 0.95)",
-  maxWidth: "928px",
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.35rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.125rem",
-  },
+  color: "rgba(255, 255, 255, 0.92)",
+  maxWidth: "860px",
 }));
 
 const LastUpdated = styled(Typography)(({ theme }) => ({
@@ -132,55 +124,44 @@ const LastUpdated = styled(Typography)(({ theme }) => ({
 const Section = styled(Box)(({ theme }) => ({
   padding: theme.spacing(12, 4),
   [theme.breakpoints.down("lg")]: {
-    padding: theme.spacing(10, 3),
+    padding: theme.spacing(10, 3.5),
   },
   [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(8, 2.5),
+    padding: theme.spacing(8, 3),
   },
   [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(6, 2),
+    padding: theme.spacing(6, 2.5),
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: theme.spacing(5, 2),
   },
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "3rem",
+  fontSize: "clamp(1.75rem, 5vw, 2.75rem)",
   fontWeight: 400,
   color: "#004c91",
   textAlign: "center",
   marginBottom: theme.spacing(3),
   fontFamily: "Poppins, sans-serif",
-  [theme.breakpoints.down("md")]: {
-    fontSize: "2.5rem",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "2rem",
-  },
 }));
 
 const SectionSubtitle = styled(Typography)(({ theme }) => ({
-  fontSize: "1.25rem",
-  lineHeight: 1.5,
+  fontSize: "clamp(0.95rem, 1.8vw, 1.2rem)",
+  lineHeight: 1.55,
   color: "#333333",
   textAlign: "center",
-  maxWidth: "896px",
+  maxWidth: "860px",
   margin: "0 auto",
   marginBottom: theme.spacing(6),
   padding: theme.spacing(0, 2),
-  [theme.breakpoints.down("md")]: {
-    fontSize: "1.125rem",
-    marginBottom: theme.spacing(5),
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-    marginBottom: theme.spacing(4),
-  },
 }));
 
 const CommitmentCard = styled(Box)(({ theme }) => ({
   backgroundColor: "#ffffff",
   border: "2px solid #e5e7eb",
   borderRadius: theme.spacing(2),
-  padding: theme.spacing(6),
+  padding: theme.spacing(5.5),
   height: "100%",
   display: "flex",
   flexDirection: "column",
@@ -190,7 +171,10 @@ const CommitmentCard = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(4),
-    gap: theme.spacing(2.5),
+    gap: theme.spacing(2.25),
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: theme.spacing(3.25),
   },
 }));
 
@@ -209,23 +193,17 @@ const CardIconContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const CardTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "1.5rem",
+const CardTitle = styled(Typography)(() => ({
+  fontSize: "clamp(1.1rem, 2.2vw, 1.45rem)",
   fontWeight: 400,
   color: "#004c91",
   fontFamily: "Poppins, sans-serif",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.35rem",
-  },
 }));
 
-const CardText = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
+const CardText = styled(Typography)(() => ({
+  fontSize: "clamp(0.95rem, 1.7vw, 1.1rem)",
   color: "#333333",
-  lineHeight: 1.5,
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-  },
+  lineHeight: 1.55,
 }));
 
 const FeatureCard = styled(Box)(({ theme }) => ({
@@ -241,6 +219,9 @@ const FeatureCard = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(3.5),
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: theme.spacing(3),
   },
 }));
 
@@ -265,7 +246,10 @@ const ContactCard = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(4),
-    gap: theme.spacing(2.5),
+    gap: theme.spacing(2.25),
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: theme.spacing(3.25),
   },
 }));
 
@@ -284,31 +268,23 @@ const ContactIconContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ContactTitle = styled(Typography)(({ theme }) => ({
-  fontSize: "1.5rem",
+const ContactTitle = styled(Typography)(() => ({
+  fontSize: "clamp(1.1rem, 2.2vw, 1.45rem)",
   fontWeight: 400,
   color: "#004c91",
   fontFamily: "Poppins, sans-serif",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1.35rem",
-  },
 }));
 
-const ContactSubtitle = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
+const ContactSubtitle = styled(Typography)(() => ({
+  fontSize: "clamp(0.95rem, 1.7vw, 1.05rem)",
   color: "#333333",
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-  },
+  lineHeight: 1.5,
 }));
 
-const ContactLink = styled(Typography)(({ theme }) => ({
-  fontSize: "1.125rem",
+const ContactLink = styled(Typography)(() => ({
+  fontSize: "clamp(0.95rem, 1.7vw, 1.05rem)",
   color: "#008060",
   fontWeight: 500,
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "1rem",
-  },
 }));
 
 const InfoBox = styled(Box)(({ theme }) => ({
