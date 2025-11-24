@@ -205,7 +205,7 @@ export default {
 
   monitoring_title: "Continuous Monitoring",
   monitoring_text:
-    "Production site monitored daily for accessibility regressions",
+    "Automated a11y-mcp audit of core production pages runs daily at 02:00 UTC; critical WCAG 2.2 AA issues automatically open or update a tracking issue",
   monitoring_item_1: "Daily scans of production site at 2 AM UTC",
   monitoring_item_2: "Automated alerts for critical accessibility issues",
   monitoring_item_3:
