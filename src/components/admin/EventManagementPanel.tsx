@@ -29,12 +29,16 @@ import {
   Select,
   MenuItem,
   Checkbox,
+  Snackbar,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ApiService from "../../services/ApiService";
+import EventService from "../../services/EventService";
+import type { EventResponse } from "../../services/EventService";
+import { getEventDisplayImageUrl } from "../../utils/eventImages";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface Event {
@@ -42,9 +46,9 @@ interface Event {
   title: string;
   description?: string;
   altText?: string;
-  titleTranslations?: string;
-  descriptionTranslations?: string;
-  altTextTranslations?: string;
+  titleTranslations?: string | Record<string, string>;
+  descriptionTranslations?: string | Record<string, string>;
+  altTextTranslations?: string | Record<string, string>;
   startDate: string;
   endDate: string;
   location: string;
@@ -68,6 +72,52 @@ interface EventFormData {
   maxAttendees: number | "";
   featured: boolean;
 }
+
+const createEmptyTranslations = (initialValue = "") => ({
+  en: initialValue,
+  ne: initialValue,
+  new: initialValue,
+  mai: initialValue,
+});
+
+const createInitialFormData = (): EventFormData => ({
+  title: "",
+  description: "",
+  altText: "",
+  titleTranslations: createEmptyTranslations(),
+  descriptionTranslations: createEmptyTranslations(),
+  altTextTranslations: createEmptyTranslations(),
+  startDate: "",
+  endDate: "",
+  location: "",
+  maxAttendees: "",
+  featured: false,
+});
+
+const parseTranslationMap = (
+  value?: string | Record<string, string>,
+  fallback = ""
+): Record<string, string> => {
+  const base = createEmptyTranslations(fallback || "");
+
+  if (!value) {
+    return base;
+  }
+
+  try {
+    const parsedValue =
+      typeof value === "string"
+        ? (JSON.parse(value) as Record<string, string>)
+        : value;
+    return {
+      ...base,
+      ...parsedValue,
+    };
+  } catch (err) {
+    console.error("Failed to parse translation data:", err);
+    return base;
+  }
+};
 
 const StyledTableCell = styled(TableCell)({
   fontWeight: 600,
@@ -104,21 +154,14 @@ export default function EventManagementPanel({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState<string>("en");
   const [primaryLanguage, setPrimaryLanguage] = useState<string>("en");
-  const [formData, setFormData] = useState<EventFormData>({
-    title: "",
-    description: "",
-    altText: "",
-    titleTranslations: { en: "", ne: "", new: "", mai: "" },
-    descriptionTranslations: { en: "", ne: "", new: "", mai: "" },
-    altTextTranslations: { en: "", ne: "", new: "", mai: "" },
-    startDate: "",
-    endDate: "",
-    location: "",
-    maxAttendees: "",
-    featured: false,
-  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<EventFormData>(
+    createInitialFormData()
+  );
+  const [dialogLoading, setDialogLoading] = useState(false);
 
   useEffect(() => {
     fetchEvents();
@@ -164,85 +207,123 @@ export default function EventManagementPanel({
     }
   };
 
-  const handleOpenDialog = (event?: Event) => {
-    if (event) {
-      setSelectedEvent(event);
+  const resetFormState = () => {
+    setFormData(createInitialFormData());
+    setImagePreview(null);
+    setImageFile(null);
+  };
 
-      // Parse translations from JSON strings if they exist
-      let titleTranslations = { en: "", ne: "", new: "", mai: "" };
-      let descriptionTranslations = { en: "", ne: "", new: "", mai: "" };
-      let altTextTranslations = { en: "", ne: "", new: "", mai: "" };
+  const hydrateFormFromEvent = (eventData: Event | EventResponse) => {
+    const titleTranslations = parseTranslationMap(
+      eventData.titleTranslations,
+      eventData.title
+    );
+    const descriptionTranslations = parseTranslationMap(
+      eventData.descriptionTranslations,
+      eventData.description || ""
+    );
+    const altTextTranslations = parseTranslationMap(
+      eventData.altTextTranslations,
+      eventData.altText || ""
+    );
 
-      if (typeof event.titleTranslations === "string") {
-        try {
-          titleTranslations = JSON.parse(event.titleTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.titleTranslations) {
-        titleTranslations = event.titleTranslations;
-      }
+    setFormData({
+      title: titleTranslations.en,
+      description: descriptionTranslations.en,
+      altText: altTextTranslations.en,
+      titleTranslations,
+      descriptionTranslations,
+      altTextTranslations,
+      startDate: eventData.startDate.split("T")[0],
+      endDate: eventData.endDate.split("T")[0],
+      location: eventData.location,
+      maxAttendees: eventData.maxAttendees,
+      featured: eventData.featured || false,
+    });
 
-      if (typeof event.descriptionTranslations === "string") {
-        try {
-          descriptionTranslations = JSON.parse(event.descriptionTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.descriptionTranslations) {
-        descriptionTranslations = event.descriptionTranslations;
-      }
+    const adminImageUrl = getEventDisplayImageUrl(
+      eventData.id,
+      eventData.imageUrl
+    );
 
-      if (typeof event.altTextTranslations === "string") {
-        try {
-          altTextTranslations = JSON.parse(event.altTextTranslations);
-        } catch {
-          // Use default if parsing fails
-        }
-      } else if (event.altTextTranslations) {
-        altTextTranslations = event.altTextTranslations;
-      }
-
-      setFormData({
-        title: event.title,
-        description: event.description || "",
-        altText: event.altText || "",
-        titleTranslations,
-        descriptionTranslations,
-        altTextTranslations,
-        startDate: event.startDate.split("T")[0],
-        endDate: event.endDate.split("T")[0],
-        location: event.location,
-        maxAttendees: event.maxAttendees,
-        featured: event.featured || false,
-      });
-      if (event.imageUrl) {
-        setImagePreview(event.imageUrl);
-      }
+    if (adminImageUrl) {
+      const isAbsolute = /^(https?:)?\/\//.test(adminImageUrl);
+      const isDataUrl = adminImageUrl.startsWith("data:");
+      const fullImageUrl =
+        isAbsolute || isDataUrl
+          ? adminImageUrl
+          : adminImageUrl.startsWith("/")
+          ? adminImageUrl
+          : `${import.meta.env.VITE_API_BASE_URL || ""}${adminImageUrl}`;
+      setImagePreview(fullImageUrl);
     } else {
-      setSelectedEvent(null);
-      setFormData({
-        title: "",
-        description: "",
-        altText: "",
-        titleTranslations: { en: "", ne: "", new: "", mai: "" },
-        descriptionTranslations: { en: "", ne: "", new: "", mai: "" },
-        altTextTranslations: { en: "", ne: "", new: "", mai: "" },
-        startDate: "",
-        endDate: "",
-        location: "",
-        maxAttendees: "",
-        featured: false,
-      });
       setImagePreview(null);
     }
+    setImageFile(null);
+  };
+
+  const handleOpenDialog = async (event?: Event) => {
     setCurrentLanguage("en");
+    setFormErrors({});
+
+    if (!event) {
+      setSelectedEvent(null);
+      resetFormState();
+      setOpenDialog(true);
+      return;
+    }
+
+    setSelectedEvent(event);
+    hydrateFormFromEvent(event);
     setOpenDialog(true);
+    setDialogLoading(true);
+
+    try {
+      const detailedEvent = await EventService.getEventById(event.id);
+      hydrateFormFromEvent(detailedEvent);
+    } catch (err) {
+      console.error("Error loading event details:", err);
+    } finally {
+      setDialogLoading(false);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validate file type
+      const validTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!validTypes.includes(file.type)) {
+        setFormErrors((prev) => ({
+          ...prev,
+          image: "Please upload a valid image file (JPEG, PNG, GIF, or WebP)",
+        }));
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      if (file.size > maxSize) {
+        setFormErrors((prev) => ({
+          ...prev,
+          image: "Image size must be less than 5MB",
+        }));
+        return;
+      }
+
+      // Clear previous image error
+      setFormErrors((prev) => {
+        const { image: _image, ...rest } = prev;
+        return rest;
+      });
+
+      setImageFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
         setImagePreview(event.target?.result as string);
@@ -254,6 +335,12 @@ export default function EventManagementPanel({
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedEvent(null);
+    setDialogLoading(false);
+  };
+
+  const handleSuccessClose = (_event?: unknown, reason?: string) => {
+    if (reason === "clickaway") return;
+    setSuccess(null);
   };
 
   const handleFormChange = (
@@ -267,6 +354,13 @@ export default function EventManagementPanel({
   };
 
   const handleSaveEvent = async () => {
+    if (dialogLoading) {
+      return;
+    }
+    // Clear previous errors
+    setFormErrors({});
+    setError(null);
+
     // Get language name for display
     const languageNames: Record<string, string> = {
       en: "English",
@@ -275,38 +369,87 @@ export default function EventManagementPanel({
       mai: "Maithili",
     };
 
-    // Validate that primary language title and description are provided
-    if (
-      !formData.titleTranslations[primaryLanguage] ||
-      !formData.descriptionTranslations[primaryLanguage] ||
-      !formData.startDate ||
-      !formData.endDate ||
-      !formData.location ||
-      formData.maxAttendees === ""
-    ) {
-      setError(
-        `Please fill in all required fields, including ${languageNames[primaryLanguage]} title and description`
-      );
-      return;
+    const errors: Record<string, string> = {};
+
+    // Validate primary language title
+    const primaryTitle = formData.titleTranslations[primaryLanguage]?.trim();
+    if (!primaryTitle) {
+      errors.title = `${languageNames[primaryLanguage]} title is required`;
+    } else if (primaryTitle.length < 3) {
+      errors.title = "Title must be at least 3 characters long";
+    } else if (primaryTitle.length > 200) {
+      errors.title = "Title must not exceed 200 characters";
     }
 
-    // Validate dates
-    const startDate = new Date(formData.startDate);
-    const endDate = new Date(formData.endDate);
-    if (endDate < startDate) {
-      setError("End date must be after start date");
-      return;
+    // Validate primary language description
+    const primaryDescription =
+      formData.descriptionTranslations[primaryLanguage]?.trim();
+    if (!primaryDescription) {
+      errors.description = `${languageNames[primaryLanguage]} description is required`;
+    } else if (primaryDescription.length < 10) {
+      errors.description = "Description must be at least 10 characters long";
+    } else if (primaryDescription.length > 1000) {
+      errors.description = "Description must not exceed 1000 characters";
+    }
+
+    // Validate alt text if image is provided
+    const primaryAltText =
+      formData.altTextTranslations[primaryLanguage]?.trim();
+    if ((imagePreview || imageFile) && !primaryAltText) {
+      errors.altText =
+        "Alt text is required when an image is provided (for accessibility)";
+    }
+
+    // Validate location
+    if (!formData.location?.trim()) {
+      errors.location = "Location is required";
+    } else if (formData.location.length > 200) {
+      errors.location = "Location must not exceed 200 characters";
+    }
+
+    // Validate start date
+    if (!formData.startDate) {
+      errors.startDate = "Start date is required";
+    } else if (!selectedEvent) {
+      // Only validate future dates for new events, not when editing existing events
+      const startDate = new Date(formData.startDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (startDate < today) {
+        errors.startDate = "Start date cannot be in the past";
+      }
+    }
+
+    // Validate end date
+    if (!formData.endDate) {
+      errors.endDate = "End date is required";
+    } else if (formData.startDate) {
+      const startDate = new Date(formData.startDate);
+      const endDate = new Date(formData.endDate);
+      if (endDate < startDate) {
+        errors.endDate = "End date must be on or after start date";
+      }
     }
 
     // Validate max attendees
-    if (formData.maxAttendees < 1) {
-      setError("Maximum attendees must be at least 1");
-      return;
+    if (formData.maxAttendees === "" || formData.maxAttendees === null) {
+      errors.maxAttendees = "Maximum attendees is required";
+    } else if (formData.maxAttendees < 1) {
+      errors.maxAttendees = "Maximum attendees must be at least 1";
+    } else if (formData.maxAttendees > 10000) {
+      errors.maxAttendees = "Maximum attendees cannot exceed 10,000";
     }
 
     // Check authentication
     if (!user?.token) {
       setError("You must be logged in to create or edit events");
+      return;
+    }
+
+    // If there are validation errors, display them and stop
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setError("Please fix the validation errors before submitting");
       return;
     }
 
@@ -426,6 +569,8 @@ export default function EventManagementPanel({
   const handleConfirmDelete = async () => {
     if (!selectedEvent) return;
 
+    const eventToDelete = selectedEvent;
+
     setLoading(true);
     setError(null);
 
@@ -437,12 +582,14 @@ export default function EventManagementPanel({
     }
 
     try {
-      await ApiService.deleteWithAuth(`/api/events/${selectedEvent.id}`);
+      await ApiService.deleteWithAuth(`/api/events/${eventToDelete.id}`);
 
-      setSuccess(`Event "${selectedEvent.title}" deleted successfully`);
+      setEvents((prev) =>
+        prev.filter((event) => event.id !== eventToDelete.id)
+      );
+      setSuccess(`Event "${eventToDelete.title}" deleted successfully`);
       setDeleteDialogOpen(false);
       setSelectedEvent(null);
-      fetchEvents();
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
@@ -494,17 +641,24 @@ export default function EventManagementPanel({
         </Alert>
       )}
 
-      {success && (
+      <Snackbar
+        open={!!success}
+        autoHideDuration={4000}
+        onClose={handleSuccessClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
         <Alert
           severity='success'
-          sx={{ mb: 3 }}
-          onClose={() => setSuccess(null)}
+          onClose={handleSuccessClose}
+          variant='filled'
+          elevation={6}
           role='status'
           aria-live='polite'
+          sx={{ width: "100%" }}
         >
           {success}
         </Alert>
-      )}
+      </Snackbar>
 
       <Box sx={{ mb: 3, display: "flex", justifyContent: "flex-end" }}>
         <Button
@@ -679,7 +833,28 @@ export default function EventManagementPanel({
         >
           {selectedEvent ? "Edit Event" : "Add New Event"}
         </DialogTitle>
-        <DialogContent sx={{ pt: 3 }}>
+        <DialogContent sx={{ pt: 3, position: "relative" }}>
+          {dialogLoading && (
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                bgcolor: "rgba(255,255,255,0.86)",
+                zIndex: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                p: 3,
+              }}
+            >
+              <CircularProgress aria-label='Loading event details' />
+              <Typography variant='body2' sx={{ mt: 2, color: "#004c91" }}>
+                Loading event details...
+              </Typography>
+            </Box>
+          )}
           <Typography
             id='event-dialog-description'
             sx={{ mb: 2, color: "#595959" }}
@@ -688,7 +863,13 @@ export default function EventManagementPanel({
               ? "Edit event details. Select your primary language and fill in the required fields. Other languages will be auto-filled."
               : "Create a new event. Select your primary language and fill in the required fields. Other languages will be auto-filled with the same content."}
           </Typography>
-          <Stack spacing={2.5}>
+          <Stack
+            spacing={2.5}
+            sx={{
+              opacity: dialogLoading ? 0.4 : 1,
+              pointerEvents: dialogLoading ? "none" : "auto",
+            }}
+          >
             {/* Primary Language Selector */}
             <FormControl fullWidth>
               <InputLabel id='primary-language-label'>
@@ -714,55 +895,105 @@ export default function EventManagementPanel({
               </Select>
             </FormControl>
             {/* Image Upload Section */}
-            <Box
-              sx={{
-                border: "2px dashed #002855",
-                borderRadius: 1,
-                p: 2,
-                textAlign: "center",
-                cursor: "pointer",
-                transition: "all 0.3s",
-                "&:hover": {
-                  backgroundColor: "rgba(0, 40, 85, 0.05)",
-                },
-                "&:focus-within": {
-                  outline: "3px solid #4a90e2",
-                  outlineOffset: "2px",
-                },
-              }}
-              component='label'
-              role='button'
-              tabIndex={0}
-              aria-label='Upload event image'
-            >
-              <input
-                type='file'
-                accept='image/*'
-                hidden
-                onChange={handleImageUpload}
-                aria-label='Select event image file'
-              />
-              <Stack spacing={1} alignItems='center'>
-                <CloudUploadIcon sx={{ fontSize: 32, color: "#004c91" }} />
-                <Typography variant='body2' sx={{ color: "#004c91" }}>
-                  Click to upload event image or drag and drop
+            <Box>
+              <Box
+                sx={{
+                  border: formErrors.image
+                    ? "2px dashed #d32f2f"
+                    : "2px dashed #002855",
+                  borderRadius: 1,
+                  p: 2,
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 40, 85, 0.05)",
+                  },
+                  "&:focus-within": {
+                    outline: "3px solid #4a90e2",
+                    outlineOffset: "2px",
+                  },
+                }}
+                component='label'
+                role='button'
+                tabIndex={0}
+                aria-label='Upload event image'
+              >
+                <input
+                  type='file'
+                  accept='image/*'
+                  hidden
+                  onChange={handleImageUpload}
+                  aria-label='Select event image file'
+                  aria-invalid={!!formErrors.image}
+                  aria-describedby={
+                    formErrors.image ? "image-error" : undefined
+                  }
+                />
+                <Stack spacing={1} alignItems='center'>
+                  <CloudUploadIcon
+                    sx={{
+                      fontSize: 32,
+                      color: formErrors.image ? "#d32f2f" : "#004c91",
+                    }}
+                  />
+                  <Typography
+                    variant='body2'
+                    sx={{ color: formErrors.image ? "#d32f2f" : "#004c91" }}
+                  >
+                    Click to upload event image or drag and drop
+                  </Typography>
+                  <Typography variant='caption' sx={{ color: "#666" }}>
+                    Accepted formats: JPEG, PNG, GIF, WebP • Max size: 5MB
+                  </Typography>
+                </Stack>
+              </Box>
+              {formErrors.image && (
+                <Typography
+                  id='image-error'
+                  variant='caption'
+                  sx={{ color: "#d32f2f", mt: 0.5, display: "block" }}
+                  role='alert'
+                >
+                  {formErrors.image}
                 </Typography>
-              </Stack>
+              )}
             </Box>
 
             {/* Image Preview */}
             {imagePreview && (
-              <Box
-                component='img'
-                src={imagePreview}
-                alt='Event preview'
-                sx={{
-                  maxWidth: "100%",
-                  maxHeight: 200,
-                  borderRadius: 1,
-                  objectFit: "cover",
-                }}
-              />
+              <Box sx={{ position: "relative" }}>
+                <Box
+                  component='img'
+                  src={imagePreview}
+                  alt='Event preview'
+                  sx={{
+                    maxWidth: "100%",
+                    maxHeight: 200,
+                    borderRadius: 1,
+                    objectFit: "cover",
+                    border: "2px solid #e0e0e0",
+                  }}
+                />
+                <IconButton
+                  onClick={() => {
+                    setImagePreview(null);
+                    setImageFile(null);
+                  }}
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    backgroundColor: "rgba(255, 255, 255, 0.9)",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 1)",
+                    },
+                  }}
+                  aria-label='Remove image'
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
             )}
 
             {/* Featured Checkbox */}
@@ -814,103 +1045,233 @@ export default function EventManagementPanel({
                 currentLanguage === primaryLanguage ? " *" : ""
               }`}
               value={formData.titleTranslations[currentLanguage] || ""}
-              onChange={(e) =>
+              onChange={(e) => {
                 setFormData({
                   ...formData,
                   titleTranslations: {
                     ...formData.titleTranslations,
                     [currentLanguage]: e.target.value,
                   },
-                })
-              }
+                });
+                if (formErrors.title && currentLanguage === primaryLanguage) {
+                  setFormErrors((prev) => {
+                    const { title: _title, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               required={currentLanguage === primaryLanguage}
+              error={!!formErrors.title && currentLanguage === primaryLanguage}
               inputProps={{
                 maxLength: 200,
                 "aria-required":
                   currentLanguage === primaryLanguage ? "true" : "false",
                 "aria-label": `Event title in ${currentLanguage.toUpperCase()}`,
+                "aria-invalid":
+                  formErrors.title && currentLanguage === primaryLanguage
+                    ? "true"
+                    : "false",
               }}
               helperText={
-                currentLanguage === primaryLanguage
+                formErrors.title && currentLanguage === primaryLanguage
+                  ? formErrors.title
+                  : currentLanguage === primaryLanguage
                   ? "Required - Maximum 200 characters"
                   : `Optional - If empty, will use ${primaryLanguage.toUpperCase()} content - Maximum 200 characters`
               }
             />
             <TextField
               fullWidth
-              label={`Description (${currentLanguage.toUpperCase()})`}
+              label={`Description (${currentLanguage.toUpperCase()})${
+                currentLanguage === primaryLanguage ? " *" : ""
+              }`}
               value={formData.descriptionTranslations[currentLanguage] || ""}
-              onChange={(e) =>
+              onChange={(e) => {
                 setFormData({
                   ...formData,
                   descriptionTranslations: {
                     ...formData.descriptionTranslations,
                     [currentLanguage]: e.target.value,
                   },
-                })
+                });
+                if (
+                  formErrors.description &&
+                  currentLanguage === primaryLanguage
+                ) {
+                  setFormErrors((prev) => {
+                    const { description: _description, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
+              required={currentLanguage === primaryLanguage}
+              error={
+                !!formErrors.description && currentLanguage === primaryLanguage
               }
               multiline
               rows={3}
-              inputProps={{ maxLength: 1000 }}
+              inputProps={{
+                maxLength: 1000,
+                "aria-invalid":
+                  formErrors.description && currentLanguage === primaryLanguage
+                    ? "true"
+                    : "false",
+              }}
+              helperText={
+                formErrors.description && currentLanguage === primaryLanguage
+                  ? formErrors.description
+                  : currentLanguage === primaryLanguage
+                  ? "Required - Maximum 1000 characters"
+                  : `Optional - If empty, will use ${primaryLanguage.toUpperCase()} content`
+              }
             />
             <TextField
               fullWidth
-              label={`Alt Text (${currentLanguage.toUpperCase()})`}
+              label={`Alt Text (${currentLanguage.toUpperCase()})${
+                (imagePreview || imageFile) &&
+                currentLanguage === primaryLanguage
+                  ? " *"
+                  : ""
+              }`}
               value={formData.altTextTranslations[currentLanguage] || ""}
-              onChange={(e) =>
+              onChange={(e) => {
                 setFormData({
                   ...formData,
                   altTextTranslations: {
                     ...formData.altTextTranslations,
                     [currentLanguage]: e.target.value,
                   },
-                })
+                });
+                if (formErrors.altText && currentLanguage === primaryLanguage) {
+                  setFormErrors((prev) => {
+                    const { altText: _altText, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
+              required={
+                !!(imagePreview || imageFile) &&
+                currentLanguage === primaryLanguage
+              }
+              error={
+                !!formErrors.altText && currentLanguage === primaryLanguage
               }
               multiline
               rows={2}
-              inputProps={{ maxLength: 500 }}
-              helperText='Description of the event image for accessibility'
+              inputProps={{
+                maxLength: 500,
+                "aria-invalid":
+                  formErrors.altText && currentLanguage === primaryLanguage
+                    ? "true"
+                    : "false",
+              }}
+              helperText={
+                formErrors.altText && currentLanguage === primaryLanguage
+                  ? formErrors.altText
+                  : "Description of the event image for accessibility (required if image is uploaded)"
+              }
             />
 
             {/* Common Fields (not language-specific) */}
             <TextField
               fullWidth
-              label='Location'
+              label='Location *'
               name='location'
               value={formData.location}
-              onChange={handleFormChange}
+              onChange={(e) => {
+                handleFormChange(e);
+                if (formErrors.location) {
+                  setFormErrors((prev) => {
+                    const { location: _location, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               required
-              inputProps={{ maxLength: 200 }}
+              error={!!formErrors.location}
+              inputProps={{
+                maxLength: 200,
+                "aria-invalid": !!formErrors.location,
+              }}
+              helperText={
+                formErrors.location || "Event location - Maximum 200 characters"
+              }
             />
             <TextField
               fullWidth
-              label='Start Date'
+              label='Start Date *'
               name='startDate'
               type='date'
               value={formData.startDate}
-              onChange={handleFormChange}
+              onChange={(e) => {
+                handleFormChange(e);
+                if (formErrors.startDate) {
+                  setFormErrors((prev) => {
+                    const { startDate: _startDate, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               required
+              error={!!formErrors.startDate}
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                "aria-invalid": !!formErrors.startDate,
+              }}
+              helperText={formErrors.startDate || "Event start date"}
             />
             <TextField
               fullWidth
-              label='End Date'
+              label='End Date *'
               name='endDate'
               type='date'
               value={formData.endDate}
-              onChange={handleFormChange}
+              onChange={(e) => {
+                handleFormChange(e);
+                if (formErrors.endDate) {
+                  setFormErrors((prev) => {
+                    const { endDate: _endDate, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               required
+              error={!!formErrors.endDate}
               InputLabelProps={{ shrink: true }}
+              inputProps={{
+                "aria-invalid": !!formErrors.endDate,
+              }}
+              helperText={
+                formErrors.endDate ||
+                "Event end date (must be on or after start date)"
+              }
             />
             <TextField
               fullWidth
-              label='Max Attendees'
+              label='Max Attendees *'
               name='maxAttendees'
               type='number'
               value={formData.maxAttendees}
-              onChange={handleFormChange}
+              onChange={(e) => {
+                handleFormChange(e);
+                if (formErrors.maxAttendees) {
+                  setFormErrors((prev) => {
+                    const { maxAttendees: _maxAttendees, ...rest } = prev;
+                    return rest;
+                  });
+                }
+              }}
               required
-              inputProps={{ min: 1 }}
+              error={!!formErrors.maxAttendees}
+              inputProps={{
+                min: 1,
+                max: 10000,
+                "aria-invalid": !!formErrors.maxAttendees,
+              }}
+              helperText={
+                formErrors.maxAttendees ||
+                "Maximum number of attendees (1-10,000)"
+              }
             />
           </Stack>
         </DialogContent>
@@ -930,7 +1291,7 @@ export default function EventManagementPanel({
                 outlineOffset: "2px",
               },
             }}
-            disabled={loading}
+            disabled={loading || dialogLoading}
           >
             {loading ? "Saving..." : selectedEvent ? "Update" : "Create"}
           </Button>

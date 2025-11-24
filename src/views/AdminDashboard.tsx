@@ -117,7 +117,7 @@ interface EventRegistrationData {
 
 const AdminDashboard: React.FC = () => {
   usePageTitle("page_titles.admin_dashboard");
-  const { user, isAdmin } = useAuth();
+  const { user, isAuthReady, isAdminOrOwner } = useAuth();
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [membershipApplications, setMembershipApplications] = useState<
@@ -138,7 +138,13 @@ const AdminDashboard: React.FC = () => {
   const isMountedRef = React.useRef(true);
 
   useEffect(() => {
-    if (!isAdmin) {
+    // Mark component as mounted before running any logic
+    isMountedRef.current = true;
+
+    // Wait until auth state is resolved before deciding access
+    if (!isAuthReady) return;
+
+    if (!isAdminOrOwner) {
       navigate("/");
       return;
     }
@@ -163,7 +169,7 @@ const AdminDashboard: React.FC = () => {
       isMountedRef.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin, navigate]);
+  }, [isAdminOrOwner, isAuthReady, navigate]);
 
   const fetchApplications = async () => {
     if (!isMountedRef.current) return;
@@ -223,7 +229,7 @@ const AdminDashboard: React.FC = () => {
           if (!isMountedRef.current) return;
           // EventService now returns data directly, not wrapped in {success, events}
           setEventsData(Array.isArray(eventsResponse) ? eventsResponse : []);
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error("Error fetching events data:", err);
         }
 
@@ -236,24 +242,24 @@ const AdminDashboard: React.FC = () => {
           setEventsCount(
             Array.isArray(eventsListResponse) ? eventsListResponse.length : 0
           );
-        } catch (err: any) {
-          if (err?.status !== 404) {
+        } catch (err: unknown) {
+          if ((err as { status?: number })?.status !== 404) {
             console.error("Error fetching events count:", err);
           }
         }
 
         // Fetch resources count for Resources tab
         try {
-          const resourcesResponse = await ApiService.get<{ resources: any[] }>(
-            "/api/resources"
-          );
+          const resourcesResponse = await ApiService.get<{
+            resources: unknown[];
+          }>("/api/resources");
           if (!isMountedRef.current) return;
           const resourcesArray = resourcesResponse?.resources || [];
           setResourcesCount(
             Array.isArray(resourcesArray) ? resourcesArray.length : 0
           );
-        } catch (err: any) {
-          if (err?.status !== 404) {
+        } catch (err: unknown) {
+          if ((err as { status?: number })?.status !== 404) {
             console.error("Error fetching resources count:", err);
           }
         }
@@ -263,7 +269,7 @@ const AdminDashboard: React.FC = () => {
       // if (!membershipRes?.ok && !volunteerRes?.ok && !paymentsRes?.ok) {
       //   setError("Failed to fetch data");
       // }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error fetching applications:", err);
       // Don't show error to user if endpoints don't exist yet
       // setError("An error occurred while fetching applications");
@@ -289,7 +295,21 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  if (!isAdmin) {
+  // While auth state is being restored, show a spinner placeholder
+  if (!isAuthReady) {
+    return (
+      <PageContainer>
+        <Container
+          maxWidth='xl'
+          sx={{ display: "flex", justifyContent: "center", py: 8 }}
+        >
+          <CircularProgress aria-label='Restoring session' />
+        </Container>
+      </PageContainer>
+    );
+  }
+
+  if (!isAdminOrOwner) {
     return null;
   }
 
