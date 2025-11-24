@@ -56,8 +56,6 @@ export default {
     "Some third-party payment gateway interfaces have limited accessibility we cannot fully control; we are engaging vendors for improvements.",
   accessibility_limitation_2:
     "Legacy downloadable documents (including older PDFs) are not yet fully tagged or structured for screen readers; remediation for headings, tables, and reading order is in progress.",
-  accessibility_limitation_3:
-    "(Removed - legacy image alternative text has been fully remediated)",
 
   accessibility_feedback_title: "Feedback and Contact Information",
   accessibility_feedback_intro:
@@ -87,12 +85,12 @@ export default {
 
   accessibility_date_title: "Date",
   accessibility_date_text:
-    "This statement was created on November 8, 2025, and last updated on November 8, 2025.",
+    "This statement was created on November 8, 2025, and last updated on November 20, 2025.",
 
   // Extended translations for full page
   wcag_badge: "WCAG 2.2 AA Compliant",
   last_updated_label: "Last Updated:",
-  last_updated_date: "November 22, 2025",
+  last_updated_date: "November 20, 2025",
 
   commitment_section_title: "Our Accessibility Commitment",
   commitment_section_subtitle:

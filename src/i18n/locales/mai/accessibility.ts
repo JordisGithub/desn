@@ -53,10 +53,6 @@ export default {
     "किछु तृतीय-पक्ष भुगतान गेटवे इंटरफेसमे सीमित पहुँचता अछि जाहि पर पूर्ण नियंत्रण नै अछि; सुधार लेल विक्रेता सभसँ संलग्न छी।",
   accessibility_limitation_2:
     "पुरान डाउनलोड योग्य दस्तावेज (जरा पुरान PDF समेटल) स्क्रीन रीडर लेल पूर्ण टैग्ड आ संरचित नै अछि; हेडिंग, टेबल आ रीडिंग ऑर्डर केर सुधार जारी अछि।",
-  accessibility_limitation_3:
-    "(हटायल गेल - पुरान छवि सभक alt पाठ पूर्ण रूप सँ सुधारि देल गेल अछि)",
-  accessibility_limitation_4:
-    "पहिने अपलोड कएल गेल किछु संसाधन दस्तावेज़ पूर्ण रूप सँ स्क्रीन रीडर द्वारा पढ़ल योग्य नै अछि; हम हुनका केँ WCAG 2.2 AA मानक केर अनुरूप बनाएबाक लेल सक्रिय रूप सँ अपडेट करैत छी",
 
   accessibility_feedback_title: "प्रतिक्रिया आ संपर्क जानकारी",
   accessibility_feedback_intro:
@@ -86,12 +82,12 @@ export default {
 
   accessibility_date_title: "तिथि",
   accessibility_date_text:
-    "ई कथन नवंबर ८, २०२५ कें बनाएल गेलै आ अंतिम बेर नवंबर ८, २०२५ कें अपडेट कएल गेलै।",
+    "ई कथन नवंबर ८, २०२५ कें बनाएल गेलै आ अंतिम बेर नवंबर २०, २०२५ कें अपडेट कएल गेलै।",
 
   // Extended translations for full page
   wcag_badge: "WCAG 2.2 AA अनुरूप",
   last_updated_label: "अंतिम अपडेट:",
-  last_updated_date: "नवंबर २२, २०२५",
+  last_updated_date: "नवंबर २०, २०२५",
 
   commitment_section_title: "हमरऽ पहुँचता प्रतिबद्धता",
   commitment_section_subtitle:

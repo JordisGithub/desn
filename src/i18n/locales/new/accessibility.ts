@@ -55,8 +55,6 @@ export default {
     "केही तृतीय-पक्ष भुक्तानी गेटवे इन्टरफेसया सीमित पहुँचयोग्यता छ जें झी पूर्ण नियन्त्रण न्यानातःमि; सुधारया लागि प्रदायकगु सङ्लग्न न्यानादिसँ।",
   accessibility_limitation_2:
     "पुरानो डाउनलोड न्यानातःगु कागजात (पुरानो PDF समेत) स्क्रिन रिडरया लागि पूर्ण ट्याग व् संरचित खुमदिसँ; शीर्षक, तालिका व् पढने क्रम सुधार प्रक्रियामे खः।",
-  accessibility_limitation_3:
-    "(हटायो - पुरानो छवियाक alt पाठ पूर्ण रूपमे सुधार न्यानातःगु छ)",
 
   accessibility_feedback_title: "प्रतिक्रिया व् सम्पर्क जानकारी",
   accessibility_feedback_intro:
@@ -86,12 +84,12 @@ export default {
 
   accessibility_date_title: "मिति",
   accessibility_date_text:
-    "थ्व कथन नोभेम्बर ८, २०२५ मे निर्माण यानातः व् अन्तिम पटक नोभेम्बर ८, २०२५ मे अपडेट यानातः।",
+    "थ्व कथन नोभेम्बर ८, २०२५ मे निर्माण यानातः व् अन्तिम पटक नोभेम्बर २०, २०२५ मे अपडेट यानातः।",
 
   // Extended translations for full page
   wcag_badge: "WCAG 2.2 AA अनुरूप",
   last_updated_label: "अन्तिम अपडेट:",
-  last_updated_date: "नोभेम्बर २२, २०२५",
+  last_updated_date: "नोभेम्बर २०, २०२५",
 
   commitment_section_title: "झीगु पहुँचता प्रतिबद्धता",
   commitment_section_subtitle:
