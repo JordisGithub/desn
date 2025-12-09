@@ -63,12 +63,12 @@ server.ssl.enabled-protocols=TLSv1.2,TLSv1.3
 
 ```bash
 # Generate SSL certificate with Let's Encrypt
-sudo certbot certonly --standalone -d desn.org.np
+sudo certbot certonly --standalone -d desnepal.com
 
 # Convert to PKCS12 format
 openssl pkcs12 -export \
-  -in /etc/letsencrypt/live/desn.org.np/fullchain.pem \
-  -inkey /etc/letsencrypt/live/desn.org.np/privkey.pem \
+  -in /etc/letsencrypt/live/desnepal.com/fullchain.pem \
+  -inkey /etc/letsencrypt/live/desnepal.com/privkey.pem \
   -out keystore.p12 \
   -name tomcat
 ```
@@ -77,10 +77,10 @@ openssl pkcs12 -export \
 
 ```bash
 # Should redirect to HTTPS
-curl -I http://desn.org.np
+curl -I http://desnepal.com
 
 # Should return 200 OK
-curl -I https://desn.org.np
+curl -I https://desnepal.com
 ```
 
 ### 2. CORS Protection
@@ -128,10 +128,10 @@ public class CorsConfig {
 export CORS_ALLOWED_ORIGINS="http://localhost:5175"
 
 # Production
-export CORS_ALLOWED_ORIGINS="https://desn.org.np"
+export CORS_ALLOWED_ORIGINS="https://desnepal.com"
 
 # Multiple origins
-export CORS_ALLOWED_ORIGINS="https://desn.org.np,https://www.desn.org.np"
+export CORS_ALLOWED_ORIGINS="https://desnepal.com,https://www.desnepal.com"
 ```
 
 **What It Prevents:**
