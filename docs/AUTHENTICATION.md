@@ -47,7 +47,7 @@ Frontend Stores Token → Include in API Requests → Backend Validates Token
 **Test Credentials:**
 
 ```
-Email: admin@desn.org.np
+Email: admin@desnepal.com
 Password: admin123
 ```
 
@@ -61,7 +61,7 @@ Password: admin123
 **Test Credentials:**
 
 ```
-Email: member@desn.org.np
+Email: member@desnepal.com
 Password: member123
 ```
 
@@ -75,7 +75,7 @@ Two test users are automatically created on first run:
 
 ```java
 Username: admin
-Email: admin@desn.org.np
+Email: admin@desnepal.com
 Password: admin123
 Role: ADMIN
 ```
@@ -84,7 +84,7 @@ Role: ADMIN
 
 ```java
 Username: member
-Email: member@desn.org.np
+Email: member@desnepal.com
 Password: member123
 Role: MEMBER
 ```
@@ -160,7 +160,7 @@ Authenticate a user.
 
 ```json
 {
-  "email": "admin@desn.org.np",
+  "email": "admin@desnepal.com",
   "password": "admin123"
 }
 ```
@@ -173,7 +173,7 @@ Authenticate a user.
   "type": "Bearer",
   "id": 1,
   "username": "admin",
-  "email": "admin@desn.org.np",
+  "email": "admin@desnepal.com",
   "fullName": "Admin User",
   "role": "ADMIN"
 }
@@ -350,7 +350,7 @@ jwt.expiration=86400000
 
 ```json
 {
-  "sub": "admin@desn.org.np",
+  "sub": "admin@desnepal.com",
   "role": "ADMIN",
   "iat": 1704096000,
   "exp": 1704182400
@@ -394,7 +394,7 @@ server.ssl.key-store-password=keystore_password
 4. **Configure CORS:**
 
 ```properties
-cors.allowed.origins=https://desn.org.np
+cors.allowed.origins=https://desnepal.com
 ```
 
 ## Troubleshooting
@@ -412,7 +412,7 @@ cors.allowed.origins=https://desn.org.np
 
 ```sql
 -- H2 Console: http://localhost:8080/h2-console
-SELECT * FROM users WHERE email = 'admin@desn.org.np';
+SELECT * FROM users WHERE email = 'admin@desnepal.com';
 ```
 
 2. **Backend is Running:**
@@ -468,8 +468,8 @@ SELECT username, email, role FROM users;
 
 2. **Logged In as Admin:**
 
-- Use `admin@desn.org.np` / `admin123`
-- Not `member@desn.org.np`
+- Use `admin@desnepal.com` / `admin123`
+- Not `member@desnepal.com`
 
 3. **Token is Valid:**
 
@@ -537,7 +537,7 @@ if (!isAdmin) {
 
 ```
 1. Open http://localhost:5175/login
-2. Email: admin@desn.org.np
+2. Email: admin@desnepal.com
 3. Password: admin123
 4. Click "Login"
 5. Should redirect to homepage
@@ -595,7 +595,7 @@ curl -X POST http://localhost:8080/api/auth/register \
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@desn.org.np",
+    "email": "admin@desnepal.com",
     "password": "admin123"
   }'
 ```
@@ -632,12 +632,12 @@ CREATE TABLE users (
 ```sql
 -- Admin User
 INSERT INTO users (username, email, full_name, password, role)
-VALUES ('admin', 'admin@desn.org.np', 'Admin User',
+VALUES ('admin', 'admin@desnepal.com', 'Admin User',
         '$2a$10$...bcrypt_hash...', 'ADMIN');
 
 -- Member User
 INSERT INTO users (username, email, full_name, password, role)
-VALUES ('member', 'member@desn.org.np', 'Member User',
+VALUES ('member', 'member@desnepal.com', 'Member User',
         '$2a$10$...bcrypt_hash...', 'MEMBER');
 ```
 

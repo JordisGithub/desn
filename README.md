@@ -170,14 +170,14 @@ desn/
 ### Admin User
 
 ```
-Email: admin@desn.org.np
+Email: admin@desnepal.com
 Password: admin123
 ```
 
 ### Member User
 
 ```
-Email: member@desn.org.np
+Email: member@desnepal.com
 Password: member123
 ```
 

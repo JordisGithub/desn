@@ -22,10 +22,10 @@ public class EmailNotificationService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${app.email.admin:admin@desn.org.np}")
+    @Value("${app.email.admin:admin@desnepal.com}")
     private String adminEmail;
 
-    @Value("${app.email.from:noreply@desn.org.np}")
+    @Value("${app.email.from:noreply@desnepal.com}")
     private String fromEmail;
 
     @Value("${spring.mail.username:#{null}}")

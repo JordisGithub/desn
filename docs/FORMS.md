@@ -164,7 +164,7 @@ Message: I have experience in education programs
 
    ```
    URL: http://localhost:5175/login
-   Email: admin@desn.org.np
+   Email: admin@desnepal.com
    Password: admin123
    ```
 
@@ -221,7 +221,7 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
 # Admin email
-admin.email=admin@desn.org.np
+admin.email=admin@desnepal.com
 
 # Enable/disable notifications
 email.notifications.enabled=true
@@ -460,7 +460,7 @@ Forms are protected by rate limiting:
 CORS is configured to allow only specific origins:
 
 ```properties
-cors.allowed.origins=http://localhost:5175,https://desn.org.np
+cors.allowed.origins=http://localhost:5175,https://desnepal.com
 ```
 
 ## Troubleshooting
@@ -504,7 +504,7 @@ cors.allowed.origins=http://localhost:5175,https://desn.org.np
 1. **Not Logged In as Admin**
 
    ```
-   Email: admin@desn.org.np
+   Email: admin@desnepal.com
    Password: admin123
    ```
 
@@ -540,7 +540,7 @@ cors.allowed.origins=http://localhost:5175,https://desn.org.np
 
    ```properties
    email.notifications.enabled=true
-   admin.email=admin@desn.org.np
+   admin.email=admin@desnepal.com
    ```
 
 4. **Check Logs**

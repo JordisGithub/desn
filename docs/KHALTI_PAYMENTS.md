@@ -147,7 +147,7 @@ OTP: 987654
 **Admin Access:**
 
 ```
-Email: admin@desn.org.np
+Email: admin@desnepal.com
 Password: admin123
 ```
 
@@ -191,7 +191,7 @@ Displays: Transaction ID, Amount
 ```bash
 # Login as admin
 http://localhost:5175/login
-Email: admin@desn.org.np
+Email: admin@desnepal.com
 Password: admin123
 
 # View transactions
@@ -242,7 +242,7 @@ curl "http://localhost:8080/api/payment/verify?pidx=khalti_pidx_xxx&txnId=DESN-x
 export KHALTI_PUBLIC_KEY="live_public_key_xxx"
 export KHALTI_SECRET_KEY="live_secret_key_xxx"
 export KHALTI_API_URL="https://khalti.com/api/v2"  # Production URL
-export APP_BASE_URL="https://desn.org.np"
+export APP_BASE_URL="https://desnepal.com"
 
 # Database
 export SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/desn_prod"
@@ -251,7 +251,7 @@ export SPRING_DATASOURCE_PASSWORD="secure_password"
 
 # Security
 export JWT_SECRET="production-secure-secret-min-256-bits"
-export CORS_ALLOWED_ORIGINS="https://desn.org.np"
+export CORS_ALLOWED_ORIGINS="https://desnepal.com"
 ```
 
 ### Database Migration
@@ -274,7 +274,7 @@ Update for production domain in `SecurityConfig.java`:
 
 ```java
 configuration.setAllowedOrigins(
-    List.of("https://desn.org.np")
+    List.of("https://desnepal.com")
 );
 ```
 
@@ -324,8 +324,8 @@ Initiate a new payment transaction.
   "donorEmail": "john@example.com",
   "donorPhone": "9841234567",
   "donorMessage": "Supporting education",
-  "returnUrl": "https://desn.org.np/payment/verify",
-  "websiteUrl": "https://desn.org.np"
+  "returnUrl": "https://desnepal.com/payment/verify",
+  "websiteUrl": "https://desnepal.com"
 }
 ```
 

@@ -42,7 +42,7 @@ public class DataInitializer {
             if (!userRepository.existsByUsername("owner")) {
                 User owner = new User();
                 owner.setUsername("owner");
-                owner.setEmail("owner@desn.org.np");
+                owner.setEmail("owner@desnepal.com");
                 owner.setPassword(passwordEncoder.encode("owner123"));
                 owner.setFullName("DESN Owner");
                 owner.setRole(User.Role.OWNER);
