@@ -65,14 +65,15 @@ This document provides an accurate maintenance and migration plan for the **Disa
 
 ### Accessibility & Testing
 
-| Technology                 | Version | Purpose                  |
-| -------------------------- | ------- | ------------------------ |
-| **Vitest**                 | 4.0.8   | Testing framework        |
-| **@testing-library/react** | 16.3.0  | Component testing        |
-| **@axe-core/react**        | 4.11.0  | A11y testing (runtime)   |
-| **@axe-core/cli**          | 4.10.3  | A11y testing (CI/CD)     |
-| **jest-axe**               | 10.0.0  | Accessibility assertions |
-| **Lighthouse**             | 12.0.0  | Performance & SEO audits |
+| Technology                 | Version | Purpose                                                          |
+| -------------------------- | ------- | ---------------------------------------------------------------- |
+| **Vitest**                 | 4.0.8   | Testing framework                                                |
+| **@testing-library/react** | 16.3.0  | Component testing                                                |
+| **@axe-core/react**        | 4.11.0  | A11y testing (runtime)                                           |
+| **@axe-core/cli**          | 4.10.3  | A11y testing (CI/CD)                                             |
+| **jest-axe**               | 10.0.0  | Accessibility assertions                                         |
+| **Lighthouse**             | 12.0.0  | Performance & SEO audits                                         |
+| **a11y-mcp**               | Latest  | Accessibility audits via Model Context Protocol (axe-core based) |
 
 ### Payment Integration
 
