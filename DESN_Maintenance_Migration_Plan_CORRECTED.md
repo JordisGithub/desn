@@ -78,13 +78,15 @@ This document provides an accurate maintenance and migration plan for the **Disa
 
 | Technology | Purpose | Status |
 |------------|---------|--------|
-| **Khalti Payment Gateway** | Online donations | ✅ Implemented |
+| **Khalti Payment Gateway** | Online donations | 🚧 Code Ready - Awaiting Khalti Account |
 | **Custom Backend Integration** | Payment verification | ✅ Complete |
 
 ### Infrastructure & DevOps
 
 | Technology | Purpose |
-|------------|---------|
+|------------|---------||
+| **AWS** | Cloud hosting platform |
+| **PostgreSQL** | SQL database |
 | **Nginx** | Reverse proxy & static file serving |
 | **Docker** | Containerization (Dockerfiles present) |
 | **Maven** | Java build tool |
@@ -261,22 +263,23 @@ All routes use lazy loading for performance optimization.
 |---------|---------|---------------|
 | **Multi-language Support** | 4 languages: English, Nepali, Maithili, Newari | `src/i18n/` |
 | **Authentication System** | JWT-based with 3 user roles (Owner, Admin, Member) | `docs/AUTHENTICATION.md` |
-| **Khalti Payment Integration** | Complete donation flow with verification | `docs/KHALTI_PAYMENTS.md` |
+| **Khalti Payment Integration** | Code complete - requires Khalti merchant account setup | `docs/KHALTI_PAYMENTS.md` |
 | **Search Functionality** | Fuzzy search using Fuse.js across all content | `src/services/SearchService.ts` |
 | **Accessibility (WCAG 2.2 AA)** | axe-core audits, keyboard navigation, ARIA labels | Multiple docs in root |
 | **Events Management** | CRUD operations with admin dashboard | `docs/EVENTS.md` |
 | **Resources Management** | Multi-language educational resources | `docs/RESOURCES.md` |
 | **Contact Form** | Email integration with validation | `docs/FORMS.md` |
 | **Membership Forms** | Volunteer & membership applications | `docs/FORMS.md` |
-| **SEO Optimization** | 5 sitemaps, robots.txt, meta tags | `SITEMAP_GUIDE.md` |
+| **SEO Optimization** | 5 sitemaps (sitemap.xml index + 4 categories: main, programs, content, utility), robots.txt, meta tags, Google Search Console verified | `SITEMAP_GUIDE.md`, `public/sitemap*.xml` |
 | **Responsive Design** | Mobile-first with MUI Grid system | Throughout codebase |
 | **Security Features** | Rate limiting, CORS, CSRF, input sanitization | `docs/SECURITY.md` |
 
 ### 🚧 Partially Implemented Features
 
 | Feature | Status | Details |
-|---------|--------|---------|
+|---------|--------|---------||
 | **Donate Page** | Placeholder only | Shows "Donate page coming soon" message |
+| **Khalti Payment Gateway** | Code complete | Requires Khalti merchant account registration and API keys |
 | **Payment History** | Backend ready | Frontend dashboard UI needs enhancement |
 
 ### ❌ Not Implemented (Features Claimed in Original Document)
@@ -292,25 +295,99 @@ All routes use lazy loading for performance optimization.
 
 ## 5. Migration Phases
 
-### Phase 1: Infrastructure Assessment (Week 1-2)
+### Phase 1: Repository Setup & Infrastructure Assessment (Week 1-2)
 
-**Objective:** Evaluate current hosting and infrastructure
+**Objective:** Clone repository to client AWS account and assess infrastructure
 
 **Tasks:**
-- [ ] Identify current hosting provider (AWS/Vercel/DigitalOcean/other)
-- [ ] Document server specifications and costs
-- [ ] Review database backup procedures
-- [ ] Assess SSL certificate management
-- [ ] Evaluate domain DNS configuration (desn.org.np)
+- [ ] Clone repository from `https://github.com/JordisGithub/desn` to client's GitHub/AWS CodeCommit
+- [ ] Set up client AWS account access and permissions
+- [ ] Provision AWS EC2/ECS resources for application hosting
+- [ ] Set up AWS RDS PostgreSQL database instance
+- [ ] Configure AWS security groups and networking
+- [ ] Migrate database schema to client's PostgreSQL instance
+- [ ] Review and configure AWS backup procedures
+- [ ] Set up SSL certificate using AWS Certificate Manager
+- [ ] Configure domain DNS for **desnepal.org** (domain transfer in progress)
+- [ ] Configure domain DNS for **desn.org.np**
 - [ ] Review nginx configuration files
-- [ ] Document environment variables and secrets
+- [ ] Document environment variables and AWS secrets
 
 **Deliverables:**
-- Infrastructure audit report
-- Current hosting cost analysis
-- Risk assessment document
+- Cloned repository in client's AWS environment
+- Configured PostgreSQL database
+- Infrastructure setup documentation
+- AWS resource inventory
 
-### Phase 2: Content Audit (Week 2-3)
+### Phase 1.5: Khalti Payment Gateway Setup (Week 2)
+
+**Objective:** Register for Khalti merchant account and configure payment integration
+
+**Prerequisites:** Client must complete Khalti merchant registration
+
+**Client Action Required:**
+
+1. **Register for Khalti Merchant Account**
+   - Visit: https://khalti.com/
+   - Click "Merchant" or "For Business"
+   - Complete merchant application form
+   - Provide required documentation:
+     - Organization registration certificate
+     - PAN (Permanent Account Number)
+     - Bank account details
+     - Authorized signatory documents
+   - Wait for Khalti verification (typically 2-5 business days)
+
+2. **Get API Credentials**
+   - Once approved, log in to Khalti Merchant Dashboard
+   - Navigate to: Settings → API Keys
+   - Copy **Test Public Key** and **Test Secret Key** (for development)
+   - Copy **Live Public Key** and **Live Secret Key** (for production)
+   - Store these securely - never commit to repository
+
+3. **Test Environment Setup** (After receiving test keys)
+   - Test merchant dashboard: https://test-admin.khalti.com
+   - Use test credentials provided by Khalti
+   - Test payment with test card: **5200 0000 0000 0007**
+   - CVV: **123**, OTP: **987654**
+
+**Developer Tasks (After client provides keys):**
+
+- [ ] Configure test environment variables in AWS:
+  ```bash
+  KHALTI_PUBLIC_KEY=test_public_key_xxx
+  KHALTI_SECRET_KEY=test_secret_key_xxx
+  KHALTI_API_URL=https://a.khalti.com/api/v2
+  APP_BASE_URL=https://desnepal.org
+  ```
+- [ ] Update backend configuration with Khalti credentials
+- [ ] Test payment initiation flow
+- [ ] Test payment verification flow
+- [ ] Verify transaction recording in database
+- [ ] Test error handling scenarios
+- [ ] Document payment flow for client
+
+**Production Deployment (After successful testing):**
+
+- [ ] Switch to Live API keys in AWS production environment
+- [ ] Update `APP_BASE_URL` to production domain
+- [ ] Test real payment with small amount (NPR 10)
+- [ ] Monitor first 10 transactions closely
+- [ ] Set up payment notification alerts
+
+**Support Notes:**
+- Client should inform developer which parts of Khalti setup they can handle independently
+- Developer available to assist with technical integration steps
+- Khalti documentation: https://docs.khalti.com
+- See `docs/KHALTI_PAYMENTS.md` for complete integration guide
+
+**Deliverables:**
+- Active Khalti merchant account
+- Test and production API keys configured
+- Successful test payment transaction
+- Payment integration documentation
+
+### Phase 2: Content Audit (Week 3-4)
 
 **Objective:** Document all content and data
 
@@ -327,9 +404,10 @@ All routes use lazy loading for performance optimization.
 - Content inventory spreadsheet
 - Media assets backup
 
-### Phase 3: Donate Page Implementation (Week 3-4)
+### Phase 3: Donate Page Implementation (Week 4-5)
 
 **Priority:** HIGH - User-facing feature gap
+**Dependency:** Requires completed Khalti setup from Phase 1.5
 
 **Current State:** Placeholder component showing "coming soon"
 
@@ -359,7 +437,7 @@ All routes use lazy loading for performance optimization.
 - Payment testing report
 - User documentation
 
-### Phase 4: Testing & Quality Assurance (Week 4-5)
+### Phase 4: Testing & Quality Assurance (Week 5-6)
 
 **Objective:** Ensure system stability before migration
 
@@ -380,68 +458,89 @@ All routes use lazy loading for performance optimization.
 - Bug tracking spreadsheet
 - Performance metrics (Lighthouse scores)
 
-### Phase 5: Migration Planning (Week 5-6)
+### Phase 5: Domain Transfer & DNS Configuration (Week 6-7)
 
-**Objective:** Prepare detailed migration strategy
+**Objective:** Complete domain transfers and configure DNS
+
+**Domain Information:**
+- **desnepal.org** - Being transferred to client (no cost to client)
+- **desn.org.np** - Existing domain (maintain current registration)
 
 **Tasks:**
-- [ ] Select target hosting provider (if migrating)
-- [ ] Design zero-downtime migration approach
-- [ ] Create database migration scripts
-- [ ] Plan DNS cutover strategy
+- [ ] Complete desnepal.org domain transfer to client's registrar account
+- [ ] Update desnepal.org nameservers to AWS Route 53
+- [ ] Configure AWS Route 53 hosted zones for both domains
+- [ ] Set up DNS records:
+  - A record → AWS EC2/Load Balancer IP
+  - CNAME for www subdomain
+  - MX records for email (if applicable)
+  - TXT records for domain verification
+- [ ] Update desn.org.np DNS to point to AWS infrastructure
+- [ ] Configure SSL certificates in AWS Certificate Manager for both domains
+- [ ] Plan zero-downtime DNS cutover strategy
 - [ ] Prepare rollback procedures
-- [ ] Document new environment setup
-- [ ] Create deployment automation scripts
+- [ ] Test DNS propagation
 
 **Deliverables:**
-- Migration runbook
+- Both domains configured and pointing to AWS
+- SSL certificates active
+- DNS cutover runbook
 - Rollback plan
-- Cost comparison analysis
 
-### Phase 6: Staging Environment Setup (Week 6-7)
+### Phase 6: AWS Production Environment Setup (Week 7-8)
 
-**Objective:** Create production-like test environment
+**Objective:** Configure production AWS environment
 
 **Tasks:**
-- [ ] Provision staging server infrastructure
-- [ ] Deploy frontend build to staging
-- [ ] Deploy backend Spring Boot application
-- [ ] Configure PostgreSQL database
-- [ ] Set up nginx reverse proxy
-- [ ] Configure SSL certificates (Let's Encrypt)
-- [ ] Set environment variables (Khalti test keys)
-- [ ] Import test database snapshot
+- [ ] Set up AWS production environment (separate from staging)
+- [ ] Deploy frontend build to AWS S3 + CloudFront (or EC2)
+- [ ] Deploy backend Spring Boot JAR to AWS EC2/ECS
+- [ ] Configure production PostgreSQL RDS instance
+- [ ] Set up nginx reverse proxy on EC2
+- [ ] Configure AWS Certificate Manager SSL certificates
+- [ ] Set production environment variables in AWS Systems Manager Parameter Store:
+  - Khalti production API keys
+  - JWT secrets
+  - Database credentials
+  - Email configuration
+- [ ] Import production database data
+- [ ] Configure AWS CloudWatch monitoring and alarms
+- [ ] Set up AWS backup automation
 - [ ] Verify all integrations
 
 **Deliverables:**
-- Functioning staging environment
-- Environment configuration documentation
+- Production AWS environment fully configured
+- Environment documentation
 - Smoke test results
+- AWS resource tagging and cost allocation
 
-### Phase 7: Migration Execution (Week 8)
+### Phase 7: Production Deployment (Week 8-9)
 
-**Objective:** Migrate to new infrastructure (if applicable)
+**Objective:** Deploy to AWS production and cutover domains
 
 **Tasks:**
-- [ ] Final database backup
-- [ ] Enable maintenance mode
-- [ ] Deploy to production environment
-- [ ] Run database migrations
-- [ ] Update DNS records (if provider change)
-- [ ] Verify SSL certificates
-- [ ] Switch Khalti to production keys
-- [ ] Test all critical paths
+- [ ] Final database backup from current environment
+- [ ] Enable maintenance mode on current site
+- [ ] Deploy frontend to AWS S3/CloudFront or EC2
+- [ ] Deploy backend JAR to AWS EC2/ECS
+- [ ] Run database migrations on AWS RDS
+- [ ] Update DNS records for desnepal.org and desn.org.np to AWS
+- [ ] Verify AWS Certificate Manager SSL certificates are active
+- [ ] Confirm Khalti production keys are configured
+- [ ] Test all critical paths on new AWS infrastructure
+- [ ] Monitor DNS propagation (24-48 hours)
 - [ ] Disable maintenance mode
-- [ ] Monitor error logs for 24 hours
+- [ ] Monitor AWS CloudWatch logs for 48 hours
 
 **Deliverables:**
-- Migration completion report
-- Production environment documentation
-- Post-migration checklist
+- Production deployment on AWS complete
+- Both domains live on AWS infrastructure
+- Post-deployment checklist
+- AWS environment documentation
 
-### Phase 8: Post-Migration Validation (Week 8-9)
+### Phase 8: Post-Deployment Validation (Week 9-10)
 
-**Objective:** Ensure successful migration
+**Objective:** Ensure successful AWS deployment
 
 **Tasks:**
 - [ ] Verify all routes are accessible
@@ -458,23 +557,37 @@ All routes use lazy loading for performance optimization.
 - Performance comparison (before/after)
 - User acceptance sign-off
 
-### Phase 9: Documentation & Training (Week 9-10)
+### Phase 9: Documentation & Training (Week 10-11)
 
 **Objective:** Enable team to maintain system
 
 **Tasks:**
 - [ ] Create admin user guide (events, resources management)
-- [ ] Document deployment procedures
-- [ ] Write troubleshooting guide
-- [ ] Create backup/restore procedures
-- [ ] Document Khalti payment configuration
+- [ ] Document AWS deployment procedures
+- [ ] Document AWS infrastructure (EC2, RDS, S3, CloudFront)
+- [ ] Write troubleshooting guide for AWS environment
+- [ ] Create AWS backup/restore procedures
+- [ ] Document Khalti payment configuration and testing
 - [ ] Train team on content updates (requires code changes)
 - [ ] Create incident response playbook
+- [ ] Identify client capabilities and support needs
+- [ ] Document what client can handle vs. what requires developer assistance
+
+**Client Capability Assessment:**
+- [ ] Client should communicate which tasks they're comfortable managing:
+  - AWS console access and basic operations?
+  - Database management and SQL queries?
+  - Domain and DNS management?
+  - Payment gateway configuration?
+  - Content updates and deployments?
+- [ ] Developer will provide ongoing support for areas client needs assistance
 
 **Deliverables:**
 - Administrator manual
+- AWS operations guide
 - Developer documentation
 - Training session recording
+- Support agreement based on client capabilities
 
 ### Phase 10: Monitoring & Optimization (Ongoing)
 
@@ -572,55 +685,99 @@ All routes use lazy loading for performance optimization.
 ### Project Timeline
 
 | Phase | Duration | Dependencies |
-|-------|----------|--------------|
-| 1. Infrastructure Assessment | 2 weeks | None |
-| 2. Content Audit | 1 week | Phase 1 |
-| 3. Donate Page Implementation | 2 weeks | Phase 2 |
+|-------|----------|--------------||
+| 1. Repository Setup & Infrastructure | 2 weeks | None |
+| 1.5. Khalti Payment Gateway Setup | 1 week | Phase 1, Client Khalti registration |
+| 2. Content Audit | 2 weeks | Phase 1 |
+| 3. Donate Page Implementation | 2 weeks | Phase 1.5, Phase 2 |
 | 4. Testing & QA | 2 weeks | Phase 3 |
-| 5. Migration Planning | 1 week | Phase 4 |
-| 6. Staging Setup | 1 week | Phase 5 |
-| 7. Migration Execution | 1 week | Phase 6 |
-| 8. Post-Migration Validation | 1 week | Phase 7 |
+| 5. Domain Transfer & DNS | 2 weeks | Phase 4 |
+| 6. AWS Production Setup | 2 weeks | Phase 5 |
+| 7. Production Deployment | 2 weeks | Phase 6 |
+| 8. Post-Deployment Validation | 2 weeks | Phase 7 |
 | 9. Documentation & Training | 2 weeks | Phase 8 |
 | 10. Monitoring & Optimization | Ongoing | Phase 9 |
 
-**Total Project Duration:** 10-12 weeks (2.5-3 months)
+**Total Project Duration:** 14-16 weeks (3.5-4 months)
 
-### Estimated Budget (USD)
+**Note:** Timeline assumes client Khalti registration completed within Phase 1.5 timeframe. Delays in Khalti merchant approval will extend overall timeline.
 
-#### One-Time Costs
+### Cost & Resource Model
 
-| Item | Cost Range | Notes |
-|------|------------|-------|
-| **Infrastructure Migration** | $0 - $2,000 | If changing hosting providers |
-| **Developer Time (Donate Page)** | $2,000 - $4,000 | 40-80 hours @ $50-100/hr |
-| **QA & Testing** | $1,000 - $2,000 | Comprehensive testing |
-| **Documentation & Training** | $1,000 - $1,500 | Admin guides, training sessions |
-| **Security Audit** | $500 - $1,500 | Penetration testing |
-| **Buffer (20%)** | $900 - $2,200 | Contingency |
-| **Total One-Time** | **$5,400 - $13,200** | |
+#### Costs Covered (No Charge to Client)
 
-#### Monthly Recurring Costs
+| Item | Status | Notes |
+|------|--------|-------|
+| **desnepal.org Domain** | ✅ Transferred to client | Domain purchased and being transferred at no cost |
+| **Initial Codebase** | ✅ Provided | Full source code in GitHub repository |
+| **Documentation** | ✅ Included | Comprehensive technical documentation provided |
+| **Developer Support** | 🤝 As needed | Developer available to assist based on client needs |
 
-| Item | Cost Range | Notes |
-|------|------------|-------|
-| **Server Hosting** | $50 - $200 | VPS or cloud hosting |
-| **Database** | $0 - $50 | PostgreSQL (often included in hosting) |
-| **Domain Registration** | $1 - $2 | desn.org.np annual / 12 |
-| **SSL Certificate** | $0 | Let's Encrypt (free) |
-| **Email Service** | $0 - $10 | Gmail SMTP or SendGrid |
-| **Backup Storage** | $5 - $20 | Database backups |
-| **Monitoring Tools** | $0 - $50 | Uptime, error tracking |
-| **Maintenance (Developer)** | $200 - $500 | 4-10 hours/month |
-| **Total Monthly** | **$256 - $832** | |
-| **Total Annual** | **$3,072 - $9,984** | |
+#### Client Responsibilities (AWS Costs)
 
-### Budget Assumptions
+| Item | Estimated Monthly Cost | Notes |
+|------|----------------------|-------|
+| **AWS EC2/ECS (Application Server)** | $20 - $100 | Depends on instance size (t3.small to t3.large) |
+| **AWS RDS PostgreSQL** | $15 - $75 | db.t3.micro to db.t3.small |
+| **AWS S3 Storage** | $1 - $5 | For static assets and backups |
+| **AWS CloudFront CDN** | $0 - $20 | Optional, for better performance |
+| **AWS Certificate Manager** | $0 | Free SSL certificates |
+| **AWS Route 53** | $1 | DNS hosting (2 hosted zones) |
+| **Data Transfer** | $5 - $20 | Bandwidth costs |
+| **AWS CloudWatch** | $0 - $10 | Monitoring and logs |
+| **Total AWS Monthly** | **$42 - $230** | Depends on usage and configuration |
+| **Total AWS Annual** | **$504 - $2,760** | |
 
-- Existing hosting is maintained (no provider change)
-- Developer rates: $50-100/hour
-- Using open-source tools where possible
-- Nepal-based developers (lower rates) could reduce costs by 40-60%
+#### Other Client Costs
+
+| Item | Cost | Frequency | Notes |
+|------|------|-----------|-------|
+| **desn.org.np Domain** | ~$10-15 | Annual | Client's existing domain |
+| **Khalti Transaction Fees** | Variable | Per transaction | Standard Khalti merchant fees apply |
+| **Email Service** (Optional) | $0 - $10 | Monthly | If using external email service |
+
+### Client Capability Assessment
+
+**The client should communicate which areas they can handle and where they need assistance:**
+
+#### Technical Areas
+- [ ] **AWS Console Management** - Can client create and manage AWS resources?
+- [ ] **Database Administration** - Can client perform SQL queries and database maintenance?
+- [ ] **Domain/DNS Management** - Can client configure DNS records and domain settings?
+- [ ] **Server Deployment** - Can client deploy application updates?
+- [ ] **Khalti Integration** - Can client complete merchant registration and API setup?
+- [ ] **Git/GitHub** - Can client use version control for code updates?
+- [ ] **Linux/Terminal** - Is client comfortable with command line operations?
+
+#### Content Management
+- [ ] **Code-based Updates** - Can client edit JSON/React files for content changes?
+- [ ] **Admin Dashboard** - Can client use existing admin UI for events/resources?
+- [ ] **Translation Management** - Can client update i18n translation files?
+
+### Developer Support Model
+
+**Developer (Jordi) will provide assistance in the following ways:**
+
+1. **Technical Guidance** - Help with AWS setup, deployment, and configuration
+2. **Troubleshooting** - Assist when issues arise
+3. **Training** - Teach client team on aspects they want to learn
+4. **Code Updates** - Help with features/changes client cannot implement themselves
+5. **Emergency Support** - Available for critical issues
+
+**Collaboration Approach:**
+- Client should try tasks they feel comfortable with
+- Developer will step in when needed
+- Goal is to transfer knowledge and build client independence
+- No fixed hourly rates - support provided as needed for this project
+
+### Budget Notes
+
+- **No development costs** to client for initial implementation
+- **Only AWS infrastructure costs** which client controls
+- **desnepal.org domain** provided at no cost
+- Client has full control over AWS spending through instance sizing
+- Can start with minimal AWS resources (~$50/month) and scale up as needed
+- Developer support provided based on client needs assessment
 
 ---
 
@@ -736,8 +893,16 @@ All routes use lazy loading for performance optimization.
   - Test Admin: https://test-admin.khalti.com
   - Production Admin: https://admin.khalti.com
   - Documentation: https://docs.khalti.com
+  - **Status:** Client needs to register for merchant account
 - **Google Search Console:** https://search.google.com/search-console
-- **Domain Registrar:** (To be documented - check DNS records)
+  - **Status:** Currently verified for desn.org.np via DNS
+  - Sitemap submitted: https://desn.org.np/sitemap.xml (16 pages indexed)
+- **Domains:**
+  - **desnepal.org** - Being transferred to client (no cost)
+  - **desn.org.np** - Client's existing domain
+- **AWS Services:**
+  - AWS Console: https://console.aws.amazon.com
+  - AWS Documentation: https://docs.aws.amazon.com
 
 ### Technology Documentation
 
@@ -755,41 +920,69 @@ All routes use lazy loading for performance optimization.
 
 ```bash
 # API Configuration
-VITE_API_BASE_URL=http://localhost:8081/api
+VITE_API_BASE_URL=https://desnepal.org/api
 
 # Feature Flags
 VITE_ENABLE_ANALYTICS=false
 
-# Khalti (Public Key Only)
-VITE_KHALTI_PUBLIC_KEY=test_public_key_xxx
+# Khalti (Public Key Only - provided after merchant registration)
+VITE_KHALTI_PUBLIC_KEY=live_public_key_xxx  # Production
+# VITE_KHALTI_PUBLIC_KEY=test_public_key_xxx  # Testing
 ```
 
 ### Backend (application.properties or .env)
+
+**Recommended:** Store in AWS Systems Manager Parameter Store (encrypted)
 
 ```properties
 # Server
 server.port=8081
 
-# Database
-spring.datasource.url=jdbc:postgresql://localhost:5432/desn_db
+# Database (AWS RDS)
+spring.datasource.url=jdbc:postgresql://your-db.xxxxx.us-east-1.rds.amazonaws.com:5432/desn_db
 spring.datasource.username=desn_user
-spring.datasource.password=SECURE_PASSWORD
+spring.datasource.password=SECURE_AWS_RDS_PASSWORD
 
 # JWT
-jwt.secret=SECURE_JWT_SECRET_KEY
+jwt.secret=SECURE_JWT_SECRET_KEY_AT_LEAST_32_CHARS
 jwt.expiration=86400000
 
-# Khalti
-khalti.secret.key=test_secret_key_xxx
-khalti.public.key=test_public_key_xxx
+# Khalti (Obtain from https://khalti.com/ after merchant registration)
+# TEST ENVIRONMENT:
+# khalti.secret.key=test_secret_key_xxx
+# khalti.public.key=test_public_key_xxx
+# PRODUCTION ENVIRONMENT:
+khalti.secret.key=live_secret_key_xxx
+khalti.public.key=live_public_key_xxx
 khalti.api.url=https://a.khalti.com/api/v2
-app.base.url=http://localhost:5173
+app.base.url=https://desnepal.org
 
 # Email
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=desn@example.com
+spring.mail.username=info@desnepal.org
 spring.mail.password=GMAIL_APP_PASSWORD
+```
+
+### AWS Systems Manager Parameter Store (Recommended)
+
+Store sensitive values as encrypted parameters:
+
+```bash
+# Database
+/desn/production/db-url
+/desn/production/db-username
+/desn/production/db-password
+
+# JWT
+/desn/production/jwt-secret
+
+# Khalti
+/desn/production/khalti-secret-key
+/desn/production/khalti-public-key
+
+# Email
+/desn/production/email-password
 ```
 
 ---
@@ -799,22 +992,44 @@ spring.mail.password=GMAIL_APP_PASSWORD
 ### Pre-Deployment
 
 - [ ] Run all tests (`npm run test`, `./mvnw test`)
+- [ ] Run accessibility audit (`npm run test:a11y`)
 - [ ] Build production frontend (`npm run build`)
 - [ ] Build backend JAR (`./mvnw clean package`)
-- [ ] Update environment variables for production
-- [ ] Switch Khalti to production keys
-- [ ] Backup current database
+- [ ] Update environment variables in AWS Parameter Store
+- [ ] Switch Khalti to production keys (after client provides them)
+- [ ] Backup current RDS database snapshot
 - [ ] Tag release in Git (`git tag v1.x.x`)
+- [ ] Push to client's repository
 
-### Deployment
+### AWS Deployment
 
-- [ ] Upload frontend build to server (`dist/`)
-- [ ] Deploy backend JAR to application server
-- [ ] Run database migrations
-- [ ] Update nginx configuration
-- [ ] Reload nginx (`sudo nginx -s reload`)
-- [ ] Verify SSL certificate
-- [ ] Clear CDN cache (if applicable)
+#### Frontend Deployment (Option A: S3 + CloudFront)
+- [ ] Upload frontend build to S3 bucket: `aws s3 sync dist/ s3://desn-frontend/`
+- [ ] Invalidate CloudFront cache: `aws cloudfront create-invalidation --distribution-id XXX --paths "/*"`
+- [ ] Verify site loads: https://desnepal.org
+
+#### Frontend Deployment (Option B: EC2 with Nginx)
+- [ ] SSH into EC2: `ssh -i desn-key.pem ec2-user@your-ec2-ip`
+- [ ] Upload build: `scp -r dist/* ec2-user@your-ec2-ip:/var/www/desn/`
+- [ ] Update nginx configuration: `/etc/nginx/sites-available/desn.conf`
+- [ ] Test nginx config: `sudo nginx -t`
+- [ ] Reload nginx: `sudo systemctl reload nginx`
+
+#### Backend Deployment (EC2 or ECS)
+- [ ] Upload backend JAR to EC2: `scp target/*.jar ec2-user@your-ec2-ip:/opt/desn/`
+- [ ] Run database migrations (if any): `java -jar desn-backend.jar --migrate`
+- [ ] Stop existing backend: `sudo systemctl stop desn-backend`
+- [ ] Start new backend: `sudo systemctl start desn-backend`
+- [ ] Verify backend health: `curl http://localhost:8081/actuator/health`
+- [ ] Check logs: `sudo journalctl -u desn-backend -f`
+
+### Post-Deployment
+
+- [ ] Verify SSL certificate is active on both domains
+- [ ] Test all critical paths (login, donate, contact form)
+- [ ] Verify payment flow with test transaction (NPR 10)
+- [ ] Check Google Search Console sitemap status
+- [ ] Clear CDN/CloudFront cache
 
 ### Post-Deployment
 
@@ -828,7 +1043,99 @@ spring.mail.password=GMAIL_APP_PASSWORD
 
 ---
 
-## Appendix C: Troubleshooting Common Issues
+## Appendix C: Google Search Console & SEO
+
+### Sitemap Structure
+
+The site uses an organized sitemap index structure for optimal SEO:
+
+**Sitemap Index** (`public/sitemap.xml`):
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://desnepal.org/sitemap-main.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://desnepal.org/sitemap-programs.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://desnepal.org/sitemap-content.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://desnepal.org/sitemap-utility.xml</loc>
+  </sitemap>
+</sitemapindex>
+```
+
+**Category Sitemaps:**
+
+1. **sitemap-main.xml** (Priority: 0.9, Change Frequency: daily)
+   - `/` (Home)
+   - `/about` (About Us)
+   - `/contact` (Contact)
+   - `/accessibility` (Accessibility Statement)
+
+2. **sitemap-programs.xml** (Priority: 0.8, Change Frequency: weekly)
+   - `/programs` (Programs Overview)
+   - `/get-involved` (Volunteer & Donate)
+   - `/donate` (Donate Page - once implemented)
+
+3. **sitemap-content.xml** (Priority: 0.7, Change Frequency: weekly)
+   - `/events` (Events Listing)
+   - `/resources` (Educational Resources)
+
+4. **sitemap-utility.xml** (Priority: 0.5, Change Frequency: monthly)
+   - `/search` (Search Results)
+
+**Excluded from Sitemap** (Authentication & Admin routes):
+- `/login`
+- `/register`
+- `/owner/dashboard`
+- `/admin/dashboard`
+- `/member/dashboard`
+- `/payment/verify` (Khalti callback)
+
+### Google Search Console Setup
+
+**Current Status:**
+- ✅ Domain verified via DNS (TXT record)
+- ✅ Sitemap submitted: `https://desn.org.np/sitemap.xml`
+- ✅ Status: Success - 16 pages discovered
+
+**After Domain Transfer to desnepal.org:**
+
+1. **Add New Property:**
+   - Go to: https://search.google.com/search-console
+   - Click "Add Property"
+   - Enter: `desnepal.org`
+   - Verify via DNS TXT record (recommended)
+
+2. **Submit Sitemaps:**
+   - Submit only the index: `https://desnepal.org/sitemap.xml`
+   - Do NOT submit individual category sitemaps (index handles them)
+
+3. **Monitor Indexing:**
+   - Check "Pages" report for indexing status
+   - Review "Coverage" for any errors
+   - Monitor "Performance" for search analytics
+
+### Sitemap Regeneration
+
+Sitemaps are automatically regenerated on every build:
+
+```bash
+npm run build  # Runs generate:sitemap then builds frontend
+```
+
+Manual regeneration:
+```bash
+npm run generate:sitemap
+```
+
+See `SITEMAP_GUIDE.md` for complete documentation.
+
+## Appendix D: Troubleshooting Common Issues
 
 ### Issue: Payment Initiation Fails
 
@@ -865,10 +1172,42 @@ spring.mail.password=GMAIL_APP_PASSWORD
 **Symptoms:** Backend logs show connection errors
 
 **Solution:**
-1. Verify PostgreSQL is running: `sudo systemctl status postgresql`
-2. Check connection string in `application.properties`
-3. Test connection: `psql -U desn_user -d desn_db`
-4. Verify firewall rules
+1. Verify AWS RDS instance is running in AWS Console
+2. Check RDS security group allows inbound traffic from EC2 instance
+3. Verify connection string in `application.properties` or AWS Parameter Store
+4. Test connection from EC2: `psql -h your-db.xxxxx.rds.amazonaws.com -U desn_user -d desn_db`
+5. Check RDS publicly accessible setting if connecting externally
+6. Verify VPC and subnet configuration
+
+### Issue: Khalti Payment Not Working
+
+**Symptoms:** Error when initiating payment, or payment verification fails
+
+**Solution:**
+1. Verify Khalti merchant account is approved and active
+2. Check API keys are correctly configured:
+   ```bash
+   # On EC2:
+   echo $KHALTI_SECRET_KEY
+   ```
+3. Ensure using correct keys (test vs. production)
+4. Verify `app.base.url` matches actual domain (https://desnepal.org)
+5. Check backend logs for Khalti API responses
+6. Test with Khalti test card: 5200 0000 0000 0007
+7. Contact Khalti support if keys are valid but integration fails
+
+### Issue: AWS Deployment Fails
+
+**Symptoms:** Application not starting on EC2, or errors in CloudWatch logs
+
+**Solution:**
+1. Check EC2 instance has sufficient memory/CPU
+2. Verify Java 21 is installed: `java -version`
+3. Check application logs: `sudo journalctl -u desn-backend -n 100`
+4. Verify all environment variables are set
+5. Check security group allows inbound traffic on port 8081
+6. Ensure backend JAR has execute permissions: `chmod +x desn-backend.jar`
+7. Test backend directly: `curl http://localhost:8081/actuator/health`
 
 ---
 
